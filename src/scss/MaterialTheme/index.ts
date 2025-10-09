@@ -20,6 +20,7 @@ export const light: ThemeOptions = {
     text: {
       primary: "#212121",
       secondary: "#616161",
+      disabled: "#B0B0B0",
     },
   },
   components: {
@@ -94,6 +95,7 @@ export const dark: ThemeOptions = {
     text: {
       primary: "#ffffff",
       secondary: "#aaaaaa",
+      disabled: "#555555",
     },
   },
   components: {

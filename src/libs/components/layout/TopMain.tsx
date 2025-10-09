@@ -15,7 +15,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HelpIcon from "@mui/icons-material/Help";
 import { useRouter } from "next/router";
 import PersonAdd from "@mui/icons-material/PersonAdd";
@@ -26,7 +26,13 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import EditIcon from "@mui/icons-material/Edit";
-import Flag from "react-world-flags";
+import _Flag from "react-world-flags";
+
+const Flag = _Flag as unknown as React.FC<{
+  code: string;
+  height?: string | number;
+  width?: string | number;
+}>;
 
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
@@ -75,13 +81,19 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 
 export default function TopMain() {
-  const [lang, setLang] = useState(localStorage.getItem("lang") || "GB");
+  const [lang, setLang] = useState("GB");
   const [anchorLangEl, setAnchorLangEl] = React.useState<null | HTMLElement>(
     null
   );
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const openLang = Boolean(anchorLangEl);
+
+  useEffect(() => {
+    const savedLang = localStorage.getItem("lang");
+    if (savedLang) setLang(savedLang);
+  }, []);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -108,7 +120,7 @@ export default function TopMain() {
       <Stack
         className="navigation-container"
         direction={"row"}
-        justifyContent={"space-around"}
+        justifyContent={"space-between"}
         alignItems="center"
         sx={{ widows: "100%" }}
       >
@@ -160,10 +172,7 @@ export default function TopMain() {
               disableRipple
               sx={{ gap: 1 }}
             >
-              <Flag
-                code="KR"
-                style={{ width: 24, height: 16, borderRadius: 3 }}
-              />
+              <Flag code="KR" width={24} height="16" />
               한국어
             </MenuItem>
             <MenuItem
@@ -171,10 +180,7 @@ export default function TopMain() {
               disableRipple
               sx={{ gap: 1 }}
             >
-              <Flag
-                code="GB"
-                style={{ width: 24, height: 16, borderRadius: 3 }}
-              />
+              <Flag code="GB" height="16" />
               English
             </MenuItem>
 
@@ -183,10 +189,7 @@ export default function TopMain() {
               disableRipple
               sx={{ gap: 1 }}
             >
-              <Flag
-                code="UZB"
-                style={{ width: 24, height: 16, borderRadius: 3 }}
-              />
+              <Flag code="UZB" height="16" />
               O'zbekcha
             </MenuItem>
           </StyledMenu>
@@ -215,7 +218,15 @@ export default function TopMain() {
             <Link href="#" className="links">
               Contacts
             </Link>
-            <Link href="#" className="links">
+            <Link
+              href="#"
+              className="links"
+              sx={{
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+              }}
+            >
               <HelpIcon />
             </Link>
           </Stack>

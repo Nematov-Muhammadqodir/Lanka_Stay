@@ -2,6 +2,7 @@ import { Stack, Typography } from "@mui/material";
 import Head from "next/head";
 import React from "react";
 import TopMain from "./TopMain";
+import TopHome from "./TopHome";
 
 const withLayoutMain = (Component: any) => {
   return (props: any) => {
@@ -11,8 +12,13 @@ const withLayoutMain = (Component: any) => {
           <title>Lanka-Stay</title>
         </Head>
         <Stack id="pc-wrap">
-          <Stack borderBottom={1} borderColor={"grey.300"}>
-            <TopMain />
+          <Stack>
+            <Stack borderBottom={1} borderColor={"grey.300"}>
+              <TopMain />
+            </Stack>
+            <Stack>
+              <TopHome />
+            </Stack>
           </Stack>
 
           <Stack>
