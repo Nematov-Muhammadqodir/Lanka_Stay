@@ -1,4 +1,5 @@
 import "@/src/scss/app.scss";
+import "../scss/pc/main.scss";
 import {
   createTheme,
   CssBaseline,
@@ -23,15 +24,14 @@ export default function App({ Component, pageProps }: AppProps) {
       <button
         style={{
           position: "fixed",
-          top: 16,
+          top: 30,
           right: 16,
           zIndex: 1000,
           background: "none",
-          border: "1px solid gray",
           color: theme.palette.text.primary,
           padding: "8px 12px",
-          borderRadius: "8px",
           cursor: "pointer",
+          border: "none",
         }}
         onClick={() => setMode(mode === "light" ? "dark" : "light")}
       >

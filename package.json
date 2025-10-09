@@ -69,6 +69,7 @@
     "react-spring": "^9.4.5",
     "react-telegram-auth": "^1.0.3",
     "react-tree": "^0.0.4",
+    "react-world-flags": "^1.6.0",
     "recharts": "^3.2.1",
     "sass": "^1.49.9",
     "sass-loader": "^12.6.0",
