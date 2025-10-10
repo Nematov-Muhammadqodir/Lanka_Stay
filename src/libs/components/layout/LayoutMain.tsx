@@ -3,6 +3,7 @@ import Head from "next/head";
 import React from "react";
 import TopMain from "./TopMain";
 import TopHome from "./TopHome";
+import Filtering from "./Filtering";
 
 const withLayoutMain = (Component: any) => {
   return (props: any) => {
@@ -18,6 +19,9 @@ const withLayoutMain = (Component: any) => {
             </Stack>
             <Stack>
               <TopHome />
+            </Stack>
+            <Stack>
+              <Filtering />
             </Stack>
           </Stack>
 

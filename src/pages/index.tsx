@@ -4,7 +4,7 @@ import withLayoutMain from "../libs/components/layout/LayoutMain";
 
 function HomePage() {
   return (
-    <Typography color="primary" fontSize={100}>
+    <Typography color="primary" fontSize={100} marginTop={"200px !important"}>
       index
     </Typography>
   );
