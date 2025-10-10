@@ -35,7 +35,7 @@ const TopHome = () => {
           sx={{
             width: "167px",
             height: "41px",
-            color: "white",
+            color: "text.disabled",
             mt: 7,
             borderRadius: "7px",
           }}

@@ -86,7 +86,7 @@ export const dark: ThemeOptions = {
       paper: "#1E1E1E", // slightly lighter for cards/papers
     },
     primary: {
-      main: "#2f52df", // keep brand color
+      main: "#fff", // keep brand color
       contrastText: "#ffffff",
     },
     secondary: {
