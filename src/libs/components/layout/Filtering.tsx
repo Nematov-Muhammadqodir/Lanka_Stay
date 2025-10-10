@@ -12,11 +12,18 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
+import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
 
 export default function Filtering() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
+  const [anchorElPerson, setAnchorElPerson] = useState<null | HTMLElement>(
+    null
+  );
   const open = Boolean(anchorEl);
+  const openPerson = Boolean(anchorElPerson);
   const [range, setRange] = useState([
     {
       startDate: new Date(),
@@ -28,8 +35,14 @@ export default function Filtering() {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const handlePersonClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElPerson(event.currentTarget);
+  };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handlePersonClose = () => {
+    setAnchorElPerson(null);
   };
   return (
     <Stack
@@ -49,7 +62,7 @@ export default function Filtering() {
       }}
     >
       <Stack>
-        <Tooltip title="Account settings">
+        <Tooltip title="Check Available Days">
           <Button
             variant="contained"
             sx={{
@@ -63,6 +76,7 @@ export default function Filtering() {
                 backgroundColor: "#f9f9f9",
               },
               gap: "10px",
+              color: "black",
             }}
             onClick={handleClick}
           >
@@ -121,8 +135,171 @@ export default function Filtering() {
           </MenuItem>
         </Menu>
       </Stack>
-      <Stack></Stack>
-      <Stack></Stack>
+      <Stack>
+        <Tooltip title="Select Amount of People">
+          <Button
+            variant="contained"
+            sx={{
+              borderRadius: "12px",
+              height: "60px",
+              width: "211px",
+              backgroundColor: "white",
+              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.15)",
+              "&:hover": {
+                boxShadow: "0px 6px 14px rgba(0, 0, 0, 0.25)",
+                backgroundColor: "#f9f9f9",
+              },
+              gap: "10px",
+              color: "black",
+            }}
+            onClick={handlePersonClick}
+          >
+            <EmojiPeopleIcon />
+            <Typography
+              fontSize={"12px"}
+              textTransform={"capitalize"}
+              letterSpacing={1}
+            >
+              Person 2
+            </Typography>
+            <KeyboardArrowDownIcon />
+          </Button>
+        </Tooltip>
+        <Menu
+          anchorEl={anchorElPerson}
+          id="account-menu"
+          open={openPerson}
+          onClose={handlePersonClose}
+          slotProps={{
+            paper: {
+              elevation: 0,
+              sx: {
+                overflow: "visible",
+                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                mt: 1.5,
+                "& .MuiAvatar-root": {
+                  width: 32,
+                  height: 32,
+                  ml: -0.5,
+                  mr: 1,
+                },
+                "&::before": {
+                  content: '""',
+                  display: "block",
+                  position: "absolute",
+                  top: 0,
+                  right: 14,
+                  width: 10,
+                  height: 10,
+                  bgcolor: "background.paper",
+                  transform: "translateY(-50%) rotate(45deg)",
+                  zIndex: 0,
+                },
+              },
+            },
+          }}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        >
+          <MenuItem>
+            <Stack gap={2}>
+              <Stack
+                flexDirection={"row"}
+                justifyContent={"space-between"}
+                width={300}
+                alignItems={"center"}
+                height={30}
+                paddingY={"30px"}
+                paddingX={"20px"}
+              >
+                <Typography sx={{ fontWeight: 700 }}>Adults</Typography>
+                <Stack
+                  flexDirection={"row"}
+                  alignItems={"center"}
+                  width={100}
+                  justifyContent={"space-between"}
+                  sx={{
+                    border: "1px solid",
+                    borderColor: "grey.300",
+                    borderRadius: 2,
+                    paddingX: 1,
+                  }}
+                >
+                  <Button>
+                    <RemoveIcon />
+                  </Button>
+                  <Typography>2</Typography>
+                  <Button>
+                    <AddIcon />
+                  </Button>
+                </Stack>
+              </Stack>
+              <Stack
+                flexDirection={"row"}
+                justifyContent={"space-between"}
+                width={300}
+                alignItems={"center"}
+                height={30}
+                paddingY={"30px"}
+                paddingX={"20px"}
+              >
+                <Typography sx={{ fontWeight: 700 }}>Children</Typography>
+                <Stack
+                  flexDirection={"row"}
+                  alignItems={"center"}
+                  width={100}
+                  justifyContent={"space-between"}
+                  sx={{
+                    border: "1px solid",
+                    borderColor: "grey.300",
+                    borderRadius: 2,
+                    paddingX: 1,
+                  }}
+                >
+                  <Button>
+                    <RemoveIcon />
+                  </Button>
+                  <Typography>2</Typography>
+                  <Button>
+                    <AddIcon />
+                  </Button>
+                </Stack>
+              </Stack>
+              <Stack
+                flexDirection={"row"}
+                justifyContent={"space-between"}
+                width={300}
+                alignItems={"center"}
+                height={30}
+                paddingY={"30px"}
+                paddingX={"20px"}
+              >
+                <Typography sx={{ fontWeight: 700 }}>Rooms</Typography>
+                <Stack
+                  flexDirection={"row"}
+                  alignItems={"center"}
+                  width={100}
+                  justifyContent={"space-between"}
+                  sx={{
+                    border: "1px solid",
+                    borderColor: "grey.300",
+                    borderRadius: 2,
+                    paddingX: 1,
+                  }}
+                >
+                  <Button>
+                    <RemoveIcon />
+                  </Button>
+                  <Typography>2</Typography>
+                  <Button>
+                    <AddIcon />
+                  </Button>
+                </Stack>
+              </Stack>
+            </Stack>
+          </MenuItem>
+        </Menu>
+      </Stack>
     </Stack>
   );
 }
