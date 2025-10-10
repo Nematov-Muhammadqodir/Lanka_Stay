@@ -4,6 +4,7 @@ import React from "react";
 import TopMain from "./TopMain";
 import TopHome from "./TopHome";
 import Filtering from "./Filtering";
+import Footer from "./Footer";
 
 const withLayoutMain = (Component: any) => {
   return (props: any) => {
@@ -29,7 +30,9 @@ const withLayoutMain = (Component: any) => {
             <Component {...props} />
           </Stack>
 
-          <Typography>FOOTER</Typography>
+          <Stack>
+            <Footer />
+          </Stack>
         </Stack>
       </>
     );
