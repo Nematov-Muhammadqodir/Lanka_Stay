@@ -19,6 +19,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import PinDropIcon from "@mui/icons-material/PinDrop";
 import WhereToVoteIcon from "@mui/icons-material/WhereToVote";
+import SearchIcon from "@mui/icons-material/Search";
 
 export default function Filtering() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -61,8 +62,6 @@ export default function Filtering() {
     <Stack
       className="container"
       width={"100%"}
-      padding={2}
-      spacing={2}
       sx={{
         backgroundColor: "secondary.main",
         marginTop: "100px !important",
@@ -72,6 +71,7 @@ export default function Filtering() {
         justifyContent: "space-between",
         alignItems: "center",
         paddingX: "40px",
+        boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.25)",
       }}
     >
       <Stack>
@@ -501,6 +501,30 @@ export default function Filtering() {
             </Stack>
           </MenuItem>
         </Menu>
+      </Stack>
+      <Stack>
+        <Button
+          variant="contained"
+          sx={{
+            width: "132px",
+            height: "54px",
+            color: "primary",
+            gap: 1,
+            pl: "25px",
+            borderRadius: "12px",
+            backgroundColor: "secondary.main",
+            boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.25)", // deeper, smoother
+            transition: "all 0.3s ease", // smooth animation
+            "&:hover": {
+              boxShadow: "0px 12px 30px rgba(0, 0, 0, 0.35)", // stronger glow
+              transform: "translateY(-3px)", // slight lift on hover
+              backgroundColor: "#fafafa",
+            },
+          }}
+        >
+          <Typography>Search</Typography>
+          <SearchIcon />
+        </Button>
       </Stack>
     </Stack>
   );

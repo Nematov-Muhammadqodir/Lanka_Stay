@@ -137,20 +137,11 @@ export default function TopMain() {
             sx={{ backgroundColor: "transparent", boxShadow: "none" }}
           >
             {lang === "GB" ? (
-              <Flag
-                code="GB"
-                style={{ width: 24, height: 16, borderRadius: 3 }}
-              />
+              <Flag code="GB" />
             ) : lang === "KR" ? (
-              <Flag
-                code="KR"
-                style={{ width: 24, height: 16, borderRadius: 3 }}
-              />
+              <Flag code="KR" />
             ) : (
-              <Flag
-                code="UZB"
-                style={{ width: 24, height: 16, borderRadius: 3 }}
-              />
+              <Flag code="UZB" />
             )}
           </Button>
           <Image
