@@ -1,6 +1,7 @@
 import {
   Button,
   IconButton,
+  Input,
   Menu,
   MenuItem,
   Stack,
@@ -16,14 +17,20 @@ import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
+import PinDropIcon from "@mui/icons-material/PinDrop";
+import WhereToVoteIcon from "@mui/icons-material/WhereToVote";
 
 export default function Filtering() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [anchorElPerson, setAnchorElPerson] = useState<null | HTMLElement>(
     null
   );
+  const [anchorElLocation, setAnchorElLocation] = useState<null | HTMLElement>(
+    null
+  );
   const open = Boolean(anchorEl);
   const openPerson = Boolean(anchorElPerson);
+  const openLocation = Boolean(anchorElLocation);
   const [range, setRange] = useState([
     {
       startDate: new Date(),
@@ -38,11 +45,17 @@ export default function Filtering() {
   const handlePersonClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElPerson(event.currentTarget);
   };
+  const handleLocationClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElLocation(event.currentTarget);
+  };
   const handleClose = () => {
     setAnchorEl(null);
   };
   const handlePersonClose = () => {
     setAnchorElPerson(null);
+  };
+  const handleLocationClose = () => {
+    setAnchorElLocation(null);
   };
   return (
     <Stack
@@ -206,7 +219,7 @@ export default function Filtering() {
               <Stack
                 flexDirection={"row"}
                 justifyContent={"space-between"}
-                width={300}
+                width={350}
                 alignItems={"center"}
                 height={30}
                 paddingY={"30px"}
@@ -237,7 +250,7 @@ export default function Filtering() {
               <Stack
                 flexDirection={"row"}
                 justifyContent={"space-between"}
-                width={300}
+                width={350}
                 alignItems={"center"}
                 height={30}
                 paddingY={"30px"}
@@ -268,7 +281,7 @@ export default function Filtering() {
               <Stack
                 flexDirection={"row"}
                 justifyContent={"space-between"}
-                width={300}
+                width={350}
                 alignItems={"center"}
                 height={30}
                 paddingY={"30px"}
@@ -295,6 +308,195 @@ export default function Filtering() {
                     <AddIcon />
                   </Button>
                 </Stack>
+              </Stack>
+            </Stack>
+          </MenuItem>
+        </Menu>
+      </Stack>
+      <Stack>
+        <Tooltip title="Select Amount of People">
+          <Button
+            variant="contained"
+            sx={{
+              borderRadius: "12px",
+              height: "60px",
+              width: "211px",
+              backgroundColor: "white",
+              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.15)",
+              "&:hover": {
+                boxShadow: "0px 6px 14px rgba(0, 0, 0, 0.25)",
+                backgroundColor: "#f9f9f9",
+              },
+              gap: "10px",
+              color: "black",
+            }}
+            onClick={handleLocationClick}
+          >
+            <PinDropIcon />
+            <Typography
+              fontSize={"12px"}
+              textTransform={"capitalize"}
+              letterSpacing={1}
+            >
+              Location
+            </Typography>
+          </Button>
+        </Tooltip>
+        <Menu
+          anchorEl={anchorElLocation}
+          id="account-menu"
+          open={openLocation}
+          onClose={handleLocationClose}
+          slotProps={{
+            paper: {
+              elevation: 0,
+              sx: {
+                overflow: "visible",
+                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                mt: 1.5,
+                "& .MuiAvatar-root": {
+                  width: 32,
+                  height: 32,
+                  ml: -0.5,
+                  mr: 1,
+                },
+                "&::before": {
+                  content: '""',
+                  display: "block",
+                  position: "absolute",
+                  top: 0,
+                  right: 14,
+                  width: 10,
+                  height: 10,
+                  bgcolor: "background.paper",
+                  transform: "translateY(-50%) rotate(45deg)",
+                  zIndex: 0,
+                },
+              },
+            },
+          }}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        >
+          <MenuItem>
+            <Stack gap={2} width={431} height={"auto"}>
+              <Stack marginBottom={1}>
+                <Input placeholder="Search for location!" />
+              </Stack>
+              <Stack>
+                <Typography sx={{ fontWeight: "bold", color: "text.primary" }}>
+                  Trending Destinations
+                </Typography>
+              </Stack>
+              <Stack gap={2} alignItems={"center"}>
+                <Button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    console.log("Busan clicked!");
+                  }}
+                  sx={{
+                    gap: 1,
+                    textTransform: "capitalize",
+                    borderBottom: 1,
+                    width: "100%",
+                    justifyContent: "flex-start",
+                    borderRadius: 0,
+                    borderColor: "grey.300",
+                  }}
+                >
+                  <WhereToVoteIcon />
+                  <Typography fontWeight={700}>Busan</Typography>
+                </Button>
+                <Button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    console.log("Busan clicked!");
+                  }}
+                  sx={{
+                    gap: 1,
+                    textTransform: "capitalize",
+                    borderBottom: 1,
+                    width: "100%",
+                    justifyContent: "flex-start",
+                    borderRadius: 0,
+                    borderColor: "grey.300",
+                  }}
+                >
+                  <WhereToVoteIcon />
+                  <Typography fontWeight={700}>Seoul</Typography>
+                </Button>
+                <Button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    console.log("Busan clicked!");
+                  }}
+                  sx={{
+                    gap: 1,
+                    textTransform: "capitalize",
+                    borderBottom: 1,
+                    width: "100%",
+                    justifyContent: "flex-start",
+                    borderRadius: 0,
+                    borderColor: "grey.300",
+                  }}
+                >
+                  <WhereToVoteIcon />
+                  <Typography fontWeight={700}>Tokyo</Typography>
+                </Button>
+                <Button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    console.log("Busan clicked!");
+                  }}
+                  sx={{
+                    gap: 1,
+                    textTransform: "capitalize",
+                    borderBottom: 1,
+                    width: "100%",
+                    justifyContent: "flex-start",
+                    borderRadius: 0,
+                    borderColor: "grey.300",
+                  }}
+                >
+                  <WhereToVoteIcon />
+                  <Typography fontWeight={700}>Kyoto</Typography>
+                </Button>
+                <Button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    console.log("Busan clicked!");
+                  }}
+                  sx={{
+                    gap: 1,
+                    textTransform: "capitalize",
+                    borderBottom: 1,
+                    width: "100%",
+                    justifyContent: "flex-start",
+                    borderRadius: 0,
+                    borderColor: "grey.300",
+                  }}
+                >
+                  <WhereToVoteIcon />
+                  <Typography fontWeight={700}>Fukuoka</Typography>
+                </Button>
+                <Button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    console.log("Busan clicked!");
+                  }}
+                  sx={{
+                    gap: 1,
+                    textTransform: "capitalize",
+                    borderBottom: 1,
+                    width: "100%",
+                    justifyContent: "flex-start",
+                    borderRadius: 0,
+                    borderColor: "grey.300",
+                  }}
+                >
+                  <WhereToVoteIcon />
+                  <Typography fontWeight={700}>Osaka</Typography>
+                </Button>
               </Stack>
             </Stack>
           </MenuItem>
