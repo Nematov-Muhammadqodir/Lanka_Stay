@@ -16,6 +16,7 @@ export const light: ThemeOptions = {
     },
     secondary: {
       main: "#E9F1FF",
+      contrastText: "#FFFFFF",
     },
     text: {
       primary: "#212121",
@@ -91,6 +92,7 @@ export const dark: ThemeOptions = {
     },
     secondary: {
       main: "#2a3d5f", // darker version of light secondary
+      contrastText: "#000000",
     },
     text: {
       primary: "#ffffff",
