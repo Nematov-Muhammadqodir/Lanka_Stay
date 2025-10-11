@@ -1,0 +1,79 @@
+import { Box, Stack, Typography } from "@mui/material";
+import Image from "next/image";
+
+const TrendingDestinations = () => {
+  const destinations = [
+    { src: "/img/Busan.jpg", name: "Busan🇰🇷", width: 600 },
+    { src: "/img/Seoul.jpg", name: "Seoul🇰🇷", width: 600 },
+    { src: "/img/Tokyo.jpg", name: "Tokyo🇯🇵", width: 387 },
+    { src: "/img/Gyeongju.jpg", name: "Gyeongju🇰🇷", width: 387 },
+    { src: "/img/Jeju.jpg", name: "Jeju🇰🇷", width: 387 },
+  ];
+
+  const ImageBox = ({ item }: any) => (
+    <Box
+      sx={{
+        position: "relative",
+        borderRadius: 4,
+        overflow: "hidden",
+      }}
+    >
+      <Image
+        src={item.src}
+        alt={item.name}
+        width={item.width}
+        height={272}
+        style={{ objectFit: "cover", borderRadius: 15 }}
+      />
+
+      {/* ✨ Top-left gradient overlay */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          background:
+            "linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 50%)",
+        }}
+      />
+
+      <Typography
+        position="absolute"
+        top={15}
+        left={15}
+        fontSize="25px"
+        color="white"
+        fontWeight={700}
+      >
+        {item.name}
+      </Typography>
+    </Box>
+  );
+
+  return (
+    <Stack className="container" alignItems="center" gap={3}>
+      <Stack alignSelf={"start"} paddingLeft={5}>
+        <Typography fontSize={"30px"} fontWeight={800}>
+          Trending destinations
+        </Typography>
+        <Typography>
+          Travellers searching for South Korea also booked these
+        </Typography>
+      </Stack>
+      <Stack flexDirection="row" justifyContent="center" gap={3}>
+        {destinations.slice(0, 2).map((item, i) => (
+          <ImageBox key={i} item={item} />
+        ))}
+      </Stack>
+      <Stack flexDirection="row" justifyContent="center" gap={4}>
+        {destinations.slice(2).map((item, i) => (
+          <ImageBox key={i} item={item} />
+        ))}
+      </Stack>
+    </Stack>
+  );
+};
+
+export default TrendingDestinations;
