@@ -3,11 +3,11 @@ import Image from "next/image";
 
 const TrendingDestinations = () => {
   const destinations = [
-    { src: "/img/Busan.jpg", name: "Busan🇰🇷", width: 600 },
-    { src: "/img/Seoul.jpg", name: "Seoul🇰🇷", width: 600 },
-    { src: "/img/Tokyo.jpg", name: "Tokyo🇯🇵", width: 387 },
-    { src: "/img/Gyeongju.jpg", name: "Gyeongju🇰🇷", width: 387 },
-    { src: "/img/Jeju.jpg", name: "Jeju🇰🇷", width: 387 },
+    { src: "/img/Busan.jpg", name: "Busan🇰🇷", width: 650 },
+    { src: "/img/Seoul.jpg", name: "Seoul🇰🇷", width: 650 },
+    { src: "/img/Tokyo.jpg", name: "Tokyo🇯🇵", width: 421 },
+    { src: "/img/Gyeongju.jpg", name: "Gyeongju🇰🇷", width: 421 },
+    { src: "/img/Jeju.jpg", name: "Jeju🇰🇷", width: 421 },
   ];
 
   const ImageBox = ({ item }: any) => (
@@ -54,7 +54,7 @@ const TrendingDestinations = () => {
 
   return (
     <Stack className="container" alignItems="center" gap={3}>
-      <Stack alignSelf={"start"} paddingLeft={5}>
+      <Stack alignSelf={"start"}>
         <Typography fontSize={"30px"} fontWeight={800}>
           Trending destinations
         </Typography>
