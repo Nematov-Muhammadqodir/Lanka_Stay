@@ -8,6 +8,7 @@ import ExploreList from "../libs/components/homePage/ExploreList";
 import TrendingDestinations from "../libs/components/homePage/TrendingDestinations";
 import BrowseByPropertyType from "../libs/components/homePage/BrowseByPropertyType";
 import PopularAttractions from "../libs/components/homePage/PopularAttractions";
+import WhyOurHotel from "../libs/components/general/whyOurHotel";
 
 function HomePage() {
   return (
@@ -18,6 +19,7 @@ function HomePage() {
       <TrendingDestinations />
       <BrowseByPropertyType />
       <PopularAttractions />
+      <WhyOurHotel />
     </Stack>
   );
 }
