@@ -16,6 +16,11 @@ const TrendingDestinations = () => {
         position: "relative",
         borderRadius: 4,
         overflow: "hidden",
+        cursor: "pointer",
+        transition: "transform 0.3s ease",
+        "&:hover": {
+          transform: "scale(1.03)",
+        },
       }}
     >
       <Image

@@ -7,6 +7,7 @@ import StillInterestedList from "../libs/components/homePage/StillInterestedList
 import ExploreList from "../libs/components/homePage/ExploreList";
 import TrendingDestinations from "../libs/components/homePage/TrendingDestinations";
 import BrowseByPropertyType from "../libs/components/homePage/BrowseByPropertyType";
+import PopularAttractions from "../libs/components/homePage/PopularAttractions";
 
 function HomePage() {
   return (
@@ -16,6 +17,7 @@ function HomePage() {
       <ExploreList />
       <TrendingDestinations />
       <BrowseByPropertyType />
+      <PopularAttractions />
     </Stack>
   );
 }

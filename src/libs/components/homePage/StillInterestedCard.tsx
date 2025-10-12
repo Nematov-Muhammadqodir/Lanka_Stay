@@ -9,11 +9,16 @@ const StillInterestedCard = () => {
   return (
     <Stack
       sx={{
-        width: "266px",
+        width: "247px",
         height: "338px",
         border: "1px solid #eee",
         borderRadius: "8px",
         boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.25)",
+        cursor: "pointer",
+        transition: "transform 0.3s ease",
+        "&:hover": {
+          transform: "scale(1.03)",
+        },
       }}
     >
       <Stack
@@ -28,7 +33,7 @@ const StillInterestedCard = () => {
         <Image
           src="/img/hotel2.jpg"
           alt="user-image"
-          width={264}
+          width={247}
           height={211}
           style={{
             objectFit: "cover",

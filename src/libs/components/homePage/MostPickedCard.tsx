@@ -4,7 +4,17 @@ import Image from "next/image";
 export default function MostPickedCard() {
   return (
     <Stack
-      sx={{ width: 313, height: 251, borderRadius: 15, position: "relative" }}
+      sx={{
+        width: 313,
+        height: 251,
+        borderRadius: 15,
+        position: "relative",
+        cursor: "pointer",
+        transition: "transform 0.3s ease",
+        "&:hover": {
+          transform: "scale(1.03)",
+        },
+      }}
     >
       <Stack>
         <Typography

@@ -4,7 +4,15 @@ import React from "react";
 
 const BrowseByPropertyTypeCard = () => {
   return (
-    <Stack>
+    <Stack
+      sx={{
+        cursor: "pointer",
+        transition: "transform 0.3s ease",
+        "&:hover": {
+          transform: "scale(1.03)",
+        },
+      }}
+    >
       <Stack width={265} height={210}>
         <Image
           src="/img/Villa.jpg"

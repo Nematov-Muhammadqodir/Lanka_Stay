@@ -3,7 +3,15 @@ import Image from "next/image";
 
 const ExploreCard = () => {
   return (
-    <Stack>
+    <Stack
+      sx={{
+        cursor: "pointer",
+        transition: "transform 0.3s ease",
+        "&:hover": {
+          transform: "scale(1.03)",
+        },
+      }}
+    >
       <Stack height={135} width={170}>
         <Image
           src="/img/tangerine.jpg"
