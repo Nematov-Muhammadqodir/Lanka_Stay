@@ -82,12 +82,21 @@ const ReviewMapContainer = () => {
         </Stack>
       </Stack>
 
-      <Stack
-        className="map-container"
+      <Box
+        width={390}
         height={200}
-        border={"1px solid"}
-        borderColor={"secondary.main"}
-      ></Stack>
+        border="1px solid"
+        borderColor="secondary.main"
+        mt={2}
+      >
+        <iframe
+          width="390"
+          height="200"
+          style={{ border: 0 }}
+          loading="lazy"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=126.563%2C33.247%2C126.580%2C33.256&layer=mapnik"
+        ></iframe>
+      </Box>
     </Stack>
   );
 };
