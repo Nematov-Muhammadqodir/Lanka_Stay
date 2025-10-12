@@ -1,3 +1,4 @@
+import HotelInfoSection from "@/src/libs/components/HotelDetail.tsx/HotelInfoSection";
 import PropertyOverview from "@/src/libs/components/HotelDetail.tsx/PropertyOverview";
 import withLayoutSecondary from "@/src/libs/components/layout/LayoutSecondary";
 import { Stack } from "@mui/material";
@@ -7,6 +8,7 @@ const HotelDetail = () => {
   return (
     <Stack>
       <PropertyOverview />
+      <HotelInfoSection />
     </Stack>
   );
 };
