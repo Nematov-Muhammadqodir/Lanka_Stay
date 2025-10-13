@@ -1,4 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material";
+import { mt } from "date-fns/locale";
+import Link from "next/link";
+import AllAvailableRoomsBody from "./AllAvailableRoomsBody";
 
 const AllAvailableRooms = () => {
   return (
@@ -52,6 +55,11 @@ const AllAvailableRooms = () => {
               Payment
             </Typography>
           </Stack>
+        </Stack>
+        <Stack>
+          <AllAvailableRoomsBody />
+          <AllAvailableRoomsBody />
+          <AllAvailableRoomsBody />
         </Stack>
       </Stack>
     </Stack>
