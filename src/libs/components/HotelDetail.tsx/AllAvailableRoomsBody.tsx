@@ -17,8 +17,8 @@ const AllAvailableRoomsBody = () => {
       height={"auto"}
       paddingX={1}
       mt={2}
-      borderBottom={"1px solid"}
-      borderColor={"secondary"}
+      borderBottom={"3px solid"}
+      borderColor={"primary.main"}
       pb={2}
     >
       <Stack width={220}>
@@ -45,12 +45,22 @@ const AllAvailableRoomsBody = () => {
         </Box>
         <RoomFeatures />
       </Stack>
-      <Box height={"100%"} borderRight={"1px solid black"}></Box>
+      <Box
+        sx={{
+          width: "2px",
+          bgcolor: "primary.main",
+        }}
+      ></Box>
       <Stack width={140} flexDirection={"row"} gap={0.5}>
         <PersonIcon />
         <PersonIcon />
       </Stack>
-      <Box height={"100%"} borderRight={"1px solid black"}></Box>
+      <Box
+        sx={{
+          width: "2px",
+          bgcolor: "primary.main",
+        }}
+      ></Box>
       <Stack width={175}>
         <Stack flexDirection={"row"} gap={0.5}>
           <Typography className="available-rooms-header-text">
@@ -60,7 +70,12 @@ const AllAvailableRoomsBody = () => {
         </Stack>
         <Typography>Included texes and charges</Typography>
       </Stack>
-      <Box height={"100%"} borderRight={"1px solid black"}></Box>
+      <Box
+        sx={{
+          width: "2px",
+          bgcolor: "primary.main",
+        }}
+      ></Box>
       <Stack width={260} flexDirection={"row"} gap={1}>
         <Stack flexDirection={"row"} gap={0.5}>
           <EmojiFoodBeverageIcon />
@@ -75,9 +90,19 @@ const AllAvailableRoomsBody = () => {
           <HelpIcon color="primary" />
         </Button>
       </Stack>
-      <Box height={"100%"} borderRight={"1px solid black"}></Box>
+      <Box
+        sx={{
+          width: "2px",
+          bgcolor: "primary.main",
+        }}
+      ></Box>
       <SelectRoomMenu />
-      <Box height={"100%"} borderRight={"1px solid black"}></Box>
+      <Box
+        sx={{
+          width: "2px",
+          bgcolor: "primary.main",
+        }}
+      ></Box>
       <Stack width={255}>
         <Button
           variant="contained"
