@@ -8,7 +8,7 @@ interface BarProps {
 
 const ReviewBar = ({ label, value }: BarProps) => {
   return (
-    <Stack width={300}>
+    <Stack width={250}>
       <Stack flexDirection={"row"} justifyContent={"space-between"}>
         <Typography pl={2} sx={{ width: "auto" }}>
           {label}

@@ -77,9 +77,8 @@ const ReviewsList = () => {
         <Button
           variant="outlined"
           sx={{
-            width: 170,
+            width: 155,
             textTransform: "capitalize",
-            borderWidth: 2,
             color: "primary.main",
             height: 45,
             fontWeight: 700,
