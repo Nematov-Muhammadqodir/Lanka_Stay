@@ -1,6 +1,7 @@
 import AboutThisHotel from "@/src/libs/components/HotelDetail.tsx/AboutThisHotel";
 import AllAvailableRooms from "@/src/libs/components/HotelDetail.tsx/AllAvailableRooms";
 import GreatForYourStay from "@/src/libs/components/HotelDetail.tsx/GreatForYourStay";
+import GuestReviews from "@/src/libs/components/HotelDetail.tsx/GuestReviews";
 import HotelInfoSection from "@/src/libs/components/HotelDetail.tsx/HotelInfoSection";
 import PropertyOverview from "@/src/libs/components/HotelDetail.tsx/PropertyOverview";
 import withLayoutSecondary from "@/src/libs/components/layout/LayoutSecondary";
@@ -15,6 +16,7 @@ const HotelDetail = () => {
       <AboutThisHotel />
       <GreatForYourStay />
       <AllAvailableRooms />
+      <GuestReviews />
     </Stack>
   );
 };
