@@ -18,7 +18,7 @@ const DetailLayoutBanner = () => {
     "/img/Tokyo.jpg",
     "/img/Seoul.jpg",
     "/img/Villa.jpg",
-    "/img/cable-car.jpg",
+    "/img/Jeju.jpg",
   ];
 
   return (

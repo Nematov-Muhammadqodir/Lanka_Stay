@@ -57,5 +57,12 @@ hr {
     width: 1300px;
     margin: 0 auto;
     display: flex;
+    .bold-text {
+      font-weight: 700;
+      font-size: 20px;
+    }
+    .available-rooms-header-text {
+      font-weight: 700;
+    }
   }
 }
