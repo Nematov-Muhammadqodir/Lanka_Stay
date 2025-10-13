@@ -4,6 +4,7 @@ import GreatForYourStay from "@/src/libs/components/HotelDetail.tsx/GreatForYour
 import GuestReviews from "@/src/libs/components/HotelDetail.tsx/GuestReviews";
 import HotelInfoSection from "@/src/libs/components/HotelDetail.tsx/HotelInfoSection";
 import PropertyOverview from "@/src/libs/components/HotelDetail.tsx/PropertyOverview";
+import ReviewsList from "@/src/libs/components/HotelDetail.tsx/ReviewsList";
 import withLayoutSecondary from "@/src/libs/components/layout/LayoutSecondary";
 import { Stack } from "@mui/material";
 import React from "react";
@@ -17,6 +18,7 @@ const HotelDetail = () => {
       <GreatForYourStay />
       <AllAvailableRooms />
       <GuestReviews />
+      <ReviewsList />
     </Stack>
   );
 };
