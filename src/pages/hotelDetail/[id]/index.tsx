@@ -20,7 +20,6 @@ const HotelDetail = () => {
       <AllAvailableRooms />
       <GuestReviews />
       <ReviewsList />
-      <GuestReviewMenu />
     </Stack>
   );
 };

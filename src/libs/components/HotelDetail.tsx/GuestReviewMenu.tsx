@@ -2,15 +2,20 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import InfoIcon from "@mui/icons-material/Info";
 import GuestReviewsForMenu from "./GuestReviewsForMenu";
+import GuestReviewListForMenu from "./GuestReviewListForMenu";
+import GuestReviewItemMenu from "./GuestReviewItemMenu";
 
-const GuestReviewMenu = () => {
+interface GuestReviewMenuProps {
+  handleClose: () => void;
+}
+const GuestReviewMenu = ({ handleClose }: GuestReviewMenuProps) => {
   return (
     <Stack
       height={"100vh"}
       width={900}
-      border={"1px solid black"}
       alignSelf={"flex-end"}
       sx={{ borderTopLeftRadius: 20, borderBottomLeftRadius: 20, p: 2 }}
+      overflow={"auto"}
     >
       <Stack gap={1}>
         <Stack
@@ -19,10 +24,13 @@ const GuestReviewMenu = () => {
           alignItems={"center"}
           mb={5}
         >
-          <Typography className="bold-text">
+          <Typography
+            className="bold-text"
+            sx={{ fontWeight: 700, fontSize: 20 }}
+          >
             Guest reviews for The Grand Sumorum
           </Typography>
-          <Button>
+          <Button onClick={handleClose}>
             <CloseIcon />
           </Button>
         </Stack>
@@ -51,7 +59,9 @@ const GuestReviewMenu = () => {
               8.9
             </Box>
             <Stack>
-              <Typography className="small-bold-text">Fabulous</Typography>
+              <Typography sx={{ fontWeight: 700, fontSize: 15 }}>
+                Fabulous
+              </Typography>
               <Typography className="small-text">1,309 reviews</Typography>
             </Stack>
           </Stack>
@@ -72,6 +82,9 @@ const GuestReviewMenu = () => {
         </Stack>
         <Stack borderBottom={"1px solid"} pb={3} borderColor={"text"}>
           <GuestReviewsForMenu />
+        </Stack>
+        <Stack>
+          <GuestReviewListForMenu />
         </Stack>
       </Stack>
     </Stack>

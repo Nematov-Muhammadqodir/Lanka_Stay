@@ -6,7 +6,9 @@ import ReviewBar from "./ReviewBar";
 const GuestReviewsForMenu = () => {
   return (
     <Stack mt={"50px !important"} gap={2}>
-      <Typography className="bold-text">Categories:</Typography>
+      <Typography sx={{ fontWeight: 700, fontSize: 20 }}>
+        Categories:
+      </Typography>
       <Stack flexDirection={"row"} flexWrap={"wrap"} gap={3}>
         <ReviewBar label={"Staff"} value={8.0} />
         <ReviewBar label={"Facilities"} value={8.9} />

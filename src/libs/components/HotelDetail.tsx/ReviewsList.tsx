@@ -1,6 +1,14 @@
-import { Button, Stack, Typography } from "@mui/material";
-import React from "react";
+import {
+  Button,
+  Drawer,
+  Menu,
+  MenuItem,
+  Stack,
+  Typography,
+} from "@mui/material";
+import React, { useState } from "react";
 import ReviewCard from "./ReviewCard";
+import GuestReviewMenu from "./GuestReviewMenu";
 
 const ReviewsList = () => {
   const reviews = [
@@ -53,6 +61,10 @@ const ReviewsList = () => {
     },
   ];
 
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   return (
     <Stack className="container" mt={"50px !important"} gap={1.5}>
       <Stack>
@@ -75,6 +87,7 @@ const ReviewsList = () => {
       </Stack>
       <Stack>
         <Button
+          onClick={handleOpen}
           variant="outlined"
           sx={{
             width: 155,
@@ -86,6 +99,21 @@ const ReviewsList = () => {
         >
           Read all reviews
         </Button>
+        <Drawer
+          anchor="right" // 👈 this positions it to the right
+          open={open}
+          onClose={handleClose}
+          PaperProps={{
+            sx: {
+              width: 900,
+              borderTopLeftRadius: 20,
+              borderBottomLeftRadius: 20,
+              overflow: "hidden",
+            },
+          }}
+        >
+          <GuestReviewMenu handleClose={handleClose} />
+        </Drawer>
       </Stack>
     </Stack>
   );
