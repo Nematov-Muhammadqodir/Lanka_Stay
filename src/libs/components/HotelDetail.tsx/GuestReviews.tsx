@@ -1,4 +1,12 @@
-import { Box, Button, Menu, MenuItem, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Drawer,
+  Menu,
+  MenuItem,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import HdrStrongIcon from "@mui/icons-material/HdrStrong";
 import ReviewBar from "./ReviewBar";
@@ -46,17 +54,21 @@ const GuestReviews = () => {
         >
           Read all reviews
         </Button>
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
+        <Drawer
+          anchor="right" // 👈 this positions it to the right
           open={open}
           onClose={handleClose}
-          slotProps={{}}
+          PaperProps={{
+            sx: {
+              width: 900,
+              borderTopLeftRadius: 20,
+              borderBottomLeftRadius: 20,
+              overflow: "hidden",
+            },
+          }}
         >
-          <MenuItem onClick={handleClose}>
-            <GuestReviewMenu />
-          </MenuItem>
-        </Menu>
+          <GuestReviewMenu handleClose={handleClose} />
+        </Drawer>
       </Stack>
       <Typography className="bold-text">Categories:</Typography>
       <Stack flexDirection={"row"} flexWrap={"wrap"} gap={3}>
