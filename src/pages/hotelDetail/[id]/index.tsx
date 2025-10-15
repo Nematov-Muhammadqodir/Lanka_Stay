@@ -4,6 +4,7 @@ import GreatForYourStay from "@/src/libs/components/HotelDetail.tsx/GreatForYour
 import GuestReviewMenu from "@/src/libs/components/HotelDetail.tsx/GuestReviewMenu";
 import GuestReviews from "@/src/libs/components/HotelDetail.tsx/GuestReviews";
 import HotelInfoSection from "@/src/libs/components/HotelDetail.tsx/HotelInfoSection";
+import HouseRules from "@/src/libs/components/HotelDetail.tsx/HouseRules/HouseRules";
 import PropertyOverview from "@/src/libs/components/HotelDetail.tsx/PropertyOverview";
 import ReviewsList from "@/src/libs/components/HotelDetail.tsx/ReviewsList";
 import withLayoutSecondary from "@/src/libs/components/layout/LayoutSecondary";
@@ -20,6 +21,7 @@ const HotelDetail = () => {
       <AllAvailableRooms />
       <GuestReviews />
       <ReviewsList />
+      <HouseRules />
     </Stack>
   );
 };
