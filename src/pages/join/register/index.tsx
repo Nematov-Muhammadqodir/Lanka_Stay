@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   FormControl,
   Input,
   InputLabel,
@@ -16,8 +17,10 @@ import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import countries from "world-countries";
+import { useRouter } from "next/router";
 
 const Register = () => {
+  const router = useRouter();
   const [phone, setPhone] = useState("");
   const [gender, setGender] = useState("");
   const [guestType, setGuestType] = useState("");
@@ -25,8 +28,6 @@ const Register = () => {
   const [region, setRegion] = useState("");
   const selectedCountry = countries.find((c) => c.name.common === country);
   const [lat, lng] = selectedCountry?.latlng || [];
-
-  console.log("lat-long", lat);
 
   const handleAgeChange = (event: SelectChangeEvent) => {
     setGender(event.target.value as string);
@@ -43,23 +44,80 @@ const Register = () => {
     }
   };
   return (
-    <Stack alignItems={"center"} justifyContent={"center"} height={"100vh"}>
+    <Stack
+      alignItems={"center"}
+      justifyContent={"center"}
+      height={"100vh"}
+      sx={{
+        backgroundImage: `url("/img/boat.jpg")`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        position: "relative",
+      }}
+    >
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          bgcolor: "rgba(255, 255, 255, 0.3)",
+        }}
+      />
       <Stack
         flexDirection={"row"}
         width={1000}
         height={"auto"}
-        border={"1px solid black"}
         className="container"
         position={"relative"}
         justifyContent={"center"}
+        sx={{
+          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.9)",
+          borderRadius: "12px",
+          backgroundColor: "#fff",
+        }}
+        borderRadius={6}
       >
-        <Stack className="login-left-side" width={"50%"}>
+        <Stack className="login-left-side" width={"50%"} position={"relative"}>
           <Image
             src={"/img/Villa.jpg"}
             alt="user-image"
-            style={{ objectFit: "cover" }}
+            style={{
+              objectFit: "cover",
+              borderTopLeftRadius: 6,
+              borderBottomLeftRadius: 6,
+            }}
             width={500}
             height={778}
+          />
+          <Box
+            sx={{
+              position: "absolute",
+              top: "10%",
+              left: "10%",
+              width: "85%",
+              height: "80%",
+              bgcolor: "rgba(255, 255, 255, 0.6)",
+              borderRadius: 4,
+            }}
+          />
+          <Image
+            src={"/file.svg"}
+            alt="logo"
+            style={{
+              objectFit: "cover",
+              borderTopLeftRadius: 6,
+              borderBottomLeftRadius: 6,
+              position: "absolute",
+              top: 320,
+              left: 70,
+              right: 0,
+              bottom: 0,
+            }}
+            width={400}
+            height={70}
           />
         </Stack>
         <Stack className="login-right-side" width={"50%"} pl={8} pr={4} py={5}>
@@ -278,6 +336,27 @@ const Register = () => {
                 }}
               />
             </Stack>
+            <Button
+              sx={{
+                marginTop: "20px",
+                height: 90,
+                color: "white",
+                padding: 2,
+                borderRadius: "10px",
+                fontSize: 18,
+                fontWeight: 600,
+                letterSpacing: 2,
+              }}
+              variant="contained"
+            >
+              Register
+            </Button>
+            <Button
+              sx={{ textDecoration: "underline" }}
+              onClick={() => router.push("/join/login")}
+            >
+              Login
+            </Button>
           </Stack>
         </Stack>
       </Stack>

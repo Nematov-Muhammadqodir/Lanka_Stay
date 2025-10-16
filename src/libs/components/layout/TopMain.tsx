@@ -144,12 +144,7 @@ export default function TopMain() {
               <Flag code="UZB" />
             )}
           </Button>
-          <Image
-            src="/img/logo/LankaStay.png"
-            alt="Logo"
-            width={150}
-            height={30}
-          />
+          <Image src="/file.svg" alt="Logo" width={150} height={30} />
 
           <StyledMenu
             id="demo-customized-menu"

@@ -17,12 +17,7 @@ const Footer = () => {
           <Stack className="footer-content">
             <Stack className="first-section">
               <Stack className="logo-container">
-                <Image
-                  src="/img/logo/LankaStay.png"
-                  alt="Logo"
-                  width={150}
-                  height={30}
-                />
+                <Image src="/file.svg" alt="Logo" width={150} height={30} />
                 <span className="brand-motto">
                   Comfort, convenience, and unforgettable moments.
                 </span>
