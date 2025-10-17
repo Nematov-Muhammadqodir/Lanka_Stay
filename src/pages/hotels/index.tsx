@@ -1,4 +1,5 @@
 import Filter from "@/src/libs/components/hotels/Filter";
+import ListOfHotels from "@/src/libs/components/hotels/ListOfHotels";
 import withLayoutSecondary from "@/src/libs/components/layout/LayoutSecondary";
 import { Stack } from "@mui/material";
 import React from "react";
@@ -16,7 +17,7 @@ const Hotels = () => {
             <Filter />
           </Stack>
           <Stack width={980}>
-            <Stack>Body</Stack>
+            <ListOfHotels />
           </Stack>
         </Stack>
       </Stack>
