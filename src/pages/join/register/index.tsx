@@ -108,19 +108,17 @@ const Register = () => {
             alt="logo"
             style={{
               objectFit: "cover",
-              borderTopLeftRadius: 6,
-              borderBottomLeftRadius: 6,
               position: "absolute",
-              top: 320,
-              left: 70,
+              top: 322,
+              left: 100,
               right: 0,
               bottom: 0,
             }}
-            width={400}
-            height={70}
+            width={300}
+            height={50}
           />
         </Stack>
-        <Stack className="login-right-side" width={"50%"} pl={8} pr={4} py={5}>
+        <Stack className="login-right-side" width={"50%"} pl={5} pr={4} py={5}>
           <Typography
             sx={{
               fontWeight: 500,
@@ -208,7 +206,7 @@ const Register = () => {
                   defaultCountry="ua"
                   value={phone}
                   onChange={(phone) => setPhone(phone)}
-                  style={{ width: "403px" }}
+                  style={{ width: "428px" }}
                 />
               </Box>
             </Stack>
