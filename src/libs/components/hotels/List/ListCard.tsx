@@ -25,7 +25,7 @@ const ListCard = () => {
         <Image
           src={"/img/hotel.jpg"}
           alt="left-image"
-          width={238}
+          width={298}
           height={238}
           style={{ objectFit: "cover", borderRadius: 10 }}
         />
@@ -34,7 +34,7 @@ const ListCard = () => {
           height={40}
           position={"absolute"}
           top={10}
-          left={190}
+          left={245}
           textAlign={"center"}
           pt={1}
           bgcolor={"secondary.contrastText"}
