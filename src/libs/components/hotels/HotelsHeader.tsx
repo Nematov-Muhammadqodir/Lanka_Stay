@@ -4,7 +4,13 @@ import Switch from "@mui/material/Switch";
 
 const label = { inputProps: { "aria-label": "Switch demo" } };
 
-const HotelsHeader = () => {
+interface HotelsHeaderProps {
+  grid: boolean;
+  setGrid: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const HotelsHeader = ({ grid, setGrid }: HotelsHeaderProps) => {
+  const handleToggle = () => setGrid((prev) => !prev);
   return (
     <Stack
       width={"100%"}
@@ -14,7 +20,7 @@ const HotelsHeader = () => {
     >
       <Typography className="bold-text">Busan: 70 properies found</Typography>
       <Stack flexDirection={"row"} alignItems={"center"}>
-        <Switch {...label} />
+        <Switch {...label} checked={grid} onChange={handleToggle} />
         <Typography>Grid</Typography>
       </Stack>
     </Stack>
