@@ -43,7 +43,7 @@ const Filter = () => {
       </Stack>
       <Stack
         border={"1px solid"}
-        borderColor={"secondary.main"}
+        borderColor={"text.disabled"}
         borderRadius={2}
         alignItems={"center"}
         gap={1}
@@ -54,9 +54,9 @@ const Filter = () => {
           </Typography>
         </Box>
         <Box
-          border={"1px solid black"}
+          border={"1px solid"}
           width={"100%"}
-          borderColor={"secondary.main"}
+          borderColor={"text.disabled"}
         ></Box>
         <Stack gap={1}>
           <Typography className="small-bold-text">
@@ -452,12 +452,6 @@ const Filter = () => {
             />
           </FormGroup>
         </Stack>
-
-        <Box
-          border={"1px solid"}
-          width={"100%"}
-          borderColor={"secondary.main"}
-        ></Box>
       </Stack>
     </Stack>
   );

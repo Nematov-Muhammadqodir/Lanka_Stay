@@ -3,7 +3,7 @@ import React from "react";
 import GridCard from "./GridCard";
 
 const HotelsGrid = () => {
-  const data = [1, 2, 3, 4, 5];
+  const data = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5];
   return (
     <Stack
       flexDirection={"row"}

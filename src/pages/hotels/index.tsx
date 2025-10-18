@@ -1,12 +1,14 @@
 import Filter from "@/src/libs/components/hotels/Filter";
 import ListOfHotels from "@/src/libs/components/hotels/ListOfHotels";
+import RecentlyViewed from "@/src/libs/components/hotels/RecentlyViewed/RecentlyViewed";
 import withLayoutSecondary from "@/src/libs/components/layout/LayoutSecondary";
 import { Stack } from "@mui/material";
 import React from "react";
+import Divider from "@mui/material/Divider";
 
 const Hotels = () => {
   return (
-    <Stack overflow={"auto"} mt={"50px"}>
+    <Stack overflow={"auto"} mt={"50px"} mb={20}>
       <Stack className="container">
         <Stack
           flexDirection={"row"}
@@ -18,6 +20,9 @@ const Hotels = () => {
           </Stack>
           <Stack width={980}>
             <ListOfHotels />
+            <Stack className="recentlyViewedHotelsContainer" mt={12}>
+              <RecentlyViewed />
+            </Stack>
           </Stack>
         </Stack>
       </Stack>

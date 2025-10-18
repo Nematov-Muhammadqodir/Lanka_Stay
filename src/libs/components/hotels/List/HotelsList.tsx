@@ -1,14 +1,34 @@
-import { Stack } from "@mui/material";
-import React from "react";
+import { Stack, Pagination } from "@mui/material";
+import React, { useState } from "react";
 import ListCard from "./ListCard";
 
 const HotelsList = () => {
-  const data = [1, 2, 3, 4];
+  const data = Array.from({ length: 12 }, (_, i) => i + 1);
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 7;
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = data.slice(startIndex, endIndex);
+  const pageCount = Math.ceil(data.length / itemsPerPage);
+  const handleChange = (event: any, value: any) => {
+    setPage(value);
+    console.log("value", value);
+  };
   return (
-    <Stack gap={2}>
-      {data.map((item, i) => {
-        return <ListCard key={i} />;
-      })}
+    <Stack>
+      <Stack gap={2}>
+        {currentItems.map((item, i) => {
+          return <ListCard key={i} />;
+        })}
+      </Stack>
+      <Stack spacing={2} mt={3} alignItems="center">
+        <Pagination
+          count={pageCount}
+          page={page}
+          onChange={handleChange}
+          color="primary"
+        />
+      </Stack>
     </Stack>
   );
 };

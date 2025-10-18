@@ -14,7 +14,7 @@ const GridCard = () => {
       width={314}
       height={600}
       border={"1px solid"}
-      borderColor={"secondary.main"}
+      borderColor={"text.disabled"}
       borderRadius={3}
       position={"relative"}
     >
