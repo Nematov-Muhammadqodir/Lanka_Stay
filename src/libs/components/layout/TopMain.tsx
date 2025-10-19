@@ -22,10 +22,7 @@ import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import ArchiveIcon from "@mui/icons-material/Archive";
-import FileCopyIcon from "@mui/icons-material/FileCopy";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import EditIcon from "@mui/icons-material/Edit";
+
 import _Flag from "react-world-flags";
 
 const Flag = _Flag as unknown as React.FC<{
@@ -197,6 +194,9 @@ export default function TopMain() {
             </Link>
             <Link href="/hotels" className="links">
               Hotels
+            </Link>
+            <Link href="/attractions" className="links">
+              Attractions
             </Link>
             <Link href="#" className="links">
               About
