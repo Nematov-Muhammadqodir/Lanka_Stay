@@ -38,7 +38,7 @@ const AttractionTypes = () => {
   return (
     <Stack className="container" gap={1}>
       <Stack mt={20}>
-        <Typography className="xxlText">Busan attractions</Typography>
+        <Typography className="xxlText">Seoul attractions</Typography>
       </Stack>
       <Stack flexDirection={"row"} gap={5} justifyContent={"space-between"}>
         {attractions.map((item, index) => {
