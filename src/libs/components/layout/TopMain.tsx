@@ -1,7 +1,6 @@
 import {
   alpha,
   Avatar,
-  Box,
   Button,
   Divider,
   IconButton,

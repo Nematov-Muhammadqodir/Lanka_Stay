@@ -1,8 +1,7 @@
-import { Stack, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 import Head from "next/head";
 import React from "react";
 import TopMain from "../TopMain";
-import TopHome from "../TopHome";
 import Filtering from "../Filtering";
 import Footer from "../Footer";
 import AttractionsLayoutBanner from "../../attractions/AttractionsBanner";

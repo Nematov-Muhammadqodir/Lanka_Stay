@@ -4,7 +4,6 @@ import RecentlyViewed from "@/src/libs/components/hotels/RecentlyViewed/Recently
 import withLayoutSecondary from "@/src/libs/components/layout/LayoutSecondary";
 import { Stack } from "@mui/material";
 import React from "react";
-import Divider from "@mui/material/Divider";
 
 const Hotels = () => {
   return (

@@ -33,7 +33,6 @@ const AttractionsLayoutBanner = () => {
       >
         {images.map((src, index) => (
           <SwiperSlide key={index} style={{ position: "relative" }}>
-            {/* Background image */}
             <Image
               src={src}
               alt={`banner-image-${index}`}
@@ -46,7 +45,6 @@ const AttractionsLayoutBanner = () => {
               }}
             />
 
-            {/* Overlay */}
             <Box
               sx={{
                 position: "absolute",
@@ -59,7 +57,6 @@ const AttractionsLayoutBanner = () => {
               }}
             />
 
-            {/* Text */}
             <Typography
               position={"absolute"}
               top={"20%"}
