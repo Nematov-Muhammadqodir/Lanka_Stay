@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Drawer,
-  Menu,
-  MenuItem,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Drawer, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import HdrStrongIcon from "@mui/icons-material/HdrStrong";
 import ReviewBar from "./ReviewBar";

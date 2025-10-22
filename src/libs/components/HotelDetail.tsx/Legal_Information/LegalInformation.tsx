@@ -1,5 +1,4 @@
 import { Button, Menu, Stack, Typography } from "@mui/material";
-import WePriceMatchDialog from "../WePriceMatchDialog";
 import { useState } from "react";
 import BusinessDetailsMenu from "./BusinessDetails";
 
