@@ -10,6 +10,7 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import Image from "next/image";
 
 const Footer = () => {
+  //FOOTER
   return (
     <div className="footer-main-container">
       <Stack className="container">
