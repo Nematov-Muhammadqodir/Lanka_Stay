@@ -37,7 +37,7 @@ const AttractionTypes = () => {
   ];
   return (
     <Stack className="container" gap={1}>
-      <Stack mt={20}>
+      <Stack mt={5}>
         <Typography className="xxlText">Seoul attractions</Typography>
       </Stack>
       <Stack flexDirection={"row"} gap={5} justifyContent={"space-between"}>
