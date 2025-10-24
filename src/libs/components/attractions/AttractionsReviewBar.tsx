@@ -1,12 +1,12 @@
 import { Box, LinearProgress, Stack, Typography } from "@mui/material";
 import React from "react";
 
-interface BarProps {
+interface AttractionsReviewBarProps {
   label: any;
   value: any;
 }
 
-const ReviewBar = ({ label, value }: BarProps) => {
+const AttractionsReviewBar = ({ label, value }: AttractionsReviewBarProps) => {
   return (
     <Stack width={250}>
       <Stack flexDirection={"row"} justifyContent={"space-between"}>
@@ -19,7 +19,7 @@ const ReviewBar = ({ label, value }: BarProps) => {
       <Box sx={{ flexGrow: 1, mx: 2 }}>
         <LinearProgress
           variant="determinate"
-          value={(value / 10) * 100}
+          value={(value / 5) * 100}
           sx={{
             height: 10,
             borderRadius: 5,
@@ -35,4 +35,4 @@ const ReviewBar = ({ label, value }: BarProps) => {
   );
 };
 
-export default ReviewBar;
+export default AttractionsReviewBar;

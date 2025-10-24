@@ -6,6 +6,7 @@ import AttractionOverView from "@/src/libs/components/attractions/AttractionDeta
 import AttractionInfoSection from "@/src/libs/components/attractions/AttractionDetail/AttractionInfoSection";
 import TourHighlights from "@/src/libs/components/attractions/AttractionDetail/TourHighlights";
 import TicketInfo from "@/src/libs/components/attractions/AttractionDetail/TicketInfo";
+import UserRatings from "@/src/libs/components/attractions/AttractionDetail/UserRatings";
 
 const AttractionDetail = () => {
   return (
@@ -19,6 +20,7 @@ const AttractionDetail = () => {
       >
         <Stack className="left-side" width={"60%"}>
           <TourHighlights />
+          <UserRatings />
         </Stack>
         <Stack className="right-side" width={"38%"} border={"1px solid"}>
           <TicketInfo />
