@@ -1,0 +1,32 @@
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+
+export default function AttractionSorting() {
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        bgcolor: "background.paper",
+        border: "1px solid",
+        mt: 2,
+        borderRadius: 6,
+        borderColor: "text.disabled",
+      }}
+    >
+      <Tabs value={value} onChange={handleChange} centered>
+        <Tab label="Our top picks" />
+        <Tab label="Lowest price" />
+        <Tab label="Highest price" />
+        <Tab label="Newest listings" />
+      </Tabs>
+    </Box>
+  );
+}
