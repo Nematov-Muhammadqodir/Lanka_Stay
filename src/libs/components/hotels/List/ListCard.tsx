@@ -7,9 +7,14 @@ import RestaurantIcon from "@mui/icons-material/Restaurant";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useRouter } from "next/router";
 
 const ListCard = () => {
   const [value, setValue] = React.useState<number | null>(4);
+  const router = useRouter();
+  const handleClick = () => {
+    router.push("/hotels/hotelDetail/id?2"); // 🔹 replace "1" with dynamic id later
+  };
   return (
     <Stack
       p={1}
@@ -20,6 +25,16 @@ const ListCard = () => {
       borderColor={"text.disabled"}
       borderRadius={3}
       justifyContent={"center"}
+      onClick={handleClick}
+      sx={{
+        transition: "all 0.3s ease",
+        cursor: "pointer",
+        "&:hover": {
+          transform: "scale(1.02)",
+          boxShadow: "0 6px 18px rgba(0, 0, 0, 0.15)",
+          borderColor: "primary.main",
+        },
+      }}
     >
       <Stack flexDirection={"row"} gap={2} position={"relative"}>
         <Image
@@ -122,6 +137,7 @@ const ListCard = () => {
                   sx={{
                     mt: 2,
                   }}
+                  onClick={handleClick}
                 >
                   <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
                     <Typography

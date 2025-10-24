@@ -6,9 +6,14 @@ import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useRouter } from "next/router";
 
 const GridCard = () => {
   const [value, setValue] = React.useState<number | null>(4);
+  const router = useRouter();
+  const handleClick = () => {
+    router.push("/hotels/hotelDetail/id?2"); // 🔹 replace "1" with dynamic id later
+  };
   return (
     <Stack
       width={314}
@@ -17,6 +22,16 @@ const GridCard = () => {
       borderColor={"text.disabled"}
       borderRadius={3}
       position={"relative"}
+      onClick={handleClick}
+      sx={{
+        transition: "all 0.3s ease",
+        cursor: "pointer",
+        "&:hover": {
+          transform: "scale(1.02)",
+          boxShadow: "0 6px 18px rgba(0, 0, 0, 0.15)",
+          borderColor: "primary.main",
+        },
+      }}
     >
       <Image
         src={"/img/hotel.jpg"}
