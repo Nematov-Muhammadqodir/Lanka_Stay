@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 import React from "react";
 import Image from "next/image";
 import ReviewMapContainer from "./ReviewMapContainer";

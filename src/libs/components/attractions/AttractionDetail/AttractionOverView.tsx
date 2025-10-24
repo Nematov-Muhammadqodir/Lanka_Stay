@@ -1,11 +1,8 @@
 import { Button, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
-import FmdGoodIcon from "@mui/icons-material/FmdGood";
-import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
-import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
