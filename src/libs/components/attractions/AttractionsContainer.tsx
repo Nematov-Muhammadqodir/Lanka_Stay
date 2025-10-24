@@ -4,6 +4,7 @@ import AttractionsFilter from "./AttractionsFilter";
 import AttractionSorting from "./AttractionsSorting";
 import AttractionsList from "./AttractionsList";
 import ThemeParksList from "./ThemeParks-Resorts/ThemeParksList";
+import AttractionsReviewsList from "./AttractionDetail/AttractionsReviewsList";
 
 const AttractionsContainer = () => {
   return (

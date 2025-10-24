@@ -7,6 +7,7 @@ import AttractionInfoSection from "@/src/libs/components/attractions/AttractionD
 import TourHighlights from "@/src/libs/components/attractions/AttractionDetail/TourHighlights";
 import TicketInfo from "@/src/libs/components/attractions/AttractionDetail/TicketInfo";
 import UserRatings from "@/src/libs/components/attractions/AttractionDetail/UserRatings";
+import AttractionsReviewsList from "@/src/libs/components/attractions/AttractionDetail/AttractionsReviewsList";
 
 const AttractionDetail = () => {
   return (
@@ -21,6 +22,7 @@ const AttractionDetail = () => {
         <Stack className="left-side" width={"60%"}>
           <TourHighlights />
           <UserRatings />
+          <AttractionsReviewsList />
         </Stack>
         <Stack className="right-side" width={"38%"} border={"1px solid"}>
           <TicketInfo />
