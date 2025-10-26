@@ -12,9 +12,11 @@ import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 const TickerReserve = () => {
   const [phone, setPhone] = useState("");
+  const router = useRouter();
   return (
     <Stack
       className="container"
@@ -22,7 +24,7 @@ const TickerReserve = () => {
       gap={2}
       mb={"40px !important"}
     >
-      <Stack flexDirection={"row"}>
+      <Stack flexDirection={"row"} justifyContent={"space-between"}>
         <Stack width={"67%"} className="reserve-left">
           <Stack borderBottom={1} borderColor={"grey.300"} pb={5}>
             <Stack gap={1} mb={2}>
@@ -121,7 +123,13 @@ const TickerReserve = () => {
             </Typography>
           </Stack>
 
-          <Button variant="contained" sx={{ mt: 4 }}>
+          <Button
+            variant="contained"
+            sx={{ mt: 4 }}
+            onClick={() =>
+              router.push("/attractions/attractionDetail/id=2/pay")
+            }
+          >
             <Stack flexDirection={"row"}>
               <Typography
                 color={"secondary.contrastText"}
