@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Stack, Typography } from "@mui/material";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
+import TicketPurchase from "./Ticket/TicketPurchase";
 
 const TicketInfo = () => {
   const [selected, setSelected] = useState<Date | undefined>();
@@ -44,6 +45,9 @@ const TicketInfo = () => {
             </Button>
           ))}
         </Stack>
+      </Stack>
+      <Stack mt={2}>
+        <TicketPurchase />
       </Stack>
     </Stack>
   );
