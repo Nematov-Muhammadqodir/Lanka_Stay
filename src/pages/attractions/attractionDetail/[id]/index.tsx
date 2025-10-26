@@ -8,6 +8,7 @@ import TourHighlights from "@/src/libs/components/attractions/AttractionDetail/T
 import TicketInfo from "@/src/libs/components/attractions/AttractionDetail/TicketInfo";
 import UserRatings from "@/src/libs/components/attractions/AttractionDetail/UserRatings";
 import AttractionsReviewsList from "@/src/libs/components/attractions/AttractionDetail/AttractionsReviewsList";
+import AttractionsFAQ from "@/src/libs/components/attractions/AttractionDetail/FAQ/AttractionsFAQ";
 
 const AttractionDetail = () => {
   return (
@@ -28,7 +29,7 @@ const AttractionDetail = () => {
           <TicketInfo />
         </Stack>
       </Stack>
-      <FAQ />
+      <AttractionsFAQ />
     </Stack>
   );
 };
