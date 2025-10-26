@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import Image from "next/image";
 
 const TickerReserve = () => {
   const [phone, setPhone] = useState("");
@@ -133,8 +134,57 @@ const TickerReserve = () => {
             </Stack>
           </Button>
         </Stack>
-        <Stack width={"30%"} className="reserve-right">
-          right
+        <Stack width={"30%"} className="reserve-right" pt={8}>
+          <Stack
+            flexDirection={"row"}
+            gap={1}
+            borderBottom={"1px solid"}
+            pb={2}
+            borderColor={"text.disabled"}
+          >
+            <Image
+              src={"/img/hotel.jpg"}
+              alt="left-image"
+              width={100}
+              height={100}
+              style={{ objectFit: "cover", borderRadius: 10 }}
+            />
+            <Stack>
+              <Typography className="bold-text">Yacht Tour</Typography>
+              <Typography>Thu, 30 Oct 11:00</Typography>
+            </Stack>
+          </Stack>
+          <Stack
+            mt={2}
+            borderBottom={"1px solid"}
+            pb={2}
+            borderColor={"text.disabled"}
+          >
+            <Typography className="bold-text">
+              1 × Busan Yacht Experience (Yacht G)
+            </Typography>
+            <Stack
+              mt={2}
+              flexDirection={"row"}
+              justifyContent={"space-between"}
+            >
+              <Stack>
+                <Typography className="bold-text-medium">
+                  Total price
+                </Typography>
+                <Typography>Includes taxes and charges</Typography>
+              </Stack>
+              <Typography className="bold-text">KRW 29,811</Typography>
+            </Stack>
+          </Stack>
+          <Stack mt={2}>
+            <Typography className="bold-text-medium">
+              Cancellation policy
+            </Typography>
+            <Typography>
+              It's not possible to cancel or make changes after you book
+            </Typography>
+          </Stack>
         </Stack>
       </Stack>
     </Stack>
