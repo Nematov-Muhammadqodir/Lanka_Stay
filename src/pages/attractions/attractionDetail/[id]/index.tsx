@@ -20,12 +20,12 @@ const AttractionDetail = () => {
         className="attractions-main-container"
         justifyContent={"space-between"}
       >
-        <Stack className="left-side" width={"60%"}>
+        <Stack className="left-side" width={"75%"}>
           <TourHighlights />
           <UserRatings />
           <AttractionsReviewsList />
         </Stack>
-        <Stack className="right-side" width={"38%"} border={"1px solid"}>
+        <Stack className="right-side" width={"23%"} alignItems={"end"}>
           <TicketInfo />
         </Stack>
       </Stack>
