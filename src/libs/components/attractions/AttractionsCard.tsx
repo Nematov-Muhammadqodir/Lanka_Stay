@@ -16,7 +16,7 @@ const AttractionsListCard = () => {
   const [value, setValue] = React.useState<number | null>(4);
   const router = useRouter();
   const handleClick = () => {
-    router.push("/attractions/attractionDetail/id?2"); // 🔹 replace "1" with dynamic id later
+    router.push("/attractions/attractionDetail/id=2"); // 🔹 replace "1" with dynamic id later
   };
   return (
     <Stack

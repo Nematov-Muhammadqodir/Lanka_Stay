@@ -3,8 +3,10 @@ import { Button, Stack, Typography } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { useRouter } from "next/router";
 
 const TicketPurchase = () => {
+  const router = useRouter();
   return (
     <Stack
       sx={{
@@ -56,12 +58,17 @@ const TicketPurchase = () => {
           Includes taxes and charges
         </Typography>
       </Stack>
-      <Button variant="contained" sx={{ alignSelf: "flex-end", width: 90 }}>
+      <Button
+        variant="contained"
+        sx={{ alignSelf: "flex-end", width: 90 }}
+        onClick={() =>
+          router.push("/attractions/attractionDetail/id=2/reserve")
+        }
+      >
         <Typography
           color={"secondary.contrastText"}
           sx={{ textTransform: "capitalize" }}
         >
-          {" "}
           Next
         </Typography>
       </Button>
