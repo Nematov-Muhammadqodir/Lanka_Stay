@@ -5,6 +5,7 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Image from "next/image";
+import RoomReservationRight from "@/src/libs/components/HotelDetail.tsx/HotelRoom/RoomReservationRight";
 
 const RoomReservation = () => {
   const steps = ["Your selection", "Your details", "Finish booking"];
@@ -215,8 +216,8 @@ const RoomReservation = () => {
           </Stack>
         </Stack>
 
-        <Stack width={"67%"} border={"1px solid"}>
-          right
+        <Stack width={"67%"}>
+          <RoomReservationRight />
         </Stack>
       </Stack>
     </Stack>
