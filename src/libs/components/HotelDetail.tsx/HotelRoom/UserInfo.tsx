@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Box, Radio, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Radio,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
 import InfoIcon from "@mui/icons-material/Info";
 import { PhoneInput } from "react-international-phone";
@@ -10,11 +17,14 @@ import GroupIcon from "@mui/icons-material/Group";
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import SmokeFreeIcon from "@mui/icons-material/SmokeFree";
+import AssuredWorkloadIcon from "@mui/icons-material/AssuredWorkload";
+import SingleBedIcon from "@mui/icons-material/SingleBed";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const UserInfo = () => {
   const [phone, setPhone] = useState("");
   return (
-    <Stack gap={2}>
+    <Stack gap={2} mb={30}>
       <Stack
         flexDirection={"row"}
         alignItems={"center"}
@@ -205,6 +215,60 @@ const UserInfo = () => {
           <Typography className="small-text">No smoking</Typography>
         </Stack>
       </Stack>
+
+      <Stack
+        gap={1}
+        border={"1px solid"}
+        p={2}
+        borderColor={"text.disabled"}
+        borderRadius={3}
+      >
+        <Typography className="bold-text">Your arrival time</Typography>
+        <Stack flexDirection={"row"} gap={1}>
+          <CheckIcon sx={{ color: "#018233" }} />
+          <Typography>
+            Your room will be ready for check-in between 15:00 and 00:00
+          </Typography>
+        </Stack>
+
+        <Stack flexDirection={"row"} gap={1}>
+          <AssuredWorkloadIcon sx={{ color: "#018233" }} />
+          <Typography>
+            24-hour front desk – Help whenever you need it!
+          </Typography>
+        </Stack>
+      </Stack>
+
+      <Stack
+        gap={1}
+        border={"1px solid"}
+        p={2}
+        borderColor={"text.disabled"}
+        borderRadius={3}
+      >
+        <Typography className="bold-text">Cots and extra beds</Typography>
+        <Stack flexDirection={"row"} gap={1}>
+          <SingleBedIcon sx={{ color: "#018233" }} />
+          <Typography>Requests are subject to availability</Typography>
+        </Stack>
+        <Stack flexDirection={"row"} gap={1}>
+          <SingleBedIcon sx={{ color: "#018233" }} />
+          <Typography>Requests must be confirmed by the property</Typography>
+        </Stack>
+        <Stack flexDirection={"row"} gap={1}>
+          <SingleBedIcon sx={{ color: "#018233" }} />
+          <Typography>
+            Requests not labelled 'Free' may incur extra charges
+          </Typography>
+        </Stack>
+      </Stack>
+
+      <Button variant="contained" sx={{ width: 300, alignSelf: "end" }}>
+        <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
+          <Typography color={"white"}>Next: Final details</Typography>
+          <ArrowForwardIosIcon sx={{ color: "white" }} />
+        </Stack>
+      </Button>
     </Stack>
   );
 };
