@@ -2,10 +2,14 @@ import React from "react";
 import { Stack } from "@mui/material";
 import UserInfo from "./UserInfo";
 
-const RoomReservationRight = () => {
+export interface RoomReservationRight {
+  handlePaymentPage: () => void;
+}
+
+const RoomReservationRight = ({ handlePaymentPage }: RoomReservationRight) => {
   return (
     <Stack>
-      <UserInfo />
+      <UserInfo handlePaymentPage={handlePaymentPage} />
     </Stack>
   );
 };

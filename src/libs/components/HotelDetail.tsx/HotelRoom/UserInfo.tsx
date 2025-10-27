@@ -20,8 +20,9 @@ import SmokeFreeIcon from "@mui/icons-material/SmokeFree";
 import AssuredWorkloadIcon from "@mui/icons-material/AssuredWorkload";
 import SingleBedIcon from "@mui/icons-material/SingleBed";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { RoomReservationRight } from "./RoomReservationRight";
 
-const UserInfo = () => {
+const UserInfo = ({ handlePaymentPage }: RoomReservationRight) => {
   const [phone, setPhone] = useState("");
   return (
     <Stack gap={2} mb={30}>
@@ -263,7 +264,11 @@ const UserInfo = () => {
         </Stack>
       </Stack>
 
-      <Button variant="contained" sx={{ width: 300, alignSelf: "end" }}>
+      <Button
+        variant="contained"
+        sx={{ width: 300, alignSelf: "end" }}
+        onClick={handlePaymentPage}
+      >
         <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
           <Typography color={"white"}>Next: Final details</Typography>
           <ArrowForwardIosIcon sx={{ color: "white" }} />

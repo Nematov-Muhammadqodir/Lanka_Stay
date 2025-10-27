@@ -7,8 +7,10 @@ import HelpIcon from "@mui/icons-material/Help";
 import SelectRoomMenu from "./SelectRoomMenu";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import RoomFeatures from "./RoomFeatures";
+import { useRouter } from "next/router";
 
 const AllAvailableRoomsBody = () => {
+  const router = useRouter();
   return (
     <Stack
       className="available-rooms-body"
@@ -107,6 +109,7 @@ const AllAvailableRoomsBody = () => {
         <Button
           variant="contained"
           sx={{ width: "200px", color: "secondary.contrastText" }}
+          onClick={() => router.push("roomId/123")}
         >
           I'll reserve
         </Button>

@@ -1,14 +1,26 @@
 import withLayoutAttractionsReserve from "@/src/libs/components/layout/attractions/AttractionReserveLayout";
-import { Rating, Stack, Typography } from "@mui/material";
+import { Button, Rating, Stack, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Image from "next/image";
 import RoomReservationRight from "@/src/libs/components/HotelDetail.tsx/HotelRoom/RoomReservationRight";
+import { useState } from "react";
+import LockIcon from "@mui/icons-material/Lock";
+import RoomPaymentRIght from "@/src/libs/components/HotelDetail.tsx/HotelRoom/RoomPaymentRIght";
 
 const RoomReservation = () => {
   const steps = ["Your selection", "Your details", "Finish booking"];
+  const [pay, setPay] = useState("reserve");
+
+  const handlePaymentPage = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    setPay("pay");
+  };
   return (
     <Stack className="container" mt={"20px !important"}>
       <Box sx={{ width: "100%" }}>
@@ -216,9 +228,13 @@ const RoomReservation = () => {
           </Stack>
         </Stack>
 
-        <Stack width={"67%"}>
-          <RoomReservationRight />
-        </Stack>
+        {pay === "pay" ? (
+          <RoomPaymentRIght />
+        ) : (
+          <Stack width={"67%"}>
+            <RoomReservationRight handlePaymentPage={handlePaymentPage} />
+          </Stack>
+        )}
       </Stack>
     </Stack>
   );
