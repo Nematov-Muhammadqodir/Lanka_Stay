@@ -4,6 +4,8 @@ import Image from "next/image";
 import InfoIcon from "@mui/icons-material/Info";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
+import CheckIcon from "@mui/icons-material/Check";
+import TimerIcon from "@mui/icons-material/Timer";
 
 const UserInfo = () => {
   const [phone, setPhone] = useState("");
@@ -132,6 +134,31 @@ const UserInfo = () => {
               <Typography>No</Typography>
             </Stack>
           </Stack>
+        </Stack>
+      </Stack>
+
+      <Stack
+        gap={1}
+        border={"1px solid"}
+        p={2}
+        borderColor={"text.disabled"}
+        borderRadius={3}
+      >
+        <Typography className="bold-text">Good to know:</Typography>
+        <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
+          <CheckIcon sx={{ color: "#018233" }} />
+          <Typography>
+            Stay flexible: You can cancel for free before 5 December 2025, so
+            lock in this great price today.
+          </Typography>
+        </Stack>
+        <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
+          <TimerIcon sx={{ color: "#D40F1D" }} />
+          <Typography>
+            You're booking the last available Standard Double Room - 11th - 16th
+            Floor with Bath - Parking included we have at Hotel Gracery Seoul on
+            our site.
+          </Typography>
         </Stack>
       </Stack>
     </Stack>
