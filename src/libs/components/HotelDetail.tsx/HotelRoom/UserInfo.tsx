@@ -6,6 +6,10 @@ import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import CheckIcon from "@mui/icons-material/Check";
 import TimerIcon from "@mui/icons-material/Timer";
+import GroupIcon from "@mui/icons-material/Group";
+import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import SmokeFreeIcon from "@mui/icons-material/SmokeFree";
 
 const UserInfo = () => {
   const [phone, setPhone] = useState("");
@@ -159,6 +163,46 @@ const UserInfo = () => {
             Floor with Bath - Parking included we have at Hotel Gracery Seoul on
             our site.
           </Typography>
+        </Stack>
+      </Stack>
+
+      <Stack
+        gap={1}
+        border={"1px solid"}
+        p={2}
+        borderColor={"text.disabled"}
+        borderRadius={3}
+      >
+        <Typography className="bold-text">
+          Standard Double Room - 11th - 16th Floor with Bath - Parking included
+        </Typography>
+        <Stack flexDirection={"row"} gap={1}>
+          <CheckIcon sx={{ color: "#018233" }} />
+          <Typography color={"#018233"}>Includes parking</Typography>
+        </Stack>
+        <Stack flexDirection={"row"} gap={1}>
+          <CheckIcon sx={{ color: "#018233" }} />
+          <Typography color={"#018233"} className="small-bold-text">
+            Free cancellation before 5 December 2025
+          </Typography>
+        </Stack>
+        <Stack flexDirection={"row"} gap={1}>
+          <GroupIcon />
+          <Typography className="small-bold-text">Guests: ​2 adults</Typography>
+        </Stack>
+        <Stack flexDirection={"row"} gap={1}>
+          <EmojiPeopleIcon />
+          <Typography className="small-text">
+            Main guest: Nematov Mukhamadkodir
+          </Typography>
+        </Stack>
+        <Stack flexDirection={"row"} gap={1}>
+          <AutoAwesomeIcon />
+          <Typography className="small-text">Spotless rooms - 9.2</Typography>
+        </Stack>
+        <Stack flexDirection={"row"} gap={1}>
+          <SmokeFreeIcon />
+          <Typography className="small-text">No smoking</Typography>
         </Stack>
       </Stack>
     </Stack>
