@@ -6,7 +6,7 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Image from "next/image";
 
-const index = () => {
+const RoomReservation = () => {
   const steps = ["Your selection", "Your details", "Finish booking"];
   return (
     <Stack className="container" mt={"20px !important"}>
@@ -73,6 +73,7 @@ const index = () => {
               </Stack>
             </Stack>
           </Stack>
+
           <Stack
             width={"100%"}
             height={"auto"}
@@ -124,6 +125,94 @@ const index = () => {
               </Typography>
             </Stack>
           </Stack>
+
+          <Stack
+            width={"100%"}
+            height={"auto"}
+            border={"1px solid"}
+            borderRadius={3}
+            borderColor={"text.disabled"}
+            p={2}
+          >
+            <Typography className="bold-text-medium">
+              Your price summary
+            </Typography>
+            <Stack
+              flexDirection={"row"}
+              alignItems={"center"}
+              justifyContent={"space-between"}
+            >
+              <Typography>Original price</Typography>
+              <Typography className="bold-text-medium">KRW 838,200</Typography>
+            </Stack>
+            <Stack
+              flexDirection={"row"}
+              alignItems={"center"}
+              justifyContent={"space-between"}
+            >
+              <Typography>Late Escape Deal</Typography>
+              <Typography
+                className="bold-text-medium"
+                color={"red"}
+                sx={{ textDecoration: "line-through" }}
+              >
+                - KRW 251,460
+              </Typography>
+            </Stack>
+
+            <Stack
+              flexDirection={"row"}
+              alignItems={"center"}
+              justifyContent={"space-between"}
+              mt={2}
+              sx={{ backgroundColor: "secondary.main" }}
+              padding={2}
+              borderRadius={3}
+            >
+              <Typography className="bold-text">Total</Typography>
+              <Stack>
+                <Typography
+                  className="bold-text-medium"
+                  color={"red"}
+                  sx={{ textDecoration: "line-through" }}
+                >
+                  KRW 838,200
+                </Typography>
+                <Typography className="bold-text" color={"primary.main"}>
+                  KRW 838,200
+                </Typography>
+                <Typography className="small-text">
+                  Includes taxes and charges
+                </Typography>
+              </Stack>
+            </Stack>
+          </Stack>
+
+          <Stack
+            width={"100%"}
+            height={"auto"}
+            border={"1px solid"}
+            borderRadius={3}
+            borderColor={"text.disabled"}
+            p={2}
+          >
+            <Typography className="bold-text-medium">
+              How much will it cost to cancel?
+            </Typography>
+            <Typography className="small-text" color={"#018233"}>
+              Free cancellation before 5 Dec
+            </Typography>
+
+            <Stack
+              flexDirection={"row"}
+              alignItems={"center"}
+              mt={2}
+              justifyContent={"space-between"}
+            >
+              <Typography>From 00:00 on 5 Dec</Typography>
+              <Typography>KRW 586,740</Typography>
+            </Stack>
+          </Stack>
         </Stack>
 
         <Stack width={"67%"} border={"1px solid"}>
@@ -134,4 +223,4 @@ const index = () => {
   );
 };
 
-export default withLayoutAttractionsReserve(index);
+export default withLayoutAttractionsReserve(RoomReservation);
