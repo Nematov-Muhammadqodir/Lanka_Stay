@@ -16,6 +16,11 @@ import ImageUploaderMenu from "@/src/libs/components/myAccount/ImageUploaderMenu
 
 const MyAccount = () => {
   const [editName, setEditName] = useState(true);
+  const [editEmail, setEditEmail] = useState(false);
+  const [editPhoneNumber, setEditPhoneNumber] = useState(true);
+  const [editBirthDate, setEditBirthDate] = useState(true);
+  const [editNationality, setEditNationality] = useState(true);
+  const [editGender, setEditGender] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -25,8 +30,22 @@ const MyAccount = () => {
     setAnchorEl(null);
   };
 
-  const handleToggleEditName = () => {
-    setEditName(!editName);
+  const handleToggleEdit = (value: string) => {
+    if (value === "name") {
+      setEditName(!editName);
+    } else if (value === "email") {
+      setEditEmail(!editEmail);
+    } else if (value === "phoneNumber") {
+      setEditPhoneNumber(!editPhoneNumber);
+    } else if (value === "birthDate") {
+      setEditBirthDate(!editBirthDate);
+    } else if (value === "nationality") {
+      setEditNationality(!editNationality);
+    } else if (value === "gender") {
+      setEditGender(!editGender);
+    } else {
+      return null;
+    }
   };
   return (
     <Stack className="container" alignItems={"center"}>
@@ -100,7 +119,6 @@ const MyAccount = () => {
             pb={2}
             borderColor={"text.disabled"}
             mt={1}
-            alignItems={"center"}
           >
             <Grid item xs={4}>
               <Typography className="bold-text-medium">Name</Typography>
@@ -139,7 +157,7 @@ const MyAccount = () => {
             <Grid item xs={2} textAlign="right">
               {editName ? (
                 <Stack justifyContent={"space-between"} gap={4}>
-                  <Button onClick={handleToggleEditName}>
+                  <Button onClick={() => handleToggleEdit("name")}>
                     <Typography
                       className="bold-text-medium"
                       sx={{
@@ -163,7 +181,7 @@ const MyAccount = () => {
                   </Button>
                 </Stack>
               ) : (
-                <Button onClick={handleToggleEditName}>
+                <Button onClick={() => handleToggleEdit("name")}>
                   <Typography
                     className="bold-text-medium"
                     sx={{ color: "primary.main", textTransform: "capitalize" }}
@@ -188,18 +206,60 @@ const MyAccount = () => {
                 Email address
               </Typography>
             </Grid>
-            <Grid item xs={6}>
-              <Typography>nematovmuhammadqodir68@gmail.com</Typography>
-            </Grid>
+
+            {editEmail ? (
+              <Grid item xs={6}>
+                <Stack>
+                  <TextField
+                    label="Email address"
+                    id="outlined-size-small"
+                    defaultValue="Email address"
+                    size="small"
+                  />
+                </Stack>
+              </Grid>
+            ) : (
+              <Grid item xs={6}>
+                <Typography>nematovmuhammadqodir68@gmail.com</Typography>
+              </Grid>
+            )}
+
             <Grid item xs={2} textAlign="right">
-              <Button>
-                <Typography
-                  className="bold-text-medium"
-                  sx={{ color: "primary.main", textTransform: "capitalize" }}
-                >
-                  Edit
-                </Typography>
-              </Button>
+              {editEmail ? (
+                <Stack justifyContent={"space-between"} gap={4}>
+                  <Button onClick={() => handleToggleEdit("email")}>
+                    <Typography
+                      className="bold-text-medium"
+                      sx={{
+                        color: "primary.main",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      Cancel
+                    </Typography>
+                  </Button>
+                  <Button variant="outlined">
+                    <Typography
+                      className="bold-text-medium"
+                      sx={{
+                        color: "primary.main",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      Save
+                    </Typography>
+                  </Button>
+                </Stack>
+              ) : (
+                <Button onClick={() => handleToggleEdit("email")}>
+                  <Typography
+                    className="bold-text-medium"
+                    sx={{ color: "primary.main", textTransform: "capitalize" }}
+                  >
+                    Edit
+                  </Typography>
+                </Button>
+              )}
             </Grid>
           </Grid>
 
@@ -214,22 +274,61 @@ const MyAccount = () => {
             <Grid item xs={4}>
               <Typography className="bold-text-medium">Phone number</Typography>
             </Grid>
-            <Grid item xs={6}>
-              <Typography>Add your phone number</Typography>
-              <Typography className="small-text" color={"primary.main"}>
-                Properties or attractions you book will use this number if they
-                need to contact you.
-              </Typography>
-            </Grid>
-            <Grid item xs={2} textAlign="right">
-              <Button>
-                <Typography
-                  className="bold-text-medium"
-                  sx={{ color: "primary.main", textTransform: "capitalize" }}
-                >
-                  Edit
+
+            {editPhoneNumber ? (
+              <Grid item xs={6}>
+                <TextField
+                  label="Phone number"
+                  id="outlined-size-small"
+                  defaultValue="Phone number"
+                  size="small"
+                />
+              </Grid>
+            ) : (
+              <Grid item xs={6}>
+                <Typography>Add your phone number</Typography>
+                <Typography className="small-text" color={"primary.main"}>
+                  Properties or attractions you book will use this number if
+                  they need to contact you.
                 </Typography>
-              </Button>
+              </Grid>
+            )}
+            <Grid item xs={2} textAlign="right">
+              {editPhoneNumber ? (
+                <Stack justifyContent={"space-between"} gap={4}>
+                  <Button onClick={() => handleToggleEdit("phoneNumber")}>
+                    <Typography
+                      className="bold-text-medium"
+                      sx={{
+                        color: "primary.main",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      Cancel
+                    </Typography>
+                  </Button>
+                  <Button variant="outlined">
+                    <Typography
+                      className="bold-text-medium"
+                      sx={{
+                        color: "primary.main",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      Save
+                    </Typography>
+                  </Button>
+                </Stack>
+              ) : (
+                <Button onClick={() => handleToggleEdit("phoneNumber")}>
+                  <Typography
+                    className="bold-text-medium"
+                    sx={{ color: "primary.main", textTransform: "capitalize" }}
+                  >
+                    Edit
+                  </Typography>
+                </Button>
+              )}
             </Grid>
           </Grid>
 
@@ -246,9 +345,20 @@ const MyAccount = () => {
                 Date of birth
               </Typography>
             </Grid>
-            <Grid item xs={6}>
-              <Typography>Enter your date of birth</Typography>
-            </Grid>
+            {editBirthDate ? (
+              <Grid item xs={6}>
+                <TextField
+                  label="Birth date"
+                  id="outlined-size-small"
+                  defaultValue="Birth date"
+                  size="small"
+                />
+              </Grid>
+            ) : (
+              <Grid item xs={6}>
+                <Typography>Enter your date of birth</Typography>
+              </Grid>
+            )}
             <Grid item xs={2} textAlign="right">
               <Button>
                 <Typography
