@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 import withLayoutAttractionsReserve from "@/src/libs/components/layout/attractions/AttractionReserveLayout";
-import { Box, Button, Grid, Menu, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  Input,
+  Menu,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
 import WePriceMatchDialog from "@/src/libs/components/HotelDetail.tsx/WePriceMatchDialog";
 import ImageUploaderMenu from "@/src/libs/components/myAccount/ImageUploaderMenu";
 
 const MyAccount = () => {
+  const [editName, setEditName] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -13,6 +23,10 @@ const MyAccount = () => {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleToggleEditName = () => {
+    setEditName(!editName);
   };
   return (
     <Stack className="container" alignItems={"center"}>
@@ -86,22 +100,78 @@ const MyAccount = () => {
             pb={2}
             borderColor={"text.disabled"}
             mt={1}
+            alignItems={"center"}
           >
             <Grid item xs={4}>
               <Typography className="bold-text-medium">Name</Typography>
             </Grid>
-            <Grid item xs={6}>
-              <Typography>Muhammadqodir Nematov</Typography>
-            </Grid>
-            <Grid item xs={2} textAlign="right">
-              <Button>
-                <Typography
-                  className="bold-text-medium"
-                  sx={{ color: "primary.main", textTransform: "capitalize" }}
+            {editName ? (
+              <Grid item xs={6}>
+                <Stack
+                  flexDirection={"row"}
+                  justifyContent={"space-between"}
+                  gap={2}
                 >
-                  Edit
-                </Typography>
-              </Button>
+                  <Stack>
+                    <TextField
+                      label="Last name"
+                      id="outlined-size-small"
+                      defaultValue="Last name"
+                      size="small"
+                    />
+                  </Stack>
+                  <Stack>
+                    <TextField
+                      label="First name"
+                      id="outlined-size-small"
+                      defaultValue="First name"
+                      size="small"
+                    />
+                  </Stack>
+                </Stack>
+              </Grid>
+            ) : (
+              <Grid item xs={6}>
+                <Typography>Muhammadqodir Nematov</Typography>
+              </Grid>
+            )}
+
+            <Grid item xs={2} textAlign="right">
+              {editName ? (
+                <Stack justifyContent={"space-between"} gap={4}>
+                  <Button onClick={handleToggleEditName}>
+                    <Typography
+                      className="bold-text-medium"
+                      sx={{
+                        color: "primary.main",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      Cancel
+                    </Typography>
+                  </Button>
+                  <Button variant="outlined">
+                    <Typography
+                      className="bold-text-medium"
+                      sx={{
+                        color: "primary.main",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      Save
+                    </Typography>
+                  </Button>
+                </Stack>
+              ) : (
+                <Button onClick={handleToggleEditName}>
+                  <Typography
+                    className="bold-text-medium"
+                    sx={{ color: "primary.main", textTransform: "capitalize" }}
+                  >
+                    Edit
+                  </Typography>
+                </Button>
+              )}
             </Grid>
           </Grid>
 
