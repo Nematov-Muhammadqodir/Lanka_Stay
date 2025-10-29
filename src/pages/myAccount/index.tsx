@@ -11,16 +11,17 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import WePriceMatchDialog from "@/src/libs/components/HotelDetail.tsx/WePriceMatchDialog";
 import ImageUploaderMenu from "@/src/libs/components/myAccount/ImageUploaderMenu";
+import { CountryDropdown } from "react-country-region-selector";
 
 const MyAccount = () => {
-  const [editName, setEditName] = useState(true);
+  const [country, setCountry] = useState("");
+  const [region, setRegion] = useState("");
+  const [editName, setEditName] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
-  const [editPhoneNumber, setEditPhoneNumber] = useState(true);
-  const [editBirthDate, setEditBirthDate] = useState(true);
-  const [editNationality, setEditNationality] = useState(true);
-  const [editGender, setEditGender] = useState(true);
+  const [editPhoneNumber, setEditPhoneNumber] = useState(false);
+  const [editNationality, setEditNationality] = useState(false);
+  const [editGender, setEditGender] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -37,8 +38,6 @@ const MyAccount = () => {
       setEditEmail(!editEmail);
     } else if (value === "phoneNumber") {
       setEditPhoneNumber(!editPhoneNumber);
-    } else if (value === "birthDate") {
-      setEditBirthDate(!editBirthDate);
     } else if (value === "nationality") {
       setEditNationality(!editNationality);
     } else if (value === "gender") {
@@ -46,6 +45,11 @@ const MyAccount = () => {
     } else {
       return null;
     }
+  };
+
+  const onChangeCountry = (val: any) => {
+    console.log("val", val);
+    setCountry(val);
   };
   return (
     <Stack className="container" alignItems={"center"}>
@@ -341,59 +345,65 @@ const MyAccount = () => {
             mt={1}
           >
             <Grid item xs={4}>
-              <Typography className="bold-text-medium">
-                Date of birth
-              </Typography>
+              <Typography className="bold-text-medium">Nationality</Typography>
             </Grid>
-            {editBirthDate ? (
+
+            {editNationality ? (
               <Grid item xs={6}>
-                <TextField
-                  label="Birth date"
-                  id="outlined-size-small"
-                  defaultValue="Birth date"
-                  size="small"
+                <CountryDropdown
+                  value={country}
+                  onChange={onChangeCountry}
+                  style={{
+                    padding: 10,
+                    fontSize: 20,
+                    borderRadius: 10,
+                    borderColor: "#D2D2D2",
+                    width: 300,
+                  }}
                 />
               </Grid>
             ) : (
               <Grid item xs={6}>
-                <Typography>Enter your date of birth</Typography>
+                <Typography>Select the country/region you're from</Typography>
               </Grid>
             )}
-            <Grid item xs={2} textAlign="right">
-              <Button>
-                <Typography
-                  className="bold-text-medium"
-                  sx={{ color: "primary.main", textTransform: "capitalize" }}
-                >
-                  Edit
-                </Typography>
-              </Button>
-            </Grid>
-          </Grid>
 
-          <Grid
-            container
-            spacing={2}
-            borderBottom={"1px solid"}
-            pb={2}
-            borderColor={"text.disabled"}
-            mt={1}
-          >
-            <Grid item xs={4}>
-              <Typography className="bold-text-medium">Nationality</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography>Select the country/region you're from</Typography>
-            </Grid>
             <Grid item xs={2} textAlign="right">
-              <Button>
-                <Typography
-                  className="bold-text-medium"
-                  sx={{ color: "primary.main", textTransform: "capitalize" }}
-                >
-                  Edit
-                </Typography>
-              </Button>
+              {editName ? (
+                <Stack justifyContent={"space-between"} gap={4}>
+                  <Button onClick={() => handleToggleEdit("nationality")}>
+                    <Typography
+                      className="bold-text-medium"
+                      sx={{
+                        color: "primary.main",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      Cancel
+                    </Typography>
+                  </Button>
+                  <Button variant="outlined">
+                    <Typography
+                      className="bold-text-medium"
+                      sx={{
+                        color: "primary.main",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      Save
+                    </Typography>
+                  </Button>
+                </Stack>
+              ) : (
+                <Button onClick={() => handleToggleEdit("nationality")}>
+                  <Typography
+                    className="bold-text-medium"
+                    sx={{ color: "primary.main", textTransform: "capitalize" }}
+                  >
+                    Edit
+                  </Typography>
+                </Button>
+              )}
             </Grid>
           </Grid>
 
