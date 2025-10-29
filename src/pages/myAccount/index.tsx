@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import withLayoutAttractionsReserve from "@/src/libs/components/layout/attractions/AttractionReserveLayout";
-import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { Box, Button, Grid, Menu, Stack, Typography } from "@mui/material";
 import Image from "next/image";
+import WePriceMatchDialog from "@/src/libs/components/HotelDetail.tsx/WePriceMatchDialog";
+import ImageUploaderMenu from "@/src/libs/components/myAccount/ImageUploaderMenu";
 
 const MyAccount = () => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <Stack className="container" alignItems={"center"}>
       <Stack px={10} py={5} width={900} mb={10}>
@@ -23,17 +33,50 @@ const MyAccount = () => {
               Update your information and find out how it's used.
             </Typography>
           </Stack>
-          <Image
-            src="/img/logo/uniface.jpg"
-            alt="user-image"
-            width={70}
-            height={70}
-            style={{
-              borderRadius: "50%",
-              border: "2px solid",
-              borderColor: "#FFB700",
+          <Button
+            aria-controls={open ? "demo-positioned-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleClick}
+          >
+            <Image
+              src="/img/logo/uniface.jpg"
+              alt="user-image"
+              width={70}
+              height={70}
+              style={{
+                borderRadius: "50%",
+                border: "2px solid",
+                borderColor: "#FFB700",
+              }}
+            />
+          </Button>
+          <Menu
+            anchorReference="none"
+            id="demo-positioned-menu"
+            aria-labelledby="demo-positioned-button"
+            open={open}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left",
             }}
-          />
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+            sx={{
+              width: 800,
+              height: 720,
+              justifySelf: "center",
+              alignSelf: "center",
+              borderRadius: 4,
+            }}
+          >
+            <Stack>
+              <ImageUploaderMenu open={open} handleClose={handleClose} />
+            </Stack>
+          </Menu>
         </Stack>
         <Stack mt={1} px={2}>
           <Grid
