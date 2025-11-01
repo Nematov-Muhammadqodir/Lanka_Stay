@@ -1,7 +1,5 @@
 import React from "react";
-import { Button, Stack, Typography } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
-import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import { Stack, Typography } from "@mui/material";
 import RegisterForFreeCard from "./RegisterForFreeCard";
 
 const RegisterBottomMain = () => {
@@ -16,13 +14,18 @@ const RegisterBottomMain = () => {
         className="register-bottom-main"
       >
         <Stack gap={3} className="register-bottom-main-left">
-          <Typography sx={{ fontWeight: 700, color: "white" }} variant="h2">
-            List your <br />
-            <Typography color={"#0095FF"} sx={{ fontWeight: 700 }} variant="h2">
+          <Stack>
+            <Typography sx={{ fontWeight: 700, color: "white" }} variant="h2">
+              List your <br />
+            </Typography>
+            <Typography sx={{ fontWeight: 700, color: "#0095FF" }} variant="h2">
               property on <br />
             </Typography>
-            LankaStay.com
-          </Typography>
+            <Typography sx={{ fontWeight: 700, color: "white" }} variant="h2">
+              LankaStay.com
+            </Typography>
+          </Stack>
+
           <Typography
             variant="h5"
             sx={{ color: "white", fontWeight: 500, letterSpacing: 1 }}

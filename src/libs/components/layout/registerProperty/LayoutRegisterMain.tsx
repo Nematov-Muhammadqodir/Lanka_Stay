@@ -1,11 +1,10 @@
 import { Stack } from "@mui/material";
 import Head from "next/head";
 import React from "react";
-import TopMain from "../TopMain";
-import TopHome from "../TopHome";
 import Footer from "../Footer";
 import RegisterTopMain from "./RegisterTopMain";
 import RegisterBottomMain from "./RegisterBottomMain";
+import RegisterPropertyFooter from "./RegosterPropertyFooter";
 
 const withLayoutRegisterMain = (Component: any) => {
   return (props: any) => {
@@ -26,7 +25,7 @@ const withLayoutRegisterMain = (Component: any) => {
           </Stack>
 
           <Stack>
-            <Footer />
+            <RegisterPropertyFooter />
           </Stack>
         </Stack>
       </>
