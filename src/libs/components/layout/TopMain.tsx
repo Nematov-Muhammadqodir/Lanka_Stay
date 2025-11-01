@@ -12,6 +12,7 @@ import {
   Stack,
   styled,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -180,7 +181,7 @@ export default function TopMain() {
         <Stack
           direction="row"
           justifyContent={"space-around"}
-          sx={{ width: 600 }}
+          sx={{ width: 800 }}
         >
           <Stack
             className="menu-container"
@@ -202,6 +203,11 @@ export default function TopMain() {
             </Link>
             <Link href="#" className="links">
               Contacts
+            </Link>
+            <Link href="/register-property" className="links">
+              <Typography sx={{ fontWeight: 700 }}>
+                List your property
+              </Typography>
             </Link>
             <Link
               href="#"
