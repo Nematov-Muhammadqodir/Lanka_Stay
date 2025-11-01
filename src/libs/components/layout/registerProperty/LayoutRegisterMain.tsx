@@ -24,7 +24,7 @@ const withLayoutRegisterMain = (Component: any) => {
             <Component {...props} />
           </Stack>
 
-          <Stack>
+          <Stack sx={{ backgroundColor: "#053A95" }}>
             <RegisterPropertyFooter />
           </Stack>
         </Stack>
