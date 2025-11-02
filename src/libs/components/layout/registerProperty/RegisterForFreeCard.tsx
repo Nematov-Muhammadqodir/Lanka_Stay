@@ -2,8 +2,10 @@ import React from "react";
 import { Button, Stack, Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import { useRouter } from "next/router";
 
 const RegisterForFreeCard = () => {
+  const router = useRouter();
   return (
     <Stack
       className="register-bottom-main-right"
@@ -46,6 +48,7 @@ const RegisterForFreeCard = () => {
           py: 1.5,
           mt: 2,
         }}
+        onClick={() => router.push("/register-property/create-account")}
       >
         <Stack flexDirection={"row"} gap={1}>
           <Typography sx={{ fontWeight: 700 }}>Get started now</Typography>
