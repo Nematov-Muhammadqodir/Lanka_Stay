@@ -22,6 +22,7 @@ import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import AddHomeWorkIcon from "@mui/icons-material/AddHomeWork";
 
 import _Flag from "react-world-flags";
 
@@ -106,7 +107,7 @@ export default function CreateAccountTop() {
     setAnchorLangEl(null);
   };
   const router = useRouter();
-  const authenticated = false;
+  const authenticated = true;
   return (
     <Stack
       className="container"
@@ -148,6 +149,82 @@ export default function CreateAccountTop() {
                 <Flag code="UZB" />
               )}
             </Button>
+
+            {authenticated && (
+              <Stack flexDirection={"row"} alignItems={"center"}>
+                <Typography className="bold-text" sx={{ color: "white" }}>
+                  Ritz Carlton
+                </Typography>
+                <Tooltip title="Account settings">
+                  <IconButton
+                    onClick={handleClick}
+                    size="small"
+                    sx={{ ml: 2 }}
+                    aria-controls={open ? "account-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                  >
+                    <Image
+                      src="/img/logo/uniface.jpg"
+                      alt="user-image"
+                      width={50}
+                      height={50}
+                      style={{ borderRadius: "50%" }}
+                    />
+                  </IconButton>
+                </Tooltip>
+              </Stack>
+            )}
+            <Menu
+              anchorEl={anchorEl}
+              id="account-menu"
+              open={open}
+              onClose={handleClose}
+              onClick={handleClose}
+              slotProps={{
+                paper: {
+                  elevation: 0,
+                  sx: {
+                    overflow: "visible",
+                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                    mt: 1.5,
+                    "& .MuiAvatar-root": {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    "&::before": {
+                      content: '""',
+                      display: "block",
+                      position: "absolute",
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: "background.paper",
+                      transform: "translateY(-50%) rotate(45deg)",
+                      zIndex: 0,
+                    },
+                  },
+                },
+              }}
+              transformOrigin={{ horizontal: "right", vertical: "top" }}
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            >
+              <MenuItem onClick={handleClose}>
+                <ListItemIcon>
+                  <AddHomeWorkIcon fontSize="small" />
+                </ListItemIcon>
+                Add new property
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                <ListItemIcon>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                Sign out
+              </MenuItem>
+            </Menu>
             <StyledMenu
               id="demo-customized-menu"
               slotProps={{}}
