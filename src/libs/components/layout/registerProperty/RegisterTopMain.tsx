@@ -203,7 +203,7 @@ export default function RegisterTopMain() {
                 borderColor: "white",
                 py: 1,
               }}
-              onClick={() => router.push("/signup")}
+              onClick={() => router.push("/register-property/create-account")}
             >
               Sign in
             </Button>
