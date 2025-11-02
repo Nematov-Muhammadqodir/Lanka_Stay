@@ -122,7 +122,9 @@ export default function RegisterTopMain() {
         sx={{ widows: "100%" }}
       >
         <Stack className="logo-container" flexDirection={"row"} sx={{ gap: 2 }}>
-          <Image src="/file.svg" alt="Logo" width={150} height={30} />
+          <Link href="/">
+            <Image src="/file.svg" alt="Logo" width={150} height={30} />
+          </Link>
         </Stack>
 
         <Stack direction="row" justifyContent={"flex-end"} sx={{ width: 800 }}>
