@@ -4,8 +4,10 @@ import { Button, Stack, TextField, Typography } from "@mui/material";
 import Image from "next/image";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import countries from "world-countries";
+import { useRouter } from "next/router";
 
 const DefineAddress = () => {
+  const router = useRouter();
   const [country, setCountry] = useState("");
   const [region, setRegion] = useState("");
 
@@ -94,6 +96,11 @@ const DefineAddress = () => {
           <Button
             variant="contained"
             sx={{ height: 40, color: "white", fontWeight: "bold" }}
+            onClick={() =>
+              router.push(
+                "/register-property/add-new-property/hotelNameAndRating"
+              )
+            }
           >
             Continue
           </Button>
