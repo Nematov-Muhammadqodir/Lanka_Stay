@@ -159,6 +159,9 @@ const PropertyCategoryList = () => {
               fontSize: 20,
               color: "white",
             }}
+            onClick={() =>
+              router.push("/register-property/add-new-property/address")
+            }
           >
             Continue
           </Button>

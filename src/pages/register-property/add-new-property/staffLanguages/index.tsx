@@ -64,9 +64,7 @@ const DefineHotelStaffLanguages = () => {
                 width: "30%",
               }}
               onClick={() =>
-                router.push(
-                  "/register-property/add-new-property/hotelNameAndRating"
-                )
+                router.push("/register-property/add-new-property/hotelServices")
               }
             >
               <KeyboardArrowLeftIcon />
@@ -80,7 +78,7 @@ const DefineHotelStaffLanguages = () => {
                 width: "68%",
               }}
               onClick={() =>
-                router.push("/register-property/add-new-property/hotelServices")
+                router.push("/register-property/add-new-property/houseRules")
               }
             >
               Continue
