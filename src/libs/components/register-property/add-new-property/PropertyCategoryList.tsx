@@ -102,11 +102,12 @@ const PropertyCategoryList = () => {
             justifyContent: "center",
           }}
         >
-          {propertyCategories.map((propertyCategory) => {
+          {propertyCategories.map((propertyCategory, index) => {
             return (
               <Button
                 sx={{ textTransform: "capitalize" }}
                 onClick={() => setCategory(propertyCategory.type)}
+                key={index}
               >
                 <Stack
                   sx={{
