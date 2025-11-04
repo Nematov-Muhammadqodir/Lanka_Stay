@@ -187,7 +187,9 @@ const DefineHouseRules = () => {
                 width: "68%",
               }}
               onClick={() =>
-                router.push("/register-property/add-new-property/hotelServices")
+                router.push(
+                  "/register-property/add-new-property/property-details-complete"
+                )
               }
             >
               Continue
