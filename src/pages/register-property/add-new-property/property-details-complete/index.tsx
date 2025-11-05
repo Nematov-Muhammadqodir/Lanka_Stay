@@ -70,7 +70,7 @@ const PropertyDetailsComplete = () => {
               }}
               onClick={() =>
                 router.push(
-                  "/register-property/add-new-property/add-property-rooms"
+                  "/register-property/add-new-property/add-property-rooms/room-details"
                 )
               }
             >
