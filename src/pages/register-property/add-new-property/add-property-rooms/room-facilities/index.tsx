@@ -1,21 +1,13 @@
 import React, { useState } from "react";
 import withLayoutCreateAccountMain from "@/src/libs/components/layout/registerProperty/create-account/CreateAccountMainLayout";
 import { Button, Checkbox, FormGroup, Stack, Typography } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
-import { SelectChangeEvent } from "@mui/material/Select";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import { useRouter } from "next/router";
 
 const RoomFacilities = () => {
-  const [isSmokingAllowed, setIsSmokingAllowed] = useState<boolean>(true);
   const router = useRouter();
 
-  const handleIsSmokingAllowedChange = (event: SelectChangeEvent) => {
-    setIsSmokingAllowed(event.target.value === "true");
-  };
   return (
     <Stack sx={{ backgroundColor: "#FAF8FA", height: "auto", pb: 20 }}>
       <Stack className="container">

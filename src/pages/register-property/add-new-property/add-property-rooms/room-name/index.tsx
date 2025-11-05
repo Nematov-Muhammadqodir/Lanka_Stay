@@ -1,40 +1,23 @@
 import React, { useState } from "react";
 import withLayoutCreateAccountMain from "@/src/libs/components/layout/registerProperty/create-account/CreateAccountMainLayout";
-import {
-  Button,
-  IconButton,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import RemoveIcon from "@mui/icons-material/Remove";
-import AddIcon from "@mui/icons-material/Add";
-import SingleBedIcon from "@mui/icons-material/SingleBed";
-import KingBedIcon from "@mui/icons-material/KingBed";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import { useRouter } from "next/router";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 
-const RoomDetails = () => {
+const RoomName = () => {
   const router = useRouter();
   const [bedType, setBedType] = React.useState("");
-  const [value, setValue] = useState(1);
-  const [isSmokingAllowed, setIsSmokingAllowed] = useState<boolean>(false);
 
   const handleChange = (event: SelectChangeEvent) => {
     setBedType(event.target.value as string);
   };
-  const handleIsSmokingAllowedChange = (event: SelectChangeEvent) => {
-    setIsSmokingAllowed(event.target.value === "true");
-  };
+
   return (
     <Stack sx={{ backgroundColor: "#FAF8FA", height: "87vh", pb: 20 }}>
       <Stack className="container">
@@ -52,7 +35,6 @@ const RoomDetails = () => {
               gap={1.5}
               borderRadius={2}
               borderColor={"#E7E7E7"}
-              //   justifyContent={"space-between"}
             >
               <Stack gap={3}>
                 <Typography>
@@ -177,4 +159,4 @@ const RoomDetails = () => {
   );
 };
 
-export default withLayoutCreateAccountMain(RoomDetails);
+export default withLayoutCreateAccountMain(RoomName);
