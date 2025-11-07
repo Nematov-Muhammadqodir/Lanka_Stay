@@ -114,6 +114,9 @@ const PropertyDetailsComplete = () => {
                 color: "primary.main",
                 fontWeight: 700,
               }}
+              onClick={() =>
+                router.push("/register-property/add-new-property/upload-photos")
+              }
             >
               Add photos
             </Button>
