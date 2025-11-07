@@ -24,7 +24,7 @@ type Inputs = {
 const CreateAccount = () => {
   const router = useRouter();
   const [signUp, setSignUp] = useState(true);
-  const [signUpStage, setSignUpStage] = useState("createPassword");
+  const [signUpStage, setSignUpStage] = useState("email");
   // email, contactDetails, createPassword
   const [phone, setPhone] = useState("");
 
@@ -88,6 +88,7 @@ const CreateAccount = () => {
                           fontSize: 18,
                           color: "white",
                         }}
+                        onClick={() => setSignUpStage("contactDetails")}
                       >
                         Continue
                       </Button>
@@ -404,6 +405,9 @@ const CreateAccount = () => {
                       fontSize: 18,
                       color: "white",
                     }}
+                    onClick={() =>
+                      router.push("/register-property/add-new-property")
+                    }
                   >
                     Next
                   </Button>

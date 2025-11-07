@@ -150,7 +150,7 @@ export default function CreateAccountTop() {
               )}
             </Button>
 
-            {authenticated && (
+            {authenticated ? (
               <Stack flexDirection={"row"} alignItems={"center"}>
                 <Typography className="bold-text" sx={{ color: "white" }}>
                   Ritz Carlton
@@ -173,6 +173,17 @@ export default function CreateAccountTop() {
                     />
                   </IconButton>
                 </Tooltip>
+              </Stack>
+            ) : (
+              <Stack>
+                <Button
+                  sx={{ color: "white" }}
+                  onClick={() =>
+                    router.push("/register-property/create-account")
+                  }
+                >
+                  Login
+                </Button>
               </Stack>
             )}
             <Menu
