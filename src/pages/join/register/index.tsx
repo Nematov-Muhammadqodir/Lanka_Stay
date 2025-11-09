@@ -11,14 +11,58 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import countries from "world-countries";
 import { useRouter } from "next/router";
+import { signUp } from "@/src/libs/auth";
+import { sweetMixinErrorAlert } from "@/src/libs/sweetAlert";
 
 const Register = () => {
+  // REGISTER PROCESS
+  const [input, setInput] = useState({
+    name: "",
+    email: "",
+    phone_number: "",
+    password: "",
+    user_role: "GUEST",
+    gender: "",
+    guest_type: "SINGLE",
+    country: "",
+    region: "",
+  });
+
+  const handleInput = useCallback((name: any, value: any) => {
+    console.log("name", name);
+    console.log("input", input);
+    console.log("value", value);
+    setInput((prev) => {
+      return { ...prev, [name]: value };
+    });
+  }, []);
+
+  const doSignUp = useCallback(async () => {
+    console.log("signup", input);
+    try {
+      await signUp(
+        input.name,
+        input.email,
+        input.phone_number,
+        input.password,
+        input.user_role,
+        input.gender,
+        input.guest_type,
+        input.country,
+        input.region
+      );
+      await router.push(`${router.query.referrer ?? "/"}`);
+    } catch (err: any) {
+      await sweetMixinErrorAlert(err.message);
+    }
+  }, [input]);
+
   const router = useRouter();
   const [phone, setPhone] = useState("");
   const [gender, setGender] = useState("");
@@ -133,6 +177,7 @@ const Register = () => {
             <Stack gap={1}>
               <Typography sx={{ fontWeight: 500 }}>Name</Typography>
               <TextField
+                onChange={(e) => handleInput("name", e.target.value)}
                 id="outlined-basic"
                 label="Enter your name"
                 variant="outlined"
@@ -158,6 +203,7 @@ const Register = () => {
             <Stack gap={1}>
               <Typography sx={{ fontWeight: 500 }}>E-mail</Typography>
               <TextField
+                onChange={(e) => handleInput("email", e.target.value)}
                 id="outlined-basic"
                 label="example@gmail.com"
                 variant="outlined"
@@ -202,9 +248,11 @@ const Register = () => {
                 }}
               >
                 <PhoneInput
+                  onChange={(e) => {
+                    handleInput("phone_number", e);
+                  }}
                   defaultCountry="ua"
                   value={phone}
-                  onChange={(phone) => setPhone(phone)}
                   style={{ width: "428px" }}
                 />
               </Box>
@@ -212,6 +260,7 @@ const Register = () => {
             <Stack gap={1}>
               <Typography sx={{ fontWeight: 500 }}>Password</Typography>
               <TextField
+                onChange={(e) => handleInput("password", e.target.value)}
                 type="password"
                 id="outlined-basic"
                 label="6+ characters"
@@ -244,11 +293,13 @@ const Register = () => {
                       Gender
                     </InputLabel>
                     <Select
+                      onChange={(e) =>
+                        handleInput("gender", e.target.value as string)
+                      }
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={gender}
+                      value={input.gender}
                       label="Gender"
-                      onChange={handleAgeChange}
                       sx={{
                         borderRadius: "10px",
                         "& .MuiOutlinedInput-notchedOutline": {
@@ -262,9 +313,9 @@ const Register = () => {
                         },
                       }}
                     >
-                      <MenuItem value={10}>Male</MenuItem>
-                      <MenuItem value={20}>Female</MenuItem>
-                      <MenuItem value={30}>Other</MenuItem>
+                      <MenuItem value={"MALE"}>Male</MenuItem>
+                      <MenuItem value={"FEMALE"}>Female</MenuItem>
+                      <MenuItem value={"OTHER"}>Other</MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
@@ -277,11 +328,13 @@ const Register = () => {
                       Guest Type
                     </InputLabel>
                     <Select
+                      onChange={(e) =>
+                        handleInput("guest_type", e.target.value)
+                      }
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={guestType}
+                      value={input.guest_type}
                       label="Gender"
-                      onChange={handleGuestTypeChange}
                       sx={{
                         borderRadius: "10px",
                         "& .MuiOutlinedInput-notchedOutline": {
@@ -295,12 +348,12 @@ const Register = () => {
                         },
                       }}
                     >
-                      <MenuItem value={"single"}>Single</MenuItem>
-                      <MenuItem value={"couple"}>Couple</MenuItem>
-                      <MenuItem value={"family"}>Family</MenuItem>
-                      <MenuItem value={"business"}>Business</MenuItem>
-                      <MenuItem value={"friends"}>Friends</MenuItem>
-                      <MenuItem value={"other"}>Other</MenuItem>
+                      <MenuItem value={"SINGLE"}>Single</MenuItem>
+                      <MenuItem value={"COUPLE"}>Couple</MenuItem>
+                      <MenuItem value={"FAMILY"}>Family</MenuItem>
+                      <MenuItem value={"BUSINESS"}>Business</MenuItem>
+                      <MenuItem value={"FRIENDS"}>Friends</MenuItem>
+                      <MenuItem value={"OTHER"}>Other</MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
@@ -309,8 +362,10 @@ const Register = () => {
             <Stack gap={1}>
               <Typography sx={{ fontWeight: 500 }}>Country</Typography>
               <CountryDropdown
-                value={country}
-                onChange={onChangeCountry}
+                value={input.country}
+                onChange={(e) => {
+                  handleInput("country", e);
+                }}
                 style={{
                   padding: 10,
                   fontSize: 20,
@@ -322,9 +377,11 @@ const Register = () => {
             <Stack gap={1}>
               <Typography sx={{ fontWeight: 500 }}>Region</Typography>
               <RegionDropdown
-                country={country}
-                value={region}
-                onChange={(val) => setRegion(val)}
+                onChange={(e) => {
+                  handleInput("region", e);
+                }}
+                country={input.country}
+                value={input.region}
                 style={{
                   padding: 10,
                   fontSize: 20,
@@ -345,6 +402,7 @@ const Register = () => {
                 letterSpacing: 2,
               }}
               variant="contained"
+              onClick={doSignUp}
             >
               Register
             </Button>

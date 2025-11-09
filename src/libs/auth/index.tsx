@@ -65,17 +65,27 @@ const requestJwtToken = async ({
 };
 
 export const signUp = async (
-  nick: string,
+  name: string,
+  email: string,
+  phone_number: string,
   password: string,
-  phone: string,
-  type: string
+  user_role: string,
+  gender: string,
+  guest_type: string,
+  country: string,
+  region: string
 ): Promise<void> => {
   try {
     const { jwtToken } = await requestSignUpJwtToken({
-      nick,
+      name,
+      email,
+      phone_number,
       password,
-      phone,
-      type,
+      user_role,
+      gender,
+      guest_type,
+      country,
+      region,
     });
 
     if (jwtToken) {
@@ -90,15 +100,25 @@ export const signUp = async (
 };
 
 const requestSignUpJwtToken = async ({
-  nick,
+  name,
+  email,
+  phone_number,
   password,
-  phone,
-  type,
+  user_role,
+  gender,
+  guest_type,
+  country,
+  region,
 }: {
-  nick: string;
+  name: string;
+  email: string;
+  phone_number: string;
   password: string;
-  phone: string;
-  type: string;
+  user_role: string;
+  gender: string;
+  guest_type: string;
+  country: string;
+  region: string;
 }): Promise<{ jwtToken: string }> => {
   const apolloClient = await initializeApollo();
   console.log("apolloClint", apolloClient);
@@ -108,17 +128,21 @@ const requestSignUpJwtToken = async ({
       mutation: GUEST_SIGN_UP,
       variables: {
         input: {
-          memberNick: nick,
-          memberPassword: password,
-          memberPhone: phone,
-          memberType: type,
+          guestName: name,
+          guestEmail: email,
+          guestPhone: phone_number,
+          guestPassword: password,
+          guestGender: gender,
+          guestType: guest_type,
+          guestCountry: country,
+          guestRegion: region,
         },
       },
       fetchPolicy: "network-only",
     });
 
     console.log("---------- login ----------");
-    const { accessToken } = result?.data?.signup;
+    const { accessToken } = result?.data?.guestSignup;
 
     return { jwtToken: accessToken };
   } catch (err: any) {
@@ -155,7 +179,7 @@ export const updateUserInfo = (jwtToken: any) => {
     guestFullName: claims.guestFullName ?? "",
     guestImage:
       claims.guestImage === null || claims.guestImage === undefined
-        ? "/img/profile/defaultUser.svg"
+        ? "/img/Villa.jpg"
         : `${claims.guestImage}`,
     guestCountry: claims.guestCountry ?? "",
     guestRegion: claims.guestRegion ?? "",

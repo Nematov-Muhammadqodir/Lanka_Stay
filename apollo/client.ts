@@ -8,15 +8,9 @@ import {
   NormalizedCacheObject,
 } from "@apollo/client";
 import createUploadLink from "apollo-upload-client/public/createUploadLink.js";
-import { WebSocketLink } from "@apollo/client/link/ws";
-import { getMainDefinition } from "@apollo/client/utilities";
 import { onError } from "@apollo/client/link/error";
-
 import { TokenRefreshLink } from "apollo-link-token-refresh";
-
-import { socketVar } from "./store";
 import { getJwtToken } from "@/src/libs/auth";
-import { sweetErrorAlert } from "@/src/libs/sweetAlert";
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
 function getHeaders() {
@@ -38,37 +32,6 @@ const tokenRefreshLink = new TokenRefreshLink({
   },
 });
 
-class LoggingWebSocket {
-  private socket: WebSocket;
-
-  constructor(url: string) {
-    this.socket = new WebSocket(`${url}?token=${getJwtToken()}`);
-    socketVar(this.socket);
-
-    this.socket.onopen = () => {
-      console.log("WebSocket connection!");
-    };
-
-    this.socket.onmessage = (msg) => {
-      console.log("WebSocket message:", msg.data);
-    };
-
-    this.socket.onerror = (error) => {
-      console.log("WebSocket error", error);
-    };
-  }
-
-  send(
-    data: string | ArrayBuffer | SharedArrayBuffer | Blob | ArrayBufferView
-  ) {
-    this.socket.send(data);
-  }
-
-  close() {
-    this.socket.close();
-  }
-}
-
 function createIsomorphicLink() {
   if (typeof window !== "undefined") {
     const authLink = new ApolloLink((operation, forward) => {
@@ -87,27 +50,13 @@ function createIsomorphicLink() {
       uri: process.env.REACT_APP_API_GRAPHQL_URL,
     });
 
-    /* WEBSOCKET SUBSCRIPTION LINK */
-    const wsLink = new WebSocketLink({
-      uri: process.env.REACT_APP_API_WS ?? "ws://127.0.0.1:3007",
-      options: {
-        reconnect: false,
-        timeout: 30000,
-        connectionParams: () => {
-          return { headers: getHeaders() };
-        },
-      },
-      webSocketImpl: LoggingWebSocket,
-    });
-
     const errorLink = onError(({ graphQLErrors, networkError, response }) => {
       if (graphQLErrors) {
-        graphQLErrors.map(({ message, locations, path, extensions }) => {
+        graphQLErrors.map(({ message, locations, path, extensions }) =>
           console.log(
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-          );
-          if (!message.includes("input")) sweetErrorAlert(message);
-        });
+          )
+        );
       }
       if (networkError) console.log(`[Network error]: ${networkError}`);
       // @ts-ignore
@@ -115,19 +64,9 @@ function createIsomorphicLink() {
       }
     });
 
-    const splitLink = split(
-      ({ query }) => {
-        const definition = getMainDefinition(query);
-        return (
-          definition.kind === "OperationDefinition" &&
-          definition.operation === "subscription"
-        );
-      },
-      wsLink,
-      authLink.concat(link)
-    );
+    const httpLink = authLink.concat(link);
 
-    return from([errorLink, tokenRefreshLink, splitLink]);
+    return from([errorLink, tokenRefreshLink, httpLink]);
   }
 }
 
@@ -152,20 +91,3 @@ export function initializeApollo(initialState = null) {
 export function useApollo(initialState: any) {
   return useMemo(() => initializeApollo(initialState), [initialState]);
 }
-
-/**
-import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
-
-// No Subscription required for develop process
-
-const httpLink = createHttpLink({
-  uri: "http://localhost:3007/graphql",
-});
-
-const client = new ApolloClient({
-  link: httpLink,
-  cache: new InMemoryCache(),
-});
-
-export default client;
-*/

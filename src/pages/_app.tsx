@@ -7,6 +7,7 @@ import { dark, light } from "../scss/MaterialTheme";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useApollo } from "@/apollo/client";
+import { ApolloProvider } from "@apollo/client";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [mode, setMode] = useState<"light" | "dark">("light");
@@ -16,26 +17,28 @@ export default function App({ Component, pageProps }: AppProps) {
   );
   const client = useApollo(pageProps.initialApolloState);
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <button
-        style={{
-          position: "fixed",
-          top: 30,
-          right: 16,
-          zIndex: 1000,
-          background: "none",
-          color: theme.palette.text.primary,
-          padding: "8px 12px",
-          cursor: "pointer",
-          border: "none",
-        }}
-        onClick={() => setMode(mode === "light" ? "dark" : "light")}
-      >
-        {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
-      </button>
+    <ApolloProvider client={client}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <button
+          style={{
+            position: "fixed",
+            top: 30,
+            right: 16,
+            zIndex: 1000,
+            background: "none",
+            color: theme.palette.text.primary,
+            padding: "8px 12px",
+            cursor: "pointer",
+            border: "none",
+          }}
+          onClick={() => setMode(mode === "light" ? "dark" : "light")}
+        >
+          {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
+        </button>
 
-      <Component {...pageProps} />
-    </ThemeProvider>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </ApolloProvider>
   );
 }
