@@ -1,16 +1,12 @@
 import "@/src/scss/app.scss";
 import "../scss/pc/main.scss";
-import {
-  createTheme,
-  CssBaseline,
-  ThemeOptions,
-  ThemeProvider,
-} from "@mui/material";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import type { AppProps } from "next/app";
 import { useMemo, useState } from "react";
 import { dark, light } from "../scss/MaterialTheme";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
+import { useApollo } from "@/apollo/client";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [mode, setMode] = useState<"light" | "dark">("light");
@@ -18,6 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
     () => createTheme(mode === "light" ? light : dark),
     [mode]
   );
+  const client = useApollo(pageProps.initialApolloState);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
