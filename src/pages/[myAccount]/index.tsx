@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import withLayoutAttractionsReserve from "@/src/libs/components/layout/attractions/AttractionReserveLayout";
 import {
   Box,
@@ -13,10 +13,16 @@ import {
 import Image from "next/image";
 import ImageUploaderMenu from "@/src/libs/components/myAccount/ImageUploaderMenu";
 import { CountryDropdown } from "react-country-region-selector";
+import { useRouter } from "next/router";
+import { useQuery } from "@apollo/client";
+import { GET_GUEST_PROFILE } from "@/apollo/user/query";
+import { Guest } from "@/src/libs/types/guest";
+import { T } from "@/src/libs/types/common";
 
 const MyAccount = () => {
+  const router = useRouter();
+
   const [country, setCountry] = useState("");
-  const [region, setRegion] = useState("");
   const [editName, setEditName] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
   const [editPhoneNumber, setEditPhoneNumber] = useState(false);
@@ -24,6 +30,28 @@ const MyAccount = () => {
   const [editGender, setEditGender] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const [member, setMember] = useState<Guest | null>(null);
+  const { guestId } = router.query;
+
+  /** APOLLO REQUESTS **/
+  const {
+    loading: getGuestLoading,
+    data: getGuestData,
+    error: getGuestError,
+    refetch: getGuestRefetch,
+  } = useQuery(GET_GUEST_PROFILE, {
+    fetchPolicy: "network-only",
+    variables: { input: guestId },
+    skip: !guestId,
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data: T) => {
+      setMember(data?.getGuestProfile);
+    },
+  });
+  console.log("member", member);
+  useEffect(() => {
+    getGuestRefetch({ input: guestId });
+  }, [guestId]);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -154,7 +182,7 @@ const MyAccount = () => {
               </Grid>
             ) : (
               <Grid item xs={6}>
-                <Typography>Muhammadqodir Nematov</Typography>
+                <Typography>{member?.guestName}</Typography>
               </Grid>
             )}
 
@@ -215,16 +243,16 @@ const MyAccount = () => {
               <Grid item xs={6}>
                 <Stack>
                   <TextField
-                    label="Email address"
+                    label={member?.guestEmail || "Email address"}
                     id="outlined-size-small"
-                    defaultValue="Email address"
+                    defaultValue={member?.guestEmail || "Email address"}
                     size="small"
                   />
                 </Stack>
               </Grid>
             ) : (
               <Grid item xs={6}>
-                <Typography>nematovmuhammadqodir68@gmail.com</Typography>
+                <Typography>{member?.guestEmail}</Typography>
               </Grid>
             )}
 
@@ -282,15 +310,20 @@ const MyAccount = () => {
             {editPhoneNumber ? (
               <Grid item xs={6}>
                 <TextField
-                  label="Phone number"
+                  label={member?.guestPhone || "Phone number"}
                   id="outlined-size-small"
-                  defaultValue="Phone number"
+                  defaultValue={member?.guestPhone || "Phone number"}
                   size="small"
                 />
               </Grid>
             ) : (
               <Grid item xs={6}>
-                <Typography>Add your phone number</Typography>
+                {member?.guestPhone ? (
+                  <Typography>{member.guestPhone}</Typography>
+                ) : (
+                  <Typography>Add your phone number</Typography>
+                )}
+
                 <Typography className="small-text" color={"primary.main"}>
                   Properties or attractions you book will use this number if
                   they need to contact you.
@@ -364,12 +397,16 @@ const MyAccount = () => {
               </Grid>
             ) : (
               <Grid item xs={6}>
-                <Typography>Select the country/region you're from</Typography>
+                {member?.guestCountry ? (
+                  <Typography>{member?.guestCountry}</Typography>
+                ) : (
+                  <Typography>Select the country/region you're from</Typography>
+                )}
               </Grid>
             )}
 
             <Grid item xs={2} textAlign="right">
-              {editName ? (
+              {editNationality ? (
                 <Stack justifyContent={"space-between"} gap={4}>
                   <Button onClick={() => handleToggleEdit("nationality")}>
                     <Typography
@@ -419,17 +456,11 @@ const MyAccount = () => {
               <Typography className="bold-text-medium">Gender</Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography>Select your gender</Typography>
-            </Grid>
-            <Grid item xs={2} textAlign="right">
-              <Button>
-                <Typography
-                  className="bold-text-medium"
-                  sx={{ color: "primary.main", textTransform: "capitalize" }}
-                >
-                  Edit
-                </Typography>
-              </Button>
+              {member?.guestGender ? (
+                <Typography>{member.guestGender}</Typography>
+              ) : (
+                <Typography>Select your gender</Typography>
+              )}
             </Grid>
           </Grid>
         </Stack>

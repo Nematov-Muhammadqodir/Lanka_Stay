@@ -23,6 +23,8 @@ import Logout from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 import _Flag from "react-world-flags";
+import { CustomJwtPayload } from "../../types/customJwtPayload";
+import { logOut } from "../../auth";
 
 const Flag = _Flag as unknown as React.FC<{
   code: string;
@@ -76,7 +78,8 @@ const StyledMenu = styled((props: MenuProps) => (
   },
 }));
 
-export default function TopMain() {
+export default function TopMain(user: any) {
+  console.log("user in top main hompage:", user.user);
   const [lang, setLang] = useState("GB");
   const [anchorLangEl, setAnchorLangEl] = React.useState<null | HTMLElement>(
     null
@@ -105,7 +108,7 @@ export default function TopMain() {
     setAnchorLangEl(null);
   };
   const router = useRouter();
-  const authenticated = false;
+
   return (
     <Stack
       className="container"
@@ -203,11 +206,13 @@ export default function TopMain() {
             <Link href="#" className="links">
               Contacts
             </Link>
-            <Link href="/register-property" className="links">
-              <Typography sx={{ fontWeight: 700 }}>
-                List your property
-              </Typography>
-            </Link>
+            {user.user._id !== "" && (
+              <Link href="/register-property" className="links">
+                <Typography sx={{ fontWeight: 700 }}>
+                  List your property
+                </Typography>
+              </Link>
+            )}
             <Link
               href="#"
               className="links"
@@ -220,7 +225,7 @@ export default function TopMain() {
               <HelpIcon />
             </Link>
           </Stack>
-          {authenticated ? (
+          {user.user._id === "" ? (
             <Stack
               justifyContent={"space-between"}
               direction="row"
@@ -229,14 +234,14 @@ export default function TopMain() {
               <Button
                 variant="contained"
                 sx={{ color: "white" }}
-                onClick={() => router.push("/signup")}
+                onClick={() => router.push("/join/signup")}
               >
                 SignUp
               </Button>
               <Button
                 variant="contained"
                 sx={{ color: "white" }}
-                onClick={() => router.push("/signup")}
+                onClick={() => router.push("/join/login")}
               >
                 Login
               </Button>
@@ -253,7 +258,11 @@ export default function TopMain() {
                   aria-expanded={open ? "true" : undefined}
                 >
                   <Image
-                    src="/img/logo/uniface.jpg"
+                    src={
+                      user?.guestImage
+                        ? `${process.env.NEXT_PUBLIC_API_URL}/${user?.guestImage}`
+                        : "/img/logo/uniface.jpg"
+                    }
                     alt="user-image"
                     width={50}
                     height={50}
@@ -303,7 +312,7 @@ export default function TopMain() {
             <MenuItem
               onClick={() => {
                 handleClose();
-                router.push("/myAccount");
+                router.push(`/myAccount?id=${user.user._id}`);
               }}
             >
               <Avatar /> My account
@@ -315,7 +324,12 @@ export default function TopMain() {
               </ListItemIcon>
               Settings
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                logOut();
+              }}
+            >
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>

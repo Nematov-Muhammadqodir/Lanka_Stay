@@ -16,6 +16,7 @@ export const GET_GUEST_PROFILE = gql`
       guestName
       guestFullName
       guestImage
+      guestEmail
       guestCountry
       guestRegion
       guestPoints
