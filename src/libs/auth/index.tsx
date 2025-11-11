@@ -15,9 +15,9 @@ export function setJwtToken(token: string) {
   localStorage.setItem("accessToken", token);
 }
 
-export const logIn = async (nick: string, password: string): Promise<void> => {
+export const logIn = async (email: string, password: string): Promise<void> => {
   try {
-    const { jwtToken } = await requestJwtToken({ nick, password });
+    const { jwtToken } = await requestJwtToken({ email, password });
 
     if (jwtToken) {
       updateStorage({ jwtToken });
@@ -31,10 +31,10 @@ export const logIn = async (nick: string, password: string): Promise<void> => {
 };
 
 const requestJwtToken = async ({
-  nick,
+  email,
   password,
 }: {
-  nick: string;
+  email: string;
   password: string;
 }): Promise<{ jwtToken: string }> => {
   const apolloClient = await initializeApollo();
@@ -42,12 +42,12 @@ const requestJwtToken = async ({
   try {
     const result = await apolloClient.mutate({
       mutation: GUEST_LOGIN,
-      variables: { input: { memberNick: nick, memberPassword: password } },
+      variables: { input: { guestEmail: email, guestPassword: password } },
       fetchPolicy: "network-only",
     });
 
     console.log("---------- login ----------");
-    const { accessToken } = result?.data?.login;
+    const { accessToken } = result?.data?.guestLogin;
 
     return { jwtToken: accessToken };
   } catch (err: any) {

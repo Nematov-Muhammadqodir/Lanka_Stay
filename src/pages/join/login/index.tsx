@@ -1,25 +1,32 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  Input,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { logIn } from "@/src/libs/auth";
+import { sweetMixinErrorAlert } from "@/src/libs/sweetAlert";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import Image from "next/image";
-import { useState } from "react";
-import { PhoneInput } from "react-international-phone";
-import "react-international-phone/style.css";
-import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
-import countries from "world-countries";
 import { useRouter } from "next/router";
+import { useCallback, useState } from "react";
 
 const Login = () => {
+  // LOGIN PROCESS
+  const [input, setInput] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInput = useCallback((name: any, value: any) => {
+    setInput((prev) => {
+      return { ...prev, [name]: value };
+    });
+  }, []);
+
+  const doLogin = useCallback(async () => {
+    console.log("login", input);
+    try {
+      await logIn(input.email, input.password);
+      await router.push(`${router.query.referrer ?? "/"}`);
+    } catch (err: any) {
+      await sweetMixinErrorAlert(err.message);
+    }
+  }, [input]);
   const router = useRouter();
 
   return (
@@ -113,6 +120,7 @@ const Login = () => {
             <Stack gap={1}>
               <Typography sx={{ fontWeight: 500 }}>E-mail</Typography>
               <TextField
+                onChange={(e) => handleInput("email", e.target.value)}
                 id="outlined-basic"
                 label="example@gmail.com"
                 variant="outlined"
@@ -138,6 +146,7 @@ const Login = () => {
             <Stack gap={1}>
               <Typography sx={{ fontWeight: 500 }}>Password</Typography>
               <TextField
+                onChange={(e) => handleInput("password", e.target.value)}
                 type="password"
                 id="outlined-basic"
                 label="6+ characters"
@@ -163,6 +172,7 @@ const Login = () => {
             </Stack>
 
             <Button
+              onClick={doLogin}
               sx={{
                 marginTop: "20px",
                 height: 70,

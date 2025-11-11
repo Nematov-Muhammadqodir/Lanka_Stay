@@ -64,28 +64,7 @@ const Register = () => {
   }, [input]);
 
   const router = useRouter();
-  const [phone, setPhone] = useState("");
-  const [gender, setGender] = useState("");
-  const [guestType, setGuestType] = useState("");
-  const [country, setCountry] = useState("");
-  const [region, setRegion] = useState("");
-  const selectedCountry = countries.find((c) => c.name.common === country);
-  const [lat, lng] = selectedCountry?.latlng || [];
 
-  const handleAgeChange = (event: SelectChangeEvent) => {
-    setGender(event.target.value as string);
-  };
-  const handleGuestTypeChange = (event: SelectChangeEvent) => {
-    setGuestType(event.target.value as string);
-  };
-
-  const onChangeCountry = (val: any) => {
-    console.log("val", val);
-    setCountry(val);
-    if (!val) {
-      setRegion("");
-    }
-  };
   return (
     <Stack
       alignItems={"center"}
@@ -252,7 +231,7 @@ const Register = () => {
                     handleInput("phone_number", e);
                   }}
                   defaultCountry="ua"
-                  value={phone}
+                  value={input.phone_number}
                   style={{ width: "428px" }}
                 />
               </Box>
