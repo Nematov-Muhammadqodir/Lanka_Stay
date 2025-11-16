@@ -326,9 +326,10 @@ export default function TopMain(user: any) {
               Settings
             </MenuItem>
             <MenuItem
-              onClick={() => {
+              onClick={async () => {
                 handleClose();
-                logOut();
+                await logOut();
+                router.push("/");
               }}
             >
               <ListItemIcon>

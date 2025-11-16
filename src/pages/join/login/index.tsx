@@ -4,8 +4,11 @@ import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
   // LOGIN PROCESS
   const [input, setInput] = useState({
     email: "",
@@ -147,7 +150,7 @@ const Login = () => {
               <Typography sx={{ fontWeight: 500 }}>Password</Typography>
               <TextField
                 onChange={(e) => handleInput("password", e.target.value)}
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="outlined-basic"
                 label="6+ characters"
                 variant="outlined"
@@ -169,6 +172,29 @@ const Login = () => {
                   },
                 }}
               />
+              <Button>
+                {showPassword ? (
+                  <VisibilityOffIcon
+                    onClick={() => setShowPassword(false)}
+                    sx={{
+                      color: "grey.500",
+                      position: "absolute",
+                      right: 20,
+                      bottom: 30,
+                    }}
+                  />
+                ) : (
+                  <RemoveRedEyeIcon
+                    onClick={() => setShowPassword(true)}
+                    sx={{
+                      color: "grey.500",
+                      position: "absolute",
+                      right: 20,
+                      bottom: 30,
+                    }}
+                  />
+                )}
+              </Button>
             </Stack>
 
             <Button

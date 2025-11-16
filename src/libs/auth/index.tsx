@@ -192,7 +192,7 @@ export const updateUserInfo = (jwtToken: any) => {
 export const logOut = () => {
   deleteStorage();
   deleteUserInfo();
-  window.location.reload();
+  // window.location.reload();
 };
 
 const deleteStorage = () => {
