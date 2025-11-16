@@ -5,9 +5,16 @@ const nextConfig = {
     REACT_APP_API_URL: process.env.NEXT_PUBLIC_API_URL,
     REACT_APP_API_GRAPHQL_URL: process.env.NEXT_PUBLIC_API_GRAPHQL_URL,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "4003",
+        pathname: "/uploads/**",
+      },
+    ],
+  },
 };
-
-// const { i18n } = require("./next-i18next.config");
-// nextConfig.i18n = i18n;
 
 module.exports = nextConfig;

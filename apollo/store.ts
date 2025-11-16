@@ -10,6 +10,7 @@ export const userVar = makeVar<CustomJwtPayload>({
   guestAuthType: "",
   guestPhone: "",
   guestGender: "",
+  guestEmail: "",
   guestName: "",
   guestFullName: "",
   guestImage: "",

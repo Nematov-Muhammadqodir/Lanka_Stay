@@ -175,6 +175,7 @@ export const updateUserInfo = (jwtToken: any) => {
     guestAuthType: claims.guestAuthType,
     guestPhone: claims.guestPhone ?? "",
     guestGender: claims.guestGender ?? "",
+    guestEmail: claims.guestEmail ?? "",
     guestName: claims.guestName ?? "",
     guestFullName: claims.guestFullName ?? "",
     guestImage:
@@ -208,6 +209,7 @@ const deleteUserInfo = () => {
     guestPhone: "",
     guestGender: "",
     guestName: "",
+    guestEmail: "",
     guestFullName: "",
     guestImage: "",
     guestCountry: "",

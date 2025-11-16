@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import withLayoutAttractionsReserve from "@/src/libs/components/layout/attractions/AttractionReserveLayout";
 import {
   Box,
@@ -14,14 +14,24 @@ import Image from "next/image";
 import ImageUploaderMenu from "@/src/libs/components/myAccount/ImageUploaderMenu";
 import { CountryDropdown } from "react-country-region-selector";
 import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
 import { GET_GUEST_PROFILE } from "@/apollo/user/query";
-import { Guest } from "@/src/libs/types/guest";
+import { Guest } from "@/src/libs/types/member/guest";
 import { T } from "@/src/libs/types/common";
+import { UpdateGuestProfile } from "@/src/libs/types/member/guest.update";
+import { UPDATE_GUEST } from "@/apollo/user/mutation";
+import { userVar } from "@/apollo/store";
+import { Messages, REACT_APP_API_URL } from "@/src/libs/config";
+import { getJwtToken, updateStorage, updateUserInfo } from "@/src/libs/auth";
+import {
+  sweetErrorHandling,
+  sweetMixinSuccessAlert,
+} from "@/src/libs/sweetAlert";
+import axios from "axios";
 
 const MyAccount = () => {
   const router = useRouter();
-
+  const user = useReactiveVar(userVar);
   const [country, setCountry] = useState("");
   const [editName, setEditName] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
@@ -32,6 +42,18 @@ const MyAccount = () => {
   const open = Boolean(anchorEl);
   const [member, setMember] = useState<Guest | null>(null);
   const { guestId } = router.query;
+  const [updateData, setUpdateData] = useState<UpdateGuestProfile>({
+    _id: member?._id || "",
+    guestName: member?.guestName || "",
+    guestEmail: member?.guestEmail || "",
+    guestImage: member?.guestImage || "",
+    guestPhone: member?.guestPhone || "",
+    guestCountry: member?.guestCountry || "" || "",
+  });
+  const token = getJwtToken();
+
+  /** UPDATE_GUEST APOLLO REQUESTS **/
+  const [updateGuest] = useMutation(UPDATE_GUEST);
 
   /** APOLLO REQUESTS **/
   const {
@@ -48,10 +70,51 @@ const MyAccount = () => {
       setMember(data?.getGuestProfile);
     },
   });
-  console.log("member", member);
+
+  /** LIFECYCLES **/
+  useEffect(() => {
+    setUpdateData({
+      ...updateData,
+      guestName: user.guestName,
+      guestPhone: user.guestPhone,
+      guestEmail: user.guestEmail,
+      guestCountry: user.guestCountry,
+      guestImage: user.guestImage,
+    });
+  }, [user]);
+  console.log("updateData", updateData);
+
   useEffect(() => {
     getGuestRefetch({ input: guestId });
   }, [guestId]);
+
+  const updateGuestProfileHandler = useCallback(async () => {
+    try {
+      if (!user._id) throw new Error(Messages.error2);
+      updateData._id = user._id;
+      console.log("updateData updateProductHandler", updateData);
+      const result = await updateGuest({
+        variables: {
+          input: updateData,
+        },
+      });
+
+      //@ts-ignore
+      const jwtToken = result.data.updateGuest?.accessToken;
+      await updateStorage({ jwtToken });
+      updateUserInfo(result.data.updateGuest?.accessToken);
+      setEditName(false);
+      setEditEmail(false);
+      setEditPhoneNumber(false);
+      setEditNationality(false);
+      getGuestRefetch({ input: guestId });
+      await sweetMixinSuccessAlert("Information updated successfully!");
+    } catch (err: any) {
+      console.log("Error, updateProfileHandler", err);
+      sweetErrorHandling(err).then();
+    }
+  }, [updateData]);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -78,7 +141,69 @@ const MyAccount = () => {
   const onChangeCountry = (val: any) => {
     console.log("val", val);
     setCountry(val);
+
+    setUpdateData({ ...updateData, guestCountry: val });
   };
+
+  const uploadImage = async (file: File) => {
+    try {
+      console.log("+image:", file);
+
+      const formData = new FormData();
+      formData.append(
+        "operations",
+        JSON.stringify({
+          query: `mutation ImageUploader($file: Upload!, $target: String!) {
+            imageUploader(file: $file, target: $target) 
+          }`,
+          variables: {
+            file: null,
+            target: "member",
+          },
+        })
+      );
+      formData.append(
+        "map",
+        JSON.stringify({
+          "0": ["variables.file"],
+        })
+      );
+      formData.append("0", file);
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_GRAPHQL_URL}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "apollo-require-preflight": true,
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const responseImage = response.data.data.imageUploader;
+      console.log("+responseImage: ", responseImage);
+
+      const updated = { ...updateData, guestImage: responseImage };
+      setUpdateData(updated);
+
+      // 🔥 Immediately update on backend
+
+      await updateGuest({
+        variables: {
+          input: {
+            ...updated,
+            _id: user._id,
+          },
+        },
+      });
+      getGuestRefetch({ input: guestId });
+    } catch (err) {
+      console.log("Error, uploadImage:", err);
+    }
+  };
+
   return (
     <Stack className="container" alignItems={"center"}>
       <Stack px={10} py={5} width={900} mb={10}>
@@ -105,7 +230,11 @@ const MyAccount = () => {
             onClick={handleClick}
           >
             <Image
-              src="/img/logo/uniface.jpg"
+              src={
+                member?.guestImage
+                  ? `${REACT_APP_API_URL}/${member?.guestImage}`
+                  : `/img/logo/uniface.jpg`
+              }
               alt="user-image"
               width={70}
               height={70}
@@ -139,10 +268,15 @@ const MyAccount = () => {
             }}
           >
             <Stack>
-              <ImageUploaderMenu open={open} handleClose={handleClose} />
+              <ImageUploaderMenu
+                open={open}
+                handleClose={handleClose}
+                uploadImage={uploadImage}
+              />
             </Stack>
           </Menu>
         </Stack>
+
         <Stack mt={1} px={2}>
           <Grid
             container
@@ -157,28 +291,15 @@ const MyAccount = () => {
             </Grid>
             {editName ? (
               <Grid item xs={6}>
-                <Stack
-                  flexDirection={"row"}
-                  justifyContent={"space-between"}
-                  gap={2}
-                >
-                  <Stack>
-                    <TextField
-                      label="Last name"
-                      id="outlined-size-small"
-                      defaultValue="Last name"
-                      size="small"
-                    />
-                  </Stack>
-                  <Stack>
-                    <TextField
-                      label="First name"
-                      id="outlined-size-small"
-                      defaultValue="First name"
-                      size="small"
-                    />
-                  </Stack>
-                </Stack>
+                <TextField
+                  label={member?.guestName || "Your Name"}
+                  id="outlined-size-small"
+                  defaultValue={member?.guestName || "Your Name"}
+                  size="small"
+                  onChange={({ target: { value } }) =>
+                    setUpdateData({ ...updateData, guestName: value })
+                  }
+                />
               </Grid>
             ) : (
               <Grid item xs={6}>
@@ -200,7 +321,10 @@ const MyAccount = () => {
                       Cancel
                     </Typography>
                   </Button>
-                  <Button variant="outlined">
+                  <Button
+                    variant="outlined"
+                    onClick={updateGuestProfileHandler}
+                  >
                     <Typography
                       className="bold-text-medium"
                       sx={{
@@ -247,12 +371,19 @@ const MyAccount = () => {
                     id="outlined-size-small"
                     defaultValue={member?.guestEmail || "Email address"}
                     size="small"
+                    onChange={({ target: { value } }) =>
+                      setUpdateData({ ...updateData, guestEmail: value })
+                    }
                   />
                 </Stack>
               </Grid>
             ) : (
               <Grid item xs={6}>
-                <Typography>{member?.guestEmail}</Typography>
+                {member?.guestEmail ? (
+                  <Typography>{member.guestEmail}</Typography>
+                ) : (
+                  <Typography>Add your email address</Typography>
+                )}
               </Grid>
             )}
 
@@ -270,7 +401,10 @@ const MyAccount = () => {
                       Cancel
                     </Typography>
                   </Button>
-                  <Button variant="outlined">
+                  <Button
+                    variant="outlined"
+                    onClick={updateGuestProfileHandler}
+                  >
                     <Typography
                       className="bold-text-medium"
                       sx={{
@@ -314,6 +448,9 @@ const MyAccount = () => {
                   id="outlined-size-small"
                   defaultValue={member?.guestPhone || "Phone number"}
                   size="small"
+                  onChange={({ target: { value } }) =>
+                    setUpdateData({ ...updateData, guestPhone: value })
+                  }
                 />
               </Grid>
             ) : (
@@ -344,7 +481,10 @@ const MyAccount = () => {
                       Cancel
                     </Typography>
                   </Button>
-                  <Button variant="outlined">
+                  <Button
+                    variant="outlined"
+                    onClick={updateGuestProfileHandler}
+                  >
                     <Typography
                       className="bold-text-medium"
                       sx={{
@@ -419,7 +559,10 @@ const MyAccount = () => {
                       Cancel
                     </Typography>
                   </Button>
-                  <Button variant="outlined">
+                  <Button
+                    variant="outlined"
+                    onClick={updateGuestProfileHandler}
+                  >
                     <Typography
                       className="bold-text-medium"
                       sx={{

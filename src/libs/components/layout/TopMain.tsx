@@ -25,6 +25,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import _Flag from "react-world-flags";
 import { CustomJwtPayload } from "../../types/customJwtPayload";
 import { logOut } from "../../auth";
+import { REACT_APP_API_URL } from "../../config";
 
 const Flag = _Flag as unknown as React.FC<{
   code: string;
@@ -108,7 +109,7 @@ export default function TopMain(user: any) {
     setAnchorLangEl(null);
   };
   const router = useRouter();
-
+  console.log("user image:", user.user);
   return (
     <Stack
       className="container"
@@ -234,7 +235,7 @@ export default function TopMain(user: any) {
               <Button
                 variant="contained"
                 sx={{ color: "white" }}
-                onClick={() => router.push("/join/signup")}
+                onClick={() => router.push("/join/register")}
               >
                 SignUp
               </Button>
@@ -259,8 +260,8 @@ export default function TopMain(user: any) {
                 >
                   <Image
                     src={
-                      user?.guestImage
-                        ? `${process.env.NEXT_PUBLIC_API_URL}/${user?.guestImage}`
+                      user?.user?.guestImage
+                        ? `${REACT_APP_API_URL}/${user?.user?.guestImage}`
                         : "/img/logo/uniface.jpg"
                     }
                     alt="user-image"

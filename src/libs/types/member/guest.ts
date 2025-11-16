@@ -4,7 +4,7 @@ import {
   GuestStatus,
   GuestType,
   UserRole,
-} from "../enums/user.enum";
+} from "../../enums/user.enum";
 
 export interface Guest {
   _id: string;

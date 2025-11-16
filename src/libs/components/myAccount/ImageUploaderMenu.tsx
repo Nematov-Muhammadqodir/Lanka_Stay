@@ -5,25 +5,37 @@ import Image from "next/image";
 interface ImageUploaderMenuProps {
   open: boolean;
   handleClose: () => void;
+  uploadImage: (file: File) => Promise<void>;
 }
 
 const ImageUploaderMenu: React.FC<ImageUploaderMenuProps> = ({
   open,
   handleClose,
+  uploadImage,
 }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
   const handleSelectFile = () => {
     fileInputRef.current?.click();
   };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    console.log("handleFileChange", file);
     if (!file) return;
 
     setSelectedImage(file);
     setPreviewUrl(URL.createObjectURL(file));
   };
+
+  const handleSave = async () => {
+    if (!selectedImage) return;
+    await uploadImage(selectedImage);
+    handleClose();
+  };
+
   return (
     <Dialog
       open={open}
@@ -36,7 +48,7 @@ const ImageUploaderMenu: React.FC<ImageUploaderMenuProps> = ({
     >
       <Stack
         direction="row"
-        justifyContent={"space-between"}
+        justifyContent="space-between"
         alignItems="center"
         gap={3}
       >
@@ -70,7 +82,12 @@ const ImageUploaderMenu: React.FC<ImageUploaderMenuProps> = ({
           >
             Select file
           </Button>
-          <Button variant="contained" sx={{ color: "primary.contrastText" }}>
+          <Button
+            variant="contained"
+            sx={{ color: "primary.contrastText" }}
+            onClick={handleSave}
+            disabled={!selectedImage}
+          >
             Save
           </Button>
         </Stack>
