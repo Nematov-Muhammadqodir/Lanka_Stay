@@ -1,17 +1,20 @@
 import { Button, Dialog, Stack, Typography } from "@mui/material";
 import React, { useRef, useState } from "react";
 import Image from "next/image";
+import { REACT_APP_API_URL } from "../../config";
 
 interface ImageUploaderMenuProps {
   open: boolean;
   handleClose: () => void;
-  uploadImage: (file: File) => Promise<void>;
+  uploadImage: (e: any) => Promise<void>;
+  guestImage: string | null;
 }
 
 const ImageUploaderMenu: React.FC<ImageUploaderMenuProps> = ({
   open,
   handleClose,
   uploadImage,
+  guestImage,
 }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -33,6 +36,7 @@ const ImageUploaderMenu: React.FC<ImageUploaderMenuProps> = ({
   const handleSave = async () => {
     if (!selectedImage) return;
     await uploadImage(selectedImage);
+
     handleClose();
   };
 
@@ -53,7 +57,13 @@ const ImageUploaderMenu: React.FC<ImageUploaderMenuProps> = ({
         gap={3}
       >
         <Image
-          src={previewUrl ?? "/img/logo/uniface.jpg"}
+          src={
+            previewUrl
+              ? previewUrl
+              : guestImage
+              ? `${REACT_APP_API_URL}/${guestImage}`
+              : "/img/logo/uniface.jpg"
+          }
           alt="user-image"
           width={130}
           height={130}

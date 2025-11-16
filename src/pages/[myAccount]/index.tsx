@@ -75,11 +75,11 @@ const MyAccount = () => {
   useEffect(() => {
     setUpdateData({
       ...updateData,
-      guestName: user.guestName,
-      guestPhone: user.guestPhone,
-      guestEmail: user.guestEmail,
-      guestCountry: user.guestCountry,
-      guestImage: user.guestImage,
+      guestName: member?.guestName,
+      guestPhone: member?.guestPhone,
+      guestEmail: member?.guestEmail,
+      guestCountry: member?.guestCountry,
+      guestImage: member?.guestImage,
     });
   }, [user]);
   console.log("updateData", updateData);
@@ -190,7 +190,7 @@ const MyAccount = () => {
 
       // 🔥 Immediately update on backend
 
-      await updateGuest({
+      const result = await updateGuest({
         variables: {
           input: {
             ...updated,
@@ -198,6 +198,11 @@ const MyAccount = () => {
           },
         },
       });
+      const jwtToken = result.data.updateGuest?.accessToken;
+      if (jwtToken) {
+        await updateStorage({ jwtToken });
+        updateUserInfo(jwtToken); // This updates the userVar
+      }
       getGuestRefetch({ input: guestId });
     } catch (err) {
       console.log("Error, uploadImage:", err);
@@ -272,6 +277,7 @@ const MyAccount = () => {
                 open={open}
                 handleClose={handleClose}
                 uploadImage={uploadImage}
+                guestImage={member?.guestImage || ""}
               />
             </Stack>
           </Menu>
