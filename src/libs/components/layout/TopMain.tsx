@@ -80,7 +80,7 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 
 export default function TopMain(user: any) {
-  console.log("user in top main hompage:", user.user);
+  console.log("user in top main hompage:", user);
   const [lang, setLang] = useState("GB");
   const [anchorLangEl, setAnchorLangEl] = React.useState<null | HTMLElement>(
     null

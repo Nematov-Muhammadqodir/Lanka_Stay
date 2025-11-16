@@ -5,9 +5,13 @@ import TopMain from "./TopMain";
 import Filtering from "./Filtering";
 import Footer from "./Footer";
 import DetailLayoutBanner from "../HotelDetail.tsx/DetailLayoutBanner";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
 
 const withLayoutSecondary = (Component: any) => {
   return (props: any) => {
+    const user = useReactiveVar(userVar);
+    console.log("User in LayoutSecondary:", user);
     return (
       <>
         <Head>
@@ -16,7 +20,7 @@ const withLayoutSecondary = (Component: any) => {
         <Stack id="pc-wrap">
           <Stack>
             <Stack borderBottom={1} borderColor={"grey.300"}>
-              <TopMain />
+              <TopMain user={user} />
             </Stack>
             <Stack>
               <DetailLayoutBanner />

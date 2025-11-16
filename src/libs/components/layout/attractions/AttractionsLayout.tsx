@@ -5,9 +5,13 @@ import TopMain from "../TopMain";
 import Filtering from "../Filtering";
 import Footer from "../Footer";
 import AttractionsLayoutBanner from "../../attractions/AttractionsBanner";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
 
 const withLayoutAttractions = (Component: any) => {
   return (props: any) => {
+    const user = useReactiveVar(userVar);
+    console.log("User in LayoutSecondary:", user);
     return (
       <>
         <Head>
@@ -16,7 +20,7 @@ const withLayoutAttractions = (Component: any) => {
         <Stack id="pc-wrap">
           <Stack>
             <Stack borderBottom={1} borderColor={"grey.300"}>
-              <TopMain />
+              <TopMain user={user} />
             </Stack>
             <Stack>
               <AttractionsLayoutBanner />
