@@ -13,6 +13,17 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  partnerSignupInputValue,
+  setPartnerEmail,
+  setPartnerFirstName,
+  setPartnerLastName,
+  setPartnerPassword,
+  setPartnerPhoneNumber,
+} from "@/src/slices/partnerSlice";
+import { Messages } from "@/src/libs/config";
+import { sweetErrorAlert } from "@/src/libs/sweetAlert";
 
 type Inputs = {
   email: string;
@@ -27,6 +38,24 @@ const CreateAccount = () => {
   const [signUpStage, setSignUpStage] = useState("email");
   // email, contactDetails, createPassword
   const [phone, setPhone] = useState("");
+  const dispatch = useDispatch();
+  const partnerInput = useSelector(partnerSignupInputValue);
+  const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
+  const [isConfirmed, setIsConfirmed] = useState(false);
+
+  const handleSignup = async () => {
+    if (!isConfirmed) {
+      await sweetErrorAlert("You must agree before continuing.");
+      return;
+    }
+    if (confirmPasswordValue !== partnerInput.partnerPassword) {
+      await sweetErrorAlert(Messages.error6);
+    } else {
+      router.push("/register-property/add-new-property");
+    }
+  };
+
+  console.log("Full partner input:", partnerInput);
 
   const {
     register,
@@ -73,6 +102,11 @@ const CreateAccount = () => {
                           sx={{ width: 399 }}
                           {...register("email")}
                           required={true}
+                          onChange={(e: any) => {
+                            console.log("e.target.value email", e.target.value);
+                            dispatch(setPartnerEmail(e.target.value));
+                          }}
+                          value={partnerInput.partnerEmail}
                         />
                       </Stack>
 
@@ -88,7 +122,14 @@ const CreateAccount = () => {
                           fontSize: 18,
                           color: "white",
                         }}
-                        onClick={() => setSignUpStage("contactDetails")}
+                        onClick={() => {
+                          if (partnerInput.partnerEmail === "") {
+                            sweetErrorAlert("Please fill the email input!");
+                            setSignUpStage("email");
+                          } else {
+                            setSignUpStage("contactDetails");
+                          }
+                        }}
                       >
                         Continue
                       </Button>
@@ -154,6 +195,10 @@ const CreateAccount = () => {
                           sx={{ width: 399 }}
                           {...register("first_name")}
                           required={true}
+                          onChange={(e: any) => {
+                            dispatch(setPartnerFirstName(e.target.value));
+                          }}
+                          value={partnerInput.partnerFirstName}
                         />
                       </Stack>
                       <Stack>
@@ -164,6 +209,10 @@ const CreateAccount = () => {
                           sx={{ width: 399 }}
                           {...register("last_name")}
                           required={true}
+                          onChange={(e: any) => {
+                            dispatch(setPartnerLastName(e.target.value));
+                          }}
+                          value={partnerInput.partnerLastName}
                         />
                       </Stack>
 
@@ -195,9 +244,11 @@ const CreateAccount = () => {
                         >
                           <PhoneInput
                             defaultCountry="ua"
-                            value={phone}
-                            onChange={(phone) => setPhone(phone)}
                             style={{ width: "399px" }}
+                            onChange={(e: any) => {
+                              dispatch(setPartnerPhoneNumber(e));
+                            }}
+                            value={partnerInput.partnerPhoneNumber}
                           />
                         </Box>
                       </Stack>
@@ -214,7 +265,18 @@ const CreateAccount = () => {
                           fontSize: 18,
                           color: "white",
                         }}
-                        onClick={() => setSignUpStage("createPassword")}
+                        onClick={() => {
+                          if (
+                            partnerInput.partnerFirstName === "" &&
+                            partnerInput.partnerLastName === "" &&
+                            partnerInput.partnerPhoneNumber === ""
+                          ) {
+                            sweetErrorAlert("Please fill the required fields");
+                            setSignUpStage("contactDetails");
+                          } else {
+                            setSignUpStage("createPassword");
+                          }
+                        }}
                       >
                         Next
                       </Button>
@@ -281,6 +343,10 @@ const CreateAccount = () => {
                           {...register("password")}
                           required={true}
                           placeholder="Password"
+                          onChange={(e: any) => {
+                            dispatch(setPartnerPassword(e.target.value));
+                          }}
+                          value={partnerInput.partnerPassword}
                         />
                       </Stack>
                       <Stack>
@@ -291,14 +357,21 @@ const CreateAccount = () => {
                           sx={{ width: 399 }}
                           required={true}
                           placeholder="Confirm password"
+                          onChange={(e: any) => {
+                            setConfirmPasswordValue(e.target.value);
+                          }}
+                          value={confirmPasswordValue}
                         />
                       </Stack>
 
                       <Stack gap={2}>
                         <FormControlLabel
-                          required
                           control={
-                            <Checkbox sx={{ alignSelf: "start", pr: 2 }} />
+                            <Checkbox
+                              sx={{ alignSelf: "start", pr: 2 }}
+                              checked={isConfirmed}
+                              onChange={(e) => setIsConfirmed(e.target.checked)}
+                            />
                           }
                           label="I confirm that I am over the age of 14 and I consent to the mandatory collection and use of my personal information as well as my dependent child (ren)'s personal information (where applicable) as described in the Booking.com"
                           sx={{
@@ -322,9 +395,7 @@ const CreateAccount = () => {
                           fontSize: 18,
                           color: "white",
                         }}
-                        onClick={() =>
-                          router.push("/register-property/add-new-property")
-                        }
+                        onClick={() => handleSignup()}
                       >
                         Create account
                       </Button>

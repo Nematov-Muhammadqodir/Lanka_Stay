@@ -35,7 +35,7 @@ const RegisterPropertyFooter = () => {
             rowSpacing={1}
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           >
-            <Grid xs={4} textAlign={"center"}>
+            <Grid item xs={4} textAlign={"center"}>
               <Stack gap={2}>
                 <Typography
                   sx={{ fontWeight: "bold", fontSize: 25, color: "white" }}
@@ -50,7 +50,7 @@ const RegisterPropertyFooter = () => {
               </Stack>
             </Grid>
 
-            <Grid xs={4} textAlign={"center"}>
+            <Grid item xs={4} textAlign={"center"}>
               <Stack gap={2}>
                 <Typography
                   sx={{ fontWeight: "bold", fontSize: 25, color: "white" }}
@@ -73,7 +73,7 @@ const RegisterPropertyFooter = () => {
               </Stack>
             </Grid>
 
-            <Grid xs={4} textAlign={"center"}>
+            <Grid item xs={4} textAlign={"center"}>
               <Stack gap={2}>
                 <Typography
                   sx={{ fontWeight: "bold", fontSize: 25, color: "white" }}
