@@ -9,6 +9,7 @@ import { sweetMixinErrorAlert } from "../sweetAlert";
 import {
   GUEST_LOGIN,
   GUEST_SIGN_UP,
+  PARTNER_LOGIN,
   PARTNER_SIGNUP,
 } from "@/apollo/user/mutation";
 
@@ -47,6 +48,24 @@ export const logIn = async (email: string, password: string): Promise<void> => {
   }
 };
 
+export const logInPartner = async (
+  email: string,
+  password: string
+): Promise<void> => {
+  try {
+    const { jwtToken } = await requestPartnerJwtToken({ email, password });
+
+    if (jwtToken) {
+      updatePartnerStorage({ jwtToken });
+      updatePartnerInfo(jwtToken);
+    }
+  } catch (err) {
+    console.warn("loginPartner err", err);
+    logOutPartner();
+    // throw new Error('Login Err');
+  }
+};
+
 const requestJwtToken = async ({
   email,
   password,
@@ -65,6 +84,40 @@ const requestJwtToken = async ({
 
     console.log("---------- login ----------");
     const { accessToken } = result?.data?.guestLogin;
+
+    return { jwtToken: accessToken };
+  } catch (err: any) {
+    console.log("request token err", err.graphQLErrors);
+    switch (err.graphQLErrors[0].message) {
+      case "Definer: login and password do not match":
+        await sweetMixinErrorAlert("Please check your password again");
+        break;
+      case "Definer: user has been blocked!":
+        await sweetMixinErrorAlert("User has been blocked!");
+        break;
+    }
+    throw new Error("token error");
+  }
+};
+
+const requestPartnerJwtToken = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}): Promise<{ jwtToken: string }> => {
+  const apolloClient = await initializeApollo();
+  console.log("apolloClint", apolloClient);
+  try {
+    const result = await apolloClient.mutate({
+      mutation: PARTNER_LOGIN,
+      variables: { input: { partnerEmail: email, partnerPassword: password } },
+      fetchPolicy: "network-only",
+    });
+
+    console.log("---------- login ----------");
+    const { accessToken } = result?.data?.partnerLogin;
 
     return { jwtToken: accessToken };
   } catch (err: any) {
@@ -139,8 +192,8 @@ export const signUpPartner = async (
       updatePartnerInfo(jwtToken);
     }
   } catch (err) {
-    console.warn("login err", err);
-    logOut();
+    console.warn("logOutPartner err", err);
+    logOutPartner();
     // throw new Error('Login Err');
   }
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import withLayoutCreateAccountMain from "@/src/libs/components/layout/registerProperty/create-account/CreateAccountMainLayout";
 import {
   Box,
@@ -23,8 +23,13 @@ import {
   setPartnerPhoneNumber,
 } from "@/src/slices/partnerSlice";
 import { Messages } from "@/src/libs/config";
-import { sweetErrorAlert } from "@/src/libs/sweetAlert";
-import { signUpPartner } from "@/src/libs/auth";
+import { sweetErrorAlert, sweetMixinErrorAlert } from "@/src/libs/sweetAlert";
+import { logInPartner, signUpPartner } from "@/src/libs/auth";
+import {
+  partnerLoginInputValue,
+  setLoginPartnerEmail,
+  setLoginPartnerPassword,
+} from "@/src/slices/partnerLoginSlice";
 
 type Inputs = {
   email: string;
@@ -41,6 +46,7 @@ const CreateAccount = () => {
   const [phone, setPhone] = useState("");
   const dispatch = useDispatch();
   const partnerInput = useSelector(partnerSignupInputValue);
+  const partnerLoginInput = useSelector(partnerLoginInputValue);
   const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
   const [isConfirmed, setIsConfirmed] = useState(false);
 
@@ -63,6 +69,18 @@ const CreateAccount = () => {
       router.push("/register-property/add-new-property");
     }
   };
+
+  const handleLogin = useCallback(async () => {
+    try {
+      await logInPartner(
+        partnerLoginInput.partnerEmail,
+        partnerLoginInput.partnerPassword
+      );
+      await router.push("/register-property/add-new-property");
+    } catch (err: any) {
+      await sweetMixinErrorAlert(err.message);
+    }
+  }, [partnerLoginInput]);
 
   console.log("Full partner input:", partnerInput);
 
@@ -460,6 +478,10 @@ const CreateAccount = () => {
                       sx={{ width: 399 }}
                       {...register("email")}
                       required={true}
+                      onChange={(e: any) => {
+                        dispatch(setLoginPartnerEmail(e.target.value));
+                      }}
+                      value={partnerLoginInput.partnerEmail}
                     />
                   </Stack>
                   <Stack>
@@ -470,6 +492,10 @@ const CreateAccount = () => {
                       sx={{ width: 399 }}
                       {...register("password")}
                       required={true}
+                      onChange={(e: any) => {
+                        dispatch(setLoginPartnerPassword(e.target.value));
+                      }}
+                      value={partnerLoginInput.partnerPassword}
                     />
                   </Stack>
 
@@ -485,9 +511,7 @@ const CreateAccount = () => {
                       fontSize: 18,
                       color: "white",
                     }}
-                    onClick={() =>
-                      router.push("/register-property/add-new-property")
-                    }
+                    onClick={() => handleLogin()}
                   >
                     Next
                   </Button>
