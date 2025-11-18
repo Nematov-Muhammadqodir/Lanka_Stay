@@ -75,3 +75,43 @@ export const UPDATE_GUEST = gql`
     }
   }
 `;
+
+/**************************
+ *         PARTNER        *
+ *************************/
+
+export const PARTNER_SIGNUP = gql`
+  mutation PartnerSignup($input: PartnerInput!) {
+    partnerSignup(input: $input) {
+      _id
+      partnerEmail
+      partnerFirstName
+      partnerLastName
+      partnerPhoneNumber
+      partnerPassword
+      userRole
+      createdAt
+      updatedAt
+      accessToken
+      memberStatus
+    }
+  }
+`;
+
+export const PARTNER_LOGIN = gql`
+  mutation PartnerLogin($input: PartnerLoginInput!) {
+    partnerLogin(input: $input) {
+      _id
+      partnerEmail
+      partnerFirstName
+      partnerLastName
+      partnerPhoneNumber
+      partnerPassword
+      userRole
+      createdAt
+      updatedAt
+      accessToken
+      memberStatus
+    }
+  }
+`;

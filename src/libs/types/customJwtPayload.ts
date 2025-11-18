@@ -16,3 +16,14 @@ export interface CustomJwtPayload extends JwtPayload {
   guestPoints?: number;
   userRole: string;
 }
+
+export interface CustomJwtPartnerPayload extends JwtPayload {
+  _id: string;
+  partnerEmail: string;
+  partnerFirstName: string;
+  partnerLastName: string;
+  partnerPhoneNumber: string;
+  partnerPassword: string;
+  userRole: string;
+  memberStatus: string;
+}

@@ -123,7 +123,7 @@ export default function CreateAccountTop() {
         sx={{ widows: "100%" }}
       >
         <Stack className="logo-container" flexDirection={"row"} sx={{ gap: 2 }}>
-          <Link href="/">
+          <Link href="/register-property">
             <Image src="/file.svg" alt="Logo" width={150} height={30} />
           </Link>
         </Stack>

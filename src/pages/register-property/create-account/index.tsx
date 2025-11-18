@@ -24,6 +24,7 @@ import {
 } from "@/src/slices/partnerSlice";
 import { Messages } from "@/src/libs/config";
 import { sweetErrorAlert } from "@/src/libs/sweetAlert";
+import { signUpPartner } from "@/src/libs/auth";
 
 type Inputs = {
   email: string;
@@ -51,6 +52,14 @@ const CreateAccount = () => {
     if (confirmPasswordValue !== partnerInput.partnerPassword) {
       await sweetErrorAlert(Messages.error6);
     } else {
+      await signUpPartner(
+        partnerInput.partnerEmail,
+        partnerInput.partnerFirstName,
+        partnerInput.partnerLastName,
+        partnerInput.partnerPhoneNumber,
+        partnerInput.partnerPassword,
+        partnerInput.userRole
+      );
       router.push("/register-property/add-new-property");
     }
   };

@@ -1,32 +1,33 @@
 export enum GuestType {
-  SINGLE = "Single",
-  COUPLE = "Couple",
-  FAMILY = "Family",
-  BUSINESS = "Business",
-  FRIENDS = "Friends",
-  OTHER = "Other",
+  SINGLE = "SINGLE",
+  COUPLE = "COUPLE",
+  FAMILY = "FAMILY",
+  BUSINESS = "BUSINESS",
+  FRIENDS = "FRIENDS",
+  OTHER = "OTHER",
 }
 
 export enum UserRole {
-  HOTEL_OWNER = "Hotel Owner",
-  ADMIN = "Admin",
-  GUEST = "Guest",
+  HOTEL_OWNER = "HOTEL_OWNER",
+  ADMIN = "ADMIN",
+  GUEST = "GUEST",
 }
 
 export enum GuestStatus {
-  ACTIVE = "Active",
-  BLOCK = "Block",
-  DELETE = "Delete",
+  ACTIVE = "ACTIVE",
+  BLOCK = "BLOCK",
+  DELETE = "DELETE",
 }
 
 export enum GuestAuthType {
-  EMAIL = "Email",
-  GOOGLE = "Google",
-  PHONE = "Phone",
-  TELEGRAM = "Telegram",
+  EMAIL = "EMAIL",
+  GOOGLE = "GOOGLE",
+  PHONE = "PHONE",
+  TELEGRAM = "TELEGRAM",
 }
+
 export enum GuestGender {
-  MALE = "Male",
-  FEMALE = "Female",
-  OTHER = "Other",
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+  OTHER = "OTHER",
 }
