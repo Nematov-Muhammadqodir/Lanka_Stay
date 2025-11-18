@@ -18,8 +18,18 @@ export function getJwtToken(): any {
   }
 }
 
+export function getPartnerJwtToken(): any {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("accessPartnerToken") ?? "";
+  }
+}
+
 export function setJwtToken(token: string) {
   localStorage.setItem("accessToken", token);
+}
+
+export function setPartnerJwtToken(token: string) {
+  localStorage.setItem("accessPartnerToken", token);
 }
 
 export const logIn = async (email: string, password: string): Promise<void> => {
@@ -125,7 +135,7 @@ export const signUpPartner = async (
     });
 
     if (jwtToken) {
-      updateStorage({ jwtToken });
+      updatePartnerStorage({ jwtToken });
       updatePartnerInfo(jwtToken);
     }
   } catch (err) {
@@ -194,6 +204,7 @@ const requestSignUpJwtToken = async ({
     throw new Error("token error");
   }
 };
+
 const requestPartnerSignUpJwtToken = async ({
   partnerEmail,
   partnerFirstName,
@@ -251,6 +262,11 @@ export const updateStorage = ({ jwtToken }: { jwtToken: any }) => {
   window.localStorage.setItem("login", Date.now().toString());
 };
 
+export const updatePartnerStorage = ({ jwtToken }: { jwtToken: any }) => {
+  setPartnerJwtToken(jwtToken);
+  window.localStorage.setItem("loginPartner", Date.now().toString());
+};
+
 export const updateUserInfo = (jwtToken: any) => {
   if (!jwtToken) return false;
 
@@ -298,7 +314,7 @@ export const logOut = () => {
   // window.location.reload();
 };
 export const logOutPartner = () => {
-  deleteStorage();
+  deleteParterStorage();
   deletePartnerInfo();
   // window.location.reload();
 };
@@ -306,6 +322,11 @@ export const logOutPartner = () => {
 const deleteStorage = () => {
   localStorage.removeItem("accessToken");
   window.localStorage.setItem("logout", Date.now().toString());
+};
+
+const deleteParterStorage = () => {
+  localStorage.removeItem("accessPatnerToken");
+  window.localStorage.setItem("logoutPartner", Date.now().toString());
 };
 
 const deleteUserInfo = () => {
