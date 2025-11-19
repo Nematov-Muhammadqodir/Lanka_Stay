@@ -387,3 +387,5 @@ const RoomDetails = () => {
     </LayoutCreateAccountMain>
   );
 };
+
+export default RoomDetails;

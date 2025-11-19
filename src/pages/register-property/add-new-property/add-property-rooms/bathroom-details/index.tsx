@@ -143,3 +143,5 @@ const BathRoomDetails = () => {
     </LayoutCreateAccountMain>
   );
 };
+
+export default BathRoomDetails;
