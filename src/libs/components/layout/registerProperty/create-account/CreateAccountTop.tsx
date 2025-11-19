@@ -25,6 +25,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AddHomeWorkIcon from "@mui/icons-material/AddHomeWork";
 
 import _Flag from "react-world-flags";
+import { logOutPartner } from "@/src/libs/auth";
 
 const Flag = _Flag as unknown as React.FC<{
   code: string;
@@ -78,7 +79,8 @@ const StyledMenu = styled((props: MenuProps) => (
   },
 }));
 
-export default function CreateAccountTop() {
+export default function CreateAccountTop(partner: any) {
+  console.log("partnerData", partner);
   const [lang, setLang] = useState("GB");
   const [anchorLangEl, setAnchorLangEl] = React.useState<null | HTMLElement>(
     null
@@ -101,6 +103,10 @@ export default function CreateAccountTop() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleSignOut = () => {
+    logOutPartner();
+  };
+
   const handleLangClose = (e: any, lang: string) => {
     setLang(lang);
     localStorage.setItem("lang", lang);
@@ -153,7 +159,7 @@ export default function CreateAccountTop() {
             {authenticated ? (
               <Stack flexDirection={"row"} alignItems={"center"}>
                 <Typography className="bold-text" sx={{ color: "white" }}>
-                  Ritz Carlton
+                  {partner?.partner?.partnerFirstName}
                 </Typography>
                 <Tooltip title="Account settings">
                   <IconButton
@@ -229,7 +235,7 @@ export default function CreateAccountTop() {
                 </ListItemIcon>
                 Add new property
               </MenuItem>
-              <MenuItem onClick={handleClose}>
+              <MenuItem onClick={handleSignOut}>
                 <ListItemIcon>
                   <Logout fontSize="small" />
                 </ListItemIcon>

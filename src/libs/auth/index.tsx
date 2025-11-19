@@ -346,6 +346,7 @@ export const updateUserInfo = (jwtToken: any) => {
 };
 
 export const updatePartnerInfo = (jwtToken: any) => {
+  console.log("partner jwtToken", jwtToken);
   if (!jwtToken) return false;
 
   const claimsPartner = decodeJWT<CustomJwtPartnerPayload>(jwtToken);

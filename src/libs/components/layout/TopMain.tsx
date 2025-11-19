@@ -109,7 +109,6 @@ export default function TopMain(user: any) {
     setAnchorLangEl(null);
   };
   const router = useRouter();
-  console.log("user image:", user.user);
   return (
     <Stack
       className="container"

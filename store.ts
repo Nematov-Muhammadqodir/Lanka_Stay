@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import partnerSignupInput from "./src/slices/partnerSlice";
 import partnerLoginInput from "./src/slices/partnerLoginSlice";
+import partnerPropertyInput from "./src/slices/createPartnerPropertySlice";
 
 export const store = configureStore({
   reducer: {
     partnerSignupInput: partnerSignupInput,
     partnerLoginInput: partnerLoginInput,
+    partnerPropertyInput: partnerPropertyInput,
   },
 });
 

@@ -6,7 +6,7 @@ import TopHome from "./TopHome";
 import Filtering from "./Filtering";
 import Footer from "./Footer";
 import { useReactiveVar } from "@apollo/client";
-import { userVar } from "@/apollo/store";
+import { partnerVar, userVar } from "@/apollo/store";
 import { UserRole } from "../../enums/user.enum";
 import { useRouter } from "next/router";
 import { getJwtToken, updateUserInfo } from "../../auth";
@@ -15,6 +15,8 @@ const withLayoutMain = (Component: ComponentType) => {
   return (props: object) => {
     const router = useRouter();
     const user = useReactiveVar(userVar);
+    const partner = useReactiveVar(partnerVar);
+    console.log("partner", partner);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
       if (!loading && user.userRole !== UserRole.ADMIN) {

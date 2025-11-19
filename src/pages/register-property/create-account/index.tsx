@@ -42,8 +42,6 @@ const CreateAccount = () => {
   const router = useRouter();
   const [signUp, setSignUp] = useState(true);
   const [signUpStage, setSignUpStage] = useState("email");
-  // email, contactDetails, createPassword
-  const [phone, setPhone] = useState("");
   const dispatch = useDispatch();
   const partnerInput = useSelector(partnerSignupInputValue);
   const partnerLoginInput = useSelector(partnerLoginInputValue);
