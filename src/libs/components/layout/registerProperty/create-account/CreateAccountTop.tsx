@@ -80,7 +80,6 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 
 export default function CreateAccountTop(partner: any) {
-  console.log("partnerData", partner);
   const [lang, setLang] = useState("GB");
   const [anchorLangEl, setAnchorLangEl] = React.useState<null | HTMLElement>(
     null

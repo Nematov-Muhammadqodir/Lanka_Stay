@@ -2,10 +2,18 @@ import React, { useState } from "react";
 import { Button, Stack, Typography } from "@mui/material";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  partnerPropertyInputValue,
+  setPropertyType,
+} from "@/src/slices/createPartnerPropertySlice";
 
 const PropertyCategoryList = () => {
+  const dispatch = useDispatch();
+  const partnerPropertyInput = useSelector(partnerPropertyInputValue);
+  console.log("partnerPropertyInput", partnerPropertyInput);
   const router = useRouter();
-  const [category, setCategory] = useState("");
+
   const propertyCategories = [
     {
       type: "Hotel",
@@ -13,12 +21,12 @@ const PropertyCategoryList = () => {
         "Accommodation for travellers often offering restaurants, meeting rooms and other guest services",
     },
     {
-      type: "Guest house",
+      type: "Guest House",
       describtion:
         "Private home with separate living facilities for host and guest",
     },
     {
-      type: "Bed and breakfast",
+      type: "Bed and Breakfast",
       describtion: "Private home offering overnight stays and breakfast",
     },
     {
@@ -37,16 +45,16 @@ const PropertyCategoryList = () => {
         "A self-catering apartment with some hotel facilities like a reception desk",
     },
     {
-      type: "Capsule hotel",
+      type: "Capsule Hotel",
       describtion:
         "Extremely small units or capsules offering cheap and basic overnight accommodation",
     },
     {
-      type: "Country house",
+      type: "Country House",
       describtion: "Private home with simple accommodation in the countryside",
     },
     {
-      type: "Farm stay",
+      type: "Farm Stay",
       describtion: "Private farm with simple accommodation",
     },
     {
@@ -54,7 +62,7 @@ const PropertyCategoryList = () => {
       describtion: "Small and basic accommodation with a rustic feel",
     },
     {
-      type: "Love hotel",
+      type: "Love Hotel",
       describtion: "Adult-only accommodation rented per hour or night",
     },
     {
@@ -106,7 +114,13 @@ const PropertyCategoryList = () => {
             return (
               <Button
                 sx={{ textTransform: "capitalize" }}
-                onClick={() => setCategory(propertyCategory.type)}
+                onClick={() => {
+                  dispatch(
+                    setPropertyType(
+                      propertyCategory?.type.replace(" ", "_").toUpperCase()
+                    )
+                  );
+                }}
                 key={index}
               >
                 <Stack
@@ -114,11 +128,15 @@ const PropertyCategoryList = () => {
                     width: 305,
                     height: "auto",
                     border:
-                      category === propertyCategory.type
+                      partnerPropertyInput.propertyType
+                        .replace("_", " ")
+                        .toLowerCase() === propertyCategory.type.toLowerCase()
                         ? "3px solid"
                         : "1px solid",
                     borderColor:
-                      category === propertyCategory.type
+                      partnerPropertyInput.propertyType
+                        .replace("_", " ")
+                        .toLowerCase() === propertyCategory.type.toLowerCase()
                         ? "primary.main"
                         : "text.disabled",
                     borderRadius: 3,
@@ -160,7 +178,9 @@ const PropertyCategoryList = () => {
               color: "white",
             }}
             onClick={() =>
-              router.push("/register-property/add-new-property/address")
+              partnerPropertyInput.propertyType !== null
+                ? router.push("/register-property/add-new-property/address")
+                : router.push("/register-property/add-new-property")
             }
           >
             Continue

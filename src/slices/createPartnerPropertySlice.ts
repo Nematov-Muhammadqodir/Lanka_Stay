@@ -17,28 +17,21 @@ interface PartnerPropertyInputState {
 }
 
 const defaultInput: PartnerPropertyInput = {
-  partnerId: "",
   propertyType: PropertyType.HOTEL,
   propertyCountry: "",
   propertyRegion: "",
   propertyCity: "",
   propertyPostCode: "",
   propertyName: "",
-  propertyStars: 1,
-  propertyFacilities: [
-    PropertyFacilities.AIR_CONDITIONING,
-    PropertyFacilities.AIR_CONDITIONING,
-  ],
+  propertyStars: 0,
+  propertyFacilities: [],
   breakfastIncluded: false,
   parkingIncluded: false,
-  hotelStaffLanguages: [
-    HotelStaffLanguages.ENGLISH,
-    HotelStaffLanguages.KOREAN,
-  ],
-  checkInTimeFrom: "",
-  checkInTimeUntill: "",
-  checkOutTimeFrom: "",
-  checkOutTimeUntill: "",
+  hotelStaffLanguages: [HotelStaffLanguages.ENGLISH],
+  checkInTimeFrom: "00:00",
+  checkInTimeUntill: "00:00",
+  checkOutTimeFrom: "00:00",
+  checkOutTimeUntill: "00:00",
   allowChildren: false,
   allowPets: false,
 };
@@ -53,9 +46,6 @@ const partnerPropertySlice = createSlice({
   name: "partnerPropertyInput",
   initialState,
   reducers: {
-    setPartnerId: (state, action) => {
-      state.input.partnerId = action.payload;
-    },
     setPropertyType: (state, action) => {
       state.input.propertyType = action.payload;
     },
@@ -78,8 +68,21 @@ const partnerPropertySlice = createSlice({
       state.input.propertyStars = action.payload;
     },
     setPropertyFacilities: (state, action) => {
-      state.input.propertyFacilities = action.payload;
+      const facility = action.payload;
+
+      const exists = state.input.propertyFacilities.includes(facility);
+
+      if (exists) {
+        // remove
+        state.input.propertyFacilities = state.input.propertyFacilities.filter(
+          (item) => item !== facility
+        );
+      } else {
+        // add
+        state.input.propertyFacilities.push(facility);
+      }
     },
+
     setBreakfastIncluded: (state, action) => {
       state.input.breakfastIncluded = action.payload;
     },
@@ -111,7 +114,6 @@ const partnerPropertySlice = createSlice({
 });
 
 export const {
-  setPartnerId,
   setPropertyType,
   setPropertyCountry,
   setPropertyRegion,

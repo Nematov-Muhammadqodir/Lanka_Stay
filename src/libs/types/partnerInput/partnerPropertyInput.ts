@@ -5,7 +5,6 @@ import {
 } from "../../enums/property.enum";
 
 export interface PartnerPropertyInput {
-  partnerId: string;
   propertyType: PropertyType;
   propertyCountry: string;
   propertyRegion: string;

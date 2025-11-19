@@ -10,14 +10,21 @@ import {
 import createUploadLink from "apollo-upload-client/public/createUploadLink.js";
 import { onError } from "@apollo/client/link/error";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
-import { getJwtToken } from "@/src/libs/auth";
+import { getJwtToken, getPartnerJwtToken } from "@/src/libs/auth";
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
 function getHeaders() {
-  const headers = {} as HeadersInit;
-  const token = getJwtToken();
-  // @ts-ignore
-  if (token) headers["Authorization"] = `Bearer ${token}`;
+  const headers: HeadersInit = {};
+  let token = getPartnerJwtToken(); // first try partner token
+
+  if (!token) {
+    token = getJwtToken(); // fallback to guest token
+  }
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   return headers;
 }
 

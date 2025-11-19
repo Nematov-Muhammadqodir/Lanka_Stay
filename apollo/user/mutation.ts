@@ -115,3 +115,48 @@ export const PARTNER_LOGIN = gql`
     }
   }
 `;
+
+export const CREATE_PARTNER_PROPERTY = gql`
+  mutation CreatePartnerProperty($input: PartnerPropertyInput!) {
+    createPartnerProperty(input: $input) {
+      _id
+      partnerId
+      propertyType
+      propertyCountry
+      propertyRegion
+      propertyCity
+      propertyPostCode
+      propertyName
+      propertyStars
+      propertyRooms
+      propertyViews
+      propertyComments
+      propertyFacilities
+      breakfastIncluded
+      parkingIncluded
+      hotelStaffLanguages
+      checkInTimeFrom
+      propertyStatus
+      checkInTimeUntill
+      checkOutTimeFrom
+      checkOutTimeUntill
+      allowChildren
+      allowPets
+      createdAt
+      updatedAt
+      memberData {
+        _id
+        partnerEmail
+        partnerFirstName
+        partnerLastName
+        partnerPhoneNumber
+        partnerPassword
+        userRole
+        createdAt
+        updatedAt
+        accessToken
+        memberStatus
+      }
+    }
+  }
+`;
