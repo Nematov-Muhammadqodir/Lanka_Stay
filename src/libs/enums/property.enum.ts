@@ -48,3 +48,9 @@ export enum HotelStaffLanguages {
   RUSSIAN = "RUSSIAN",
   SPANISH = "SPANISH",
 }
+
+export enum PropertyStatus {
+  ACTIVE = "ACTIVE",
+  SOLD = "SOLD",
+  DELETE = "DELETE",
+}

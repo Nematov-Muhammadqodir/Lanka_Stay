@@ -160,3 +160,29 @@ export const CREATE_PARTNER_PROPERTY = gql`
     }
   }
 `;
+
+export const CREATE_PARTNER_PROPERTY_ROOM = gql`
+  mutation CreatePartnerPropertyRoom($input: PartnerPropertyRoomInput!) {
+    createPartnerPropertyRoom(input: $input) {
+      _id
+      propertyId
+      roomType
+      currentRoomTypeAmount
+      numberOfGuestsCanStay
+      isSmokingAllowed
+      isBathroomPrivate
+      availableBathroomFacilities
+      roomFacilities
+      roomName
+      roomPricePerNight
+      createdAt
+      updatedAt
+      availableBeds {
+        single
+        double
+        king
+        superKing
+      }
+    }
+  }
+`;

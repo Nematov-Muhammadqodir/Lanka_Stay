@@ -1,22 +1,33 @@
-import React, { useState } from "react";
-import withLayoutCreateAccountMain from "@/src/libs/components/layout/registerProperty/create-account/CreateAccountMainLayout";
-import { Button, Stack, Typography } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import { useRouter } from "next/router";
+import React from "react";
+import {
+  Button,
+  Stack,
+  Typography,
+  FormControl,
+  Select,
+  MenuItem,
+  Box,
+  InputLabel,
+} from "@mui/material";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
+import { useRouter } from "next/router";
 import LayoutCreateAccountMain from "@/src/libs/components/layout/registerProperty/create-account/CreateAccountMainLayout";
+
+import { useSelector, useDispatch } from "react-redux";
+import {
+  partnerPropertyRoomInputValue,
+  setRoomName,
+} from "@/src/slices/partnerPropertyRoomSlice";
+import { RoomNames } from "@/src/libs/enums/propertyRoom.enum";
 
 const RoomName = () => {
   const router = useRouter();
-  const [bedType, setBedType] = React.useState("");
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setBedType(event.target.value as string);
+  const dispatch = useDispatch();
+  const roomInput = useSelector(partnerPropertyRoomInputValue);
+  console.log("partnerPropertyRoomInput", roomInput);
+  const handleChange = (event: any) => {
+    dispatch(setRoomName(event.target.value));
   };
 
   return (
@@ -30,7 +41,6 @@ const RoomName = () => {
             <Stack sx={{ flexDirection: "row", gap: 3 }}>
               <Stack
                 width={500}
-                height={"auto"}
                 border={"1px solid black"}
                 sx={{ backgroundColor: "white" }}
                 p={2}
@@ -47,32 +57,22 @@ const RoomName = () => {
                     Room name
                   </Typography>
                 </Stack>
+
                 <Box sx={{ minWidth: 120 }}>
                   <FormControl fullWidth>
                     <InputLabel id="room-name-select-label">
                       Room name
                     </InputLabel>
                     <Select
-                      labelId="demo-simple-select-label"
-                      value={bedType}
-                      label="Room Type"
+                      labelId="room-name-select-label"
+                      value={roomInput.roomName}
                       onChange={handleChange}
                     >
-                      <MenuItem value={10}>Budget Double Room</MenuItem>
-                      <MenuItem value={20}>
-                        Business Double Room with Gym Access
-                      </MenuItem>
-                      <MenuItem value={30}>Delux Double Room</MenuItem>
-                      <MenuItem value={30}>
-                        Delux Double Room with Balcony
-                      </MenuItem>
-                      <MenuItem value={30}>Delux King Room</MenuItem>
-                      <MenuItem value={30}>Delux Queen Room</MenuItem>
-                      <MenuItem value={30}>Delux Room</MenuItem>
-                      <MenuItem value={30}>Standard Single Room</MenuItem>
-                      <MenuItem value={30}>Standard Double Room</MenuItem>
-                      <MenuItem value={30}>Standard Queen Room</MenuItem>
-                      <MenuItem value={30}>Standard King Room</MenuItem>
+                      {Object.entries(RoomNames).map(([key, value]) => (
+                        <MenuItem key={key} value={value}>
+                          {value.replace(/_/g, " ")}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </Box>
@@ -80,14 +80,12 @@ const RoomName = () => {
 
               <Stack
                 width={400}
-                height={"auto"}
                 border={"1px solid black"}
                 sx={{ backgroundColor: "white" }}
                 p={2}
                 gap={1.5}
                 borderRadius={2}
                 borderColor={"#E7E7E7"}
-                justifyContent={"space-between"}
               >
                 <Stack gap={1} sx={{ flexDirection: "row" }}>
                   <LightbulbIcon />
@@ -129,11 +127,7 @@ const RoomName = () => {
             >
               <Button
                 variant="outlined"
-                sx={{
-                  height: 40,
-                  fontWeight: "bold",
-                  width: "30%",
-                }}
+                sx={{ height: 40, fontWeight: "bold", width: "30%" }}
                 onClick={() =>
                   router.push(
                     "/register-property/add-new-property/add-property-rooms/room-facilities"
