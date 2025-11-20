@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import withLayoutCreateAccountMain from "@/src/libs/components/layout/registerProperty/create-account/CreateAccountMainLayout";
 import {
   Button,
   IconButton,
@@ -22,19 +21,62 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { useRouter } from "next/router";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import LayoutCreateAccountMain from "@/src/libs/components/layout/registerProperty/create-account/CreateAccountMainLayout";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  partnerPropertyRoomInputValue,
+  setAvailableBedDouble,
+  setAvailableBedKing,
+  setAvailableBedSingle,
+  setAvailableBedSuperKing,
+  setCurrentRoomTypeAmount,
+  setRoomType,
+  setIsSmokingAllowed,
+  setNumberOfGuestsCanStay,
+} from "@/src/slices/partnerPropertyRoomSlice";
+import { RoomTypes } from "@/src/libs/enums/propertyRoom.enum";
+import { sweetBasicAlert } from "@/src/libs/sweetAlert";
 
 const RoomDetails = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const partnerPropertyRoomInput = useSelector(partnerPropertyRoomInputValue);
+  console.log("partnerPropertyRoomInput", partnerPropertyRoomInput);
   const [bedType, setBedType] = React.useState("");
   const [value, setValue] = useState(1);
-  const [isSmokingAllowed, setIsSmokingAllowed] = useState<boolean>(false);
 
   const handleChange = (event: SelectChangeEvent) => {
     setBedType(event.target.value as string);
+    dispatch(setRoomType(event.target.value));
   };
-  const handleIsSmokingAllowedChange = (event: SelectChangeEvent) => {
-    setIsSmokingAllowed(event.target.value === "true");
+
+  const handleSingleBedChange = (amount: number) => {
+    if (amount >= 0) dispatch(setAvailableBedSingle(amount));
   };
+
+  const handleDoubleBedChange = (amount: number) => {
+    if (amount >= 0) dispatch(setAvailableBedDouble(amount));
+  };
+
+  const handleKingBedChange = (amount: number) => {
+    if (amount >= 0) dispatch(setAvailableBedKing(amount));
+  };
+
+  const handleSuperKingBedChange = (amount: number) => {
+    if (amount >= 0) dispatch(setAvailableBedSuperKing(amount));
+  };
+
+  const handleGuestsChange = (amount: number) => {
+    if (amount < 0) return;
+    dispatch(setNumberOfGuestsCanStay(amount));
+  };
+
+  const handleIsSmokingAllowedChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    dispatch(setIsSmokingAllowed(event.target.value === "true"));
+  };
+
+  const roomTypesArray = Object.values(RoomTypes);
   return (
     <LayoutCreateAccountMain>
       <Stack sx={{ backgroundColor: "#FAF8FA", height: "auto", pb: 20 }}>
@@ -69,18 +111,9 @@ const RoomDetails = () => {
                     label="Room Type"
                     onChange={handleChange}
                   >
-                    <MenuItem value={10}>Single</MenuItem>
-                    <MenuItem value={20}>Double</MenuItem>
-                    <MenuItem value={30}>Family</MenuItem>
-                    <MenuItem value={30}>Twin</MenuItem>
-                    <MenuItem value={30}>Twin/Double</MenuItem>
-                    <MenuItem value={30}>Triple</MenuItem>
-                    <MenuItem value={30}>Quadruple</MenuItem>
-                    <MenuItem value={30}>Suite</MenuItem>
-                    <MenuItem value={30}>Studio</MenuItem>
-                    <MenuItem value={30}>Apartment</MenuItem>
-                    <MenuItem value={30}>Dormitory Room</MenuItem>
-                    <MenuItem value={30}>Bed in Dormitory</MenuItem>
+                    {roomTypesArray.map((roomType, index) => {
+                      return <MenuItem value={roomType}>{roomType}</MenuItem>;
+                    })}
                   </Select>
                 </FormControl>
               </Box>
@@ -89,7 +122,14 @@ const RoomDetails = () => {
               </Typography>
               <Box sx={{ maxWidth: 120 }}>
                 <FormControl fullWidth>
-                  <TextField type="number" />
+                  <TextField
+                    type="number"
+                    onChange={(e) => {
+                      dispatch(
+                        setCurrentRoomTypeAmount(Number(e.target.value))
+                      );
+                    }}
+                  />
                 </FormControl>
               </Box>
             </Stack>
@@ -134,15 +174,27 @@ const RoomDetails = () => {
                   width={150}
                   padding="4px 2px"
                 >
-                  <IconButton onClick={() => setValue(value - 1)}>
+                  <IconButton
+                    onClick={() =>
+                      handleSingleBedChange(
+                        partnerPropertyRoomInput.availableBeds.single - 1
+                      )
+                    }
+                  >
                     <RemoveIcon sx={{ color: "#4f46e5" }} />
                   </IconButton>
 
                   <Typography fontSize={20} fontWeight={500}>
-                    2
+                    {partnerPropertyRoomInput.availableBeds.single}
                   </Typography>
 
-                  <IconButton onClick={() => setValue(value + 1)}>
+                  <IconButton
+                    onClick={() =>
+                      handleSingleBedChange(
+                        partnerPropertyRoomInput.availableBeds.single + 1
+                      )
+                    }
+                  >
                     <AddIcon sx={{ color: "#4f46e5" }} />
                   </IconButton>
                 </Box>
@@ -175,15 +227,27 @@ const RoomDetails = () => {
                   width={150}
                   padding="4px 2px"
                 >
-                  <IconButton onClick={() => setValue(value - 1)}>
+                  <IconButton
+                    onClick={() =>
+                      handleDoubleBedChange(
+                        partnerPropertyRoomInput.availableBeds.double - 1
+                      )
+                    }
+                  >
                     <RemoveIcon sx={{ color: "#4f46e5" }} />
                   </IconButton>
 
                   <Typography fontSize={20} fontWeight={500}>
-                    2
+                    {partnerPropertyRoomInput.availableBeds.double}
                   </Typography>
 
-                  <IconButton onClick={() => setValue(value + 1)}>
+                  <IconButton
+                    onClick={() =>
+                      handleDoubleBedChange(
+                        partnerPropertyRoomInput.availableBeds.double + 1
+                      )
+                    }
+                  >
                     <AddIcon sx={{ color: "#4f46e5" }} />
                   </IconButton>
                 </Box>
@@ -200,7 +264,7 @@ const RoomDetails = () => {
                   <KingBedIcon sx={{ fontSize: 50, color: "#A2A2A2" }} />
                   <Stack>
                     <Typography className="bold-text-medium">
-                      Large bed (King size)
+                      King size
                     </Typography>
                     <Typography className="small-text">
                       151 - 180 cm wide
@@ -216,15 +280,27 @@ const RoomDetails = () => {
                   width={150}
                   padding="4px 2px"
                 >
-                  <IconButton onClick={() => setValue(value - 1)}>
+                  <IconButton
+                    onClick={() =>
+                      handleKingBedChange(
+                        partnerPropertyRoomInput.availableBeds.king - 1
+                      )
+                    }
+                  >
                     <RemoveIcon sx={{ color: "#4f46e5" }} />
                   </IconButton>
 
                   <Typography fontSize={20} fontWeight={500}>
-                    2
+                    {partnerPropertyRoomInput.availableBeds.king}
                   </Typography>
 
-                  <IconButton onClick={() => setValue(value + 1)}>
+                  <IconButton
+                    onClick={() =>
+                      handleKingBedChange(
+                        partnerPropertyRoomInput.availableBeds.king + 1
+                      )
+                    }
+                  >
                     <AddIcon sx={{ color: "#4f46e5" }} />
                   </IconButton>
                 </Box>
@@ -241,7 +317,7 @@ const RoomDetails = () => {
                   <KingBedIcon sx={{ fontSize: 50, color: "#A2A2A2" }} />
                   <Stack>
                     <Typography className="bold-text-medium">
-                      Extra-large double bed (Super-king size)
+                      Super-king size
                     </Typography>
                     <Typography className="small-text">
                       181 - 210 cm wide
@@ -257,15 +333,27 @@ const RoomDetails = () => {
                   width={150}
                   padding="4px 2px"
                 >
-                  <IconButton onClick={() => setValue(value - 1)}>
+                  <IconButton
+                    onClick={() =>
+                      handleSuperKingBedChange(
+                        partnerPropertyRoomInput.availableBeds.superKing - 1
+                      )
+                    }
+                  >
                     <RemoveIcon sx={{ color: "#4f46e5" }} />
                   </IconButton>
 
                   <Typography fontSize={20} fontWeight={500}>
-                    2
+                    {partnerPropertyRoomInput.availableBeds.superKing}
                   </Typography>
 
-                  <IconButton onClick={() => setValue(value + 1)}>
+                  <IconButton
+                    onClick={() =>
+                      handleSuperKingBedChange(
+                        partnerPropertyRoomInput.availableBeds.superKing + 1
+                      )
+                    }
+                  >
                     <AddIcon sx={{ color: "#4f46e5" }} />
                   </IconButton>
                 </Box>
@@ -286,6 +374,7 @@ const RoomDetails = () => {
                 <Typography className="bold-text-medium">
                   How many guests can stay in this room?
                 </Typography>
+
                 <Box
                   display="flex"
                   alignItems="center"
@@ -295,19 +384,32 @@ const RoomDetails = () => {
                   width={150}
                   padding="4px 2px"
                 >
-                  <IconButton onClick={() => setValue(value - 1)}>
+                  <IconButton
+                    onClick={() =>
+                      handleGuestsChange(
+                        partnerPropertyRoomInput.numberOfGuestsCanStay - 1
+                      )
+                    }
+                  >
                     <RemoveIcon sx={{ color: "#4f46e5" }} />
                   </IconButton>
 
                   <Typography fontSize={20} fontWeight={500}>
-                    2
+                    {partnerPropertyRoomInput.numberOfGuestsCanStay}
                   </Typography>
 
-                  <IconButton onClick={() => setValue(value + 1)}>
+                  <IconButton
+                    onClick={() =>
+                      handleGuestsChange(
+                        partnerPropertyRoomInput.numberOfGuestsCanStay + 1
+                      )
+                    }
+                  >
                     <AddIcon sx={{ color: "#4f46e5" }} />
                   </IconButton>
                 </Box>
               </Stack>
+
               <Stack
                 width={500}
                 height={"auto"}
@@ -321,11 +423,11 @@ const RoomDetails = () => {
                 <Typography className="bold-text-medium">
                   Is smoking allowed in this room?
                 </Typography>
+
                 <FormControl>
                   <RadioGroup
-                    aria-labelledby="demo-controlled-radio-buttons-group"
-                    name="controlled-radio-buttons-group"
-                    value={isSmokingAllowed}
+                    name="is-smoking"
+                    value={partnerPropertyRoomInput.isSmokingAllowed}
                     onChange={handleIsSmokingAllowedChange}
                   >
                     <FormControlLabel
@@ -342,6 +444,7 @@ const RoomDetails = () => {
                 </FormControl>
               </Stack>
             </Stack>
+
             <Stack
               sx={{
                 flexDirection: "row",
@@ -372,11 +475,32 @@ const RoomDetails = () => {
                   fontWeight: "bold",
                   width: "68%",
                 }}
-                onClick={() =>
-                  router.push(
-                    "/register-property/add-new-property/add-property-rooms/bathroom-details"
-                  )
-                }
+                onClick={() => {
+                  if (
+                    partnerPropertyRoomInput.availableBeds.double === 0 &&
+                    partnerPropertyRoomInput.availableBeds.king === 0 &&
+                    partnerPropertyRoomInput.availableBeds.single === 0 &&
+                    partnerPropertyRoomInput.availableBeds.superKing === 0
+                  ) {
+                    sweetBasicAlert("Please set at least one amount of bed!");
+                    router.push(
+                      "/register-property/add-new-property/add-property-rooms/room-details"
+                    );
+                  } else if (
+                    partnerPropertyRoomInput.currentRoomTypeAmount === 0
+                  ) {
+                    sweetBasicAlert(
+                      "Please set the amount of the rooms at this type!"
+                    );
+                    router.push(
+                      "/register-property/add-new-property/add-property-rooms/room-details"
+                    );
+                  } else {
+                    router.push(
+                      "/register-property/add-new-property/add-property-rooms/bathroom-details"
+                    );
+                  }
+                }}
               >
                 Continue
               </Button>

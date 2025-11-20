@@ -5,7 +5,6 @@ import CreateAccountTop from "./CreateAccountTop";
 import { useReactiveVar } from "@apollo/client";
 import { partnerVar } from "@/apollo/store";
 import { getPartnerJwtToken, updatePartnerInfo } from "@/src/libs/auth";
-import { useRouter } from "next/router";
 
 interface LayoutCreateAccountMainProps {
   children: ReactNode;

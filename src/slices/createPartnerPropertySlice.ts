@@ -1,9 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  HotelStaffLanguages,
-  PropertyFacilities,
-  PropertyType,
-} from "../libs/enums/property.enum";
+import { HotelStaffLanguages, PropertyType } from "../libs/enums/property.enum";
 import { PartnerPropertyInput } from "../libs/types/partnerInput/partnerPropertyInput";
 import { RootState } from "@/store";
 
