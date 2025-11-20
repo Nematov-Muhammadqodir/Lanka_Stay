@@ -42,7 +42,6 @@ const RoomDetails = () => {
   const partnerPropertyRoomInput = useSelector(partnerPropertyRoomInputValue);
   console.log("partnerPropertyRoomInput", partnerPropertyRoomInput);
   const [bedType, setBedType] = React.useState("");
-  const [value, setValue] = useState(1);
 
   const handleChange = (event: SelectChangeEvent) => {
     setBedType(event.target.value as string);
