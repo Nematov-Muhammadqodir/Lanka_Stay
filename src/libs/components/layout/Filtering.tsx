@@ -1,6 +1,5 @@
 import {
   Button,
-  IconButton,
   Input,
   Menu,
   MenuItem,
@@ -34,11 +33,10 @@ import {
 export default function Filtering() {
   const dispatch = useDispatch();
   const filters = useSelector((state: RootState) => state.filters);
-  console.log("FILTERS", filters);
+
   const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => setMounted(true), []);
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [anchorElPerson, setAnchorElPerson] = useState<null | HTMLElement>(
     null
@@ -46,9 +44,11 @@ export default function Filtering() {
   const [anchorElLocation, setAnchorElLocation] = useState<null | HTMLElement>(
     null
   );
+
   const open = Boolean(anchorEl);
   const openPerson = Boolean(anchorElPerson);
   const openLocation = Boolean(anchorElLocation);
+
   const [range, setRange] = useState([
     {
       startDate: filters.startDate ? new Date(filters.startDate) : new Date(),
@@ -56,34 +56,33 @@ export default function Filtering() {
       key: "selection",
     },
   ]);
-  console.log("range", range);
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handlePersonClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElPerson(event.currentTarget);
-  };
-  const handleLocationClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElLocation(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const handlePersonClose = () => {
-    setAnchorElPerson(null);
-  };
-  const handleLocationClose = () => {
-    setAnchorElLocation(null);
-  };
 
   useEffect(() => {
     saveFiltersToLocalStorage(filters);
   }, [filters]);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) =>
+    setAnchorEl(event.currentTarget);
+  const handlePersonClick = (event: React.MouseEvent<HTMLElement>) =>
+    setAnchorElPerson(event.currentTarget);
+  const handleLocationClick = (event: React.MouseEvent<HTMLElement>) =>
+    setAnchorElLocation(event.currentTarget);
+
+  const handleClose = () => setAnchorEl(null);
+  const handlePersonClose = () => setAnchorElPerson(null);
+  const handleLocationClose = () => setAnchorElLocation(null);
+
+  // Helper for people text to avoid hydration mismatch
+  const getPeopleText = () => {
+    if (!mounted) return "Person";
+    const total = filters.adults + filters.children;
+    return `${total} Person${total > 1 ? "s" : ""}`;
+  };
+
   return (
     <Stack
       className="container"
-      width={"100%"}
+      width="100%"
       sx={{
         backgroundColor: "secondary.main",
         marginTop: "100px !important",
@@ -96,6 +95,7 @@ export default function Filtering() {
         boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.25)",
       }}
     >
+      {/* Date Picker */}
       <Stack>
         <Tooltip title="Check Available Days">
           <Button
@@ -107,7 +107,7 @@ export default function Filtering() {
               backgroundColor: "white",
               boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.15)",
               "&:hover": {
-                boxShadow: "0px 6px 14px rgba(0, 0, 0, 0.25)",
+                boxShadow: "0px 6px 14px rgba(0,0,0,0.25)",
                 backgroundColor: "#f9f9f9",
               },
               gap: "10px",
@@ -117,8 +117,8 @@ export default function Filtering() {
           >
             <CalendarMonthIcon />
             <Typography
-              fontSize={"12px"}
-              textTransform={"capitalize"}
+              fontSize="12px"
+              textTransform="capitalize"
               letterSpacing={1}
             >
               Check Available
@@ -127,38 +127,8 @@ export default function Filtering() {
         </Tooltip>
         <Menu
           anchorEl={anchorEl}
-          id="account-menu"
           open={open}
           onClose={handleClose}
-          //   onClick={handleClose}
-          slotProps={{
-            paper: {
-              elevation: 0,
-              sx: {
-                overflow: "visible",
-                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                mt: 1.5,
-                "& .MuiAvatar-root": {
-                  width: 32,
-                  height: 32,
-                  ml: -0.5,
-                  mr: 1,
-                },
-                "&::before": {
-                  content: '""',
-                  display: "block",
-                  position: "absolute",
-                  top: 0,
-                  right: 14,
-                  width: 10,
-                  height: 10,
-                  bgcolor: "background.paper",
-                  transform: "translateY(-50%) rotate(45deg)",
-                  zIndex: 0,
-                },
-              },
-            },
-          }}
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
@@ -168,9 +138,7 @@ export default function Filtering() {
               onChange={(item: any) => {
                 const start = item.selection.startDate;
                 const end = item.selection.endDate;
-
                 setRange([item.selection]);
-
                 dispatch(
                   setDates({
                     startDate: start.toISOString(),
@@ -182,6 +150,8 @@ export default function Filtering() {
           </MenuItem>
         </Menu>
       </Stack>
+
+      {/* People Selector */}
       <Stack>
         <Tooltip title="Select Amount of People">
           <Button
@@ -191,9 +161,9 @@ export default function Filtering() {
               height: "60px",
               width: "211px",
               backgroundColor: "white",
-              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.15)",
+              boxShadow: "0px 4px 10px rgba(0,0,0,0.15)",
               "&:hover": {
-                boxShadow: "0px 6px 14px rgba(0, 0, 0, 0.25)",
+                boxShadow: "0px 6px 14px rgba(0,0,0,0.25)",
                 backgroundColor: "#f9f9f9",
               },
               gap: "10px",
@@ -203,67 +173,38 @@ export default function Filtering() {
           >
             <EmojiPeopleIcon />
             <Typography
-              fontSize={"12px"}
-              textTransform={"capitalize"}
+              fontSize="12px"
+              textTransform="capitalize"
               letterSpacing={1}
             >
-              Person {filters.adults + filters.children}
+              {getPeopleText()}
             </Typography>
             <KeyboardArrowDownIcon />
           </Button>
         </Tooltip>
         <Menu
           anchorEl={anchorElPerson}
-          id="account-menu"
           open={openPerson}
           onClose={handlePersonClose}
-          slotProps={{
-            paper: {
-              elevation: 0,
-              sx: {
-                overflow: "visible",
-                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                mt: 1.5,
-                "& .MuiAvatar-root": {
-                  width: 32,
-                  height: 32,
-                  ml: -0.5,
-                  mr: 1,
-                },
-                "&::before": {
-                  content: '""',
-                  display: "block",
-                  position: "absolute",
-                  top: 0,
-                  right: 14,
-                  width: 10,
-                  height: 10,
-                  bgcolor: "background.paper",
-                  transform: "translateY(-50%) rotate(45deg)",
-                  zIndex: 0,
-                },
-              },
-            },
-          }}
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
           <Stack gap={2}>
+            {/* Adults */}
             <Stack
-              flexDirection={"row"}
-              justifyContent={"space-between"}
+              flexDirection="row"
+              justifyContent="space-between"
               width={350}
-              alignItems={"center"}
-              height={30}
-              paddingY={"30px"}
-              paddingX={"20px"}
+              alignItems="center"
+              paddingY="30px"
+              paddingX="20px"
             >
               <Typography sx={{ fontWeight: 700 }}>Adults</Typography>
               <Stack
-                flexDirection={"row"}
-                alignItems={"center"}
+                flexDirection="row"
+                alignItems="center"
                 width={100}
-                justifyContent={"space-between"}
+                justifyContent="space-between"
                 sx={{
                   border: "1px solid",
                   borderColor: "grey.300",
@@ -280,21 +221,21 @@ export default function Filtering() {
                 </Button>
               </Stack>
             </Stack>
+            {/* Children */}
             <Stack
-              flexDirection={"row"}
-              justifyContent={"space-between"}
+              flexDirection="row"
+              justifyContent="space-between"
               width={350}
-              alignItems={"center"}
-              height={30}
-              paddingY={"30px"}
-              paddingX={"20px"}
+              alignItems="center"
+              paddingY="30px"
+              paddingX="20px"
             >
               <Typography sx={{ fontWeight: 700 }}>Children</Typography>
               <Stack
-                flexDirection={"row"}
-                alignItems={"center"}
+                flexDirection="row"
+                alignItems="center"
                 width={100}
-                justifyContent={"space-between"}
+                justifyContent="space-between"
                 sx={{
                   border: "1px solid",
                   borderColor: "grey.300",
@@ -315,21 +256,21 @@ export default function Filtering() {
                 </Button>
               </Stack>
             </Stack>
+            {/* Rooms */}
             <Stack
-              flexDirection={"row"}
-              justifyContent={"space-between"}
+              flexDirection="row"
+              justifyContent="space-between"
               width={350}
-              alignItems={"center"}
-              height={30}
-              paddingY={"30px"}
-              paddingX={"20px"}
+              alignItems="center"
+              paddingY="30px"
+              paddingX="20px"
             >
               <Typography sx={{ fontWeight: 700 }}>Rooms</Typography>
               <Stack
-                flexDirection={"row"}
-                alignItems={"center"}
+                flexDirection="row"
+                alignItems="center"
                 width={100}
-                justifyContent={"space-between"}
+                justifyContent="space-between"
                 sx={{
                   border: "1px solid",
                   borderColor: "grey.300",
@@ -350,8 +291,9 @@ export default function Filtering() {
         </Menu>
       </Stack>
 
+      {/* Location */}
       <Stack>
-        <Tooltip title="Select Amount of People">
+        <Tooltip title="Select Location">
           <Button
             variant="contained"
             sx={{
@@ -359,9 +301,9 @@ export default function Filtering() {
               height: "60px",
               width: "211px",
               backgroundColor: "white",
-              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.15)",
+              boxShadow: "0px 4px 10px rgba(0,0,0,0.15)",
               "&:hover": {
-                boxShadow: "0px 6px 14px rgba(0, 0, 0, 0.25)",
+                boxShadow: "0px 6px 14px rgba(0,0,0,0.25)",
                 backgroundColor: "#f9f9f9",
               },
               gap: "10px",
@@ -370,181 +312,55 @@ export default function Filtering() {
             onClick={handleLocationClick}
           >
             <PinDropIcon />
-            <Typography fontSize={"12px"} textTransform="capitalize">
+            <Typography fontSize="12px" textTransform="capitalize">
               {!mounted ? "Location" : filters.location || "Location"}
             </Typography>
           </Button>
         </Tooltip>
         <Menu
           anchorEl={anchorElLocation}
-          id="account-menu"
           open={openLocation}
           onClose={handleLocationClose}
-          slotProps={{
-            paper: {
-              elevation: 0,
-              sx: {
-                overflow: "visible",
-                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                mt: 1.5,
-                "& .MuiAvatar-root": {
-                  width: 32,
-                  height: 32,
-                  ml: -0.5,
-                  mr: 1,
-                },
-                "&::before": {
-                  content: '""',
-                  display: "block",
-                  position: "absolute",
-                  top: 0,
-                  right: 14,
-                  width: 10,
-                  height: 10,
-                  bgcolor: "background.paper",
-                  transform: "translateY(-50%) rotate(45deg)",
-                  zIndex: 0,
-                },
-              },
-            },
-          }}
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
           <MenuItem>
-            <Stack gap={2} width={431} height={"auto"}>
-              <Stack marginBottom={1}>
-                <Input
-                  placeholder="Search for location!"
-                  onChange={(e: any) => dispatch(setLocation(e.target.value))}
-                />
-              </Stack>
-              <Stack>
-                <Typography sx={{ fontWeight: "bold", color: "text.primary" }}>
-                  Trending Destinations
-                </Typography>
-              </Stack>
-              <Stack gap={2} alignItems={"center"}>
-                <Button
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    dispatch(setLocation("Busan"));
-                    handleLocationClose();
-                  }}
-                  sx={{
-                    gap: 1,
-                    textTransform: "capitalize",
-                    borderBottom: 1,
-                    width: "100%",
-                    justifyContent: "flex-start",
-                    borderRadius: 0,
-                    borderColor: "grey.300",
-                  }}
-                >
-                  <WhereToVoteIcon />
-                  <Typography fontWeight={700}>Busan</Typography>
-                </Button>
-                <Button
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    dispatch(setLocation("Seoul"));
-                    handleLocationClose();
-                  }}
-                  sx={{
-                    gap: 1,
-                    textTransform: "capitalize",
-                    borderBottom: 1,
-                    width: "100%",
-                    justifyContent: "flex-start",
-                    borderRadius: 0,
-                    borderColor: "grey.300",
-                  }}
-                >
-                  <WhereToVoteIcon />
-                  <Typography fontWeight={700}>Seoul</Typography>
-                </Button>
-                <Button
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    dispatch(setLocation("Tokyo"));
-                    handleLocationClose();
-                  }}
-                  sx={{
-                    gap: 1,
-                    textTransform: "capitalize",
-                    borderBottom: 1,
-                    width: "100%",
-                    justifyContent: "flex-start",
-                    borderRadius: 0,
-                    borderColor: "grey.300",
-                  }}
-                >
-                  <WhereToVoteIcon />
-                  <Typography fontWeight={700}>Tokyo</Typography>
-                </Button>
-                <Button
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    dispatch(setLocation("Kyoto"));
-                    handleLocationClose();
-                  }}
-                  sx={{
-                    gap: 1,
-                    textTransform: "capitalize",
-                    borderBottom: 1,
-                    width: "100%",
-                    justifyContent: "flex-start",
-                    borderRadius: 0,
-                    borderColor: "grey.300",
-                  }}
-                >
-                  <WhereToVoteIcon />
-                  <Typography fontWeight={700}>Kyoto</Typography>
-                </Button>
-                <Button
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    dispatch(setLocation("Fukuoka"));
-                    handleLocationClose();
-                  }}
-                  sx={{
-                    gap: 1,
-                    textTransform: "capitalize",
-                    borderBottom: 1,
-                    width: "100%",
-                    justifyContent: "flex-start",
-                    borderRadius: 0,
-                    borderColor: "grey.300",
-                  }}
-                >
-                  <WhereToVoteIcon />
-                  <Typography fontWeight={700}>Fukuoka</Typography>
-                </Button>
-                <Button
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    dispatch(setLocation("Osaka"));
-                    handleLocationClose();
-                  }}
-                  sx={{
-                    gap: 1,
-                    textTransform: "capitalize",
-                    borderBottom: 1,
-                    width: "100%",
-                    justifyContent: "flex-start",
-                    borderRadius: 0,
-                    borderColor: "grey.300",
-                  }}
-                >
-                  <WhereToVoteIcon />
-                  <Typography fontWeight={700}>Osaka</Typography>
-                </Button>
-              </Stack>
+            <Stack gap={2} width={431}>
+              <Input
+                placeholder="Search for location!"
+                onChange={(e: any) => dispatch(setLocation(e.target.value))}
+              />
+              <Typography sx={{ fontWeight: "bold", color: "text.primary" }}>
+                Trending Destinations
+              </Typography>
+              {["Busan", "Seoul", "Tokyo", "Kyoto", "Fukuoka", "Osaka"].map(
+                (city) => (
+                  <Button
+                    key={city}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      dispatch(setLocation(city));
+                      handleLocationClose();
+                    }}
+                    sx={{
+                      gap: 1,
+                      textTransform: "capitalize",
+                      width: "100%",
+                      justifyContent: "flex-start",
+                      borderRadius: 0,
+                    }}
+                  >
+                    <WhereToVoteIcon />
+                    <Typography fontWeight={700}>{city}</Typography>
+                  </Button>
+                )
+              )}
             </Stack>
           </MenuItem>
         </Menu>
       </Stack>
 
+      {/* Search */}
       <Stack>
         <Button
           variant="contained"
@@ -556,11 +372,11 @@ export default function Filtering() {
             pl: "25px",
             borderRadius: "12px",
             backgroundColor: "secondary.main",
-            boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.25)", // deeper, smoother
-            transition: "all 0.3s ease", // smooth animation
+            boxShadow: "0px 8px 20px rgba(0,0,0,0.25)",
+            transition: "all 0.3s ease",
             "&:hover": {
-              boxShadow: "0px 12px 30px rgba(0, 0, 0, 0.35)", // stronger glow
-              transform: "translateY(-3px)", // slight lift on hover
+              boxShadow: "0px 12px 30px rgba(0,0,0,0.35)",
+              transform: "translateY(-3px)",
               backgroundColor: "#fafafa",
             },
           }}
