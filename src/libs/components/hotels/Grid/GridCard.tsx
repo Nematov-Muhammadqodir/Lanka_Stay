@@ -8,7 +8,8 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useRouter } from "next/router";
 
-const GridCard = () => {
+const GridCard = ({ item }: { item: any }) => {
+  console.log("itemm", item);
   const [value, setValue] = React.useState<number | null>(4);
   const router = useRouter();
   const handleClick = () => {
@@ -17,7 +18,7 @@ const GridCard = () => {
   return (
     <Stack
       width={314}
-      height={600}
+      height={620}
       border={"1px solid"}
       borderColor={"text.disabled"}
       borderRadius={3}
@@ -34,7 +35,11 @@ const GridCard = () => {
       }}
     >
       <Image
-        src={"/img/hotel.jpg"}
+        src={
+          item.propertyImages
+            ? `${process.env.NEXT_PUBLIC_API_URL}/${item.propertyImages[0]}`
+            : "/img/hotel.jpg"
+        }
         alt="left-image"
         width={312}
         height={260}
@@ -67,9 +72,9 @@ const GridCard = () => {
             flexWrap={"wrap"}
           >
             <Typography className="bold-text" color={"primary.main"}>
-              Hotel Noah
+              {item.propertyName}
             </Typography>
-            <Rating name="read-only" value={value} readOnly />
+            <Rating name="read-only" value={item.propertyStars} readOnly />
           </Stack>
           <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
             <Stack
@@ -99,7 +104,7 @@ const GridCard = () => {
           </Typography>
           <Stack>
             <Typography className="small-bold-text" color={"primary.main"}>
-              Jung-gu, Busan
+              {item.propertyCity}, {item.propertyRegion}
             </Typography>
             <Typography className="small-text">7.7 km from centre</Typography>
           </Stack>
@@ -114,7 +119,7 @@ const GridCard = () => {
           <Stack flexDirection={"row"} gap={1} color={"primary.main"}>
             <RestaurantIcon />
             <Typography className="small-bold-text">
-              Breakfast included
+              Breakfast {item.breakfastIncluded ? "" : "not"} included
             </Typography>
           </Stack>
         </Stack>
@@ -126,10 +131,14 @@ const GridCard = () => {
         <Stack p={2}>
           <Stack flexDirection={"row"} gap={1} justifyContent={"flex-end"}>
             <Typography className="small-text">9 nights,</Typography>
-            <Typography className="small-text">2 adults</Typography>
+            <Typography className="small-text">
+              {item.propertyRooms[0].numberOfGuestsCanStay} adults
+            </Typography>
           </Stack>
           <Stack alignItems={"flex-end"}>
-            <Typography className="bold-text">KRW 828,820</Typography>
+            <Typography className="bold-text">
+              KRW {item.propertyRooms[0].roomPricePerNight}
+            </Typography>
             <Typography className="small-text">
               Includes taxes and charges
             </Typography>

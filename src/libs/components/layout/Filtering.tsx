@@ -28,11 +28,15 @@ import {
   setDates,
   setLocation,
 } from "@/src/slices/filteringSlice";
+import { useQuery } from "@apollo/client";
+import { GET_ALL_AVAILABLE_PROPERTIES } from "@/apollo/user/query";
+import { T } from "../../types/common";
+import { useRouter } from "next/router";
 
 export default function Filtering() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const filters = useSelector((state: RootState) => state.filters);
-  console.log("FILTERS", filters);
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -75,6 +79,69 @@ export default function Filtering() {
     const total = (filters.adults || 0) + (filters.children || 0);
     return `${total} Person${total !== 1 ? "s" : ""}`;
   };
+
+  /** APOLLO REQUESTS **/
+  // const {
+  //   loading: getAllAvailablePropertiesLoading,
+  //   data: getAllAvailablePropertiesData,
+  //   error: getAllAvailablePropertiesError,
+  //   refetch: getAllAvailablePropertiesRefetch,
+  // } = useQuery(GET_ALL_AVAILABLE_PROPERTIES, {
+  //   fetchPolicy: "network-only",
+  //   variables: {
+  //     input: {
+  //       propertyRegion: filters.propertyRegion,
+  //       from: filters.startDate,
+  //       until: filters.endDate,
+  //       adults: filters.adults,
+  //       children: filters.children,
+  //       page: filters.page,
+  //       limit: filters.limit,
+  //     },
+  //   },
+  //   notifyOnNetworkStatusChange: true,
+  //   onCompleted: (data: T) => {
+  //     console.log(
+  //       "data.getAllAvailableProperties",
+  //       data.getAllAvailableProperties
+  //     );
+  //   },
+  // });
+
+  const { data, loading, refetch } = useQuery(GET_ALL_AVAILABLE_PROPERTIES, {
+    skip: !filters.propertyRegion, // skip if no region
+    variables: {
+      input: {
+        propertyRegion: filters.propertyRegion,
+        from: filters.startDate,
+        until: filters.endDate,
+        adults: filters.adults,
+        children: filters.children,
+        page: filters.page,
+        limit: filters.limit,
+      },
+    },
+  });
+
+  // useEffect(() => {
+  //   if (
+  //     filters.propertyRegion ||
+  //     filters.adults ||
+  //     filters.children ||
+  //     filters.endDate ||
+  //     filters.startDate ||
+  //     filters.limit ||
+  //     filters.page
+  //   ) {
+  //     refetch();
+  //   }
+  // }, [
+  //   filters.propertyRegion,
+  //   filters.startDate,
+  //   filters.endDate,
+  //   filters.adults,
+  //   filters.children,
+  // ]);
 
   return (
     <Stack
@@ -312,6 +379,21 @@ export default function Filtering() {
               transform: "translateY(-3px)",
               backgroundColor: "#fafafa",
             },
+          }}
+          disabled={loading}
+          onClick={() => {
+            refetch({
+              input: {
+                propertyRegion: filters.propertyRegion,
+                from: filters.startDate,
+                until: filters.endDate,
+                adults: filters.adults,
+                children: filters.children,
+                page: filters.page,
+                limit: filters.limit,
+              },
+            });
+            router.push("/hotels");
           }}
         >
           <Typography>Search</Typography>

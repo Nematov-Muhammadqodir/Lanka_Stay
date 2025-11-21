@@ -128,7 +128,6 @@ export const CREATE_PARTNER_PROPERTY = gql`
       propertyPostCode
       propertyName
       propertyStars
-      propertyRooms
       propertyViews
       propertyComments
       propertyFacilities
@@ -156,6 +155,29 @@ export const CREATE_PARTNER_PROPERTY = gql`
         updatedAt
         accessToken
         memberStatus
+      }
+      propertyImages
+      propertyRooms {
+        roomId
+        roomType
+        roomPricePerNight
+        numberOfGuestsCanStay
+        roomFacilities
+        availableBathroomFacilities
+        isBathroomPrivate
+        isSmokingAllowed
+        roomName
+        availableBeds {
+          single
+          double
+          king
+          superKing
+        }
+        reservedDates {
+          userId
+          from
+          until
+        }
       }
     }
   }
@@ -205,7 +227,6 @@ export const UPDATE_PARTNER_PROPERTY = gql`
       propertyPostCode
       propertyName
       propertyStars
-      propertyRooms
       propertyViews
       propertyComments
       propertyFacilities
@@ -222,6 +243,17 @@ export const UPDATE_PARTNER_PROPERTY = gql`
       allowPets
       createdAt
       updatedAt
+      propertyRooms {
+        roomId
+        roomType
+        roomPricePerNight
+        numberOfGuestsCanStay
+        roomFacilities
+        availableBathroomFacilities
+        isBathroomPrivate
+        isSmokingAllowed
+        roomName
+      }
     }
   }
 `;

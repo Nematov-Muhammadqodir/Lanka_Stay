@@ -2,8 +2,7 @@ import { Stack, Pagination } from "@mui/material";
 import React, { useState } from "react";
 import ListCard from "./ListCard";
 
-const HotelsList = () => {
-  const data = Array.from({ length: 12 }, (_, i) => i + 1);
+const HotelsList = ({ data }: { data: any[] }) => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 7;
   const startIndex = (page - 1) * itemsPerPage;

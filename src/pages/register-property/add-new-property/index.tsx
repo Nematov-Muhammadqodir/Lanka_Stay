@@ -10,13 +10,13 @@ const AddNewProperty = () => {
   const router = useRouter();
   const partner = useReactiveVar(partnerVar);
 
-  useEffect(() => {
-    if (partner._id !== "") {
-      router.push(
-        "/register-property/add-new-property/property-details-complete"
-      );
-    }
-  }, [partner]);
+  // useEffect(() => {
+  //   if (partner._id !== "") {
+  //     router.push(
+  //       "/register-property/add-new-property/property-details-complete"
+  //     );
+  //   }
+  // }, [partner]);
   return (
     <LayoutCreateAccountMain>
       <PropertyCategoryList />
