@@ -8,7 +8,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
@@ -20,8 +20,25 @@ import AddIcon from "@mui/icons-material/Add";
 import PinDropIcon from "@mui/icons-material/PinDrop";
 import WhereToVoteIcon from "@mui/icons-material/WhereToVote";
 import SearchIcon from "@mui/icons-material/Search";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import {
+  saveFiltersToLocalStorage,
+  setAdults,
+  setChildren,
+  setDates,
+  setLocation,
+  setRooms,
+} from "@/src/slices/filteringSlice";
 
 export default function Filtering() {
+  const dispatch = useDispatch();
+  const filters = useSelector((state: RootState) => state.filters);
+  console.log("FILTERS", filters);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [anchorElPerson, setAnchorElPerson] = useState<null | HTMLElement>(
     null
@@ -34,11 +51,12 @@ export default function Filtering() {
   const openLocation = Boolean(anchorElLocation);
   const [range, setRange] = useState([
     {
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: filters.startDate ? new Date(filters.startDate) : new Date(),
+      endDate: filters.endDate ? new Date(filters.endDate) : new Date(),
       key: "selection",
     },
   ]);
+  console.log("range", range);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -58,6 +76,10 @@ export default function Filtering() {
   const handleLocationClose = () => {
     setAnchorElLocation(null);
   };
+
+  useEffect(() => {
+    saveFiltersToLocalStorage(filters);
+  }, [filters]);
   return (
     <Stack
       className="container"
@@ -143,7 +165,19 @@ export default function Filtering() {
           <MenuItem>
             <DateRange
               ranges={range}
-              onChange={(item: any) => setRange([item.selection])}
+              onChange={(item: any) => {
+                const start = item.selection.startDate;
+                const end = item.selection.endDate;
+
+                setRange([item.selection]);
+
+                dispatch(
+                  setDates({
+                    startDate: start.toISOString(),
+                    endDate: end.toISOString(),
+                  })
+                );
+              }}
             />
           </MenuItem>
         </Menu>
@@ -173,7 +207,7 @@ export default function Filtering() {
               textTransform={"capitalize"}
               letterSpacing={1}
             >
-              Person 2
+              Person {filters.adults + filters.children}
             </Typography>
             <KeyboardArrowDownIcon />
           </Button>
@@ -214,105 +248,108 @@ export default function Filtering() {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <MenuItem>
-            <Stack gap={2}>
+          <Stack gap={2}>
+            <Stack
+              flexDirection={"row"}
+              justifyContent={"space-between"}
+              width={350}
+              alignItems={"center"}
+              height={30}
+              paddingY={"30px"}
+              paddingX={"20px"}
+            >
+              <Typography sx={{ fontWeight: 700 }}>Adults</Typography>
               <Stack
                 flexDirection={"row"}
-                justifyContent={"space-between"}
-                width={350}
                 alignItems={"center"}
-                height={30}
-                paddingY={"30px"}
-                paddingX={"20px"}
-              >
-                <Typography sx={{ fontWeight: 700 }}>Adults</Typography>
-                <Stack
-                  flexDirection={"row"}
-                  alignItems={"center"}
-                  width={100}
-                  justifyContent={"space-between"}
-                  sx={{
-                    border: "1px solid",
-                    borderColor: "grey.300",
-                    borderRadius: 2,
-                    paddingX: 1,
-                  }}
-                >
-                  <Button>
-                    <RemoveIcon />
-                  </Button>
-                  <Typography>2</Typography>
-                  <Button>
-                    <AddIcon />
-                  </Button>
-                </Stack>
-              </Stack>
-              <Stack
-                flexDirection={"row"}
+                width={100}
                 justifyContent={"space-between"}
-                width={350}
-                alignItems={"center"}
-                height={30}
-                paddingY={"30px"}
-                paddingX={"20px"}
+                sx={{
+                  border: "1px solid",
+                  borderColor: "grey.300",
+                  borderRadius: 2,
+                  paddingX: 1,
+                }}
               >
-                <Typography sx={{ fontWeight: 700 }}>Children</Typography>
-                <Stack
-                  flexDirection={"row"}
-                  alignItems={"center"}
-                  width={100}
-                  justifyContent={"space-between"}
-                  sx={{
-                    border: "1px solid",
-                    borderColor: "grey.300",
-                    borderRadius: 2,
-                    paddingX: 1,
-                  }}
-                >
-                  <Button>
-                    <RemoveIcon />
-                  </Button>
-                  <Typography>2</Typography>
-                  <Button>
-                    <AddIcon />
-                  </Button>
-                </Stack>
-              </Stack>
-              <Stack
-                flexDirection={"row"}
-                justifyContent={"space-between"}
-                width={350}
-                alignItems={"center"}
-                height={30}
-                paddingY={"30px"}
-                paddingX={"20px"}
-              >
-                <Typography sx={{ fontWeight: 700 }}>Rooms</Typography>
-                <Stack
-                  flexDirection={"row"}
-                  alignItems={"center"}
-                  width={100}
-                  justifyContent={"space-between"}
-                  sx={{
-                    border: "1px solid",
-                    borderColor: "grey.300",
-                    borderRadius: 2,
-                    paddingX: 1,
-                  }}
-                >
-                  <Button>
-                    <RemoveIcon />
-                  </Button>
-                  <Typography>2</Typography>
-                  <Button>
-                    <AddIcon />
-                  </Button>
-                </Stack>
+                <Button onClick={() => dispatch(setAdults(filters.adults - 1))}>
+                  <RemoveIcon />
+                </Button>
+                <Typography>{filters.adults}</Typography>
+                <Button onClick={() => dispatch(setAdults(filters.adults + 1))}>
+                  <AddIcon />
+                </Button>
               </Stack>
             </Stack>
-          </MenuItem>
+            <Stack
+              flexDirection={"row"}
+              justifyContent={"space-between"}
+              width={350}
+              alignItems={"center"}
+              height={30}
+              paddingY={"30px"}
+              paddingX={"20px"}
+            >
+              <Typography sx={{ fontWeight: 700 }}>Children</Typography>
+              <Stack
+                flexDirection={"row"}
+                alignItems={"center"}
+                width={100}
+                justifyContent={"space-between"}
+                sx={{
+                  border: "1px solid",
+                  borderColor: "grey.300",
+                  borderRadius: 2,
+                  paddingX: 1,
+                }}
+              >
+                <Button
+                  onClick={() => dispatch(setChildren(filters.children - 1))}
+                >
+                  <RemoveIcon />
+                </Button>
+                <Typography>{filters.children}</Typography>
+                <Button
+                  onClick={() => dispatch(setChildren(filters.children + 1))}
+                >
+                  <AddIcon />
+                </Button>
+              </Stack>
+            </Stack>
+            <Stack
+              flexDirection={"row"}
+              justifyContent={"space-between"}
+              width={350}
+              alignItems={"center"}
+              height={30}
+              paddingY={"30px"}
+              paddingX={"20px"}
+            >
+              <Typography sx={{ fontWeight: 700 }}>Rooms</Typography>
+              <Stack
+                flexDirection={"row"}
+                alignItems={"center"}
+                width={100}
+                justifyContent={"space-between"}
+                sx={{
+                  border: "1px solid",
+                  borderColor: "grey.300",
+                  borderRadius: 2,
+                  paddingX: 1,
+                }}
+              >
+                <Button onClick={() => dispatch(setRooms(filters.rooms - 1))}>
+                  <RemoveIcon />
+                </Button>
+                <Typography>{filters.rooms}</Typography>
+                <Button onClick={() => dispatch(setRooms(filters.rooms + 1))}>
+                  <AddIcon />
+                </Button>
+              </Stack>
+            </Stack>
+          </Stack>
         </Menu>
       </Stack>
+
       <Stack>
         <Tooltip title="Select Amount of People">
           <Button
@@ -333,12 +370,8 @@ export default function Filtering() {
             onClick={handleLocationClick}
           >
             <PinDropIcon />
-            <Typography
-              fontSize={"12px"}
-              textTransform={"capitalize"}
-              letterSpacing={1}
-            >
-              Location
+            <Typography fontSize={"12px"} textTransform="capitalize">
+              {!mounted ? "Location" : filters.location || "Location"}
             </Typography>
           </Button>
         </Tooltip>
@@ -381,7 +414,10 @@ export default function Filtering() {
           <MenuItem>
             <Stack gap={2} width={431} height={"auto"}>
               <Stack marginBottom={1}>
-                <Input placeholder="Search for location!" />
+                <Input
+                  placeholder="Search for location!"
+                  onChange={(e: any) => dispatch(setLocation(e.target.value))}
+                />
               </Stack>
               <Stack>
                 <Typography sx={{ fontWeight: "bold", color: "text.primary" }}>
@@ -392,7 +428,8 @@ export default function Filtering() {
                 <Button
                   onClick={(event) => {
                     event.stopPropagation();
-                    console.log("Busan clicked!");
+                    dispatch(setLocation("Busan"));
+                    handleLocationClose();
                   }}
                   sx={{
                     gap: 1,
@@ -410,7 +447,8 @@ export default function Filtering() {
                 <Button
                   onClick={(event) => {
                     event.stopPropagation();
-                    console.log("Busan clicked!");
+                    dispatch(setLocation("Seoul"));
+                    handleLocationClose();
                   }}
                   sx={{
                     gap: 1,
@@ -428,7 +466,8 @@ export default function Filtering() {
                 <Button
                   onClick={(event) => {
                     event.stopPropagation();
-                    console.log("Busan clicked!");
+                    dispatch(setLocation("Tokyo"));
+                    handleLocationClose();
                   }}
                   sx={{
                     gap: 1,
@@ -446,7 +485,8 @@ export default function Filtering() {
                 <Button
                   onClick={(event) => {
                     event.stopPropagation();
-                    console.log("Busan clicked!");
+                    dispatch(setLocation("Kyoto"));
+                    handleLocationClose();
                   }}
                   sx={{
                     gap: 1,
@@ -464,7 +504,8 @@ export default function Filtering() {
                 <Button
                   onClick={(event) => {
                     event.stopPropagation();
-                    console.log("Busan clicked!");
+                    dispatch(setLocation("Fukuoka"));
+                    handleLocationClose();
                   }}
                   sx={{
                     gap: 1,
@@ -482,7 +523,8 @@ export default function Filtering() {
                 <Button
                   onClick={(event) => {
                     event.stopPropagation();
-                    console.log("Busan clicked!");
+                    dispatch(setLocation("Osaka"));
+                    handleLocationClose();
                   }}
                   sx={{
                     gap: 1,
@@ -502,6 +544,7 @@ export default function Filtering() {
           </MenuItem>
         </Menu>
       </Stack>
+
       <Stack>
         <Button
           variant="contained"
