@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface FilterState {
-  startDate: string | null; // store as string NOT Date
-  endDate: string | null;
-  adults: number;
-  children: number;
-  rooms: number;
-  location: string;
+  propertyRegion?: string;
+  startDate?: string;
+  endDate?: string;
+  adults?: number;
+  children?: number;
+  page: number;
+  limit: number;
 }
 
 const storedFilters =
@@ -15,12 +16,13 @@ const storedFilters =
 const initialState: FilterState = storedFilters
   ? JSON.parse(storedFilters)
   : {
-      startDate: null,
-      endDate: null,
+      propertyRegion: "",
+      startDate: undefined,
+      endDate: undefined,
       adults: 1,
       children: 0,
-      rooms: 1,
-      location: "",
+      page: 1,
+      limit: 6,
     };
 
 const filterSlice = createSlice({
@@ -29,7 +31,7 @@ const filterSlice = createSlice({
   reducers: {
     setDates(
       state,
-      action: PayloadAction<{ startDate: string; endDate: string }>
+      action: PayloadAction<{ startDate?: string; endDate?: string }>
     ) {
       state.startDate = action.payload.startDate;
       state.endDate = action.payload.endDate;
@@ -40,23 +42,31 @@ const filterSlice = createSlice({
     setChildren(state, action: PayloadAction<number>) {
       state.children = action.payload;
     },
-    setRooms(state, action: PayloadAction<number>) {
-      state.rooms = action.payload;
-    },
     setLocation(state, action: PayloadAction<string>) {
-      state.location = action.payload;
+      state.propertyRegion = action.payload;
+    },
+    setPage(state, action: PayloadAction<number>) {
+      state.page = action.payload;
+    },
+    setLimit(state, action: PayloadAction<number>) {
+      state.limit = action.payload;
     },
   },
 });
 
-// SAVE to localStorage whenever state changes
 export const saveFiltersToLocalStorage = (state: FilterState) => {
   if (typeof window !== "undefined") {
     localStorage.setItem("filters", JSON.stringify(state));
   }
 };
 
-export const { setDates, setAdults, setChildren, setRooms, setLocation } =
-  filterSlice.actions;
+export const {
+  setDates,
+  setAdults,
+  setChildren,
+  setLocation,
+  setPage,
+  setLimit,
+} = filterSlice.actions;
 
 export default filterSlice.reducer;

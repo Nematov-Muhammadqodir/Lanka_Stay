@@ -27,12 +27,12 @@ import {
   setChildren,
   setDates,
   setLocation,
-  setRooms,
 } from "@/src/slices/filteringSlice";
 
 export default function Filtering() {
   const dispatch = useDispatch();
   const filters = useSelector((state: RootState) => state.filters);
+  console.log("FILTERS", filters);
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -51,15 +51,13 @@ export default function Filtering() {
 
   const [range, setRange] = useState([
     {
-      startDate: filters.startDate ? new Date(filters.startDate) : new Date(),
-      endDate: filters.endDate ? new Date(filters.endDate) : new Date(),
+      startDate: filters.startDate ? new Date(filters.startDate) : undefined,
+      endDate: filters.endDate ? new Date(filters.endDate) : undefined,
       key: "selection",
     },
   ]);
 
-  useEffect(() => {
-    saveFiltersToLocalStorage(filters);
-  }, [filters]);
+  useEffect(() => saveFiltersToLocalStorage(filters), [filters]);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorEl(event.currentTarget);
@@ -72,11 +70,10 @@ export default function Filtering() {
   const handlePersonClose = () => setAnchorElPerson(null);
   const handleLocationClose = () => setAnchorElLocation(null);
 
-  // Helper for people text to avoid hydration mismatch
   const getPeopleText = () => {
     if (!mounted) return "Person";
-    const total = filters.adults + filters.children;
-    return `${total} Person${total > 1 ? "s" : ""}`;
+    const total = (filters.adults || 0) + (filters.children || 0);
+    return `${total} Person${total !== 1 ? "s" : ""}`;
   };
 
   return (
@@ -92,7 +89,7 @@ export default function Filtering() {
         justifyContent: "space-between",
         alignItems: "center",
         paddingX: "40px",
-        boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.25)",
+        boxShadow: "0px 8px 20px rgba(0,0,0,0.25)",
       }}
     >
       {/* Date Picker */}
@@ -105,7 +102,7 @@ export default function Filtering() {
               height: "60px",
               width: "211px",
               backgroundColor: "white",
-              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.15)",
+              boxShadow: "0px 4px 10px rgba(0,0,0,0.15)",
               "&:hover": {
                 boxShadow: "0px 6px 14px rgba(0,0,0,0.25)",
                 backgroundColor: "#f9f9f9",
@@ -136,15 +133,10 @@ export default function Filtering() {
             <DateRange
               ranges={range}
               onChange={(item: any) => {
-                const start = item.selection.startDate;
-                const end = item.selection.endDate;
+                const start = item.selection.startDate?.toISOString();
+                const end = item.selection.endDate?.toISOString();
                 setRange([item.selection]);
-                dispatch(
-                  setDates({
-                    startDate: start.toISOString(),
-                    endDate: end.toISOString(),
-                  })
-                );
+                dispatch(setDates({ startDate: start, endDate: end }));
               }}
             />
           </MenuItem>
@@ -189,104 +181,45 @@ export default function Filtering() {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <Stack gap={2}>
-            {/* Adults */}
-            <Stack
-              flexDirection="row"
-              justifyContent="space-between"
-              width={350}
-              alignItems="center"
-              paddingY="30px"
-              paddingX="20px"
-            >
-              <Typography sx={{ fontWeight: 700 }}>Adults</Typography>
-              <Stack
-                flexDirection="row"
-                alignItems="center"
-                width={100}
-                justifyContent="space-between"
-                sx={{
-                  border: "1px solid",
-                  borderColor: "grey.300",
-                  borderRadius: 2,
-                  paddingX: 1,
-                }}
-              >
-                <Button onClick={() => dispatch(setAdults(filters.adults - 1))}>
-                  <RemoveIcon />
-                </Button>
-                <Typography>{filters.adults}</Typography>
-                <Button onClick={() => dispatch(setAdults(filters.adults + 1))}>
-                  <AddIcon />
-                </Button>
-              </Stack>
-            </Stack>
-            {/* Children */}
-            <Stack
-              flexDirection="row"
-              justifyContent="space-between"
-              width={350}
-              alignItems="center"
-              paddingY="30px"
-              paddingX="20px"
-            >
-              <Typography sx={{ fontWeight: 700 }}>Children</Typography>
-              <Stack
-                flexDirection="row"
-                alignItems="center"
-                width={100}
-                justifyContent="space-between"
-                sx={{
-                  border: "1px solid",
-                  borderColor: "grey.300",
-                  borderRadius: 2,
-                  paddingX: 1,
-                }}
-              >
-                <Button
-                  onClick={() => dispatch(setChildren(filters.children - 1))}
+          <Stack gap={2} padding="10px">
+            {["Adults", "Children"].map((type) => {
+              const value =
+                type === "Adults" ? filters.adults || 0 : filters.children || 0;
+              const setter = type === "Adults" ? setAdults : setChildren;
+              return (
+                <Stack
+                  key={type}
+                  flexDirection="row"
+                  justifyContent="space-between"
+                  width={350}
+                  alignItems="center"
+                  paddingY="10px"
+                  paddingX="20px"
                 >
-                  <RemoveIcon />
-                </Button>
-                <Typography>{filters.children}</Typography>
-                <Button
-                  onClick={() => dispatch(setChildren(filters.children + 1))}
-                >
-                  <AddIcon />
-                </Button>
-              </Stack>
-            </Stack>
-            {/* Rooms */}
-            <Stack
-              flexDirection="row"
-              justifyContent="space-between"
-              width={350}
-              alignItems="center"
-              paddingY="30px"
-              paddingX="20px"
-            >
-              <Typography sx={{ fontWeight: 700 }}>Rooms</Typography>
-              <Stack
-                flexDirection="row"
-                alignItems="center"
-                width={100}
-                justifyContent="space-between"
-                sx={{
-                  border: "1px solid",
-                  borderColor: "grey.300",
-                  borderRadius: 2,
-                  paddingX: 1,
-                }}
-              >
-                <Button onClick={() => dispatch(setRooms(filters.rooms - 1))}>
-                  <RemoveIcon />
-                </Button>
-                <Typography>{filters.rooms}</Typography>
-                <Button onClick={() => dispatch(setRooms(filters.rooms + 1))}>
-                  <AddIcon />
-                </Button>
-              </Stack>
-            </Stack>
+                  <Typography sx={{ fontWeight: 700 }}>{type}</Typography>
+                  <Stack
+                    flexDirection="row"
+                    alignItems="center"
+                    width={100}
+                    justifyContent="space-between"
+                    sx={{
+                      border: "1px solid",
+                      borderColor: "grey.300",
+                      borderRadius: 2,
+                      paddingX: 1,
+                    }}
+                  >
+                    <Button onClick={() => dispatch(setter(value - 1))}>
+                      <RemoveIcon />
+                    </Button>
+                    <Typography>{value}</Typography>
+                    <Button onClick={() => dispatch(setter(value + 1))}>
+                      <AddIcon />
+                    </Button>
+                  </Stack>
+                </Stack>
+              );
+            })}
           </Stack>
         </Menu>
       </Stack>
@@ -313,7 +246,7 @@ export default function Filtering() {
           >
             <PinDropIcon />
             <Typography fontSize="12px" textTransform="capitalize">
-              {!mounted ? "Location" : filters.location || "Location"}
+              {!mounted ? "Location" : filters.propertyRegion || "Location"}
             </Typography>
           </Button>
         </Tooltip>
@@ -328,9 +261,9 @@ export default function Filtering() {
             <Stack gap={2} width={431}>
               <Input
                 placeholder="Search for location!"
-                onChange={(e: any) => dispatch(setLocation(e.target.value))}
+                onChange={(e) => dispatch(setLocation(e.target.value))}
               />
-              <Typography sx={{ fontWeight: "bold", color: "text.primary" }}>
+              <Typography sx={{ fontWeight: "bold" }}>
                 Trending Destinations
               </Typography>
               {["Busan", "Seoul", "Tokyo", "Kyoto", "Fukuoka", "Osaka"].map(
