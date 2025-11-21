@@ -183,6 +183,12 @@ export const CREATE_PARTNER_PROPERTY_ROOM = gql`
         king
         superKing
       }
+      reservedDates {
+        userId
+        from
+        until
+      }
+      roomPropertyLocation
     }
   }
 `;

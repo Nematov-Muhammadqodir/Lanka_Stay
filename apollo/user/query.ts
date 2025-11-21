@@ -41,7 +41,6 @@ export const GET_PARTNER_PROPERTY = gql`
       propertyPostCode
       propertyName
       propertyStars
-      propertyRooms
       propertyViews
       propertyComments
       propertyFacilities
@@ -70,6 +69,29 @@ export const GET_PARTNER_PROPERTY = gql`
         accessToken
         memberStatus
       }
+      propertyImages
+      propertyRooms {
+        roomId
+        roomType
+        roomPricePerNight
+        numberOfGuestsCanStay
+        roomFacilities
+        availableBathroomFacilities
+        isBathroomPrivate
+        isSmokingAllowed
+        roomName
+        availableBeds {
+          single
+          double
+          king
+          superKing
+        }
+        reservedDates {
+          userId
+          from
+          until
+        }
+      }
     }
   }
 `;
@@ -86,7 +108,6 @@ export const GET_PARTNER_PROPERTY_BY_HOTEL_OWNER = gql`
       propertyPostCode
       propertyName
       propertyStars
-      propertyRooms
       propertyViews
       propertyComments
       propertyFacilities
@@ -102,6 +123,28 @@ export const GET_PARTNER_PROPERTY_BY_HOTEL_OWNER = gql`
       allowPets
       createdAt
       updatedAt
+      propertyRooms {
+        roomId
+        roomType
+        roomPricePerNight
+        numberOfGuestsCanStay
+        roomFacilities
+        availableBathroomFacilities
+        isBathroomPrivate
+        isSmokingAllowed
+        roomName
+        availableBeds {
+          single
+          double
+          king
+          superKing
+        }
+        reservedDates {
+          userId
+          from
+          until
+        }
+      }
     }
   }
 `;

@@ -63,6 +63,10 @@ const RoomPrice = () => {
     skip: !partner._id,
     notifyOnNetworkStatusChange: true,
     onCompleted: (data: T) => {
+      console.log(
+        "data.getPartnerPropertyByHotelOwner",
+        data.getPartnerPropertyByHotelOwner
+      );
       dispatch(setPropertyId(data.getPartnerPropertyByHotelOwner._id));
     },
   });
