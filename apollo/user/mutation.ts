@@ -186,3 +186,36 @@ export const CREATE_PARTNER_PROPERTY_ROOM = gql`
     }
   }
 `;
+
+export const UPDATE_PARTNER_PROPERTY = gql`
+  mutation UpdatePartnerProperty($input: PartnerPropertyUpdate!) {
+    updatePartnerProperty(input: $input) {
+      _id
+      partnerId
+      propertyType
+      propertyCountry
+      propertyRegion
+      propertyCity
+      propertyPostCode
+      propertyName
+      propertyStars
+      propertyRooms
+      propertyViews
+      propertyComments
+      propertyFacilities
+      breakfastIncluded
+      parkingIncluded
+      hotelStaffLanguages
+      checkInTimeFrom
+      propertyStatus
+      checkInTimeUntill
+      propertyImages
+      checkOutTimeFrom
+      checkOutTimeUntill
+      allowChildren
+      allowPets
+      createdAt
+      updatedAt
+    }
+  }
+`;

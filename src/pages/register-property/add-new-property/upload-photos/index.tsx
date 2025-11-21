@@ -29,6 +29,11 @@ import LayoutCreateAccountMain from "@/src/libs/components/layout/registerProper
 import axios from "axios";
 import { getJwtToken, getPartnerJwtToken } from "@/src/libs/auth";
 import { sweetMixinErrorAlert } from "@/src/libs/sweetAlert";
+import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
+import { UPDATE_PARTNER_PROPERTY } from "@/apollo/user/mutation";
+import { GET_PARTNER_PROPERTY_BY_HOTEL_OWNER } from "@/apollo/user/query";
+import { partnerVar } from "@/apollo/store";
+import { T } from "@/src/libs/types/common";
 
 const UploadPhotos = () => {
   const router = useRouter();
@@ -36,6 +41,9 @@ const UploadPhotos = () => {
   const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
   const [images, setImages] = useState<string[]>([]);
   const token = getPartnerJwtToken();
+  const partner = useReactiveVar(partnerVar);
+  const [partnerPropertyId, setPartnerPropertyId] = useState("");
+  console.log("partnerPropertyId", partnerPropertyId);
 
   const reorder = (list: string[], startIndex: number, endIndex: number) => {
     const result = Array.from(list);
@@ -43,6 +51,25 @@ const UploadPhotos = () => {
     result.splice(endIndex, 0, removed);
     return result;
   };
+
+  /** APOLLO REQUESTS **/
+  const [updatePartnerProperty] = useMutation(UPDATE_PARTNER_PROPERTY);
+
+  /** APOLLO REQUESTS **/
+  const {
+    loading: getPartnerPropertyByHotelOwnerLoading,
+    data: getPartnerPropertyByHotelOwnerData,
+    error: getPartnerPropertyByHotelOwnerError,
+    refetch: getPartnerPropertyByHotelOwnerRefetch,
+  } = useQuery(GET_PARTNER_PROPERTY_BY_HOTEL_OWNER, {
+    fetchPolicy: "network-only",
+    variables: { input: partner?._id },
+    skip: !partner._id,
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data: T) => {
+      setPartnerPropertyId(data.getPartnerPropertyByHotelOwner._id);
+    },
+  });
 
   const handleDragEnd = (result: any) => {
     if (!result.destination) return;
@@ -118,6 +145,15 @@ const UploadPhotos = () => {
           },
         }
       );
+
+      await updatePartnerProperty({
+        variables: {
+          input: {
+            _id: partnerPropertyId,
+            propertyImages: response.data.data.imagesUploader,
+          },
+        },
+      });
 
       console.log("response.data", response.data.data.imagesUploader);
 
