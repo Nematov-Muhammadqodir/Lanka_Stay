@@ -47,6 +47,7 @@ const DetailLayoutBanner = () => {
                 width: "100%",
                 height: "435px",
               }}
+              priority
             />
           </SwiperSlide>
         ))}

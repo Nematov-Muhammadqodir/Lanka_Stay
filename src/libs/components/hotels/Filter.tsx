@@ -23,7 +23,7 @@ const marks = [
 ];
 const Filter = () => {
   const [val, setVal] = React.useState<number>(MIN);
-  const handleChange = (_: Event, newValue: number | number[]) => {
+  const handleChange = (_: any, newValue: number | number[]) => {
     if (typeof newValue === "number") {
       setVal(newValue);
     }

@@ -9,6 +9,7 @@ import { useQuery } from "@apollo/client";
 import { GET_ALL_AVAILABLE_PROPERTIES } from "@/apollo/user/query";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
+import dynamic from "next/dynamic";
 
 const Hotels = () => {
   const filters = useSelector((state: RootState) => state.filters);
@@ -52,4 +53,6 @@ const Hotels = () => {
   );
 };
 
-export default withLayoutSecondary(Hotels);
+export default dynamic(() => Promise.resolve(withLayoutSecondary(Hotels)), {
+  ssr: false,
+});

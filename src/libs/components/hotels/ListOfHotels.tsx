@@ -4,7 +4,6 @@ import HotelsHeader from "./HotelsHeader";
 import SmallInfo from "./SmallInfo";
 import HotelsGrid from "./Grid/HotelsGrid";
 import HotelsList from "./List/HotelsList";
-import { PartnerProperty } from "../../types/partnerInput/partnerProperty";
 
 export interface ListOfHotelsProps {
   data: any;

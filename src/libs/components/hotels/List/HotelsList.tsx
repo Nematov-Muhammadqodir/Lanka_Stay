@@ -17,7 +17,7 @@ const HotelsList = ({ data }: { data: any[] }) => {
     <Stack>
       <Stack gap={2}>
         {currentItems.map((item, i) => {
-          return <ListCard key={i} />;
+          return <ListCard key={i} item={item} />;
         })}
       </Stack>
       <Stack spacing={2} mt={3} alignItems="center">

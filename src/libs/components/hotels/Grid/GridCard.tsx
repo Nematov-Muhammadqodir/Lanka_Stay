@@ -7,13 +7,16 @@ import RestaurantIcon from "@mui/icons-material/Restaurant";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
 
 const GridCard = ({ item }: { item: any }) => {
-  console.log("itemm", item);
   const [value, setValue] = React.useState<number | null>(4);
+  const filters = useSelector((state: RootState) => state.filters);
   const router = useRouter();
   const handleClick = () => {
-    router.push("/hotels/hotelDetail/id=2"); // 🔹 replace "1" with dynamic id later
+    router.push(`/hotels/hotelDetail/id=${item._id}`); // 🔹 replace "1" with dynamic id later
   };
   return (
     <Stack
@@ -130,14 +133,19 @@ const GridCard = ({ item }: { item: any }) => {
         ></Box>
         <Stack p={2}>
           <Stack flexDirection={"row"} gap={1} justifyContent={"flex-end"}>
-            <Typography className="small-text">9 nights,</Typography>
+            <Typography className="small-text">
+              {" "}
+              {Number(filters.endDate?.split("-")[2].split("T")[0]) -
+                Number(filters.startDate?.split("-")[2].split("T")[0])}{" "}
+              nights,
+            </Typography>
             <Typography className="small-text">
               {item.propertyRooms[0].numberOfGuestsCanStay} adults
             </Typography>
           </Stack>
           <Stack alignItems={"flex-end"}>
             <Typography className="bold-text">
-              KRW {item.propertyRooms[0].roomPricePerNight}
+              {formatKoreanWon(item.propertyRooms[0].roomPricePerNight)}
             </Typography>
             <Typography className="small-text">
               Includes taxes and charges

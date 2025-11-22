@@ -8,12 +8,17 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useRouter } from "next/router";
+import { RootState } from "@/store";
+import { useSelector } from "react-redux";
+import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
 
-const ListCard = () => {
+const ListCard = ({ item }: { item: any }) => {
+  const filters = useSelector((state: RootState) => state.filters);
+  console.log("itemm", item);
   const [value, setValue] = React.useState<number | null>(4);
   const router = useRouter();
   const handleClick = () => {
-    router.push("/hotels/hotelDetail/id=2"); // 🔹 replace "1" with dynamic id later
+    router.push(`/hotels/hotelDetail/id=${item._id}`); // 🔹 replace "1" with dynamic id later
   };
   return (
     <Stack
@@ -38,11 +43,15 @@ const ListCard = () => {
     >
       <Stack flexDirection={"row"} gap={2} position={"relative"}>
         <Image
-          src={"/img/hotel.jpg"}
+          src={
+            item.propertyImages
+              ? `${process.env.NEXT_PUBLIC_API_URL}/${item.propertyImages[0]}`
+              : "/img/hotel.jpg"
+          }
           alt="left-image"
           width={298}
           height={238}
-          style={{ objectFit: "cover", borderRadius: 10 }}
+          style={{ objectFit: "cover", borderRadius: 10, flexShrink: 0 }}
         />
         <Box
           width={40}
@@ -65,13 +74,13 @@ const ListCard = () => {
           <Stack className="middle" gap={1}>
             <Stack flexDirection={"row"} gap={1}>
               <Typography className="bold-text" color={"primary.main"}>
-                Hotel Noah
+                {item.propertyName}
               </Typography>
-              <Rating name="read-only" value={value} readOnly />
+              <Rating name="read-only" value={item.propertyStars} readOnly />
             </Stack>
             <Stack flexDirection={"row"} gap={1}>
               <Typography className="small-bold-text" color={"primary.main"}>
-                Jung-gu, Busan
+                {item.propertyCity}, {item.propertyRegion}
               </Typography>
               <Typography className="small-text">7.7 km from centre</Typography>
             </Stack>
@@ -86,7 +95,7 @@ const ListCard = () => {
             <Stack flexDirection={"row"} gap={1} color={"primary.main"}>
               <RestaurantIcon />
               <Typography className="small-bold-text">
-                Breakfast included
+                Breakfast {item.breakfastIncluded ? "" : "not"} included
               </Typography>
             </Stack>
           </Stack>
@@ -125,10 +134,18 @@ const ListCard = () => {
                   gap={1}
                   justifyContent={"flex-end"}
                 >
-                  <Typography className="small-text">9 nights,</Typography>
+                  <Typography className="small-text">
+                    {Number(filters.endDate?.split("-")[2].split("T")[0]) -
+                      Number(
+                        filters.startDate?.split("-")[2].split("T")[0]
+                      )}{" "}
+                    nights,
+                  </Typography>
                   <Typography className="small-text">2 adults</Typography>
                 </Stack>
-                <Typography className="bold-text">KRW 828,820</Typography>
+                <Typography className="bold-text">
+                  {formatKoreanWon(item.propertyRooms[0].roomPricePerNight)}
+                </Typography>
                 <Typography className="small-text">
                   Includes taxes and charges
                 </Typography>
