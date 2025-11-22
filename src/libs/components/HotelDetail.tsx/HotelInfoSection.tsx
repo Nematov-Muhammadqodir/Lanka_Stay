@@ -100,7 +100,7 @@ const HotelInfoSection = ({
 
       {/* Right: Map / Reviews */}
       <Stack>
-        <ReviewMapContainer />
+        <ReviewMapContainer partnerProperty={partnerProperty} />
       </Stack>
     </Stack>
   );

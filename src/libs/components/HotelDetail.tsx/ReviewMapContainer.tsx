@@ -1,8 +1,37 @@
 import { Box, Stack, Typography, Pagination } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { getCoordinates } from "../../handlers/common";
+import { PartnerProperty } from "../../types/partnerInput/partnerProperty";
+import CustomMap from "./CustomMap";
 
-const ReviewMapContainer = () => {
+export interface ReviewMapContainerProps {
+  partnerProperty?: PartnerProperty;
+}
+
+const ReviewMapContainer = (props: ReviewMapContainerProps) => {
+  const { partnerProperty } = props;
+  const [latLng, setLatLng] = useState<{ lat: number; lng: number } | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (!partnerProperty) return;
+
+    const fetchCoordinates = async () => {
+      const coords = await getCoordinates(
+        partnerProperty.propertyCountry,
+        partnerProperty.propertyRegion
+      );
+      setLatLng(coords);
+    };
+
+    fetchCoordinates();
+  }, [partnerProperty]);
+
+  console.log("latLng", latLng);
+
+  if (!latLng) return <div>Loading map...</div>;
   return (
     <Stack
       className="right-review-map-container"
@@ -82,21 +111,11 @@ const ReviewMapContainer = () => {
         </Stack>
       </Stack>
 
-      <Box
-        width={390}
-        height={200}
-        border="1px solid"
-        borderColor="secondary.main"
-        mt={2}
-      >
-        <iframe
-          width="390"
-          height="200"
-          style={{ border: 0 }}
-          loading="lazy"
-          src="https://www.openstreetmap.org/export/embed.html?bbox=126.563%2C33.247%2C126.580%2C33.256&layer=mapnik"
-        ></iframe>
-      </Box>
+      <CustomMap
+        country={partnerProperty?.propertyCountry}
+        lat={latLng.lat}
+        lng={latLng.lng}
+      />
     </Stack>
   );
 };
