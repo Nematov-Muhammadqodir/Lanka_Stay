@@ -101,6 +101,9 @@ export default function CreateAccountTop(partner: any) {
   };
   const handleClose = () => {
     setAnchorEl(null);
+    router.push(
+      "/register-property/add-new-property/property-details-complete"
+    );
   };
   const handleSignOut = () => {
     logOutPartner();
@@ -232,7 +235,7 @@ export default function CreateAccountTop(partner: any) {
                 <ListItemIcon>
                   <AddHomeWorkIcon fontSize="small" />
                 </ListItemIcon>
-                Add new property
+                Add property room
               </MenuItem>
               <MenuItem onClick={handleSignOut}>
                 <ListItemIcon>
