@@ -18,7 +18,7 @@ const ListCard = ({ item }: { item: any }) => {
   const [value, setValue] = React.useState<number | null>(4);
   const router = useRouter();
   const handleClick = () => {
-    router.push(`/hotels/hotelDetail/id=${item._id}`); // 🔹 replace "1" with dynamic id later
+    router.push(`/hotels/hotelDetail/${item._id}`); // 🔹 replace "1" with dynamic id later
   };
   return (
     <Stack

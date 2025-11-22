@@ -1,4 +1,11 @@
-import { Button, Menu, MenuItem, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  Menu,
+  MenuItem,
+  Skeleton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
@@ -12,8 +19,16 @@ import TelegramIcon from "@mui/icons-material/Telegram";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import { PartnerProperty } from "../../types/partnerInput/partnerProperty";
 
-const PropertyOverview = () => {
+export interface PropertyOverviewProps {
+  partnerProperty?: PartnerProperty;
+  loading?: boolean;
+}
+
+const PropertyOverview = (props: PropertyOverviewProps) => {
+  const { partnerProperty, loading } = props;
+  if (!partnerProperty) return null;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -53,6 +68,38 @@ const PropertyOverview = () => {
       url
     )}`,
   };
+
+  if (loading || !partnerProperty) {
+    return (
+      <Stack
+        className="container"
+        flexDirection="row"
+        justifyContent="space-between"
+        marginTop={"40px !important"}
+      >
+        <Stack>
+          <Stack flexDirection="row" gap={1}>
+            <Skeleton variant="circular" width={24} height={24} />
+            <Skeleton variant="text" width={100} height={24} />
+          </Stack>
+          <Skeleton variant="text" width={300} height={40} sx={{ mt: 2 }} />
+          <Stack flexDirection="row" alignItems="center" gap={1} mt={1}>
+            <Skeleton variant="circular" width={20} height={20} />
+            <Skeleton variant="text" width={200} height={20} />
+          </Stack>
+        </Stack>
+        <Stack>
+          <Skeleton variant="rectangular" width={150} height={40} />
+          <Skeleton
+            variant="rectangular"
+            width={150}
+            height={40}
+            sx={{ mt: 1 }}
+          />
+        </Stack>
+      </Stack>
+    );
+  }
   return (
     <Stack
       className="container"
@@ -66,12 +113,13 @@ const PropertyOverview = () => {
           {isBeachFront ? <Typography>Beachfront</Typography> : ""}
         </Stack>
         <Typography fontSize={30} fontWeight={700}>
-          The Grand Sumorum
+          {partnerProperty.propertyName}
         </Typography>
         <Stack flexDirection={"row"} alignItems={"center"}>
           <FmdGoodIcon color="primary" />
           <Typography>
-            118, Maksukpo-ro, Seogwipo City, 63573 Seogwipo, South Korea
+            {partnerProperty.propertyCity}, {partnerProperty.propertyRegion},{" "}
+            {partnerProperty.propertyCountry}
           </Typography>
           <Button>
             <Typography
