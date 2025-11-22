@@ -66,10 +66,13 @@ const MyAccount = () => {
     variables: { input: guestId },
     skip: !guestId,
     notifyOnNetworkStatusChange: true,
-    onCompleted: (data: T) => {
-      setMember(data?.getGuestProfile);
-    },
   });
+
+  useEffect(() => {
+    if (getGuestData) {
+      setMember(getGuestData?.getGuestProfile);
+    }
+  }, [getGuestData]);
 
   /** LIFECYCLES **/
   useEffect(() => {

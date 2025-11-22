@@ -15,7 +15,7 @@ import { PartnerProperty } from "@/src/libs/types/partnerInput/partnerProperty";
 import { useQuery } from "@apollo/client";
 import { Stack } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const HotelDetail = () => {
   const router = useRouter();
@@ -33,11 +33,18 @@ const HotelDetail = () => {
     variables: { input: id },
     skip: !id,
     notifyOnNetworkStatusChange: true,
-    onCompleted: (data: T) => {
-      console.log("data.getPartnerProperty", data.getPartnerProperty);
-      setPartnerProperty(data.getPartnerProperty);
-    },
   });
+
+  useEffect(() => {
+    if (getPartnerPropertyData) {
+      // do something with data
+      console.log(
+        "data.getPartnerProperty",
+        getPartnerPropertyData.getPartnerProperty
+      );
+      setPartnerProperty(getPartnerPropertyData.getPartnerProperty);
+    }
+  }, [getPartnerPropertyData]);
   return (
     <Stack>
       <PropertyOverview

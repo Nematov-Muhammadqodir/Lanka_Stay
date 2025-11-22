@@ -62,14 +62,21 @@ const RoomPrice = () => {
     variables: { input: partner?._id },
     skip: !partner._id,
     notifyOnNetworkStatusChange: true,
-    onCompleted: (data: T) => {
+  });
+
+  useEffect(() => {
+    if (getPartnerPropertyByHotelOwnerData) {
       console.log(
         "data.getPartnerPropertyByHotelOwner",
-        data.getPartnerPropertyByHotelOwner
+        getPartnerPropertyByHotelOwnerData.getPartnerPropertyByHotelOwner
       );
-      dispatch(setPropertyId(data.getPartnerPropertyByHotelOwner._id));
-    },
-  });
+      dispatch(
+        setPropertyId(
+          getPartnerPropertyByHotelOwnerData.getPartnerPropertyByHotelOwner._id
+        )
+      );
+    }
+  }, [getPartnerPropertyByHotelOwnerData]);
 
   const handleAddPropertyRoom = async () => {
     if (roomInput.roomPricePerNight === "") {

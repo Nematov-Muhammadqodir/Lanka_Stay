@@ -24,18 +24,27 @@ const AddNewProperty = () => {
     variables: { input: partner?._id },
     skip: !partner._id,
     notifyOnNetworkStatusChange: true,
-    onCompleted: (data: T) => {
+  });
+  useEffect(() => {
+    if (getPartnerPropertyByHotelOwnerData) {
+      // do something with data
+      console.log(
+        "data.getPartnerPropertyByHotelOwnerData",
+        getPartnerPropertyByHotelOwnerData.getPartnerProperty
+      );
       console.log(
         "data.getPartnerPropertyByHotelOwner",
-        data.getPartnerPropertyByHotelOwner._id
+        getPartnerPropertyByHotelOwnerData.getPartnerPropertyByHotelOwner._id
       );
-      if (data.getPartnerPropertyByHotelOwner._id) {
+      if (
+        getPartnerPropertyByHotelOwnerData.getPartnerPropertyByHotelOwner._id
+      ) {
         router.push(
           "/register-property/add-new-property/property-details-complete"
         );
       }
-    },
-  });
+    }
+  }, [getPartnerPropertyByHotelOwnerData]);
 
   useEffect(() => {
     if (partner?._id) {

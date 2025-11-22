@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import withLayoutCreateAccountMain from "@/src/libs/components/layout/registerProperty/create-account/CreateAccountMainLayout";
 import { Button, Stack, styled, Typography } from "@mui/material";
 import { useRouter } from "next/router";
@@ -66,10 +66,15 @@ const UploadPhotos = () => {
     variables: { input: partner?._id },
     skip: !partner._id,
     notifyOnNetworkStatusChange: true,
-    onCompleted: (data: T) => {
-      setPartnerPropertyId(data.getPartnerPropertyByHotelOwner._id);
-    },
   });
+
+  useEffect(() => {
+    if (getPartnerPropertyByHotelOwnerData) {
+      setPartnerPropertyId(
+        getPartnerPropertyByHotelOwnerData.getPartnerPropertyByHotelOwner._id
+      );
+    }
+  }, [getPartnerPropertyByHotelOwnerData]);
 
   const handleDragEnd = (result: any) => {
     if (!result.destination) return;
