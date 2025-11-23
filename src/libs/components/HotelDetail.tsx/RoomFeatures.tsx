@@ -8,44 +8,85 @@ import CoffeeMakerIcon from "@mui/icons-material/CoffeeMaker";
 import WifiIcon from "@mui/icons-material/Wifi";
 import DeckIcon from "@mui/icons-material/Deck";
 import { Stack, Typography } from "@mui/material";
+import { PropertyRoom } from "../../types/partnerInput/partnerProperty";
 
-const RoomFeatures = () => {
+/**
+ * This map uses BACKEND enum values (strings),
+ * not frontend enum keys.
+ */
+const FACILITY_MAP: Record<string, { icon: JSX.Element; label: string }> = {
+  Balcony: {
+    icon: <BalconyIcon sx={{ fontSize: 16 }} />,
+    label: "Balcony",
+  },
+  View: {
+    icon: <PoolIcon sx={{ fontSize: 16 }} />,
+    label: "Pool View",
+  },
+  "Flat-screen TV": {
+    icon: <TvIcon sx={{ fontSize: 16 }} />,
+    label: "Flat-screen TV",
+  },
+  Terrace: {
+    icon: <DeckIcon sx={{ fontSize: 16 }} />,
+    label: "Terrace",
+  },
+  "Tea/Coffee Maker": {
+    icon: <CoffeeMakerIcon sx={{ fontSize: 16 }} />,
+    label: "Coffee Machine",
+  },
+  "Free Wi-Fi": {
+    icon: <WifiIcon sx={{ fontSize: 16 }} />,
+    label: "Free WiFi",
+  },
+};
+
+interface RoomFeaturesProps {
+  propertyRoom?: PropertyRoom;
+}
+
+const RoomFeatures = ({ propertyRoom }: RoomFeaturesProps) => {
+  if (!propertyRoom) return null;
+
+  const facilities = propertyRoom.roomFacilities ?? [];
+
   return (
-    <Stack flexDirection={"row"} flexWrap={"wrap"} gap={1} mt={2}>
-      <Stack flexDirection={"row"} gap={0.5} alignItems={"center"}>
+    <Stack flexDirection="row" flexWrap="wrap" gap={1} mt={2}>
+      {/* Room Size — hardcoded example */}
+      <Stack flexDirection="row" gap={0.5} alignItems="center">
         <VillaIcon sx={{ fontSize: 16 }} />
         <Typography className="small-text">
           34 m<sup style={{ fontSize: 12 }}>2</sup>
         </Typography>
       </Stack>
-      <Stack flexDirection={"row"} gap={0.5} alignItems={"center"}>
-        <BalconyIcon sx={{ fontSize: 16 }} />
-        <Typography className="small-text">Balcony</Typography>
-      </Stack>
-      <Stack flexDirection={"row"} gap={0.5} alignItems={"center"}>
-        <PoolIcon sx={{ fontSize: 16 }} />
-        <Typography className="small-text">Pool View</Typography>
-      </Stack>
-      <Stack flexDirection={"row"} gap={0.5} alignItems={"center"}>
+
+      {/* Bathroom */}
+      <Stack flexDirection="row" gap={0.5} alignItems="center">
         <BathtubIcon sx={{ fontSize: 16 }} />
-        <Typography className="small-text">Private Bathroom</Typography>
+        <Typography className="small-text">
+          {propertyRoom.isBathroomPrivate ? "" : "No "}Private Bathroom
+        </Typography>
       </Stack>
-      <Stack flexDirection={"row"} gap={0.5} alignItems={"center"}>
-        <TvIcon sx={{ fontSize: 16 }} />
-        <Typography className="small-text">Flat-screen TV</Typography>
-      </Stack>
-      <Stack flexDirection={"row"} gap={0.5} alignItems={"center"}>
-        <DeckIcon sx={{ fontSize: 16 }} />
-        <Typography className="small-text">Terrace</Typography>
-      </Stack>
-      <Stack flexDirection={"row"} gap={0.5} alignItems={"center"}>
-        <CoffeeMakerIcon sx={{ fontSize: 16 }} />
-        <Typography className="small-text">Coffee machine</Typography>
-      </Stack>
-      <Stack flexDirection={"row"} gap={0.5} alignItems={"center"}>
-        <WifiIcon sx={{ fontSize: 16 }} />
-        <Typography className="small-text">Free WiFi</Typography>
-      </Stack>
+
+      {/* Loop through mapped facilities */}
+      {Object.entries(FACILITY_MAP).map(([backendValue, def]) => {
+        const exists = facilities.includes(backendValue);
+
+        return (
+          <Stack
+            key={backendValue}
+            flexDirection="row"
+            gap={0.5}
+            alignItems="center"
+          >
+            {def.icon}
+            <Typography className="small-text">
+              {exists ? "" : "No "}
+              {def.label}
+            </Typography>
+          </Stack>
+        );
+      })}
     </Stack>
   );
 };

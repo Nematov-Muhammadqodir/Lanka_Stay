@@ -2,8 +2,12 @@ import { Box, Stack, Typography } from "@mui/material";
 import { mt } from "date-fns/locale";
 import Link from "next/link";
 import AllAvailableRoomsBody from "./AllAvailableRoomsBody";
+import { PropertyOverviewProps } from "./PropertyOverview";
 
-const AllAvailableRooms = () => {
+const AllAvailableRooms = ({
+  partnerProperty,
+  loading,
+}: PropertyOverviewProps) => {
   return (
     <Stack className="container" mt={"50px !important"}>
       <Stack mb={1}>
@@ -57,9 +61,14 @@ const AllAvailableRooms = () => {
           </Stack>
         </Stack>
         <Stack>
-          <AllAvailableRoomsBody />
-          <AllAvailableRoomsBody />
-          <AllAvailableRoomsBody />
+          {partnerProperty?.propertyRooms.map((room) => {
+            return (
+              <AllAvailableRoomsBody
+                partnerProperty={partnerProperty}
+                propertyRoom={room}
+              />
+            );
+          })}
         </Stack>
       </Stack>
     </Stack>

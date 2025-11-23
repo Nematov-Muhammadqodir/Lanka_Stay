@@ -60,7 +60,10 @@ const HotelDetail = () => {
         loading={getPartnerPropertyLoading}
       />
       <GreatForYourStay />
-      <AllAvailableRooms />
+      <AllAvailableRooms
+        partnerProperty={partnerProperty}
+        loading={getPartnerPropertyLoading}
+      />
       <GuestReviews />
       <ReviewsList />
       <HouseRules />

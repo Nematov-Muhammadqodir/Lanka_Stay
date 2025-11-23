@@ -8,8 +8,27 @@ import SelectRoomMenu from "./SelectRoomMenu";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import RoomFeatures from "./RoomFeatures";
 import { useRouter } from "next/router";
+import { PropertyOverviewProps } from "./PropertyOverview";
+import {
+  PartnerProperty,
+  PropertyRoom,
+} from "../../types/partnerInput/partnerProperty";
+import { formatKoreanWon } from "../../handlers/priceHandler";
 
-const AllAvailableRoomsBody = () => {
+interface AllAvailableRoomsBodyProps {
+  partnerProperty?: PartnerProperty;
+  propertyRoom?: PropertyRoom;
+}
+
+const AllAvailableRoomsBody = ({
+  partnerProperty,
+  propertyRoom,
+}: AllAvailableRoomsBodyProps) => {
+  console.log(
+    "partnerProperty AllAvailableRooms",
+    partnerProperty?.breakfastIncluded
+  );
+  const guestCount = propertyRoom?.numberOfGuestsCanStay ?? 0;
   const router = useRouter();
   return (
     <Stack
@@ -30,7 +49,7 @@ const AllAvailableRoomsBody = () => {
           fontSize={20}
           sx={{ textDecoration: "underline" }}
         >
-          Family Twin Main Building
+          {propertyRoom?.roomName}
         </Typography>
 
         <Box
@@ -42,10 +61,10 @@ const AllAvailableRoomsBody = () => {
           }}
         >
           <Typography className="small-bold-text">
-            Recommended for 2 adults
+            Recommended for {propertyRoom?.numberOfGuestsCanStay} adults
           </Typography>
         </Box>
-        <RoomFeatures />
+        <RoomFeatures propertyRoom={propertyRoom} />
       </Stack>
       <Box
         sx={{
@@ -53,9 +72,10 @@ const AllAvailableRoomsBody = () => {
           bgcolor: "primary.main",
         }}
       ></Box>
-      <Stack width={140} flexDirection={"row"} gap={0.5}>
-        <PersonIcon />
-        <PersonIcon />
+      <Stack width={140} flexDirection={"row"} gap={0.5} flexWrap={"wrap"}>
+        {Array.from({ length: guestCount }).map((_, idx) => (
+          <PersonIcon key={idx} />
+        ))}
       </Stack>
       <Box
         sx={{
@@ -66,11 +86,15 @@ const AllAvailableRoomsBody = () => {
       <Stack width={175}>
         <Stack flexDirection={"row"} gap={0.5}>
           <Typography className="available-rooms-header-text">
-            KRW 153,912
+            {formatKoreanWon(
+              propertyRoom?.roomPricePerNight
+                ? propertyRoom?.roomPricePerNight
+                : ""
+            )}
           </Typography>
           <InfoIcon color="primary" />
         </Stack>
-        <Typography>Included texes and charges</Typography>
+        <Typography>Included taxes and charges</Typography>
       </Stack>
       <Box
         sx={{
@@ -81,12 +105,20 @@ const AllAvailableRoomsBody = () => {
       <Stack width={260} flexDirection={"row"} gap={1}>
         <Stack flexDirection={"row"} gap={0.5}>
           <EmojiFoodBeverageIcon />
-          <Stack flexDirection={"row"} gap={0.5}>
-            <Typography className="small-bold-text">
-              Very good breakfast
-            </Typography>
-            <Typography className="small-text">included</Typography>
-          </Stack>
+          {partnerProperty?.breakfastIncluded ? (
+            <Stack flexDirection={"row"} gap={0.5}>
+              <Typography className="small-bold-text">
+                Very good breakfast
+              </Typography>
+              <Typography className="small-text">included</Typography>
+            </Stack>
+          ) : (
+            <Stack flexDirection={"row"} gap={0.5}>
+              <Typography className="small-bold-text">
+                Breakfast not included
+              </Typography>
+            </Stack>
+          )}
         </Stack>
         <Button sx={{ width: "14px", height: "21px" }}>
           <HelpIcon color="primary" />
