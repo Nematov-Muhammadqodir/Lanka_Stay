@@ -66,7 +66,7 @@ const HotelDetail = () => {
       />
       <GuestReviews />
       <ReviewsList />
-      <HouseRules />
+      <HouseRules partnerProperty={partnerProperty} />
       <LegalInformation />
       <FAQ />
     </Stack>

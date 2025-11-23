@@ -24,10 +24,7 @@ const AllAvailableRoomsBody = ({
   partnerProperty,
   propertyRoom,
 }: AllAvailableRoomsBodyProps) => {
-  console.log(
-    "partnerProperty AllAvailableRooms",
-    partnerProperty?.breakfastIncluded
-  );
+  console.log("partnerProperty AllAvailableRooms", partnerProperty);
   const guestCount = propertyRoom?.numberOfGuestsCanStay ?? 0;
   const router = useRouter();
   return (

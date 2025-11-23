@@ -9,8 +9,12 @@ import PetsIcon from "@mui/icons-material/Pets";
 import PaymentIcon from "@mui/icons-material/Payment";
 import Image from "next/image";
 import CheckIcon from "@mui/icons-material/Check";
+import { PropertyOverviewProps } from "../PropertyOverview";
 
-const HouseRulesBody = () => {
+const HouseRulesBody = ({
+  partnerProperty,
+  loading,
+}: PropertyOverviewProps) => {
   return (
     <Stack
       p={2}
@@ -34,7 +38,9 @@ const HouseRulesBody = () => {
               Check-in
             </Typography>
           </Stack>
-          <Typography width={"75%"}>From 15:00</Typography>
+          <Typography width={"75%"}>
+            From {partnerProperty?.checkInTimeFrom}
+          </Typography>
         </Stack>
         <Stack
           flexDirection={"row"}
@@ -55,7 +61,9 @@ const HouseRulesBody = () => {
               Check-out
             </Typography>
           </Stack>
-          <Typography width={"75%"}>From 15:00</Typography>
+          <Typography width={"75%"}>
+            From {partnerProperty?.checkOutTimeFrom}
+          </Typography>
         </Stack>
         <Stack
           flexDirection={"row"}
