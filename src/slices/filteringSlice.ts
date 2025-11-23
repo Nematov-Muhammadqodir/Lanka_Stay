@@ -1,7 +1,15 @@
+import { RootState } from "@/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface FilterState {
   propertyRegion?: string;
+  propertyCity?: string;
+  propertyType?: string[];
+  propertyStars?: number;
+  breakfastIncluded?: boolean;
+  parkingIncluded?: boolean;
+  allowChildren?: boolean;
+  allowPets?: boolean;
   startDate?: string;
   endDate?: string;
   adults?: number;
@@ -17,6 +25,13 @@ const initialState: FilterState = storedFilters
   ? JSON.parse(storedFilters)
   : {
       propertyRegion: "",
+      propertyCity: "",
+      propertyType: [],
+      propertyStars: undefined,
+      breakfastIncluded: undefined,
+      parkingIncluded: undefined,
+      allowChildren: undefined,
+      allowPets: undefined,
       startDate: undefined,
       endDate: undefined,
       adults: 1,
@@ -51,6 +66,33 @@ const filterSlice = createSlice({
     setLimit(state, action: PayloadAction<number>) {
       state.limit = action.payload;
     },
+    setPropertyCity(state, action: PayloadAction<string>) {
+      state.propertyCity = action.payload;
+    },
+    setPropertyType(state, action: PayloadAction<string>) {
+      if (!state.propertyType) state.propertyType = [];
+      const type = action.payload;
+      if (state.propertyType.includes(type)) {
+        state.propertyType = state.propertyType.filter((t) => t !== type);
+      } else {
+        state.propertyType.push(type);
+      }
+    },
+    setPropertyStars(state, action: PayloadAction<number>) {
+      state.propertyStars = action.payload;
+    },
+    setBreakfastIncluded(state, action: PayloadAction<boolean>) {
+      state.breakfastIncluded = action.payload;
+    },
+    setParkingIncluded(state, action: PayloadAction<boolean>) {
+      state.parkingIncluded = action.payload;
+    },
+    setAllowChildren(state, action: PayloadAction<boolean>) {
+      state.allowChildren = action.payload;
+    },
+    setAllowPets(state, action: PayloadAction<boolean>) {
+      state.allowPets = action.payload;
+    },
   },
 });
 
@@ -67,6 +109,15 @@ export const {
   setLocation,
   setPage,
   setLimit,
+  setPropertyCity,
+  setPropertyType,
+  setPropertyStars,
+  setBreakfastIncluded,
+  setParkingIncluded,
+  setAllowChildren,
+  setAllowPets,
 } = filterSlice.actions;
+
+export const filterSliceValue = (state: RootState) => state.filters;
 
 export default filterSlice.reducer;

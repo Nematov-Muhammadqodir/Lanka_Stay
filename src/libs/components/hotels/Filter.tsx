@@ -1,3 +1,4 @@
+import { filterSliceValue, setPropertyType } from "@/src/slices/filteringSlice";
 import {
   Box,
   Checkbox,
@@ -8,6 +9,7 @@ import {
 } from "@mui/material";
 import Slider from "@mui/material/Slider";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const MAX = 4000000.0;
 const MIN = 50000.0;
@@ -22,7 +24,10 @@ const marks = [
   },
 ];
 const Filter = () => {
+  const filterSliceInput = useSelector(filterSliceValue);
+  console.log("filterSliceInput", filterSliceInput);
   const [val, setVal] = React.useState<number>(MIN);
+  const dispatch = useDispatch();
   const handleChange = (_: any, newValue: number | number[]) => {
     if (typeof newValue === "number") {
       setVal(newValue);
@@ -89,46 +94,36 @@ const Filter = () => {
         <Stack gap={1} py={1} px={2} sx={{ width: "100%" }}>
           <Typography className="small-bold-text">Popular filters</Typography>
           <FormGroup>
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Hotels"
-              value={"hotels"}
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
-            />
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Breakfast included"
-              value={"breakfast_included"}
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
-            />
-            <FormControlLabel
-              value={"motels"}
-              control={<Checkbox />}
-              label="Motels"
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
-            />
-            <FormControlLabel
-              value={"hostels"}
-              control={<Checkbox />}
-              label="Hostels"
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
-            />
-            <FormControlLabel
-              value={"no_prepayment"}
-              control={<Checkbox />}
-              label="No prepayment"
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
-            />
+            {[
+              "Hotel",
+              "Guest House",
+              "Bed and Breakfast",
+              "Homestay",
+              "Hostel",
+              "Aparthotel",
+              "Capsule Hotel",
+              "Country House",
+              "Farm Stay",
+              "Inn",
+              "Love Hotel",
+              "Motel",
+              "Riad",
+              "Ryokan",
+              "Lodge",
+            ].map((type) => (
+              <FormControlLabel
+                key={type}
+                control={
+                  <Checkbox
+                    checked={
+                      filterSliceInput.propertyType?.includes(type) || false
+                    }
+                    onChange={() => dispatch(setPropertyType(type))}
+                  />
+                }
+                label={type}
+              />
+            ))}
           </FormGroup>
         </Stack>
 
