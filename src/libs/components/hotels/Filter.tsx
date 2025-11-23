@@ -1,4 +1,9 @@
-import { filterSliceValue, setPropertyType } from "@/src/slices/filteringSlice";
+import {
+  filterSliceValue,
+  setAllowPets,
+  setPropertyType,
+  setAllowChildren,
+} from "@/src/slices/filteringSlice";
 import {
   Box,
   Checkbox,
@@ -244,20 +249,26 @@ const Filter = () => {
           <Typography className="small-bold-text">Travel group</Typography>
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox />}
+              control={
+                <Checkbox
+                  checked={filterSliceInput.allowPets || false}
+                  onChange={(e) => dispatch(setAllowPets(e.target.checked))}
+                />
+              }
               label="Pets allowed"
               value={true}
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
             />
             <FormControlLabel
-              control={<Checkbox />}
+              control={
+                <Checkbox
+                  checked={!filterSliceInput.allowChildren}
+                  onChange={(e) =>
+                    dispatch(setAllowChildren(!e.target.checked))
+                  }
+                />
+              }
               label="Adults only"
               value={true}
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
             />
           </FormGroup>
         </Stack>
