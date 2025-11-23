@@ -1,7 +1,16 @@
+import { setLocation } from "@/src/slices/filteringSlice";
+import { RootState } from "@/store";
 import { Box, Stack, Typography } from "@mui/material";
 import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
 
 const TrendingDestinations = () => {
+  const stripEmoji = (text: string) =>
+    text.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "");
+
+  const dispatch = useDispatch();
+  const filters = useSelector((state: RootState) => state.filters);
+  console.log("filters", filters);
   const destinations = [
     { src: "/img/Busan.jpg", name: "Busan🇰🇷", width: 650 },
     { src: "/img/Seoul.jpg", name: "Seoul🇰🇷", width: 650 },
@@ -22,6 +31,7 @@ const TrendingDestinations = () => {
           transform: "scale(1.03)",
         },
       }}
+      onClick={() => dispatch(setLocation(stripEmoji(item.name).trim()))}
     >
       <Image
         src={item.src}

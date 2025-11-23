@@ -10,6 +10,8 @@ import { partnerVar, userVar } from "@/apollo/store";
 import { UserRole } from "../../enums/user.enum";
 import { useRouter } from "next/router";
 import { getJwtToken, updateUserInfo } from "../../auth";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 const withLayoutMain = (Component: ComponentType) => {
   return (props: object) => {
@@ -23,6 +25,8 @@ const withLayoutMain = (Component: ComponentType) => {
         router.push("/").then();
       }
     }, [loading, user, router]);
+    const dispatch = useDispatch();
+    const filters = useSelector((state: RootState) => state.filters);
 
     useEffect(() => {
       const jwt = getJwtToken();
