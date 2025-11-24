@@ -1,21 +1,33 @@
 import { Pagination, Stack, Typography } from "@mui/material";
 import React from "react";
 import StillInterestedCard from "./StillInterestedCard";
+import { GET_VISITED_PROPERTIES } from "@/apollo/user/query";
+import { useQuery, useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
 
 const StillInterestedList = () => {
-  const data = Array.from({ length: 24 }, (_, i) => i + 1);
+  const user = useReactiveVar(userVar);
 
-  // Pagination states
+  const { data, loading, refetch } = useQuery(GET_VISITED_PROPERTIES, {
+    skip: !user._id,
+    variables: {
+      input: {
+        page: 1,
+        limit: 100,
+      },
+    },
+  });
+
   const [page, setPage] = React.useState(1);
   const itemsPerPage = 5;
-
-  // Calculate which items to show for current page
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentItems = data.slice(startIndex, endIndex);
-
-  // Total pages
-  const pageCount = Math.ceil(data.length / itemsPerPage);
+  const currentItems = data?.getVisitedProperties?.list
+    ? data.getVisitedProperties.list.slice(startIndex, endIndex)
+    : [];
+  const pageCount = data?.getVisitedProperties?.list
+    ? Math.ceil(data.getVisitedProperties.list.length / itemsPerPage)
+    : 0;
 
   const handleChange = (event: any, value: any) => {
     setPage(value);
@@ -40,8 +52,8 @@ const StillInterestedList = () => {
           justifyContent: "start",
         }}
       >
-        {currentItems.map((item, index) => (
-          <StillInterestedCard key={index} />
+        {currentItems.map((item: any, index: any) => (
+          <StillInterestedCard key={index} property={item} />
         ))}
       </Stack>
       <Stack spacing={2} mt={2} alignItems="center">

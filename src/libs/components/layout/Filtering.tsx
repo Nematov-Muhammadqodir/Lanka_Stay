@@ -30,7 +30,6 @@ import {
 } from "@/src/slices/filteringSlice";
 import { useQuery } from "@apollo/client";
 import { GET_ALL_AVAILABLE_PROPERTIES } from "@/apollo/user/query";
-import { T } from "../../types/common";
 import { useRouter } from "next/router";
 
 export default function Filtering() {

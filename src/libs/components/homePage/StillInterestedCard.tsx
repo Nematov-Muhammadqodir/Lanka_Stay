@@ -3,8 +3,16 @@ import Image from "next/image";
 import React from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { PartnerProperty } from "../../types/partnerInput/partnerProperty";
+import { useRouter } from "next/router";
 
-const StillInterestedCard = () => {
+interface StillInterestedCardProps {
+  property?: PartnerProperty;
+}
+
+const StillInterestedCard = ({ property }: StillInterestedCardProps) => {
+  console.log("propertyyy", property);
+  const router = useRouter();
   const like = true;
   return (
     <Stack
@@ -20,6 +28,7 @@ const StillInterestedCard = () => {
           transform: "scale(1.03)",
         },
       }}
+      onClick={() => router.push(`/hotels/hotelDetail/${property?._id}`)}
     >
       <Stack
         sx={{
@@ -31,7 +40,11 @@ const StillInterestedCard = () => {
         }}
       >
         <Image
-          src="/img/hotel2.jpg"
+          src={
+            property?.propertyImages
+              ? `${process.env.NEXT_PUBLIC_API_URL}/${property?.propertyImages[0]}`
+              : "/img/hotel.jpg"
+          }
           alt="user-image"
           width={247}
           height={211}
@@ -68,9 +81,11 @@ const StillInterestedCard = () => {
           height={45}
           overflow={"hidden"}
         >
-          Haeundae Seacloud Hotel Residence
+          {property?.propertyName}
         </Typography>
-        <Typography fontSize={12}>Busan, South Korea</Typography>
+        <Typography fontSize={12}>
+          {property?.propertyRegion}, {property?.propertyCountry}
+        </Typography>
         <Stack flexDirection={"row"}>
           <Box
             sx={{

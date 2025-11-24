@@ -1,8 +1,18 @@
 import {
   filterSliceValue,
-  setAllowPets,
+  setDates,
+  setAdults,
+  setChildren,
+  setLocation,
+  setPage,
+  setLimit,
+  setPropertyCity,
   setPropertyType,
+  setPropertyStars,
+  setBreakfastIncluded,
+  setParkingIncluded,
   setAllowChildren,
+  setAllowPets,
 } from "@/src/slices/filteringSlice";
 import {
   Box,
@@ -213,28 +223,15 @@ const Filter = () => {
           </Stack>
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox />}
+              control={
+                <Checkbox
+                  checked={filterSliceInput.breakfastIncluded || false}
+                  onChange={(e) =>
+                    dispatch(setBreakfastIncluded(e.target.checked))
+                  }
+                />
+              }
               label="Tasty breakfast"
-              value={true}
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
-            />
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Great location"
-              value={true}
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
-            />
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Very good WiFi"
-              value={true}
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
             />
           </FormGroup>
         </Stack>

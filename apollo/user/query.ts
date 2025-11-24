@@ -202,3 +202,53 @@ export const GET_ALL_AVAILABLE_PROPERTIES = gql`
     }
   }
 `;
+
+export const GET_VISITED_PROPERTIES = gql`
+  query GetVisitedProperties($input: OrdinaryInquery!) {
+    getVisitedProperties(input: $input) {
+      list {
+        _id
+        partnerId
+        propertyType
+        propertyCountry
+        propertyRegion
+        propertyCity
+        propertyPostCode
+        propertyName
+        propertyStars
+        propertyViews
+        propertyComments
+        propertyFacilities
+        breakfastIncluded
+        parkingIncluded
+        hotelStaffLanguages
+        checkInTimeFrom
+        propertyStatus
+        checkInTimeUntill
+        propertyImages
+        checkOutTimeFrom
+        checkOutTimeUntill
+        allowChildren
+        allowPets
+        createdAt
+        updatedAt
+        memberData {
+          _id
+          partnerEmail
+          partnerFirstName
+          partnerLastName
+          partnerPhoneNumber
+          partnerPassword
+          userRole
+          createdAt
+          updatedAt
+          accessToken
+          memberStatus
+        }
+      }
+      metaCounter {
+        total
+      }
+    }
+  }
+`;
