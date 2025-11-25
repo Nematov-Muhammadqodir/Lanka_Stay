@@ -2,8 +2,14 @@ import { Pagination, Stack, Typography } from "@mui/material";
 import React from "react";
 import StillInterestedCard from "./StillInterestedCard";
 import { GET_VISITED_PROPERTIES } from "@/apollo/user/query";
-import { useQuery, useReactiveVar } from "@apollo/client";
+import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
 import { userVar } from "@/apollo/store";
+import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
+import {
+  sweetMixinErrorAlert,
+  sweetTopSmallSuccessAlert,
+} from "../../sweetAlert";
+import { T } from "../../types/common";
 
 const StillInterestedList = () => {
   const user = useReactiveVar(userVar);
@@ -29,6 +35,32 @@ const StillInterestedList = () => {
     ? Math.ceil(data.getVisitedProperties.list.length / itemsPerPage)
     : 0;
 
+  /** APOLLO REQUESTS **/
+  const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY);
+
+  const likePropertyHandler = async (user: T, id: string) => {
+    console.log("likeRefid", user._id);
+    try {
+      if (!id) return;
+      if (!user._id) throw new Error("User not found!");
+
+      // execute likeTargetProperty Mutation
+      await likeTargetProperty({ variables: { input: id } });
+      // execute getPropertiesRefetch
+      await refetch({
+        input: {
+          page: 1,
+          limit: 100,
+        },
+      });
+
+      await sweetTopSmallSuccessAlert("success", 800);
+    } catch (err: any) {
+      console.log("Error, likePropertyHandler", err);
+      sweetMixinErrorAlert(err.message).then();
+    }
+  };
+
   const handleChange = (event: any, value: any) => {
     setPage(value);
     console.log("value", value);
@@ -53,7 +85,11 @@ const StillInterestedList = () => {
         }}
       >
         {currentItems.map((item: any, index: any) => (
-          <StillInterestedCard key={index} property={item} />
+          <StillInterestedCard
+            key={index}
+            property={item}
+            likePropertyHandler={likePropertyHandler}
+          />
         ))}
       </Stack>
       <Stack spacing={2} mt={2} alignItems="center">

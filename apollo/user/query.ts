@@ -245,6 +245,11 @@ export const GET_VISITED_PROPERTIES = gql`
           accessToken
           memberStatus
         }
+        meLiked {
+          memberId
+          likeRefId
+          myFavorite
+        }
       }
       metaCounter {
         total

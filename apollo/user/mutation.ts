@@ -257,3 +257,36 @@ export const UPDATE_PARTNER_PROPERTY = gql`
     }
   }
 `;
+
+export const LIKE_TARGET_PROPERTY = gql`
+  mutation LikeTargetProperty($input: String!) {
+    likeTargetProperty(propertyId: $input) {
+      _id
+      partnerId
+      propertyType
+      propertyCountry
+      propertyRegion
+      propertyCity
+      propertyPostCode
+      propertyName
+      propertyStars
+      propertyViews
+      propertyLikes
+      propertyComments
+      propertyFacilities
+      breakfastIncluded
+      parkingIncluded
+      hotelStaffLanguages
+      checkInTimeFrom
+      propertyStatus
+      checkInTimeUntill
+      propertyImages
+      checkOutTimeFrom
+      checkOutTimeUntill
+      allowChildren
+      allowPets
+      createdAt
+      updatedAt
+    }
+  }
+`;

@@ -5,13 +5,22 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { PartnerProperty } from "../../types/partnerInput/partnerProperty";
 import { useRouter } from "next/router";
+import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
+import { useMutation, useReactiveVar } from "@apollo/client";
+import { Messages } from "../../config";
+import { userVar } from "@/apollo/store";
 
 interface StillInterestedCardProps {
   property?: PartnerProperty;
+  likePropertyHandler: any;
 }
 
-const StillInterestedCard = ({ property }: StillInterestedCardProps) => {
+const StillInterestedCard = ({
+  property,
+  likePropertyHandler,
+}: StillInterestedCardProps) => {
   console.log("propertyyy", property);
+  const user = useReactiveVar(userVar);
   const router = useRouter();
   const like = true;
   return (
@@ -66,8 +75,12 @@ const StillInterestedCard = ({ property }: StillInterestedCardProps) => {
             borderRadius: "50%",
             pt: "8px",
           }}
+          onClick={(e) => {
+            e.stopPropagation();
+            likePropertyHandler(user, property?._id);
+          }}
         >
-          {like ? (
+          {property?.meLiked && property?.meLiked[0]?.myFavorite ? (
             <FavoriteIcon sx={{ color: "#C0392B" }} />
           ) : (
             <FavoriteBorderIcon />

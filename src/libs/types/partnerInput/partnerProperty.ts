@@ -28,6 +28,12 @@ export interface PropertyRoom {
   roomName: string;
 }
 
+export interface MeLiked {
+  memberId: string;
+  likeRefId: string;
+  myFavorite: boolean;
+}
+
 export interface Partner {
   _id: string;
   partnerName: string;
@@ -65,6 +71,7 @@ export interface PartnerProperty {
   createdAt: string; // ISO string
   updatedAt: string; // ISO string
   memberData?: Partner | null;
+  meLiked?: MeLiked[] | null;
 }
 
 // For service returning multiple properties
