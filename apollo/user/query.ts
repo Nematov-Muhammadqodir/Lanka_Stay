@@ -5,8 +5,8 @@ import { gql } from "@apollo/client";
  *************************/
 
 export const GET_GUEST_PROFILE = gql`
-  query GetGuestProfile {
-    getGuestProfile {
+  query GetGuestProfile($input: String!) {
+    getGuestProfile(memberId: $input) {
       _id
       guestType
       guestStatus
@@ -16,8 +16,8 @@ export const GET_GUEST_PROFILE = gql`
       guestName
       guestFullName
       guestImage
-      guestEmail
       guestCountry
+      guestEmail
       guestRegion
       guestPoints
       userRole

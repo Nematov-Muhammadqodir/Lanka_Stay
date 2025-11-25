@@ -41,7 +41,8 @@ const MyAccount = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [member, setMember] = useState<Guest | null>(null);
-  const { guestId } = router.query;
+  const guestId = router.query.id as string;
+  console.log("guestId", guestId);
   const [updateData, setUpdateData] = useState<UpdateGuestProfile>({
     _id: member?._id || "",
     guestName: member?.guestName || "",
@@ -70,6 +71,7 @@ const MyAccount = () => {
 
   useEffect(() => {
     if (getGuestData) {
+      console.log("getGuestData", getGuestData);
       setMember(getGuestData?.getGuestProfile);
     }
   }, [getGuestData]);

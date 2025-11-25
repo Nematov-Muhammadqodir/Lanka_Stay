@@ -379,7 +379,7 @@ const deleteStorage = () => {
 };
 
 const deleteParterStorage = () => {
-  localStorage.removeItem("accessPatnerToken");
+  localStorage.removeItem("accessPartnerToken");
   window.localStorage.setItem("logoutPartner", Date.now().toString());
 };
 
