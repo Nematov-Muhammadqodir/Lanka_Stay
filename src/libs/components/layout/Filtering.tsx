@@ -7,7 +7,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
@@ -36,6 +36,7 @@ export default function Filtering() {
   const router = useRouter();
   const dispatch = useDispatch();
   const filters = useSelector((state: RootState) => state.filters);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -59,6 +60,14 @@ export default function Filtering() {
       key: "selection",
     },
   ]);
+
+  useEffect(() => {
+    if (openLocation) {
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 0);
+    }
+  }, [openLocation]);
 
   useEffect(() => saveFiltersToLocalStorage(filters), [filters]);
 
@@ -326,6 +335,8 @@ export default function Filtering() {
           <MenuItem>
             <Stack gap={2} width={431}>
               <Input
+                autoFocus={inputRef ? true : false}
+                inputRef={inputRef}
                 placeholder="Search for location!"
                 onChange={(e) => dispatch(setLocation(e.target.value))}
               />

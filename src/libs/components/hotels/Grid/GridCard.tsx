@@ -39,7 +39,7 @@ const GridCard = ({ item }: { item: any }) => {
     >
       <Image
         src={
-          item.propertyImages
+          item.propertyImages[0]
             ? `${process.env.NEXT_PUBLIC_API_URL}/${item.propertyImages[0]}`
             : "/img/hotel.jpg"
         }

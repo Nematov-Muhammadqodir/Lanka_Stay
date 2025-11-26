@@ -16,7 +16,6 @@ const Hotels = () => {
   console.log("FILTERS", filters);
 
   const { data, loading, refetch } = useQuery(GET_ALL_AVAILABLE_PROPERTIES, {
-    skip: !filters.propertyRegion, // skip if no region
     variables: {
       input: {
         propertyRegion: filters.propertyRegion,
