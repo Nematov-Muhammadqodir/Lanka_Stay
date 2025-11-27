@@ -6,13 +6,60 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Image from "next/image";
 import RoomReservationRight from "@/src/libs/components/HotelDetail.tsx/HotelRoom/RoomReservationRight";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LockIcon from "@mui/icons-material/Lock";
 import RoomPaymentRIght from "@/src/libs/components/HotelDetail.tsx/HotelRoom/RoomPaymentRIght";
+import { useRouter } from "next/router";
+import { GET_PARTNER_PROPERTY_ROOM } from "@/apollo/user/query";
+import { useQuery } from "@apollo/client";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
 
 const RoomReservation = () => {
+  const date = new Date("2025-11-06"); // Thu Nov 06 2025
+  date.setDate(date.getDate() - 5);
+
+  const formatted = date.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  });
+
+  console.log(formatted);
+  const filteringData = useSelector((state: RootState) => state.filters);
+  console.log("selecor", filteringData);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   const steps = ["Your selection", "Your details", "Finish booking"];
   const [pay, setPay] = useState("reserve");
+  const router = useRouter();
+  const { roomId } = router.query;
+  console.log("roomId", roomId);
+  const partnerProperty = useSelector(
+    (state: RootState) => state.partnerProperty.data
+  );
+  console.log("partnerProperty", partnerProperty);
+
+  /** APOLLO REQUESTS **/
+  const {
+    loading: getPartnerPropertyRoomLoading,
+    data: getPartnerPropertyRoomData,
+    error: getPartnerPropertyRoomError,
+    refetch: getPartnerPropertyRoomRefetch,
+  } = useQuery(GET_PARTNER_PROPERTY_ROOM, {
+    fetchPolicy: "network-only",
+    variables: { input: roomId },
+    skip: !roomId,
+    notifyOnNetworkStatusChange: true,
+  });
+
+  const roomData = getPartnerPropertyRoomData?.getPartnerPropertyRoom;
+  console.log("roomData", roomData);
 
   const handlePaymentPage = () => {
     window.scrollTo({
@@ -21,6 +68,30 @@ const RoomReservation = () => {
     });
     setPay("pay");
   };
+
+  const start = new Date(String(filteringData.startDate));
+  const end = new Date(String(filteringData.endDate));
+  const bookedDays =
+    Number(String(end).split(" ")[2]) - Number(String(start).split(" ")[2]);
+
+  const options = {
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  } as const;
+
+  const startDate = start.toLocaleDateString("en-US", options);
+  console.log("days", startDate);
+
+  const endDate = end.toLocaleDateString("en-US", options);
+
+  const nightlyPrice = roomData?.roomPricePerNight ?? 0;
+  const doscountedPrice = Number(nightlyPrice) - 23000;
+  const totalPrice = doscountedPrice * bookedDays;
+  const totalPriceWithoutDiscount = Number(nightlyPrice) * bookedDays;
+
+  if (!isMounted) return null;
   return (
     <Stack className="container" mt={"20px !important"}>
       <Box sx={{ width: "100%" }}>
@@ -43,7 +114,11 @@ const RoomReservation = () => {
             borderColor={"text.disabled"}
           >
             <Image
-              src={"/img/hotel.jpg"}
+              src={
+                partnerProperty?.propertyImages?.length
+                  ? `${process.env.NEXT_PUBLIC_API_URL}/${partnerProperty?.propertyImages[0]}`
+                  : "/img/hotel.jpg"
+              }
               alt="left-image"
               width={388}
               height={155}
@@ -54,12 +129,19 @@ const RoomReservation = () => {
               }}
             />
             <Stack padding={2}>
-              <Rating name="read-only" value={5} readOnly />
+              <Rating
+                name="read-only"
+                value={partnerProperty?.propertyStars}
+                readOnly
+              />
               <Typography className="bold-text-medium">
-                Hotel Gracery Seoul
+                {roomData?.roomName}
               </Typography>
               <Typography className="small-text">
-                12, Sejong-daero 12-gil, Jung-Gu, 04526 Seoul, South Korea
+                {partnerProperty?.propertyCity},{" "}
+                {partnerProperty?.propertyPostCode}{" "}
+                {partnerProperty?.propertyRegion}{" "}
+                {partnerProperty?.propertyCountry}
               </Typography>
               <Typography className="small-text" color={"#018233"}>
                 Excellent location — 9.2
@@ -107,22 +189,16 @@ const RoomReservation = () => {
               borderColor={"text.disabled"}
               mb={2}
             >
-              <Stack
-                borderRight={"1px solid"}
-                pr={4}
-                borderColor={"text.disabled"}
-              >
+              <Stack pr={4} borderColor={"text.disabled"}>
                 <Typography>Check-in</Typography>
                 <Typography className="bold-text-medium">
-                  Sun 7 Dec 2025
+                  {startDate}
                 </Typography>
-                <Typography>15:00 – 00:00</Typography>
+                <Typography>From 12:00</Typography>
               </Stack>
-              <Stack pr={4}>
+              <Stack pr={4} sx={{ alignItems: "flex-end" }}>
                 <Typography>Check-out</Typography>
-                <Typography className="bold-text-medium">
-                  Wed 10 Dec 2025
-                </Typography>
+                <Typography className="bold-text-medium">{endDate}</Typography>
                 <Typography>Until 12:00</Typography>
               </Stack>
             </Stack>
@@ -130,7 +206,11 @@ const RoomReservation = () => {
             <Stack gap={1}>
               <Typography>You selected</Typography>
               <Typography className="bold-text-medium">
-                3 nights, 1 room for 2 adults
+                {bookedDays} nights, 1 room for{" "}
+                {roomData?.numberOfGuestsCanStay
+                  ? roomData?.numberOfGuestsCanStay
+                  : 1}{" "}
+                adults
               </Typography>
               <Typography className="small-text">
                 1 x Standard Double Room - 11th - 16th Floor with Bath - Parking
@@ -156,7 +236,9 @@ const RoomReservation = () => {
               justifyContent={"space-between"}
             >
               <Typography>Original price</Typography>
-              <Typography className="bold-text-medium">KRW 838,200</Typography>
+              <Typography className="bold-text-medium">
+                {formatKoreanWon(String(doscountedPrice))}
+              </Typography>
             </Stack>
             <Stack
               flexDirection={"row"}
@@ -169,7 +251,7 @@ const RoomReservation = () => {
                 color={"red"}
                 sx={{ textDecoration: "line-through" }}
               >
-                - KRW 251,460
+                {formatKoreanWon(roomData?.roomPricePerNight)}
               </Typography>
             </Stack>
 
@@ -189,10 +271,10 @@ const RoomReservation = () => {
                   color={"red"}
                   sx={{ textDecoration: "line-through" }}
                 >
-                  KRW 838,200
+                  {formatKoreanWon(String(totalPriceWithoutDiscount))}
                 </Typography>
                 <Typography className="bold-text" color={"primary.main"}>
-                  KRW 838,200
+                  {formatKoreanWon(String(totalPrice))}
                 </Typography>
                 <Typography className="small-text">
                   Includes taxes and charges
@@ -213,7 +295,7 @@ const RoomReservation = () => {
               How much will it cost to cancel?
             </Typography>
             <Typography className="small-text" color={"#018233"}>
-              Free cancellation before 5 Dec
+              Free cancellation before {formatted} Dec
             </Typography>
 
             <Stack
@@ -222,8 +304,8 @@ const RoomReservation = () => {
               mt={2}
               justifyContent={"space-between"}
             >
-              <Typography>From 00:00 on 5 Dec</Typography>
-              <Typography>KRW 586,740</Typography>
+              <Typography>From 00:00 on {formatted}</Typography>
+              <Typography> {formatKoreanWon(String(totalPrice))}</Typography>
             </Stack>
           </Stack>
         </Stack>

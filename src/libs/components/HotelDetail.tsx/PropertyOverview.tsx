@@ -22,7 +22,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import { PartnerProperty } from "../../types/partnerInput/partnerProperty";
 
 export interface PropertyOverviewProps {
-  partnerProperty?: PartnerProperty;
+  partnerProperty?: PartnerProperty | null;
   loading?: boolean;
 }
 

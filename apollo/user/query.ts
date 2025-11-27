@@ -257,3 +257,35 @@ export const GET_VISITED_PROPERTIES = gql`
     }
   }
 `;
+
+export const GET_PARTNER_PROPERTY_ROOM = gql`
+  query GetPartnerPropertyRoom($input: String!) {
+    getPartnerPropertyRoom(roomId: $input) {
+      _id
+      propertyId
+      roomType
+      currentRoomTypeAmount
+      numberOfGuestsCanStay
+      isSmokingAllowed
+      isBathroomPrivate
+      availableBathroomFacilities
+      roomFacilities
+      roomName
+      roomPricePerNight
+      roomPropertyLocation
+      createdAt
+      updatedAt
+      availableBeds {
+        single
+        double
+        king
+        superKing
+      }
+      reservedDates {
+        userId
+        from
+        until
+      }
+    }
+  }
+`;

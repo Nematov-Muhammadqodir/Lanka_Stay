@@ -4,6 +4,7 @@ import partnerLoginInput from "./src/slices/partnerLoginSlice";
 import partnerPropertyInput from "./src/slices/createPartnerPropertySlice";
 import partnerPropertyRoomInput from "./src/slices/partnerPropertyRoomSlice";
 import filterReducer from "./src/slices/filteringSlice";
+import partnerProperty from "./src/slices/partnerPropertySlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     partnerPropertyInput: partnerPropertyInput,
     partnerPropertyRoomInput: partnerPropertyRoomInput,
     filters: filterReducer,
+    partnerProperty: partnerProperty,
   },
 });
 

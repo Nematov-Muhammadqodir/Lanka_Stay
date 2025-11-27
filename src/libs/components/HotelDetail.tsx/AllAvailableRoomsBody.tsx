@@ -138,7 +138,7 @@ const AllAvailableRoomsBody = ({
         <Button
           variant="contained"
           sx={{ width: "200px", color: "secondary.contrastText" }}
-          onClick={() => router.push("roomId/123")}
+          onClick={() => router.push(`roomId/${propertyRoom?.roomId}`)}
         >
           I'll reserve
         </Button>

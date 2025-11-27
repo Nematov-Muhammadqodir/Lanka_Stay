@@ -44,32 +44,32 @@ export interface Partner {
 }
 
 export interface PartnerProperty {
-  _id: string;
-  partnerId: string;
-  propertyType: string;
-  propertyCountry: string;
-  propertyRegion: string;
-  propertyCity: string;
-  propertyPostCode: string;
-  propertyName: string;
-  propertyStars: number;
-  propertyRooms: PropertyRoom[];
-  propertyViews: number;
-  propertyComments: number;
-  propertyFacilities: string[];
-  breakfastIncluded: boolean;
-  parkingIncluded: boolean;
-  hotelStaffLanguages: string[];
-  checkInTimeFrom: string;
-  checkInTimeUntill: string;
-  checkOutTimeFrom: string;
-  checkOutTimeUntill: string;
-  propertyStatus: PropertyStatus;
-  propertyImages: string[];
-  allowChildren: boolean;
-  allowPets: boolean;
-  createdAt: string; // ISO string
-  updatedAt: string; // ISO string
+  _id?: string;
+  partnerId?: string;
+  propertyType?: string;
+  propertyCountry?: string;
+  propertyRegion?: string;
+  propertyCity?: string;
+  propertyPostCode?: string;
+  propertyName?: string;
+  propertyStars?: number;
+  propertyRooms?: PropertyRoom[];
+  propertyViews?: number;
+  propertyComments?: number;
+  propertyFacilities?: string[];
+  breakfastIncluded?: boolean;
+  parkingIncluded?: boolean;
+  hotelStaffLanguages?: string[];
+  checkInTimeFrom?: string;
+  checkInTimeUntill?: string;
+  checkOutTimeFrom?: string;
+  checkOutTimeUntill?: string;
+  propertyStatus?: PropertyStatus;
+  propertyImages?: string[];
+  allowChildren?: boolean;
+  allowPets?: boolean;
+  createdAt?: string; // ISO string
+  updatedAt?: string; // ISO string
   memberData?: Partner | null;
   meLiked?: MeLiked[] | null;
 }

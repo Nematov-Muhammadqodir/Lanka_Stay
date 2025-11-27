@@ -61,14 +61,16 @@ const AllAvailableRooms = ({
           </Stack>
         </Stack>
         <Stack>
-          {partnerProperty?.propertyRooms.map((room) => {
-            return (
-              <AllAvailableRoomsBody
-                partnerProperty={partnerProperty}
-                propertyRoom={room}
-              />
-            );
-          })}
+          {partnerProperty?.propertyRooms?.length
+            ? partnerProperty?.propertyRooms.map((room) => {
+                return (
+                  <AllAvailableRoomsBody
+                    partnerProperty={partnerProperty}
+                    propertyRoom={room}
+                  />
+                );
+              })
+            : null}
         </Stack>
       </Stack>
     </Stack>

@@ -12,15 +12,28 @@ import ReviewsList from "@/src/libs/components/HotelDetail.tsx/ReviewsList";
 import withLayoutSecondary from "@/src/libs/components/layout/LayoutSecondary";
 import { T } from "@/src/libs/types/common";
 import { PartnerProperty } from "@/src/libs/types/partnerInput/partnerProperty";
+import { setPartnerProperty } from "@/src/slices/partnerPropertySlice";
+import { RootState } from "@/store";
 import { useQuery } from "@apollo/client";
 import { Stack } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const HotelDetail = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const dispatch = useDispatch();
+  const partnerProperty = useSelector(
+    (state: RootState) => state.partnerProperty.data
+  );
+
   const router = useRouter();
   const { id } = router.query;
-  const [partnerProperty, setPartnerProperty] = useState<PartnerProperty>();
 
   /** APOLLO REQUESTS **/
   const {
@@ -36,15 +49,15 @@ const HotelDetail = () => {
   });
 
   useEffect(() => {
-    if (getPartnerPropertyData) {
-      // do something with data
-      console.log(
-        "data.getPartnerProperty",
-        getPartnerPropertyData.getPartnerProperty
-      );
-      setPartnerProperty(getPartnerPropertyData.getPartnerProperty);
+    if (getPartnerPropertyData?.getPartnerProperty) {
+      const result = getPartnerPropertyData.getPartnerProperty;
+
+      dispatch(setPartnerProperty(result)); // <-- SAVE TO REDUX
     }
   }, [getPartnerPropertyData]);
+
+  if (!isMounted) return null;
+
   return (
     <Stack>
       <PropertyOverview
