@@ -3,12 +3,29 @@ import { Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
+import { GET_PARTNER_PROPERTY } from "@/apollo/user/query";
+import { useQuery } from "@apollo/client";
+import { formatShortDate } from "@/src/libs/utils";
 
-const RecentlyViewedCard = () => {
+interface RecentlyViewedCardProps {
+  item: any;
+}
+
+const RecentlyViewedCard = ({ item }: RecentlyViewedCardProps) => {
+  console.log("ITEMmmmm", item);
+  const firstRoom = item?.propertyRooms?.[0];
+  const roomPrice = firstRoom?.roomPricePerNight
+    ? Number(firstRoom.roomPricePerNight)
+    : 0;
   return (
     <Stack width={200} height={"auto"}>
       <Image
-        src={"/img/hotel.jpg"}
+        src={
+          item?.propertyImages[0]
+            ? `${process.env.NEXT_PUBLIC_API_URL}/${item.propertyImages[0]}`
+            : "/img/hotel.jpg"
+        }
         alt="left-image"
         width={200}
         height={125}
@@ -30,7 +47,7 @@ const RecentlyViewedCard = () => {
           className="bold-text-medium"
           sx={{ textTransform: "uppercase" }}
         >
-          L7 Haeundae by lotte hotels
+          {item.propertyName}
         </Typography>
         <Stack
           flexDirection={"row"}
@@ -57,7 +74,10 @@ const RecentlyViewedCard = () => {
         </Stack>
         <Stack alignItems={"flex-end"}>
           <Typography className="small-text">Starting from</Typography>
-          <Typography className="bold-text-medium">KRW 180.000</Typography>
+          <Typography className="bold-text-medium">
+            {" "}
+            {formatKoreanWon(String(roomPrice))}
+          </Typography>
         </Stack>
         <Stack
           flexDirection={"row"}
@@ -65,7 +85,9 @@ const RecentlyViewedCard = () => {
           sx={{ backgroundColor: "secondary.main", p: 1, borderRadius: 3 }}
         >
           <RemoveRedEyeIcon />
-          <Typography className="small-text">Last viewed: 12 Oct</Typography>
+          <Typography className="small-text">
+            Last viewed: {formatShortDate(item?.createdAt)}
+          </Typography>
         </Stack>
       </Stack>
     </Stack>

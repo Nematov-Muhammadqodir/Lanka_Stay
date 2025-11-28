@@ -250,6 +250,17 @@ export const GET_VISITED_PROPERTIES = gql`
           likeRefId
           myFavorite
         }
+        propertyRooms {
+          roomId
+          roomType
+          roomPricePerNight
+          numberOfGuestsCanStay
+          roomFacilities
+          availableBathroomFacilities
+          isBathroomPrivate
+          isSmokingAllowed
+          roomName
+        }
       }
       metaCounter {
         total

@@ -23,3 +23,11 @@ export const likeTargetPropertyHandler = async (
     sweetMixinErrorAlert(err.message).then();
   }
 };
+
+export function formatShortDate(dateString: string) {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.toLocaleString("en-US", { month: "short" }); // Jan, Feb, Mar...
+
+  return `${day} ${month}`;
+}
