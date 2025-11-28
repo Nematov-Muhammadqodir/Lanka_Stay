@@ -26,7 +26,7 @@ const RoomPaymentRIght = ({
   };
 
   return (
-    <Stack width={"67%"} className="reserve-left" pb={5}>
+    <Stack width={"67%"} className="reserve-left" pb={60}>
       <Stack mb={1}>
         <Typography className="bold-text">Check and pay</Typography>
       </Stack>

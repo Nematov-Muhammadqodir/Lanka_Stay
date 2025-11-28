@@ -8,6 +8,7 @@ export interface RoomReservationRight {
   formatted: string;
   handleEditUserInfo: (key: string, value: any) => void;
   initalValue: InitialValueInput;
+  setActiveStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const RoomReservationRight = ({
@@ -15,6 +16,7 @@ const RoomReservationRight = ({
   formatted,
   handleEditUserInfo,
   initalValue,
+  setActiveStep,
 }: RoomReservationRight) => {
   return (
     <Stack>
@@ -23,6 +25,7 @@ const RoomReservationRight = ({
         formatted={formatted}
         handleEditUserInfo={handleEditUserInfo}
         initalValue={initalValue}
+        setActiveStep={setActiveStep}
       />
     </Stack>
   );

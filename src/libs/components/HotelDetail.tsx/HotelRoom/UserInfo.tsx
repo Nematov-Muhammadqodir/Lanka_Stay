@@ -38,6 +38,7 @@ const UserInfo = ({
   formatted,
   handleEditUserInfo,
   initalValue,
+  setActiveStep,
 }: RoomReservationRight) => {
   const user = useReactiveVar(userVar);
   const router = useRouter();
@@ -373,7 +374,10 @@ const UserInfo = ({
       <Button
         variant="contained"
         sx={{ width: 300, alignSelf: "end" }}
-        onClick={handlePaymentPage}
+        onClick={() => {
+          handlePaymentPage();
+          setActiveStep(2);
+        }}
       >
         <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
           <Typography color={"white"}>Next: Final details</Typography>

@@ -125,11 +125,12 @@ const RoomReservation = () => {
     }));
   };
 
+  const [activeStep, setActiveStep] = useState<number>(1);
   if (!isMounted) return null;
   return (
     <Stack className="container" mt={"20px !important"}>
       <Box sx={{ width: "100%" }}>
-        <Stepper activeStep={1} alternativeLabel>
+        <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((label) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
@@ -358,6 +359,7 @@ const RoomReservation = () => {
               formatted={formatted}
               handleEditUserInfo={handleEditUserInfo}
               initalValue={initalValue}
+              setActiveStep={setActiveStep}
             />
           </Stack>
         )}
