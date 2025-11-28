@@ -50,7 +50,7 @@ const UserInfo = ({
     error: getPartnerPropertyRoomError,
     refetch: getPartnerPropertyRoomRefetch,
   } = useQuery(GET_PARTNER_PROPERTY_ROOM, {
-    fetchPolicy: "cache-only",
+    fetchPolicy: "cache-first",
     variables: { input: roomId },
     skip: !roomId,
     notifyOnNetworkStatusChange: true,
@@ -63,7 +63,7 @@ const UserInfo = ({
     error: getPartnerPropertyError,
     refetch: getPartnerPropertyRefetch,
   } = useQuery(GET_PARTNER_PROPERTY, {
-    fetchPolicy: "cache-only",
+    fetchPolicy: "cache-first",
     variables: { input: roomData?.propertyId },
     skip: !roomData?.propertyId,
     notifyOnNetworkStatusChange: true,
@@ -160,6 +160,9 @@ const UserInfo = ({
                 placeholder="Last name"
                 sx={{ width: 350 }}
                 value={initalValue.guestLastName}
+                onChange={(e: any) => {
+                  handleEditUserInfo("guestLastName", e.target.value);
+                }}
               />
             </Stack>
           </Stack>

@@ -3,6 +3,8 @@ import Image from "next/image";
 import LockIcon from "@mui/icons-material/Lock";
 import AgeAgreement from "./AgeAgreement";
 import { InitialValueInput } from "@/src/pages/hotels/hotelDetail/[id]/[roomId]";
+import { ADD_RESERVATION_INFO } from "@/apollo/user/mutation";
+import { useMutation } from "@apollo/client";
 
 export interface RoomPaymentRIghtProps {
   initalValue: InitialValueInput;
@@ -13,6 +15,16 @@ const RoomPaymentRIght = ({
   initalValue,
   handleEditUserInfo,
 }: RoomPaymentRIghtProps) => {
+  const [addReservation] = useMutation(ADD_RESERVATION_INFO);
+
+  const handleAddReservation = async () => {
+    await addReservation({
+      variables: {
+        input: initalValue,
+      },
+    });
+  };
+
   return (
     <Stack width={"67%"} className="reserve-left" pb={5}>
       <Stack mb={1}>
@@ -139,7 +151,13 @@ const RoomPaymentRIght = ({
         />
       </Stack>
 
-      <Button variant="contained" sx={{ mt: 6, width: "100%" }}>
+      <Button
+        variant="contained"
+        sx={{ mt: 6, width: "100%" }}
+        onClick={() => {
+          handleAddReservation();
+        }}
+      >
         <Stack flexDirection={"row"} gap={1}>
           <LockIcon sx={{ color: "secondary.contrastText" }} />
           <Typography

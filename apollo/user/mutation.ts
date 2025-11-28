@@ -290,3 +290,25 @@ export const LIKE_TARGET_PROPERTY = gql`
     }
   }
 `;
+
+export const ADD_RESERVATION_INFO = gql`
+  mutation AddReservationInfo($input: ReservationInfoInput!) {
+    addReservationInfo(input: $input) {
+      _id
+      guestId
+      guestName
+      guestLastName
+      guestEmail
+      guestPhoneNumber
+      travelForWork
+      cardholderName
+      cardNumber
+      expiryDate
+      cvs
+      roomId
+      ageConfirmation
+      createdAt
+      updatedAt
+    }
+  }
+`;

@@ -17,6 +17,7 @@ import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
 import { userVar } from "@/apollo/store";
 
 export interface InitialValueInput {
+  guestId: string;
   guestName: string;
   guestLastName: string;
   guestEmail: string;
@@ -27,6 +28,7 @@ export interface InitialValueInput {
   expiryDate: string;
   cvs: string;
   ageConfirmation: boolean;
+  roomId: string;
 }
 
 const RoomReservation = () => {
@@ -102,6 +104,7 @@ const RoomReservation = () => {
   const totalPriceWithoutDiscount = Number(nightlyPrice) * bookedDays;
 
   const [initalValue, setInitalValue] = useState<InitialValueInput>({
+    guestId: user._id,
     guestName: user.guestName ? user.guestName : "",
     guestLastName: "",
     guestEmail: user.guestEmail ? user.guestEmail : "",
@@ -112,6 +115,7 @@ const RoomReservation = () => {
     expiryDate: "",
     cvs: "",
     ageConfirmation: false,
+    roomId: Array.isArray(roomId) ? roomId[0] : roomId || "",
   });
   console.log("initalValue", initalValue);
   const handleEditUserInfo = (key: string, value: any) => {
