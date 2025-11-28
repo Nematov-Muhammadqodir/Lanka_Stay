@@ -1,7 +1,18 @@
-import { Checkbox, Stack, Typography } from "@mui/material";
+import {
+  Checkbox,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React from "react";
+import { RoomPaymentRIghtProps } from "./RoomPaymentRIght";
 
-const AgeAgreement = () => {
+const AgeAgreement = ({
+  initalValue,
+  handleEditUserInfo,
+}: RoomPaymentRIghtProps) => {
   return (
     <Stack
       border={"1px solid"}
@@ -17,24 +28,24 @@ const AgeAgreement = () => {
         Please agree to the following:*
       </Typography>
       <Stack gap={2} mt={2}>
-        <Stack flexDirection={"row"}>
-          <Checkbox />
-          <Typography>
-            I confirm that I am over the age of 14 and I consent to the
+        <RadioGroup
+          aria-labelledby="demo-controlled-radio-buttons-group"
+          name="controlled-radio-buttons-group"
+          value={initalValue.ageConfirmation}
+          onChange={(e: any) => {
+            const val = e.target.value === "true";
+            handleEditUserInfo("ageConfirmation", val);
+          }}
+        >
+          <FormControlLabel
+            value={true}
+            control={<Radio />}
+            label=" I confirm that I am over the age of 14 and I consent to the
             mandatory collection and use of my personal information as well as
             my dependent child(ren)’s personal information (where applicable) as
-            described in the Booking.com Privacy Statement. *
-          </Typography>
-        </Stack>
-        <Stack flexDirection={"row"}>
-          <Checkbox />
-          <Typography>
-            I confirm that I am over the age of 14 and I consent to the
-            mandatory collection and use of my personal information as well as
-            my dependent child(ren)’s personal information (where applicable) as
-            described in the Booking.com Privacy Statement. *
-          </Typography>
-        </Stack>
+            described in the Booking.com Privacy Statement. *"
+          />
+        </RadioGroup>
       </Stack>
     </Stack>
   );

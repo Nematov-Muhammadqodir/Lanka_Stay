@@ -7,16 +7,30 @@ import StepLabel from "@mui/material/StepLabel";
 import Image from "next/image";
 import RoomReservationRight from "@/src/libs/components/HotelDetail.tsx/HotelRoom/RoomReservationRight";
 import { useEffect, useState } from "react";
-import LockIcon from "@mui/icons-material/Lock";
 import RoomPaymentRIght from "@/src/libs/components/HotelDetail.tsx/HotelRoom/RoomPaymentRIght";
 import { useRouter } from "next/router";
 import { GET_PARTNER_PROPERTY_ROOM } from "@/apollo/user/query";
-import { useQuery } from "@apollo/client";
+import { useQuery, useReactiveVar } from "@apollo/client";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
+import { userVar } from "@/apollo/store";
+
+export interface InitialValueInput {
+  guestName: string;
+  guestLastName: string;
+  guestEmail: string;
+  guestPhoneNumber: string;
+  travelForWork: boolean;
+  cardholderName: string;
+  cardNumber: string;
+  expiryDate: string;
+  cvs: string;
+  ageConfirmation: boolean;
+}
 
 const RoomReservation = () => {
+  const user = useReactiveVar(userVar);
   const date = new Date("2025-11-06"); // Thu Nov 06 2025
   date.setDate(date.getDate() - 5);
 
@@ -27,9 +41,8 @@ const RoomReservation = () => {
     year: "numeric",
   });
 
-  console.log(formatted);
   const filteringData = useSelector((state: RootState) => state.filters);
-  console.log("selecor", filteringData);
+
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -39,11 +52,10 @@ const RoomReservation = () => {
   const [pay, setPay] = useState("reserve");
   const router = useRouter();
   const { roomId } = router.query;
-  console.log("roomId", roomId);
+
   const partnerProperty = useSelector(
     (state: RootState) => state.partnerProperty.data
   );
-  console.log("partnerProperty", partnerProperty);
 
   /** APOLLO REQUESTS **/
   const {
@@ -59,7 +71,6 @@ const RoomReservation = () => {
   });
 
   const roomData = getPartnerPropertyRoomData?.getPartnerPropertyRoom;
-  console.log("roomData", roomData);
 
   const handlePaymentPage = () => {
     window.scrollTo({
@@ -82,7 +93,6 @@ const RoomReservation = () => {
   } as const;
 
   const startDate = start.toLocaleDateString("en-US", options);
-  console.log("days", startDate);
 
   const endDate = end.toLocaleDateString("en-US", options);
 
@@ -90,6 +100,26 @@ const RoomReservation = () => {
   const doscountedPrice = Number(nightlyPrice) - 23000;
   const totalPrice = doscountedPrice * bookedDays;
   const totalPriceWithoutDiscount = Number(nightlyPrice) * bookedDays;
+
+  const [initalValue, setInitalValue] = useState<InitialValueInput>({
+    guestName: user.guestName ? user.guestName : "",
+    guestLastName: "",
+    guestEmail: user.guestEmail ? user.guestEmail : "",
+    guestPhoneNumber: user.guestPhone ? user.guestPhone : "",
+    travelForWork: false,
+    cardholderName: "",
+    cardNumber: "",
+    expiryDate: "",
+    cvs: "",
+    ageConfirmation: false,
+  });
+  console.log("initalValue", initalValue);
+  const handleEditUserInfo = (key: string, value: any) => {
+    setInitalValue((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
 
   if (!isMounted) return null;
   return (
@@ -134,9 +164,11 @@ const RoomReservation = () => {
                 value={partnerProperty?.propertyStars}
                 readOnly
               />
-              <Typography className="bold-text-medium">
-                {roomData?.roomName}
-              </Typography>
+              <Stack maxWidth={"350px"} overflow={"hidden"}>
+                <Typography className="bold-text-medium" width={"100px"}>
+                  {roomData?.roomName}
+                </Typography>
+              </Stack>
               <Typography className="small-text">
                 {partnerProperty?.propertyCity},{" "}
                 {partnerProperty?.propertyPostCode}{" "}
@@ -311,10 +343,18 @@ const RoomReservation = () => {
         </Stack>
 
         {pay === "pay" ? (
-          <RoomPaymentRIght />
+          <RoomPaymentRIght
+            handleEditUserInfo={handleEditUserInfo}
+            initalValue={initalValue}
+          />
         ) : (
           <Stack width={"67%"}>
-            <RoomReservationRight handlePaymentPage={handlePaymentPage} />
+            <RoomReservationRight
+              handlePaymentPage={handlePaymentPage}
+              formatted={formatted}
+              handleEditUserInfo={handleEditUserInfo}
+              initalValue={initalValue}
+            />
           </Stack>
         )}
       </Stack>

@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import {
   Box,
   Button,
+  FormControlLabel,
   Radio,
+  RadioGroup,
   Stack,
   TextField,
   Typography,
@@ -21,9 +23,55 @@ import AssuredWorkloadIcon from "@mui/icons-material/AssuredWorkload";
 import SingleBedIcon from "@mui/icons-material/SingleBed";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { RoomReservationRight } from "./RoomReservationRight";
+import { useQuery, useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
+import { useRouter } from "next/router";
+import {
+  GET_PARTNER_PROPERTY,
+  GET_PARTNER_PROPERTY_ROOM,
+} from "@/apollo/user/query";
+import CloseIcon from "@mui/icons-material/Close";
+import SmokingRoomsIcon from "@mui/icons-material/SmokingRooms";
 
-const UserInfo = ({ handlePaymentPage }: RoomReservationRight) => {
-  const [phone, setPhone] = useState("");
+const UserInfo = ({
+  handlePaymentPage,
+  formatted,
+  handleEditUserInfo,
+  initalValue,
+}: RoomReservationRight) => {
+  const user = useReactiveVar(userVar);
+  const router = useRouter();
+
+  const { roomId } = router.query;
+  /** APOLLO REQUESTS **/
+  const {
+    loading: getPartnerPropertyRoomLoading,
+    data: getPartnerPropertyRoomData,
+    error: getPartnerPropertyRoomError,
+    refetch: getPartnerPropertyRoomRefetch,
+  } = useQuery(GET_PARTNER_PROPERTY_ROOM, {
+    fetchPolicy: "cache-only",
+    variables: { input: roomId },
+    skip: !roomId,
+    notifyOnNetworkStatusChange: true,
+  });
+  const roomData = getPartnerPropertyRoomData?.getPartnerPropertyRoom;
+
+  const {
+    loading: getPartnerPropertyLoading,
+    data: getPartnerPropertyData,
+    error: getPartnerPropertyError,
+    refetch: getPartnerPropertyRefetch,
+  } = useQuery(GET_PARTNER_PROPERTY, {
+    fetchPolicy: "cache-only",
+    variables: { input: roomData?.propertyId },
+    skip: !roomData?.propertyId,
+    notifyOnNetworkStatusChange: true,
+  });
+  const propertyData = getPartnerPropertyData?.getPartnerProperty;
+
+  console.log("getPartnerPropertyDataaa", propertyData);
+
   return (
     <Stack gap={2} mb={30}>
       <Stack
@@ -36,7 +84,11 @@ const UserInfo = ({ handlePaymentPage }: RoomReservationRight) => {
         borderRadius={3}
       >
         <Image
-          src={"/img/logo/uniface.jpg"}
+          src={
+            user.guestImage !== ""
+              ? `${process.env.NEXT_PUBLIC_API_URL}/${user.guestImage}`
+              : "/img/logo/uniface.jpg"
+          }
           alt="left-image"
           width={50}
           height={50}
@@ -50,7 +102,7 @@ const UserInfo = ({ handlePaymentPage }: RoomReservationRight) => {
             You are signed in
           </Typography>
           <Typography className="small-text">
-            nematovmuhammadqodir68@gmail.com
+            {user.guestEmail !== "" ? user.guestEmail : ""}
           </Typography>
         </Stack>
       </Stack>
@@ -91,16 +143,33 @@ const UserInfo = ({ handlePaymentPage }: RoomReservationRight) => {
           <Stack flexDirection={"row"} justifyContent={"space-between"}>
             <Stack gap={0.5}>
               <Typography className="small-bold-text">First name</Typography>
-              <TextField placeholder="First name" sx={{ width: 350 }} />
+              <TextField
+                placeholder="First name"
+                sx={{ width: 350 }}
+                value={initalValue.guestName}
+                onChange={(e: any) => {
+                  handleEditUserInfo("guestName", e.target.value);
+                }}
+              />
             </Stack>
             <Stack gap={0.5}>
-              <Typography className="small-bold-text">Last name</Typography>
-              <TextField placeholder="Last name" sx={{ width: 350 }} />
+              <Typography className="small-bold-text">
+                Last name (optional)
+              </Typography>
+              <TextField
+                placeholder="Last name"
+                sx={{ width: 350 }}
+                value={initalValue.guestLastName}
+              />
             </Stack>
           </Stack>
           <Stack gap={0.5}>
             <Typography className="small-bold-text">Email address</Typography>
-            <TextField placeholder="example@gmail.com" sx={{ width: 350 }} />
+            <TextField
+              placeholder="example@gmail.com"
+              sx={{ width: 350 }}
+              value={initalValue.guestEmail}
+            />
             <Typography className="small-text" pl={1} color={"primary.main"}>
               Confirmation email goes to this address
             </Typography>
@@ -110,7 +179,7 @@ const UserInfo = ({ handlePaymentPage }: RoomReservationRight) => {
 
             <Box
               sx={{
-                width: 470, // match other inputs
+                width: 470,
                 "--react-international-phone-border-radius": "3px",
                 "--react-international-phone-height": "52px",
                 "--react-international-phone-background-color": "white",
@@ -127,9 +196,11 @@ const UserInfo = ({ handlePaymentPage }: RoomReservationRight) => {
               }}
             >
               <PhoneInput
-                defaultCountry="ua"
-                value={phone}
-                onChange={(phone) => setPhone(phone)}
+                defaultCountry="kr"
+                value={initalValue.guestPhoneNumber}
+                onChange={(phone) => {
+                  handleEditUserInfo("guestPhoneNumber", phone);
+                }}
               />
             </Box>
           </Stack>
@@ -140,14 +211,18 @@ const UserInfo = ({ handlePaymentPage }: RoomReservationRight) => {
             Are you travelling for work?(optional)
           </Typography>
           <Stack flexDirection={"row"}>
-            <Stack flexDirection={"row"} alignItems={"center"}>
-              <Radio />
-              <Typography>Yes</Typography>
-            </Stack>
-            <Stack flexDirection={"row"} alignItems={"center"}>
-              <Radio />
-              <Typography>No</Typography>
-            </Stack>
+            <RadioGroup
+              aria-labelledby="demo-controlled-radio-buttons-group"
+              name="controlled-radio-buttons-group"
+              value={initalValue.travelForWork}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                const val = e.target.value === "true";
+                handleEditUserInfo("travelForWork", val);
+              }}
+            >
+              <FormControlLabel value={true} control={<Radio />} label="Yes" />
+              <FormControlLabel value={false} control={<Radio />} label="No" />
+            </RadioGroup>
           </Stack>
         </Stack>
       </Stack>
@@ -163,16 +238,25 @@ const UserInfo = ({ handlePaymentPage }: RoomReservationRight) => {
         <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
           <CheckIcon sx={{ color: "#018233" }} />
           <Typography>
-            Stay flexible: You can cancel for free before 5 December 2025, so
-            lock in this great price today.
+            Stay flexible: You can cancel for free before {formatted}, so lock
+            in this great price today.
           </Typography>
         </Stack>
         <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
           <TimerIcon sx={{ color: "#D40F1D" }} />
           <Typography>
-            You're booking the last available Standard Double Room - 11th - 16th
-            Floor with Bath - Parking included we have at Hotel Gracery Seoul on
-            our site.
+            You're booking the last available{" "}
+            {roomData?.roomName
+              ? roomData.roomName
+                  .toLowerCase()
+                  .split("_")
+                  .map(
+                    (word: any) => word.charAt(0).toUpperCase() + word.slice(1)
+                  )
+                  .join(" ")
+              : ""}{" "}
+            - 11th - 16th Floor with Bath - Parking included we have at Hotel
+            Gracery Seoul on our site.
           </Typography>
         </Stack>
       </Stack>
@@ -188,33 +272,50 @@ const UserInfo = ({ handlePaymentPage }: RoomReservationRight) => {
           Standard Double Room - 11th - 16th Floor with Bath - Parking included
         </Typography>
         <Stack flexDirection={"row"} gap={1}>
-          <CheckIcon sx={{ color: "#018233" }} />
-          <Typography color={"#018233"}>Includes parking</Typography>
+          {propertyData?.parkingIncluded ? (
+            <CheckIcon sx={{ color: "#018233" }} />
+          ) : (
+            <CloseIcon />
+          )}
+          {propertyData?.parkingIncluded ? (
+            <Typography color={"#018233"}>Includes parking</Typography>
+          ) : (
+            <Typography color={"#018233"}>Parking not inckuded</Typography>
+          )}
         </Stack>
         <Stack flexDirection={"row"} gap={1}>
           <CheckIcon sx={{ color: "#018233" }} />
           <Typography color={"#018233"} className="small-bold-text">
-            Free cancellation before 5 December 2025
+            Free cancellation before {formatted}
           </Typography>
         </Stack>
         <Stack flexDirection={"row"} gap={1}>
           <GroupIcon />
-          <Typography className="small-bold-text">Guests: ​2 adults</Typography>
+          <Typography className="small-bold-text">
+            Room for ​{roomData?.numberOfGuestsCanStay} Guests
+          </Typography>
         </Stack>
         <Stack flexDirection={"row"} gap={1}>
           <EmojiPeopleIcon />
           <Typography className="small-text">
-            Main guest: Nematov Mukhamadkodir
+            Main guest: {user.guestName}
           </Typography>
         </Stack>
         <Stack flexDirection={"row"} gap={1}>
           <AutoAwesomeIcon />
           <Typography className="small-text">Spotless rooms - 9.2</Typography>
         </Stack>
-        <Stack flexDirection={"row"} gap={1}>
-          <SmokeFreeIcon />
-          <Typography className="small-text">No smoking</Typography>
-        </Stack>
+        {roomData?.isSmokingAllowed ? (
+          <Stack flexDirection={"row"} gap={1}>
+            <SmokingRoomsIcon />
+            <Typography className="small-text">Smoking allowed</Typography>
+          </Stack>
+        ) : (
+          <Stack flexDirection={"row"} gap={1}>
+            <SmokeFreeIcon />
+            <Typography className="small-text">No smoking</Typography>
+          </Stack>
+        )}
       </Stack>
 
       <Stack
@@ -228,7 +329,9 @@ const UserInfo = ({ handlePaymentPage }: RoomReservationRight) => {
         <Stack flexDirection={"row"} gap={1}>
           <CheckIcon sx={{ color: "#018233" }} />
           <Typography>
-            Your room will be ready for check-in between 15:00 and 00:00
+            Your room will be ready for check-in between{" "}
+            {propertyData?.checkInTimeFrom} and{" "}
+            {propertyData?.checkInTimeUntill}
           </Typography>
         </Stack>
 

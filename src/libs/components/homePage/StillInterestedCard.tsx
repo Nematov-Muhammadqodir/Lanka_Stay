@@ -50,11 +50,11 @@ const StillInterestedCard = ({
       >
         <Image
           src={
-            property?.propertyImages
-              ? `${process.env.NEXT_PUBLIC_API_URL}/${property?.propertyImages[0]}`
+            property?.propertyImages?.[0]
+              ? `${process.env.NEXT_PUBLIC_API_URL}/${property.propertyImages[0]}`
               : "/img/hotel.jpg"
           }
-          alt="user-image"
+          alt="property-image"
           width={247}
           height={211}
           style={{

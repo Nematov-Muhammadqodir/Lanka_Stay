@@ -2,8 +2,17 @@ import { Button, Stack, TextField, Typography } from "@mui/material";
 import Image from "next/image";
 import LockIcon from "@mui/icons-material/Lock";
 import AgeAgreement from "./AgeAgreement";
+import { InitialValueInput } from "@/src/pages/hotels/hotelDetail/[id]/[roomId]";
 
-const RoomPaymentRIght = () => {
+export interface RoomPaymentRIghtProps {
+  initalValue: InitialValueInput;
+  handleEditUserInfo: (key: string, value: any) => void;
+}
+
+const RoomPaymentRIght = ({
+  initalValue,
+  handleEditUserInfo,
+}: RoomPaymentRIghtProps) => {
   return (
     <Stack width={"67%"} className="reserve-left" pb={5}>
       <Stack mb={1}>
@@ -76,27 +85,58 @@ const RoomPaymentRIght = () => {
             <Typography className="small-bold-text">
               Cardholder's Name*
             </Typography>
-            <TextField placeholder=" Cardholder's Name" sx={{ width: 350 }} />
+            <TextField
+              placeholder=" Cardholder's Name"
+              sx={{ width: 350 }}
+              value={initalValue.cardholderName}
+              onChange={(e: any) => {
+                handleEditUserInfo("cardholderName", e.target.value);
+              }}
+            />
           </Stack>
           <Stack gap={0.5}>
             <Typography className="small-bold-text">Card Number*</Typography>
-            <TextField placeholder="Card Number" sx={{ width: 350 }} />
+            <TextField
+              placeholder="Card Number"
+              sx={{ width: 350 }}
+              value={initalValue.cardNumber}
+              onChange={(e: any) => {
+                handleEditUserInfo("cardNumber", e.target.value);
+              }}
+            />
           </Stack>
           <Stack flexDirection={"row"} gap={4}>
             <Stack gap={0.5}>
               <Typography className="small-bold-text">Expiry Date*</Typography>
-              <TextField placeholder="MM / YY" sx={{ width: 160 }} />
+              <TextField
+                placeholder="MM / YY"
+                sx={{ width: 160 }}
+                value={initalValue.expiryDate}
+                onChange={(e: any) => {
+                  handleEditUserInfo("expiryDate", e.target.value);
+                }}
+              />
             </Stack>
             <Stack gap={0.5}>
               <Typography className="small-bold-text">CVC*</Typography>
-              <TextField placeholder="CVC" sx={{ width: 160 }} />
+              <TextField
+                placeholder="CVC"
+                sx={{ width: 160 }}
+                value={initalValue.cvs}
+                onChange={(e: any) => {
+                  handleEditUserInfo("cvs", e.target.value);
+                }}
+              />
             </Stack>
           </Stack>
         </Stack>
       </Stack>
 
       <Stack>
-        <AgeAgreement />
+        <AgeAgreement
+          handleEditUserInfo={handleEditUserInfo}
+          initalValue={initalValue}
+        />
       </Stack>
 
       <Button variant="contained" sx={{ mt: 6, width: "100%" }}>
