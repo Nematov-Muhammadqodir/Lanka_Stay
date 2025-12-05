@@ -203,8 +203,8 @@ export default function TopMain(user: any) {
             <Link href="#" className="links">
               About
             </Link>
-            <Link href="#" className="links">
-              Contacts
+            <Link href="/myOrders" className="links">
+              Reservations
             </Link>
             {user.user._id !== "" && (
               <Link href="/register-property" className="links">

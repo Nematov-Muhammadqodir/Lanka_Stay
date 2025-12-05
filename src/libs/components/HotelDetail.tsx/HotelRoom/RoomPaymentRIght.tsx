@@ -5,6 +5,8 @@ import AgeAgreement from "./AgeAgreement";
 import { InitialValueInput } from "@/src/pages/hotels/hotelDetail/[id]/[roomId]";
 import { ADD_RESERVATION_INFO } from "@/apollo/user/mutation";
 import { useMutation } from "@apollo/client";
+import { sweetTopSuccessAlert } from "@/src/libs/sweetAlert";
+import { useRouter } from "next/router";
 
 export interface RoomPaymentRIghtProps {
   initalValue: InitialValueInput;
@@ -15,14 +17,36 @@ const RoomPaymentRIght = ({
   initalValue,
   handleEditUserInfo,
 }: RoomPaymentRIghtProps) => {
+  const router = useRouter();
   const [addReservation] = useMutation(ADD_RESERVATION_INFO);
 
   const handleAddReservation = async () => {
-    await addReservation({
-      variables: {
-        input: initalValue,
-      },
-    });
+    try {
+      const { data } = await addReservation({
+        variables: {
+          input: initalValue,
+        },
+      });
+
+      console.log("Reservation success:", data);
+      if (data) {
+        sweetTopSuccessAlert("Reservation completed successfully!");
+        router.push("/user/reservations");
+      }
+    } catch (error: any) {
+      console.error("Reservation error:", error);
+
+      // If GraphQL validation error:
+      if (error.graphQLErrors?.length) {
+        alert(error.graphQLErrors[0].message);
+      }
+      // If network/server error:
+      else if (error.networkError) {
+        alert("Server error — please try again.");
+      } else {
+        alert("Something went wrong.");
+      }
+    }
   };
 
   return (

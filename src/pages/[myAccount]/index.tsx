@@ -42,7 +42,6 @@ const MyAccount = () => {
   const open = Boolean(anchorEl);
   const [member, setMember] = useState<Guest | null>(null);
   const guestId = router.query.id as string;
-  console.log("guestId", guestId);
   const [updateData, setUpdateData] = useState<UpdateGuestProfile>({
     _id: member?._id || "",
     guestName: member?.guestName || "",
