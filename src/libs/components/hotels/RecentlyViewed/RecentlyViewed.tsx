@@ -1,20 +1,19 @@
 import { Stack, Typography, Pagination } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RecentlyViewedCard from "./RecentlyViewedCard";
 import { GET_VISITED_PROPERTIES } from "@/apollo/user/query";
 import { useQuery } from "@apollo/client";
+import { PartnerPropertiesResponse } from "@/src/libs/types/partnerInput/partnerProperty";
 
-const RecentlyViewed = () => {
-  const { data, loading } = useQuery(GET_VISITED_PROPERTIES, {
-    variables: {
-      input: {
-        page: 1,
-        limit: 50, // get enough data then paginate on frontend
-      },
-    },
-  });
-
-  const visitedList = data?.getVisitedProperties?.list || [];
+interface RecentlyViewedProps {
+  visitedHotelsData: PartnerPropertiesResponse;
+  visitedHotelsLoading: any;
+}
+const RecentlyViewed = ({
+  visitedHotelsData,
+  visitedHotelsLoading,
+}: RecentlyViewedProps) => {
+  const visitedList = visitedHotelsData?.list || [];
 
   const [page, setPage] = useState(1);
   const itemsPerPage = 4;
@@ -29,7 +28,7 @@ const RecentlyViewed = () => {
     setPage(value);
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (visitedHotelsLoading) return <div>Loading...</div>;
 
   return (
     <Stack

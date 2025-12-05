@@ -37,21 +37,30 @@ const GridCard = ({ item }: { item: any }) => {
         },
       }}
     >
-      <Image
-        src={
-          item.propertyImages[0]
-            ? `${process.env.NEXT_PUBLIC_API_URL}/${item.propertyImages[0]}`
-            : "/img/hotel.jpg"
-        }
-        alt="left-image"
-        width={312}
-        height={260}
-        style={{
-          objectFit: "cover",
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
+      <Box
+        sx={{
+          width: "100%",
+          height: 260,
+          position: "relative",
+          flexShrink: 0,
         }}
-      />
+      >
+        <Image
+          src={
+            item.propertyImages[0]
+              ? `${process.env.NEXT_PUBLIC_API_URL}/${item.propertyImages[0]}`
+              : "/img/hotel.jpg"
+          }
+          alt="left-image"
+          fill
+          style={{
+            objectFit: "cover",
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+          }}
+        />
+      </Box>
+
       <Box
         width={40}
         height={40}

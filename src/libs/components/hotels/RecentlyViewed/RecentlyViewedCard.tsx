@@ -13,7 +13,6 @@ interface RecentlyViewedCardProps {
 }
 
 const RecentlyViewedCard = ({ item }: RecentlyViewedCardProps) => {
-  console.log("ITEMmmmm", item);
   const firstRoom = item?.propertyRooms?.[0];
   const roomPrice = firstRoom?.roomPricePerNight
     ? Number(firstRoom.roomPricePerNight)
