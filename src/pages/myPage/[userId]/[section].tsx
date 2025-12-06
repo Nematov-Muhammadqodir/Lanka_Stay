@@ -13,6 +13,9 @@ import { userVar } from "@/apollo/store";
 import withLayoutMyPage from "@/src/libs/components/layout/myPage/MyPageLayout";
 import Image from "next/image";
 import MyFavorites from "@/src/libs/components/myAccount/MyFavorites";
+import AddReactionIcon from "@mui/icons-material/AddReaction";
+import Activities from "@/src/libs/components/myAccount/Activities";
+import Settings from "@/src/libs/components/myAccount/Settings";
 
 const MyAccount = () => {
   const user = useReactiveVar(userVar);
@@ -139,6 +142,34 @@ const MyAccount = () => {
                 </Stack>
               </Button>
               <Button
+                variant={section === "activities" ? "contained" : "text"}
+                onClick={() => router.push(`/myPage/${userId}/activities`)}
+                sx={{
+                  justifyContent: "flex-start", // ← left align
+                  textAlign: "left",
+                }}
+              >
+                <Stack
+                  sx={{
+                    flexDirection: "row",
+                    gap: 1,
+                    alignItems: "center",
+                  }}
+                >
+                  <AddReactionIcon
+                    sx={{
+                      color: section === "activities" ? "white" : "black",
+                    }}
+                  />
+                  <Typography
+                    color={section === "activities" ? "white" : "black"}
+                    sx={{ textTransform: "capitalize", fontSize: 15 }}
+                  >
+                    Activites
+                  </Typography>
+                </Stack>
+              </Button>
+              <Button
                 variant={section === "settings" ? "contained" : "text"}
                 onClick={() => router.push(`/myPage/${userId}/settings`)}
                 sx={{
@@ -172,6 +203,8 @@ const MyAccount = () => {
             {section === "reservations" && <Reservations />}
             {section === "myPage" && <MyPage />}
             {section === "myFavorites" && <MyFavorites />}
+            {section === "activities" && <Activities />}
+            {section === "settings" && <Settings />}
           </Stack>
         </Stack>
       </Stack>
