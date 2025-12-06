@@ -10,15 +10,11 @@ import { useMutation, useReactiveVar } from "@apollo/client";
 import { Messages } from "../../config";
 import { userVar } from "@/apollo/store";
 
-interface StillInterestedCardProps {
+interface FavoritePropertyCardProps {
   property?: PartnerProperty;
-  likePropertyHandler?: any;
 }
 
-const StillInterestedCard = ({
-  property,
-  likePropertyHandler,
-}: StillInterestedCardProps) => {
+const FavoritePropertyCard = ({ property }: FavoritePropertyCardProps) => {
   console.log("propertyyy", property);
   const user = useReactiveVar(userVar);
   const router = useRouter();
@@ -26,8 +22,8 @@ const StillInterestedCard = ({
   return (
     <Stack
       sx={{
-        width: "247px",
-        height: "338px",
+        width: "207px",
+        height: "308px",
         border: "1px solid #eee",
         borderRadius: "8px",
         boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.25)",
@@ -55,7 +51,7 @@ const StillInterestedCard = ({
               : "/img/hotel.jpg"
           }
           alt="property-image"
-          width={247}
+          width={207}
           height={211}
           style={{
             objectFit: "cover",
@@ -63,29 +59,6 @@ const StillInterestedCard = ({
             borderTopRightRadius: 8,
           }}
         />
-        <Box
-          position={"absolute"}
-          top={5}
-          right={5}
-          sx={{
-            width: 40,
-            height: 40,
-            backgroundColor: "white",
-            textAlign: "center",
-            borderRadius: "50%",
-            pt: "8px",
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            likePropertyHandler(user, property?._id);
-          }}
-        >
-          {property?.meLiked && property?.meLiked[0]?.myFavorite ? (
-            <FavoriteIcon sx={{ color: "#C0392B" }} />
-          ) : (
-            <FavoriteBorderIcon />
-          )}
-        </Box>
       </Stack>
       <Stack sx={{ padding: "10px", gap: "3px" }}>
         <Typography
@@ -99,40 +72,9 @@ const StillInterestedCard = ({
         <Typography fontSize={12}>
           {property?.propertyRegion}, {property?.propertyCountry}
         </Typography>
-        <Stack flexDirection={"row"}>
-          <Box
-            sx={{
-              width: 28,
-              height: 28,
-              backgroundColor: "primary.main",
-              border: "1px solid #eee",
-              borderRadius: "6px",
-              mr: 1,
-              mt: 0.3,
-              textAlign: "center",
-              justifyContent: "center",
-              borderBottomLeftRadius: 0,
-            }}
-          >
-            <Typography
-              fontSize={12}
-              justifyContent={"center"}
-              alignItems={"center"}
-              display={"flex"}
-              color={"secondary.contrastText"}
-              paddingTop={0.3}
-            >
-              8.0
-            </Typography>
-          </Box>
-          <Typography fontSize={13}>
-            Good <br />
-            371 reviews
-          </Typography>
-        </Stack>
       </Stack>
     </Stack>
   );
 };
 
-export default StillInterestedCard;
+export default FavoritePropertyCard;

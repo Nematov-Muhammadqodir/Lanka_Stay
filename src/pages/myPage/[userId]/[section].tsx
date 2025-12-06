@@ -12,6 +12,7 @@ import { useReactiveVar } from "@apollo/client";
 import { userVar } from "@/apollo/store";
 import withLayoutMyPage from "@/src/libs/components/layout/myPage/MyPageLayout";
 import Image from "next/image";
+import MyFavorites from "@/src/libs/components/myAccount/MyFavorites";
 
 const MyAccount = () => {
   const user = useReactiveVar(userVar);
@@ -170,6 +171,7 @@ const MyAccount = () => {
           <Stack width={"69%"}>
             {section === "reservations" && <Reservations />}
             {section === "myPage" && <MyPage />}
+            {section === "myFavorites" && <MyFavorites />}
           </Stack>
         </Stack>
       </Stack>

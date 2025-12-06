@@ -133,7 +133,7 @@ const Reservations = () => {
         alignItems={"center"}
       >
         <Stack>
-          <Typography variant="h3" fontWeight={699}>
+          <Typography variant="h4" fontWeight={699}>
             My reservations
           </Typography>
         </Stack>

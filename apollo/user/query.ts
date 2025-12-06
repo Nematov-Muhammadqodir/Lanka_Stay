@@ -300,3 +300,54 @@ export const GET_PARTNER_PROPERTY_ROOM = gql`
     }
   }
 `;
+
+export const GET_LIKED_PROPERTIES = gql`
+  query GetLikedProperties($input: OrdinaryInquery!) {
+    getLikedProperties(input: $input) {
+      list {
+        _id
+        partnerId
+        propertyType
+        propertyCountry
+        propertyRegion
+        propertyCity
+        propertyPostCode
+        propertyName
+        propertyStars
+        propertyViews
+        propertyLikes
+        propertyComments
+        propertyFacilities
+        breakfastIncluded
+        parkingIncluded
+        hotelStaffLanguages
+        checkInTimeFrom
+        propertyStatus
+        checkInTimeUntill
+        propertyImages
+        checkOutTimeFrom
+        checkOutTimeUntill
+        allowChildren
+        allowPets
+        createdAt
+        updatedAt
+        memberData {
+          _id
+          partnerEmail
+          partnerFirstName
+          partnerLastName
+          partnerPhoneNumber
+          partnerPassword
+          userRole
+          createdAt
+          updatedAt
+          accessToken
+          memberStatus
+        }
+      }
+      metaCounter {
+        total
+      }
+    }
+  }
+`;

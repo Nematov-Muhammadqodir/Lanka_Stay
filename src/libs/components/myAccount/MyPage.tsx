@@ -223,7 +223,7 @@ const MyPage = () => {
         borderColor={"text.disabled"}
       >
         <Stack>
-          <Typography variant="h3" fontWeight={699}>
+          <Typography variant="h4" fontWeight={699}>
             Personal details
           </Typography>
           <Typography variant="h6">
