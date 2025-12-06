@@ -12,7 +12,7 @@ export const sweetErrorHandling = async (err: any) => {
 
 export const sweetTopSuccessAlert = async (
   msg: string,
-  duration: number = 2000
+  duration: number = 1000
 ) => {
   await Swal.fire({
     position: "center",
@@ -25,7 +25,7 @@ export const sweetTopSuccessAlert = async (
 
 export const sweetContactAlert = async (
   msg: string,
-  duration: number = 10000
+  duration: number = 1000
 ) => {
   await Swal.fire({
     title: msg,
@@ -84,7 +84,7 @@ export const sweetErrorAlert = async (msg: string, duration: number = 3000) => {
 
 export const sweetMixinErrorAlert = async (
   msg: string,
-  duration: number = 3000
+  duration: number = 1000
 ) => {
   await Swal.fire({
     icon: "error",

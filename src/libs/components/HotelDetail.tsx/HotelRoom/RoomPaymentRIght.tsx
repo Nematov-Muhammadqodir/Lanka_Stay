@@ -4,9 +4,10 @@ import LockIcon from "@mui/icons-material/Lock";
 import AgeAgreement from "./AgeAgreement";
 import { InitialValueInput } from "@/src/pages/hotels/hotelDetail/[id]/[roomId]";
 import { ADD_RESERVATION_INFO } from "@/apollo/user/mutation";
-import { useMutation } from "@apollo/client";
-import { sweetTopSuccessAlert } from "@/src/libs/sweetAlert";
+import { useMutation, useReactiveVar } from "@apollo/client";
+import { sweetBasicAlert, sweetTopSuccessAlert } from "@/src/libs/sweetAlert";
 import { useRouter } from "next/router";
+import { userVar } from "@/apollo/store";
 
 export interface RoomPaymentRIghtProps {
   initalValue: InitialValueInput;
@@ -19,9 +20,19 @@ const RoomPaymentRIght = ({
 }: RoomPaymentRIghtProps) => {
   const router = useRouter();
   const [addReservation] = useMutation(ADD_RESERVATION_INFO);
+  const user = useReactiveVar(userVar);
+  console.log("user._id:", user._id);
 
   const handleAddReservation = async () => {
     try {
+      if (
+        initalValue.cardholderName === "" ||
+        initalValue.cardNumber === "" ||
+        initalValue.expiryDate === "" ||
+        initalValue.cvs === ""
+      ) {
+        sweetTopSuccessAlert("Please fill in all the required payment fields!");
+      }
       const { data } = await addReservation({
         variables: {
           input: initalValue,
@@ -31,14 +42,14 @@ const RoomPaymentRIght = ({
       console.log("Reservation success:", data);
       if (data) {
         sweetTopSuccessAlert("Reservation completed successfully!");
-        router.push("/user/reservations");
+        router.push(`/myPage/${user._id}/reservations`);
       }
     } catch (error: any) {
       console.error("Reservation error:", error);
 
       // If GraphQL validation error:
       if (error.graphQLErrors?.length) {
-        alert(error.graphQLErrors[0].message);
+        sweetBasicAlert(error.graphQLErrors[0].message);
       }
       // If network/server error:
       else if (error.networkError) {

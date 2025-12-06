@@ -15,6 +15,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
 import { userVar } from "@/apollo/store";
+import { set } from "mongoose";
+import { sweetErrorAlert } from "@/src/libs/sweetAlert";
 
 export interface InitialValueInput {
   guestId: string;
@@ -29,6 +31,9 @@ export interface InitialValueInput {
   cvs: string;
   ageConfirmation: boolean;
   roomId: string;
+  propertyId: string;
+  startDate: string;
+  endDate: string;
 }
 
 const RoomReservation = () => {
@@ -74,14 +79,6 @@ const RoomReservation = () => {
 
   const roomData = getPartnerPropertyRoomData?.getPartnerPropertyRoom;
 
-  const handlePaymentPage = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-    setPay("pay");
-  };
-
   const start = new Date(String(filteringData.startDate));
   const end = new Date(String(filteringData.endDate));
   const bookedDays =
@@ -116,8 +113,33 @@ const RoomReservation = () => {
     cvs: "",
     ageConfirmation: false,
     roomId: Array.isArray(roomId) ? roomId[0] : roomId || "",
+    propertyId: partnerProperty?._id || "",
+    startDate: String(filteringData.startDate),
+    endDate: String(filteringData.endDate),
   });
   console.log("initalValue", initalValue);
+  const handlePaymentPage = () => {
+    if (
+      initalValue.guestLastName === "" ||
+      initalValue.guestEmail === "" ||
+      initalValue.guestPhoneNumber === ""
+    ) {
+      setPay("reserve");
+      sweetErrorAlert("Please fill in all required fields");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      setActiveStep(1);
+    } else {
+      setPay("pay");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      setActiveStep(2);
+    }
+  };
   const handleEditUserInfo = (key: string, value: any) => {
     setInitalValue((prev) => ({
       ...prev,

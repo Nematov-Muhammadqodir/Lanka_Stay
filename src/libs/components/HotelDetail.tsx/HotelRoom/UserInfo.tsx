@@ -376,7 +376,6 @@ const UserInfo = ({
         sx={{ width: 300, alignSelf: "end" }}
         onClick={() => {
           handlePaymentPage();
-          setActiveStep(2);
         }}
       >
         <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
