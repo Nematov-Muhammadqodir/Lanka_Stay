@@ -2806,6 +2806,11 @@
   dependencies:
     "@babel/types" "^7.28.2"
 
+"@types/chance@^1.1.7":
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/@types/chance/-/chance-1.1.7.tgz#388c19748fe97bbe60552c83a056001a3c973082"
+  integrity sha512-40you9610GTQPJyvjMBgmj9wiDO6qXhbfjizNYod/fmvLSfUUxURAJMTD8tjmbcZSsyYE5iEUox61AAcCjW/wQ==
+
 "@types/cookie@^0.3.3":
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/@types/cookie/-/cookie-0.3.3.tgz#85bc74ba782fb7aa3a514d11767832b0e3bc6803"
@@ -4917,6 +4922,11 @@ chalk@^4.0.0:
   dependencies:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
+
+chance@^1.1.13:
+  version "1.1.13"
+  resolved "https://registry.yarnpkg.com/chance/-/chance-1.1.13.tgz#d4ecfd20c5e6799aaf5c2270d7653b32385cd6e3"
+  integrity sha512-V6lQCljcLznE7tUYUM9EOAnnKXbctE6j/rdQkYOHIWbfGQbrzTsAXNW9CdU5XCo4ArXQCj/rb6HgxPlmGJcaUg==
 
 char-regex@^1.0.2:
   version "1.0.2"
@@ -13354,6 +13364,11 @@ react-use-measure@^2.1.1:
   version "2.1.7"
   resolved "https://registry.yarnpkg.com/react-use-measure/-/react-use-measure-2.1.7.tgz#36b8a2e7fd2fa58109ab851b3addcb0aad66ad1d"
   integrity sha512-KrvcAo13I/60HpwGO5jpW7E9DfusKyLPLvuHlUyP5zqnmAPhNc6qTRjUQrdTADl0lpPpDVU2/Gg51UlOGHXbdg==
+
+react-virtuoso@^4.17.0:
+  version "4.17.0"
+  resolved "https://registry.yarnpkg.com/react-virtuoso/-/react-virtuoso-4.17.0.tgz#e81f2da99792cfd9317e910b243d847ebeb09248"
+  integrity sha512-od3pi2v13v31uzn5zPXC2u3ouISFCVhjFVFch2VvS2Cx7pWA2F1aJa3XhNTN2F07M3lhfnMnsmGeH+7wZICr7w==
 
 react-world-flags@^1.6.0:
   version "1.6.0"
