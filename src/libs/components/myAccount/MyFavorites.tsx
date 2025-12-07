@@ -4,6 +4,7 @@ import { useQuery, useReactiveVar } from "@apollo/client";
 import { Pagination, Stack, Typography } from "@mui/material";
 import React from "react";
 import FavoritePropertyCard from "./FavoritePropertyCard";
+import Image from "next/image";
 
 const MyFavorites = () => {
   const user = useReactiveVar(userVar);
@@ -39,27 +40,49 @@ const MyFavorites = () => {
         </Stack>
       </Stack>
 
-      <Stack
-        sx={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          gap: 2,
-          mt: 2,
-          justifyContent: "start",
-        }}
-      >
-        {data?.getLikedProperties?.list.map((item: any, index: any) => (
-          <FavoritePropertyCard key={index} property={item} />
-        ))}
-      </Stack>
-      <Stack spacing={2} mt={2} alignItems="center">
-        <Pagination
-          count={data?.getLikedProperties?.metaCounter.total}
-          page={page}
-          onChange={handleChange}
-          color="primary"
-        />
-      </Stack>
+      {data?.getLikedProperties?.list.length === 0 ? (
+        <Stack sx={{ alignItems: "center", mt: 4 }}>
+          <Typography variant="h5" mt={2} sx={{ fontWeight: "bold" }}>
+            You have no favorite properties yet.
+          </Typography>
+          <Image
+            src={"/img/warning.png"}
+            alt="property-image"
+            width={217}
+            height={211}
+            style={{
+              objectFit: "cover",
+              borderTopLeftRadius: 8,
+              borderTopRightRadius: 8,
+            }}
+          />
+        </Stack>
+      ) : (
+        <Stack
+          sx={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            gap: 2,
+            mt: 2,
+            justifyContent: "start",
+          }}
+        >
+          {data?.getLikedProperties?.list.map((item: any, index: any) => (
+            <FavoritePropertyCard key={index} property={item} />
+          ))}
+        </Stack>
+      )}
+
+      {data?.getLikedProperties?.list.length !== 0 && (
+        <Stack spacing={2} mt={2} alignItems="center">
+          <Pagination
+            count={data?.getLikedProperties?.metaCounter.total}
+            page={page}
+            onChange={handleChange}
+            color="primary"
+          />
+        </Stack>
+      )}
     </Stack>
   );
 };
