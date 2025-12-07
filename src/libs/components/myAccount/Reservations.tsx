@@ -1,5 +1,5 @@
-import { Stack, Typography } from "@mui/material";
-import React from "react";
+import { Drawer, Stack, Typography } from "@mui/material";
+import React, { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -12,7 +12,32 @@ import Chance from "chance";
 import { GET_RESERVED_ROOMS } from "@/apollo/user/query";
 import { useQuery } from "@apollo/client";
 
+interface Data {
+  id: number;
+  propertyName: string;
+  roomType: string;
+  nights: number;
+  roomPricePerNight: string;
+  hotelOwnerPhoneNumber: string;
+}
+
+interface ColumnData {
+  dataKey: keyof Data;
+  label: string;
+  numeric?: boolean;
+  width?: number;
+}
+
 const Reservations = () => {
+  const [selectedReservation, setSelectedReservation] = useState<any>(null);
+  const [detailOpen, setDetailOpen] = useState(false);
+
+  const handleRowClick = (reservation: any) => {
+    console.log("RESERVATION ITEM", reservation);
+    setSelectedReservation(reservation);
+    setDetailOpen(true);
+  };
+
   const {
     data: reservedRoomsData,
     loading: reservedRoomsLoading,
@@ -27,49 +52,34 @@ const Reservations = () => {
   });
 
   const reservationsList = reservedRoomsData?.getReservedRooms.list || [];
-
-  interface Data {
-    id: number;
-    firstName: string;
-    lastName: string;
-    age: number;
-    phone: string;
-    state: string;
-  }
-
-  interface ColumnData {
-    dataKey: keyof Data;
-    label: string;
-    numeric?: boolean;
-    width?: number;
-  }
+  console.log("reservationsList", reservationsList);
 
   const columns: ColumnData[] = [
     {
       width: 100,
       label: "Hotel Name",
-      dataKey: "firstName",
+      dataKey: "propertyName",
     },
     {
       width: 100,
       label: "Room Type",
-      dataKey: "lastName",
+      dataKey: "roomType",
     },
     {
       width: 50,
       label: "Nights",
-      dataKey: "age",
+      dataKey: "nights",
       numeric: true,
     },
     {
       width: 110,
       label: "Price",
-      dataKey: "state",
+      dataKey: "roomPricePerNight",
     },
     {
       width: 130,
       label: "Hotel Contact Info",
-      dataKey: "phone",
+      dataKey: "hotelOwnerPhoneNumber",
     },
   ];
 
@@ -84,11 +94,11 @@ const Reservations = () => {
 
     return {
       id: index,
-      firstName: item.propertyName,
-      lastName: item.roomData?.roomType ?? "-",
-      age: nights, // ← Nights
-      state: item.roomData?.roomPricePerNight ?? "-",
-      phone: item.memberData.partnerPhoneNumber,
+      propertyName: item.propertyName,
+      roomType: item.roomData?.roomType ?? "-",
+      nights: nights, // ← Nights
+      roomPricePerNight: item.roomData?.roomPricePerNight ?? "-",
+      hotelOwnerPhoneNumber: item.memberData.partnerPhoneNumber,
     };
   });
 
@@ -135,7 +145,12 @@ const Reservations = () => {
         {columns.map((column) => (
           <TableCell
             key={column.dataKey}
-            align={column.numeric || false ? "right" : "left"}
+            align={column.numeric ? "right" : "left"}
+            onClick={() => handleRowClick(row)}
+            sx={{
+              cursor: "pointer",
+              "&:hover": { backgroundColor: "#f5f5f5" },
+            }}
           >
             {row[column.dataKey]}
           </TableCell>
@@ -157,7 +172,37 @@ const Reservations = () => {
           </Typography>
         </Stack>
       </Stack>
+      <Drawer
+        anchor="top"
+        open={detailOpen}
+        onClose={() => setDetailOpen(false)}
+      >
+        <Stack width={350} p={3} gap={2}>
+          <Typography variant="h5" fontWeight={700}>
+            Reservation Details
+          </Typography>
 
+          {selectedReservation && (
+            <Stack gap={1}>
+              <Typography>
+                <b>Hotel:</b> {selectedReservation.propertyName}
+              </Typography>
+              <Typography>
+                <b>Room:</b> {selectedReservation.roomType}
+              </Typography>
+              <Typography>
+                <b>Nights:</b> {selectedReservation.nights}
+              </Typography>
+              <Typography>
+                <b>Price per night:</b> {selectedReservation.roomPricePerNight}
+              </Typography>
+              <Typography>
+                <b>Contact:</b> {selectedReservation.hotelOwnerPhoneNumber}
+              </Typography>
+            </Stack>
+          )}
+        </Stack>
+      </Drawer>
       <Stack>
         <Paper
           style={{
