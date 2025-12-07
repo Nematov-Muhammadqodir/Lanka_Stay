@@ -73,7 +73,7 @@ export const sweetLoginConfirmAlert = (msg: string) => {
   });
 };
 
-export const sweetErrorAlert = async (msg: string, duration: number = 3000) => {
+export const sweetErrorAlert = async (msg: string, duration: number = 1000) => {
   await Swal.fire({
     icon: "error",
     title: msg,

@@ -9,8 +9,25 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { TableVirtuoso, TableComponents } from "react-virtuoso";
 import Chance from "chance";
+import { GET_RESERVED_ROOMS } from "@/apollo/user/query";
+import { useQuery } from "@apollo/client";
 
 const Reservations = () => {
+  const {
+    data: reservedRoomsData,
+    loading: reservedRoomsLoading,
+    refetch: reservedRoomsRefetch,
+  } = useQuery(GET_RESERVED_ROOMS, {
+    variables: {
+      input: {
+        page: 1,
+        limit: 50,
+      },
+    },
+  });
+
+  const reservationsList = reservedRoomsData?.getReservedRooms.list || [];
+
   interface Data {
     id: number;
     firstName: string;
@@ -25,19 +42,6 @@ const Reservations = () => {
     label: string;
     numeric?: boolean;
     width?: number;
-  }
-
-  const chance = new Chance(42);
-
-  function createData(id: number): Data {
-    return {
-      id,
-      firstName: chance.first(),
-      lastName: chance.last(),
-      age: chance.age(),
-      phone: chance.phone(),
-      state: chance.state({ full: true }),
-    };
   }
 
   const columns: ColumnData[] = [
@@ -69,9 +73,24 @@ const Reservations = () => {
     },
   ];
 
-  const rows: Data[] = Array.from({ length: 200 }, (_, index) =>
-    createData(index)
-  );
+  const rows: Data[] = reservationsList.map((item: any, index: number) => {
+    const start = new Date(item.reservationData.startDate);
+    const end = new Date(item.reservationData.endDate);
+
+    // Calculate nights (difference in days)
+    const nights = Math.ceil(
+      (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
+    );
+
+    return {
+      id: index,
+      firstName: item.propertyName,
+      lastName: item.roomData?.roomType ?? "-",
+      age: nights, // ← Nights
+      state: item.roomData?.roomPricePerNight ?? "-",
+      phone: item.memberData.partnerPhoneNumber,
+    };
+  });
 
   const VirtuosoTableComponents: TableComponents<Data> = {
     Scroller: React.forwardRef<HTMLDivElement>((props, ref) => (
@@ -142,7 +161,8 @@ const Reservations = () => {
       <Stack>
         <Paper
           style={{
-            height: 530,
+            height: "530px",
+            maxHeight: "530px",
             width: "100%",
             border: "none",
             boxShadow: "none",

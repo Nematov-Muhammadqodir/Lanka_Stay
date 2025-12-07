@@ -401,6 +401,39 @@ export const GET_RESERVED_ROOMS = gql`
           createdAt
           updatedAt
         }
+        memberData {
+          _id
+          partnerEmail
+          partnerFirstName
+          partnerLastName
+          partnerPhoneNumber
+          partnerPassword
+          userRole
+          createdAt
+          updatedAt
+          accessToken
+          memberStatus
+        }
+        reservationData {
+          _id
+          guestId
+          guestName
+          guestLastName
+          guestEmail
+          guestPhoneNumber
+          travelForWork
+          cardholderName
+          cardNumber
+          expiryDate
+          cvs
+          roomId
+          propertyId
+          startDate
+          endDate
+          ageConfirmation
+          createdAt
+          updatedAt
+        }
       }
     }
   }
