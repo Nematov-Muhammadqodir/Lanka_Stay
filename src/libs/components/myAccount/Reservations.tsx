@@ -166,6 +166,12 @@ const Reservations = () => {
         anchor="right"
         open={detailOpen}
         onClose={() => setDetailOpen(false)}
+        PaperProps={{
+          sx: {
+            width: 480, // ← FIXED WIDTH (change as you want)
+            maxWidth: "100%",
+          },
+        }}
       >
         <Stack width={"100%"} p={3} gap={2}>
           <Typography variant="h5" fontWeight={700}>
