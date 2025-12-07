@@ -351,3 +351,57 @@ export const GET_LIKED_PROPERTIES = gql`
     }
   }
 `;
+
+export const GET_RESERVED_ROOMS = gql`
+  query GetReservedRooms($input: OrdinaryInquery!) {
+    getReservedRooms(input: $input) {
+      metaCounter {
+        total
+      }
+      list {
+        _id
+        partnerId
+        propertyType
+        propertyCountry
+        propertyRegion
+        propertyCity
+        propertyPostCode
+        propertyName
+        propertyStars
+        propertyViews
+        propertyLikes
+        propertyComments
+        propertyFacilities
+        breakfastIncluded
+        parkingIncluded
+        hotelStaffLanguages
+        checkInTimeFrom
+        propertyStatus
+        checkInTimeUntill
+        propertyImages
+        checkOutTimeFrom
+        checkOutTimeUntill
+        allowChildren
+        allowPets
+        createdAt
+        updatedAt
+        roomData {
+          _id
+          propertyId
+          roomType
+          currentRoomTypeAmount
+          numberOfGuestsCanStay
+          isSmokingAllowed
+          isBathroomPrivate
+          availableBathroomFacilities
+          roomFacilities
+          roomName
+          roomPricePerNight
+          roomPropertyLocation
+          createdAt
+          updatedAt
+        }
+      }
+    }
+  }
+`;

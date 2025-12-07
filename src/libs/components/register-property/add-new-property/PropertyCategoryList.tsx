@@ -117,7 +117,7 @@ const PropertyCategoryList = () => {
                 onClick={() => {
                   dispatch(
                     setPropertyType(
-                      propertyCategory?.type.replaceAll(" ", "_").toUpperCase()
+                      propertyCategory?.type.replace(/\s/g, "_").toUpperCase()
                     )
                   );
                 }}
@@ -129,13 +129,13 @@ const PropertyCategoryList = () => {
                     height: "auto",
                     border:
                       partnerPropertyInput.propertyType
-                        .replaceAll("_", " ")
+                        .replace(/\s/g, " ")
                         .toLowerCase() === propertyCategory.type.toLowerCase()
                         ? "3px solid"
                         : "1px solid",
                     borderColor:
                       partnerPropertyInput.propertyType
-                        .replaceAll("_", " ")
+                        .replace(/\s/g, " ")
                         .toLowerCase() === propertyCategory.type.toLowerCase()
                         ? "primary.main"
                         : "text.disabled",
