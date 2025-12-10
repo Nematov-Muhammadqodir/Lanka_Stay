@@ -452,3 +452,125 @@ export const GET_RESERVED_ROOMS = gql`
     }
   }
 `;
+
+export const GET_COMMENTS = gql`
+  query GetComments($input: CommentsInquiry!) {
+    getComments(input: $input) {
+      list {
+        _id
+        commentStatus
+        commentContent
+        commentRefId
+        memberId
+        createdAt
+        updatedAt
+        memberData {
+          _id
+          guestType
+          guestStatus
+          guestAuthType
+          guestPhone
+          guestGender
+          guestName
+          guestFullName
+          guestImage
+          guestCountry
+          guestEmail
+          guestRegion
+          guestPoints
+          userRole
+          deletedAt
+          createdAt
+          updatedAt
+          accessToken
+        }
+        reservationData {
+          _id
+          guestId
+          guestName
+          guestLastName
+          guestEmail
+          guestPhoneNumber
+          travelForWork
+          cardholderName
+          cardNumber
+          expiryDate
+          cvs
+          roomId
+          propertyId
+          startDate
+          endDate
+          ageConfirmation
+          createdAt
+          updatedAt
+        }
+        propertyData {
+          _id
+          partnerId
+          propertyType
+          propertyCountry
+          propertyRegion
+          propertyCity
+          propertyPostCode
+          propertyName
+          propertyStars
+          propertyViews
+          propertyLikes
+          propertyComments
+          propertyFacilities
+          breakfastIncluded
+          parkingIncluded
+          hotelStaffLanguages
+          checkInTimeFrom
+          propertyStatus
+          checkInTimeUntill
+          propertyImages
+          checkOutTimeFrom
+          checkOutTimeUntill
+          allowChildren
+          allowPets
+          createdAt
+          updatedAt
+          totalReviews
+          staffRating
+          facilitiesRating
+          cleanlessRating
+          comfortRating
+          valueOfMoneyRating
+          locationRating
+          freeWiFiRating
+        }
+        roomData {
+          _id
+          propertyId
+          roomType
+          currentRoomTypeAmount
+          numberOfGuestsCanStay
+          isSmokingAllowed
+          isBathroomPrivate
+          availableBathroomFacilities
+          roomFacilities
+          roomName
+          roomPricePerNight
+          roomPropertyLocation
+          createdAt
+          updatedAt
+          reservedDates {
+            userId
+            from
+            until
+          }
+          availableBeds {
+            single
+            double
+            king
+            superKing
+          }
+        }
+      }
+      metaCounter {
+        total
+      }
+    }
+  }
+`;

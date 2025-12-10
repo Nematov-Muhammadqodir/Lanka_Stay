@@ -12,6 +12,12 @@ import GuestReviewsForMenu from "./GuestReviewsForMenu";
 import GuestReviewListForMenu from "./GuestReviewListForMenu";
 import React from "react";
 import { HotelReviewsProps } from "@/src/pages/hotels/hotelDetail/[id]";
+import { CREATE_COMMENT } from "@/apollo/user/mutation";
+import { useMutation } from "@apollo/client";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { sweetBasicAlert, sweetTopSuccessAlert } from "../../sweetAlert";
+import { useRouter } from "next/router";
 
 export const WriteReviewMenu = ({
   open,
@@ -23,6 +29,43 @@ export const WriteReviewMenu = ({
   onSubmit: (value: string) => void;
 }) => {
   const [text, setText] = React.useState("");
+  const router = useRouter();
+
+  const [createComment] = useMutation(CREATE_COMMENT);
+  const id = useSelector((state: RootState) => state.partnerProperty.data?._id);
+  console.log("id in WriteReviewMenu:", id);
+
+  const handleCreateComment = async () => {
+    try {
+      const { data } = await createComment({
+        variables: {
+          input: {
+            commentContent: text,
+            commentRefId: id,
+          },
+        },
+      });
+
+      console.log("Writing comment success:", data);
+      if (data) {
+        sweetTopSuccessAlert("Commenting completed successfully!");
+        // router.push(`/myPage/${user._id}/reservations`);
+      }
+    } catch (error: any) {
+      console.error("Writing comment error:", error);
+
+      // If GraphQL validation error:
+      if (error.graphQLErrors?.length) {
+        sweetBasicAlert(error.graphQLErrors[0].message);
+      }
+      // If network/server error:
+      else if (error.networkError) {
+        alert("Server error — please try again.");
+      } else {
+        alert("Something went wrong.");
+      }
+    }
+  };
 
   if (!open) return null;
 
@@ -62,6 +105,7 @@ export const WriteReviewMenu = ({
         fullWidth
         sx={{ fontWeight: 700, color: colors.common.white }}
         onClick={() => {
+          handleCreateComment();
           onSubmit(text);
           setText("");
         }}
