@@ -3,8 +3,41 @@ import React, { useState } from "react";
 import HdrStrongIcon from "@mui/icons-material/HdrStrong";
 import ReviewBar from "./ReviewBar";
 import GuestReviewMenu from "./GuestReviewMenu";
+import { HotelReviewsProps } from "@/src/pages/hotels/hotelDetail/[id]";
 
-const GuestReviews = () => {
+const GuestReviews = ({
+  hotelReviewInput,
+}: {
+  hotelReviewInput: HotelReviewsProps;
+}) => {
+  const {
+    staffRating,
+    facilitiesRating,
+    cleanlessRating,
+    comfortRating,
+    valueOfMoneyRating,
+    locationRating,
+    freeWiFiRating,
+    totalReviews,
+  } = hotelReviewInput;
+  console.log("hotelReviewInput in GuestReviews:", hotelReviewInput);
+
+  const ratings = [
+    staffRating,
+    facilitiesRating,
+    cleanlessRating,
+    comfortRating,
+    valueOfMoneyRating,
+    locationRating,
+    freeWiFiRating,
+  ];
+
+  // Calculate average score
+  const totalScore =
+    ratings.reduce((sum, val) => sum + (val || 0), 0) / ratings.length;
+
+  // Round to 1 decimal place
+  const formattedTotalScore = Number(totalScore.toFixed(1));
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -27,11 +60,11 @@ const GuestReviews = () => {
             fontWeight: 700,
           }}
         >
-          8.9
+          {formattedTotalScore}
         </Box>
         <Typography className="small-bold-text">Fabulous</Typography>
         <HdrStrongIcon />
-        <Typography>1,309 reviews</Typography>
+        <Typography>{totalReviews} reviews</Typography>
         <Button
           id="basic-button"
           aria-controls={open ? "basic-menu" : undefined}
@@ -64,13 +97,13 @@ const GuestReviews = () => {
       </Stack>
       <Typography className="bold-text">Categories:</Typography>
       <Stack flexDirection={"row"} flexWrap={"wrap"} gap={3}>
-        <ReviewBar label={"Staff"} value={8.0} />
-        <ReviewBar label={"Facilities"} value={8.9} />
-        <ReviewBar label={"Cleanliness"} value={9.2} />
-        <ReviewBar label={"Comfort"} value={9.0} />
-        <ReviewBar label={"Value for money"} value={9.1} />
-        <ReviewBar label={"Location"} value={9.8} />
-        <ReviewBar label={"Free WiFi"} value={9.9} />
+        <ReviewBar label={"Staff"} value={staffRating} />
+        <ReviewBar label={"Facilities"} value={facilitiesRating} />
+        <ReviewBar label={"Cleanliness"} value={cleanlessRating} />
+        <ReviewBar label={"Comfort"} value={comfortRating} />
+        <ReviewBar label={"Value for money"} value={valueOfMoneyRating} />
+        <ReviewBar label={"Location"} value={locationRating} />
+        <ReviewBar label={"Free WiFi"} value={freeWiFiRating} />
       </Stack>
     </Stack>
   );

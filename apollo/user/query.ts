@@ -92,6 +92,20 @@ export const GET_PARTNER_PROPERTY = gql`
           until
         }
       }
+      meLiked {
+        memberId
+        likeRefId
+        myFavorite
+      }
+      propertyLikes
+      totalReviews
+      staffRating
+      facilitiesRating
+      cleanlessRating
+      comfortRating
+      valueOfMoneyRating
+      locationRating
+      freeWiFiRating
     }
   }
 `;

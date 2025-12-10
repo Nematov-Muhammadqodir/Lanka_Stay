@@ -20,6 +20,17 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+export interface HotelReviewsProps {
+  staffRating: number;
+  facilitiesRating: number;
+  cleanlessRating: number;
+  comfortRating: number;
+  valueOfMoneyRating: number;
+  locationRating: number;
+  freeWiFiRating: number;
+  totalReviews: number;
+}
+
 const HotelDetail = () => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -47,6 +58,21 @@ const HotelDetail = () => {
     skip: !id,
     notifyOnNetworkStatusChange: true,
   });
+
+  console.log("getPartnerPropertyData", getPartnerPropertyData);
+
+  const data = getPartnerPropertyData?.getPartnerProperty;
+
+  const hotelReviewInput: HotelReviewsProps = {
+    staffRating: data?.staffRating,
+    facilitiesRating: data?.facilitiesRating,
+    cleanlessRating: data?.cleanlessRating,
+    comfortRating: data?.comfortRating,
+    valueOfMoneyRating: data?.valueOfMoneyRating,
+    locationRating: data?.locationRating,
+    freeWiFiRating: data?.freeWiFiRating,
+    totalReviews: data?.totalReviews,
+  };
 
   useEffect(() => {
     if (getPartnerPropertyData?.getPartnerProperty) {
@@ -77,8 +103,8 @@ const HotelDetail = () => {
         partnerProperty={partnerProperty}
         loading={getPartnerPropertyLoading}
       />
-      <GuestReviews />
-      <ReviewsList />
+      <GuestReviews hotelReviewInput={hotelReviewInput} />
+      <ReviewsList hotelReviewInput={hotelReviewInput} />
       <HouseRules partnerProperty={partnerProperty} />
       <LegalInformation />
       <FAQ />

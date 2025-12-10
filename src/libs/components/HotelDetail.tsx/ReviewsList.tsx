@@ -9,8 +9,13 @@ import {
 import React, { useState } from "react";
 import ReviewCard from "./ReviewCard";
 import GuestReviewMenu from "./GuestReviewMenu";
+import { HotelReviewsProps } from "@/src/pages/hotels/hotelDetail/[id]";
 
-const ReviewsList = () => {
+const ReviewsList = ({
+  hotelReviewInput,
+}: {
+  hotelReviewInput: HotelReviewsProps;
+}) => {
   const reviews = [
     {
       name: "Hannah",
@@ -112,7 +117,10 @@ const ReviewsList = () => {
             },
           }}
         >
-          <GuestReviewMenu handleClose={handleClose} />
+          <GuestReviewMenu
+            handleClose={handleClose}
+            hotelReviewInput={hotelReviewInput}
+          />
         </Drawer>
       </Stack>
     </Stack>

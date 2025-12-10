@@ -4,11 +4,43 @@ import InfoIcon from "@mui/icons-material/Info";
 import GuestReviewsForMenu from "./GuestReviewsForMenu";
 import GuestReviewListForMenu from "./GuestReviewListForMenu";
 import GuestReviewItemMenu from "./GuestReviewItemMenu";
+import { HotelReviewsProps } from "@/src/pages/hotels/hotelDetail/[id]";
 
 interface GuestReviewMenuProps {
   handleClose: () => void;
+  hotelReviewInput: HotelReviewsProps;
 }
-const GuestReviewMenu = ({ handleClose }: GuestReviewMenuProps) => {
+const GuestReviewMenu = ({
+  handleClose,
+  hotelReviewInput,
+}: GuestReviewMenuProps) => {
+  const {
+    staffRating,
+    facilitiesRating,
+    cleanlessRating,
+    comfortRating,
+    valueOfMoneyRating,
+    locationRating,
+    freeWiFiRating,
+    totalReviews,
+  } = hotelReviewInput;
+
+  const ratings = [
+    staffRating,
+    facilitiesRating,
+    cleanlessRating,
+    comfortRating,
+    valueOfMoneyRating,
+    locationRating,
+    freeWiFiRating,
+  ];
+
+  // Calculate average score
+  const totalScore =
+    ratings.reduce((sum, val) => sum + (val || 0), 0) / ratings.length;
+
+  // Round to 1 decimal place
+  const formattedTotalScore = Number(totalScore.toFixed(1));
   return (
     <Stack
       height={"100vh"}
@@ -56,13 +88,15 @@ const GuestReviewMenu = ({ handleClose }: GuestReviewMenuProps) => {
                 justifyContent: "center",
               }}
             >
-              8.9
+              {formattedTotalScore}
             </Box>
             <Stack>
               <Typography sx={{ fontWeight: 700, fontSize: 15 }}>
                 Fabulous
               </Typography>
-              <Typography className="small-text">1,309 reviews</Typography>
+              <Typography className="small-text">
+                {totalReviews} reviews
+              </Typography>
             </Stack>
           </Stack>
           <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
@@ -81,7 +115,7 @@ const GuestReviewMenu = ({ handleClose }: GuestReviewMenuProps) => {
           </Button>
         </Stack>
         <Stack borderBottom={"1px solid"} pb={3} borderColor={"text"}>
-          <GuestReviewsForMenu />
+          <GuestReviewsForMenu hotelReviewInput={hotelReviewInput} />
         </Stack>
         <Stack>
           <GuestReviewListForMenu />
