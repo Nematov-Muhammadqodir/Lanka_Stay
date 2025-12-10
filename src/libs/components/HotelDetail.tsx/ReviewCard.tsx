@@ -14,7 +14,7 @@ const ReviewCard = ({ name, src, review, id, country }: ReviewCardProps) => {
     <Stack
       border={"1px solid"}
       width={360}
-      height={230}
+      maxHeight={230}
       p={2}
       gap={1}
       borderColor={"secondary.main"}
@@ -22,7 +22,9 @@ const ReviewCard = ({ name, src, review, id, country }: ReviewCardProps) => {
     >
       <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
         <Image
-          src={src}
+          src={
+            src ? `${process.env.NEXT_PUBLIC_API_URL}/${src}` : "/img/hotel.jpg"
+          }
           alt="user-image"
           width={40}
           height={40}
@@ -33,7 +35,7 @@ const ReviewCard = ({ name, src, review, id, country }: ReviewCardProps) => {
           <Typography className="small-text">{country}</Typography>
         </Stack>
       </Stack>
-      <Stack height={200} overflow={"auto"}>
+      <Stack maxHeight={200} overflow={"auto"}>
         <Typography sx={{ fontStyle: "italic" }}>{review}</Typography>
       </Stack>
       <Button
