@@ -5,6 +5,7 @@ import partnerPropertyInput from "./src/slices/createPartnerPropertySlice";
 import partnerPropertyRoomInput from "./src/slices/partnerPropertyRoomSlice";
 import filterReducer from "./src/slices/filteringSlice";
 import partnerProperty from "./src/slices/partnerPropertySlice";
+import comments from "./src/slices/commentSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     partnerPropertyRoomInput: partnerPropertyRoomInput,
     filters: filterReducer,
     partnerProperty: partnerProperty,
+    comments: comments,
   },
 });
 

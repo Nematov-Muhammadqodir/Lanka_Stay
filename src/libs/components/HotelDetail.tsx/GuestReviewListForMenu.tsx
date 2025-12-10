@@ -2,6 +2,8 @@ import { Button, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useState } from "react";
 import GuestReviewItemMenu from "./GuestReviewItemMenu";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 const GuestReviewListForMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -12,6 +14,10 @@ const GuestReviewListForMenu = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const reviews = useSelector((state: RootState) => state.comments.data?.list);
+
+  console.log("commentsData", reviews);
   return (
     <Stack mt={2}>
       <Stack
@@ -85,10 +91,9 @@ const GuestReviewListForMenu = () => {
         </Stack>
       </Stack>
       <Stack>
-        <GuestReviewItemMenu />
-        <GuestReviewItemMenu />
-        <GuestReviewItemMenu />
-        <GuestReviewItemMenu />
+        {reviews?.map((review: any) => (
+          <GuestReviewItemMenu key={review._id} comment={review} />
+        ))}
       </Stack>
     </Stack>
   );

@@ -10,8 +10,16 @@ import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import { useState } from "react";
+import { Comment } from "../../types/comment/comment";
+import { formatShortDate } from "../../utils";
 
-const GuestReviewItemMenu = () => {
+interface GuestReviewItemMenuProps {
+  comment: Comment;
+}
+
+const GuestReviewItemMenu = (props: GuestReviewItemMenuProps) => {
+  const { comment } = props;
+  console.log("comment", comment);
   const [expand, setExpand] = useState("70px");
 
   const handleExpand = () => {
@@ -21,6 +29,23 @@ const GuestReviewItemMenu = () => {
       setExpand("70px");
     }
   };
+
+  const getNights = (startDate: string, endDate: string) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    const diffMs = end.getTime() - start.getTime();
+    const diffDays = diffMs / (1000 * 60 * 60 * 24);
+
+    return Math.ceil(diffDays);
+  };
+  const nights = getNights(
+    comment?.reservationData?.startDate
+      ? comment?.reservationData?.startDate
+      : "",
+    comment?.reservationData?.endDate ? comment?.reservationData?.endDate : ""
+  );
+
   return (
     <Stack
       width={"auto"}
@@ -42,21 +67,26 @@ const GuestReviewItemMenu = () => {
             style={{ objectFit: "cover", borderRadius: 200 }}
           />
           <Stack>
-            <Typography fontWeight={700}>Shakh</Typography>
-            <Typography className="small-text">Russia</Typography>
+            <Typography fontWeight={700}>
+              {comment?.memberData?.guestName}
+            </Typography>
+            <Typography className="small-text">
+              {comment?.memberData?.guestCountry}
+            </Typography>
           </Stack>
         </Stack>
         <Stack gap={1}>
           <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
             <BedIcon />
             <Typography className="small-text">
-              Premier Twin (Annex Building)
+              {comment?.roomData?.roomType}
             </Typography>
           </Stack>
           <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
             <CalendarMonthIcon />
             <Typography className="small-text">
-              3 nights · October 2025
+              {nights} nights ·{" "}
+              {formatShortDate(comment?.reservationData?.endDate!)}
             </Typography>
           </Stack>
           <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
@@ -74,7 +104,7 @@ const GuestReviewItemMenu = () => {
         >
           <Stack>
             <Typography className="small-text">
-              Reviewed: 10 October 2025
+              Reviewed: {formatShortDate(comment.createdAt)}
             </Typography>
             <Typography className="bold-text">Exceptional</Typography>
           </Stack>
@@ -101,12 +131,10 @@ const GuestReviewItemMenu = () => {
           gap={1}
           height={"100px"}
         >
-          <SentimentSatisfiedAltIcon sx={{ paddingTop: 1, fontSize: 30 }} />
-          <Typography>
-            Nice facilities, great size family rooms. Delicious breakfast! Good
-            location on the sea front in walking distance to some super
-            restaurants and cafes.
-          </Typography>
+          <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
+            <SentimentSatisfiedAltIcon sx={{ fontSize: 20 }} />
+            <Typography>{comment?.commentContent}</Typography>
+          </Stack>
         </Stack>
         {/* HOTEL RESPONSE */}
         <Stack className="hotel-response-section">

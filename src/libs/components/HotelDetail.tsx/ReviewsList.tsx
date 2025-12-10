@@ -6,20 +6,22 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReviewCard from "./ReviewCard";
 import GuestReviewMenu from "./GuestReviewMenu";
 import { HotelReviewsProps } from "@/src/pages/hotels/hotelDetail/[id]";
 import { GET_COMMENTS } from "@/apollo/user/query";
 import { useQuery } from "@apollo/client";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
+import { setComments } from "@/src/slices/commentSlice";
 
 const ReviewsList = ({
   hotelReviewInput,
 }: {
   hotelReviewInput: HotelReviewsProps;
 }) => {
+  const dispatch = useDispatch();
   const id = useSelector((state: RootState) => state.partnerProperty.data?._id);
   const {
     data: commentsData,
@@ -37,7 +39,18 @@ const ReviewsList = ({
       },
     },
   });
-  const reviews = commentsData?.getComments.list;
+
+  const reviews = useSelector((state: RootState) => state.comments.data?.list);
+
+  console.log("commentsData", reviews);
+
+  useEffect(() => {
+    if (commentsData?.getComments) {
+      const result = commentsData?.getComments;
+
+      dispatch(setComments(result));
+    }
+  }, [commentsData]);
 
   const [open, setOpen] = useState(false);
 
