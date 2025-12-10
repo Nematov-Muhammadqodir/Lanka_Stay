@@ -92,7 +92,10 @@ const GuestReviews = ({
             },
           }}
         >
-          <GuestReviewMenu handleClose={handleClose} />
+          <GuestReviewMenu
+            handleClose={handleClose}
+            hotelReviewInput={hotelReviewInput}
+          />
         </Drawer>
       </Stack>
       <Typography className="bold-text">Categories:</Typography>
