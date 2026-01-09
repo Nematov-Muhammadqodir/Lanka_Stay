@@ -111,7 +111,7 @@ export const WriteReviewMenu = ({
         }}
         disabled={!text.trim()}
       >
-        Submit Review
+        Submit Comment
       </Button>
     </Stack>
   );

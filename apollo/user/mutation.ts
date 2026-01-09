@@ -326,3 +326,22 @@ export const CREATE_COMMENT = gql`
     }
   }
 `;
+
+export const SUBMIT_REVIEW = gql`
+  mutation SubmitReview($input: ReviewInput!) {
+    submitReview(input: $input) {
+      _id
+      reviewRefId
+      memberId
+      staffRating
+      facilitiesRating
+      cleanlessRating
+      comfortRating
+      valueOfMoneyRating
+      locationRating
+      freeWiFiRating
+      createdAt
+      updatedAt
+    }
+  }
+`;
