@@ -106,6 +106,7 @@ const ReviewsList = ({
           <GuestReviewMenu
             handleClose={handleClose}
             hotelReviewInput={hotelReviewInput}
+            commentsRefetch={commentsRefetch}
           />
         </Drawer>
       </Stack>
