@@ -1,228 +1,242 @@
-import { Button, Stack, TextField, Typography } from "@mui/material";
-import Image from "next/image";
+import { Button, Stack, Typography, CircularProgress } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 import AgeAgreement from "./AgeAgreement";
 import { InitialValueInput } from "@/src/pages/hotels/hotelDetail/[id]/[roomId]";
-import { ADD_RESERVATION_INFO } from "@/apollo/user/mutation";
+import {
+  ADD_RESERVATION_INFO,
+  CREATE_PAYMENT_INTENT,
+} from "@/apollo/user/mutation";
 import { useMutation, useReactiveVar } from "@apollo/client";
-import { sweetBasicAlert, sweetTopSuccessAlert } from "@/src/libs/sweetAlert";
+import {
+  sweetBasicAlert,
+  sweetErrorAlert,
+  sweetTopSuccessAlert,
+} from "@/src/libs/sweetAlert";
 import { useRouter } from "next/router";
 import { userVar } from "@/apollo/store";
+import { loadStripe } from "@stripe/stripe-js";
+import {
+  Elements,
+  CardElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
+import { useState } from "react";
+
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
 
 export interface RoomPaymentRIghtProps {
   initalValue: InitialValueInput;
   handleEditUserInfo: (key: string, value: any) => void;
+  totalPrice: number;
 }
 
-const RoomPaymentRIght = ({
+const CARD_ELEMENT_OPTIONS = {
+  style: {
+    base: {
+      fontSize: "16px",
+      color: "#212121",
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      "::placeholder": {
+        color: "#B0B0B0",
+      },
+    },
+    invalid: {
+      color: "#f44336",
+      iconColor: "#f44336",
+    },
+  },
+};
+
+const CheckoutForm = ({
   initalValue,
   handleEditUserInfo,
+  totalPrice,
 }: RoomPaymentRIghtProps) => {
+  const stripe = useStripe();
+  const elements = useElements();
   const router = useRouter();
-  const [addReservation] = useMutation(ADD_RESERVATION_INFO);
   const user = useReactiveVar(userVar);
-  console.log("user._id:", user._id);
+  const [loading, setLoading] = useState(false);
 
-  const handleAddReservation = async () => {
+  const [createPaymentIntent] = useMutation(CREATE_PAYMENT_INTENT);
+  const [addReservation] = useMutation(ADD_RESERVATION_INFO);
+
+  const handleSubmit = async () => {
+    if (!stripe || !elements) return;
+
+    if (!initalValue.ageConfirmation) {
+      sweetErrorAlert("Please confirm you are 18 or older", 2500);
+      return;
+    }
+
+    const cardElement = elements.getElement(CardElement);
+    if (!cardElement) return;
+
+    setLoading(true);
+
     try {
-      if (
-        initalValue.cardholderName === "" ||
-        initalValue.cardNumber === "" ||
-        initalValue.expiryDate === "" ||
-        initalValue.cvs === ""
-      ) {
-        sweetTopSuccessAlert("Please fill in all the required payment fields!");
-      }
-      const { data } = await addReservation({
+      // 1. Create payment intent on the backend
+      const { data: piData } = await createPaymentIntent({
         variables: {
-          input: initalValue,
+          input: {
+            amount: Math.round(totalPrice),
+            roomId: initalValue.roomId,
+            propertyId: initalValue.propertyId,
+          },
         },
       });
 
-      console.log("Reservation success:", data);
-      if (data) {
-        sweetTopSuccessAlert("Reservation completed successfully!");
-        router.push(`/myPage/${user._id}/reservations`);
+      const clientSecret = piData.createPaymentIntent.clientSecret;
+
+      // 2. Confirm payment with Stripe
+      const { error, paymentIntent } = await stripe.confirmCardPayment(
+        clientSecret,
+        {
+          payment_method: {
+            card: cardElement,
+            billing_details: {
+              name: `${initalValue.guestName} ${initalValue.guestLastName}`.trim(),
+              email: initalValue.guestEmail,
+              phone: initalValue.guestPhoneNumber,
+            },
+          },
+        }
+      );
+
+      if (error) {
+        sweetErrorAlert(error.message || "Payment failed", 3000);
+        setLoading(false);
+        return;
+      }
+
+      if (paymentIntent?.status === "succeeded") {
+        // 3. Save reservation to database
+        const { data } = await addReservation({
+          variables: {
+            input: {
+              guestId: initalValue.guestId,
+              guestName: initalValue.guestName,
+              guestLastName: initalValue.guestLastName || "",
+              guestEmail: initalValue.guestEmail,
+              guestPhoneNumber: initalValue.guestPhoneNumber,
+              travelForWork: initalValue.travelForWork,
+              stripePaymentIntentId: paymentIntent.id,
+              paymentAmount: totalPrice,
+              roomId: initalValue.roomId,
+              propertyId: initalValue.propertyId,
+              startDate: initalValue.startDate,
+              endDate: initalValue.endDate,
+              ageConfirmation: initalValue.ageConfirmation,
+            },
+          },
+        });
+
+        if (data) {
+          await sweetTopSuccessAlert("Reservation completed successfully!", 2000);
+          router.push(`/myPage/${user._id}/reservations`);
+        }
       }
     } catch (error: any) {
-      console.error("Reservation error:", error);
-
-      // If GraphQL validation error:
+      console.error("Payment error:", error);
       if (error.graphQLErrors?.length) {
         sweetBasicAlert(error.graphQLErrors[0].message);
-      }
-      // If network/server error:
-      else if (error.networkError) {
-        alert("Server error — please try again.");
+      } else if (error.networkError) {
+        sweetErrorAlert("Server error — please try again.", 2500);
       } else {
-        alert("Something went wrong.");
+        sweetErrorAlert("Something went wrong. Please try again.", 2500);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Stack width={"67%"} className="reserve-left" pb={60}>
+    <Stack width="67%" pb={10}>
       <Stack mb={1}>
         <Typography className="bold-text">Check and pay</Typography>
       </Stack>
+
       <Stack
-        border={"1px solid"}
-        p={2}
+        border="1px solid"
+        p={3}
         borderRadius={3}
-        borderColor={"text.disabled"}
+        borderColor="text.disabled"
+        gap={3}
       >
-        <Stack gap={1} mb={2}></Stack>
-        <Stack gap={1}>
-          <Typography className="bold-text-medium">New card</Typography>
-          <Stack>
-            <Stack
-              width={"75%"}
-              flexDirection={"row"}
-              gap={2}
-              alignItems={"center"}
-            >
-              <Image
-                src={"/img/payments/Mastercard.svg"}
-                alt="user-image"
-                width={30}
-                height={30}
-                style={{ objectFit: "contain" }}
-              />
-              <Image
-                src={"/img/payments/ApplePay.svg"}
-                alt="user-image"
-                width={30}
-                height={30}
-                style={{ objectFit: "contain" }}
-              />
-              <Image
-                src={"/img/payments/Bitcoin.svg"}
-                alt="user-image"
-                width={30}
-                height={30}
-                style={{ objectFit: "contain" }}
-              />
-              <Image
-                src={"/img/payments/GooglePay.svg"}
-                alt="user-image"
-                width={30}
-                height={30}
-                style={{ objectFit: "contain" }}
-              />
-              <Image
-                src={"/img/payments/PayPal.svg"}
-                alt="user-image"
-                width={30}
-                height={30}
-                style={{ objectFit: "contain" }}
-              />
-              <Image
-                src={"/img/payments/Visa.svg"}
-                alt="user-image"
-                width={30}
-                height={30}
-                style={{ objectFit: "contain" }}
-              />
-            </Stack>
-          </Stack>
+        <Typography className="bold-text-medium">Payment details</Typography>
+        <Typography fontSize={14} color="text.secondary">
+          Your card details are securely handled by Stripe. We never see or
+          store your card information.
+        </Typography>
+
+        {/* Stripe Card Element */}
+        <Stack
+          sx={{
+            border: "1px solid",
+            borderColor: "text.disabled",
+            borderRadius: 1,
+            p: 2,
+            backgroundColor: "background.paper",
+            "&:focus-within": {
+              borderColor: "primary.main",
+              boxShadow: "0 0 0 2px rgba(47, 82, 223, 0.15)",
+            },
+          }}
+        >
+          <CardElement options={CARD_ELEMENT_OPTIONS} />
         </Stack>
 
-        <Stack mt={2} gap={2}>
-          <Stack gap={0.5}>
-            <Typography className="small-bold-text">
-              Cardholder's Name*
-            </Typography>
-            <TextField
-              placeholder=" Cardholder's Name"
-              sx={{ width: 350 }}
-              value={initalValue.cardholderName}
-              onChange={(e: any) => {
-                handleEditUserInfo("cardholderName", e.target.value);
-              }}
-            />
-          </Stack>
-          <Stack gap={0.5}>
-            <Typography className="small-bold-text">Card Number*</Typography>
-            <TextField
-              placeholder="Card Number"
-              sx={{ width: 350 }}
-              value={initalValue.cardNumber}
-              onChange={(e: any) => {
-                handleEditUserInfo("cardNumber", e.target.value);
-              }}
-            />
-          </Stack>
-          <Stack flexDirection={"row"} gap={4}>
-            <Stack gap={0.5}>
-              <Typography className="small-bold-text">Expiry Date*</Typography>
-              <TextField
-                placeholder="MM / YY"
-                sx={{ width: 160 }}
-                inputProps={{ maxLength: 7 }}
-                value={initalValue.expiryDate}
-                onChange={(e: any) => {
-                  let val = e.target.value.replace(/[^\d]/g, "");
-                  if (val.length > 4) val = val.slice(0, 4);
-                  if (val.length >= 2) {
-                    const month = val.slice(0, 2);
-                    const clamped =
-                      parseInt(month, 10) > 12
-                        ? "12"
-                        : parseInt(month, 10) < 1 && month.length === 2
-                        ? "01"
-                        : month;
-                    val = clamped + " / " + val.slice(2);
-                  }
-                  handleEditUserInfo("expiryDate", val);
-                }}
-              />
-            </Stack>
-            <Stack gap={0.5}>
-              <Typography className="small-bold-text">CVC*</Typography>
-              <TextField
-                placeholder="CVC"
-                sx={{ width: 160 }}
-                value={initalValue.cvs}
-                onChange={(e: any) => {
-                  handleEditUserInfo("cvs", e.target.value);
-                }}
-              />
-            </Stack>
-          </Stack>
+        <Stack direction="row" alignItems="center" gap={1}>
+          <LockIcon sx={{ fontSize: 16, color: "text.secondary" }} />
+          <Typography fontSize={12} color="text.secondary">
+            Secured by Stripe. 256-bit SSL encryption.
+          </Typography>
         </Stack>
       </Stack>
 
-      <Stack>
-        <AgeAgreement
-          handleEditUserInfo={handleEditUserInfo}
-          initalValue={initalValue}
-        />
-      </Stack>
+      <AgeAgreement
+        handleEditUserInfo={handleEditUserInfo}
+        initalValue={initalValue}
+      />
 
       <Button
         variant="contained"
-        sx={{ mt: 6, width: "100%" }}
-        onClick={() => {
-          handleAddReservation();
-        }}
+        sx={{ mt: 4, width: "100%", py: 1.5 }}
+        onClick={handleSubmit}
+        disabled={!stripe || loading}
       >
-        <Stack flexDirection={"row"} gap={1}>
-          <LockIcon sx={{ color: "secondary.contrastText" }} />
+        <Stack flexDirection="row" gap={1} alignItems="center">
+          {loading ? (
+            <CircularProgress size={20} sx={{ color: "white" }} />
+          ) : (
+            <LockIcon sx={{ color: "white" }} />
+          )}
           <Typography
-            color={"secondary.contrastText"}
+            color="white"
             className="bold-text-medium"
-            textTransform={"capitalize"}
+            textTransform="capitalize"
           >
-            Complete Booking
+            {loading ? "Processing..." : "Complete Booking"}
           </Typography>
         </Stack>
       </Button>
 
-      <Typography className="small-text" mt={1}>
-        Keep in mind that your card issuer may charge you a foreign transaction
-        fee.
+      <Typography className="small-text" mt={1} color="text.secondary">
+        Your payment is processed securely by Stripe. Your card issuer may
+        charge a foreign transaction fee.
       </Typography>
     </Stack>
+  );
+};
+
+const RoomPaymentRIght = (props: RoomPaymentRIghtProps) => {
+  return (
+    <Elements stripe={stripePromise}>
+      <CheckoutForm {...props} />
+    </Elements>
   );
 };
 

@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
 import { userVar } from "@/apollo/store";
-import { set } from "mongoose";
+
 import { sweetErrorAlert } from "@/src/libs/sweetAlert";
 
 export interface InitialValueInput {
@@ -25,10 +25,6 @@ export interface InitialValueInput {
   guestEmail: string;
   guestPhoneNumber: string;
   travelForWork: boolean;
-  cardholderName: string;
-  cardNumber: string;
-  expiryDate: string;
-  cvs: string;
   ageConfirmation: boolean;
   roomId: string;
   propertyId: string;
@@ -115,10 +111,6 @@ const RoomReservation = () => {
     guestEmail: user.guestEmail ? user.guestEmail : "",
     guestPhoneNumber: user.guestPhone ? user.guestPhone : "",
     travelForWork: false,
-    cardholderName: "",
-    cardNumber: "",
-    expiryDate: "",
-    cvs: "",
     ageConfirmation: false,
     roomId: Array.isArray(roomId) ? roomId[0] : roomId || "",
     propertyId: partnerProperty?._id || "",
@@ -409,6 +401,7 @@ const RoomReservation = () => {
           <RoomPaymentRIght
             handleEditUserInfo={handleEditUserInfo}
             initalValue={initalValue}
+            totalPrice={totalPrice}
           />
         ) : (
           <Stack width={"67%"}>

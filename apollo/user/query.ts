@@ -436,10 +436,9 @@ export const GET_RESERVED_ROOMS = gql`
           guestEmail
           guestPhoneNumber
           travelForWork
-          cardholderName
-          cardNumber
-          expiryDate
-          cvs
+          stripePaymentIntentId
+          paymentStatus
+          paymentAmount
           roomId
           propertyId
           startDate
@@ -492,10 +491,9 @@ export const GET_COMMENTS = gql`
           guestEmail
           guestPhoneNumber
           travelForWork
-          cardholderName
-          cardNumber
-          expiryDate
-          cvs
+          stripePaymentIntentId
+          paymentStatus
+          paymentAmount
           roomId
           propertyId
           startDate

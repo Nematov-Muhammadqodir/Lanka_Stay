@@ -1,20 +1,19 @@
 export interface ReservationInfo {
-  _id: string; // ObjectId → string in FE
+  _id: string;
   guestId: string;
   guestName: string;
   guestLastName?: string | null;
   guestEmail: string;
   guestPhoneNumber: string;
   travelForWork: boolean;
-  cardholderName: string;
-  cardNumber: string;
-  expiryDate: string;
-  cvs: string;
+  stripePaymentIntentId: string;
+  paymentStatus: string;
+  paymentAmount: number;
   roomId: string;
   propertyId: string;
   startDate: string;
   endDate: string;
   ageConfirmation: boolean;
-  createdAt: string; // GraphQL sends Date as string
-  updatedAt: string; // same
+  createdAt: string;
+  updatedAt: string;
 }

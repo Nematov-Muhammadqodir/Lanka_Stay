@@ -40,7 +40,7 @@ interface Data {
   propertyImages: string[];
   propertyRegion: string;
   propertyCountry: string;
-  cardNumber: string;
+  paymentStatus: string;
   guestName: string;
   startDate: string;
   endDate: string;
@@ -109,7 +109,7 @@ const Reservations = () => {
       propertyImages: item.propertyImages ?? [],
       propertyRegion: item.propertyRegion ?? "-",
       propertyCountry: item.propertyCountry ?? "-",
-      cardNumber: item.reservationData?.cardNumber ?? "-",
+      paymentStatus: item.reservationData?.paymentStatus ?? "succeeded",
       guestName: item.reservationData?.guestName ?? "-",
       startDate: item.reservationData?.startDate ?? "-",
       endDate: item.reservationData?.endDate ?? "-",
@@ -388,8 +388,21 @@ const Reservations = () => {
                       sx={{ color: "text.secondary" }}
                     />
                     <Typography fontSize={14}>
-                      **** **** ****{" "}
-                      {selectedReservation.cardNumber.slice(-4) || "----"}
+                      Payment:{" "}
+                      <Typography
+                        component="span"
+                        fontSize={14}
+                        fontWeight={600}
+                        color={
+                          selectedReservation.paymentStatus === "succeeded"
+                            ? "success.main"
+                            : "warning.main"
+                        }
+                      >
+                        {selectedReservation.paymentStatus === "succeeded"
+                          ? "Paid"
+                          : selectedReservation.paymentStatus}
+                      </Typography>
                     </Typography>
                   </Stack>
                 </Stack>

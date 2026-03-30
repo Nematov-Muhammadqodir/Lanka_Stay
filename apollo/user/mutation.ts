@@ -291,6 +291,14 @@ export const LIKE_TARGET_PROPERTY = gql`
   }
 `;
 
+export const CREATE_PAYMENT_INTENT = gql`
+  mutation CreatePaymentIntent($input: CreatePaymentIntentInput!) {
+    createPaymentIntent(input: $input) {
+      clientSecret
+    }
+  }
+`;
+
 export const ADD_RESERVATION_INFO = gql`
   mutation AddReservationInfo($input: ReservationInfoInput!) {
     addReservationInfo(input: $input) {
@@ -301,11 +309,11 @@ export const ADD_RESERVATION_INFO = gql`
       guestEmail
       guestPhoneNumber
       travelForWork
-      cardholderName
-      cardNumber
-      expiryDate
-      cvs
+      stripePaymentIntentId
+      paymentStatus
+      paymentAmount
       roomId
+      propertyId
       ageConfirmation
       createdAt
       updatedAt
