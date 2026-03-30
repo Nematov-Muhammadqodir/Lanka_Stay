@@ -158,9 +158,22 @@ const RoomPaymentRIght = ({
               <TextField
                 placeholder="MM / YY"
                 sx={{ width: 160 }}
+                inputProps={{ maxLength: 7 }}
                 value={initalValue.expiryDate}
                 onChange={(e: any) => {
-                  handleEditUserInfo("expiryDate", e.target.value);
+                  let val = e.target.value.replace(/[^\d]/g, "");
+                  if (val.length > 4) val = val.slice(0, 4);
+                  if (val.length >= 2) {
+                    const month = val.slice(0, 2);
+                    const clamped =
+                      parseInt(month, 10) > 12
+                        ? "12"
+                        : parseInt(month, 10) < 1 && month.length === 2
+                        ? "01"
+                        : month;
+                    val = clamped + " / " + val.slice(2);
+                  }
+                  handleEditUserInfo("expiryDate", val);
                 }}
               />
             </Stack>

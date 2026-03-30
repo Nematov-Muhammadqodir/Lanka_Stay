@@ -127,17 +127,21 @@ const RoomReservation = () => {
   });
   console.log("initalValue", initalValue);
   const handlePaymentPage = () => {
+    const missing: string[] = [];
+    if (!initalValue.guestName?.trim()) missing.push("First name");
+    if (!initalValue.guestEmail?.trim()) missing.push("Email address");
     if (
-      initalValue.guestLastName === "" ||
-      initalValue.guestEmail === "" ||
-      initalValue.guestPhoneNumber === ""
-    ) {
+      !initalValue.guestPhoneNumber?.trim() ||
+      initalValue.guestPhoneNumber.replace(/\D/g, "").length < 5
+    )
+      missing.push("Phone number");
+
+    if (missing.length > 0) {
       setPay("reserve");
-      sweetErrorAlert("Please fill in all required fields");
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
+      sweetErrorAlert(
+        `Please fill in: ${missing.join(", ")}`,
+        2500
+      );
       setActiveStep(1);
     } else {
       setPay("pay");
