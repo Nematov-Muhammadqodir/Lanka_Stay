@@ -25,7 +25,7 @@ const MyAccount = () => {
   return (
     <Stack
       sx={{
-        backgroundColor: "#F5F9FF",
+        backgroundColor: "background.default",
         alignItems: "center",
         pb: 4,
         width: "100%",
@@ -48,7 +48,7 @@ const MyAccount = () => {
             gap={1}
             sx={{
               p: 2,
-              backgroundColor: "white",
+              backgroundColor: "background.paper",
               borderRadius: 2,
               boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
             }}
@@ -74,11 +74,11 @@ const MyAccount = () => {
                 >
                   <BorderColorIcon
                     sx={{
-                      color: section === "reservations" ? "white" : "black",
+                      color: section === "reservations" ? "primary.contrastText" : "text.primary",
                     }}
                   />
                   <Typography
-                    color={section === "reservations" ? "white" : "black"}
+                    color={section === "reservations" ? "primary.contrastText" : "text.primary"}
                     sx={{ textTransform: "capitalize", fontSize: 15 }}
                   >
                     My Reservations
@@ -102,11 +102,11 @@ const MyAccount = () => {
                 >
                   <PermContactCalendarIcon
                     sx={{
-                      color: section === "myPage" ? "white" : "black",
+                      color: section === "myPage" ? "primary.contrastText" : "text.primary",
                     }}
                   />
                   <Typography
-                    color={section === "myPage" ? "white" : "black"}
+                    color={section === "myPage" ? "primary.contrastText" : "text.primary"}
                     sx={{ textTransform: "capitalize", fontSize: 15 }}
                   >
                     My Page
@@ -130,11 +130,11 @@ const MyAccount = () => {
                 >
                   <StarsIcon
                     sx={{
-                      color: section === "myFavorites" ? "white" : "black",
+                      color: section === "myFavorites" ? "primary.contrastText" : "text.primary",
                     }}
                   />
                   <Typography
-                    color={section === "myFavorites" ? "white" : "black"}
+                    color={section === "myFavorites" ? "primary.contrastText" : "text.primary"}
                     sx={{ textTransform: "capitalize", fontSize: 15 }}
                   >
                     My favorites
@@ -158,11 +158,11 @@ const MyAccount = () => {
                 >
                   <AddReactionIcon
                     sx={{
-                      color: section === "activities" ? "white" : "black",
+                      color: section === "activities" ? "primary.contrastText" : "text.primary",
                     }}
                   />
                   <Typography
-                    color={section === "activities" ? "white" : "black"}
+                    color={section === "activities" ? "primary.contrastText" : "text.primary"}
                     sx={{ textTransform: "capitalize", fontSize: 15 }}
                   >
                     Activites
@@ -186,11 +186,11 @@ const MyAccount = () => {
                 >
                   <SettingsIcon
                     sx={{
-                      color: section === "settings" ? "white" : "black",
+                      color: section === "settings" ? "primary.contrastText" : "text.primary",
                     }}
                   />
                   <Typography
-                    color={section === "settings" ? "white" : "black"}
+                    color={section === "settings" ? "primary.contrastText" : "text.primary"}
                     sx={{ textTransform: "capitalize", fontSize: 15 }}
                   >
                     Settings

@@ -95,7 +95,7 @@ export const RedditTextField = styled(TextField)(({ theme }) => ({
     border: "1px solid #eee",
     overflow: "hidden",
     borderRadius: 4,
-    backgroundColor: theme.palette.mode === "light" ? "#fff" : "#fff",
+    backgroundColor: theme.palette.mode === "light" ? "#fff" : "#131825",
     transition: theme.transitions.create([
       "border-color",
       "background-color",
@@ -117,7 +117,7 @@ export const StyleButton = styled(Button)(({ theme }) => ({
   "& .Button-root": {
     border: "1px solid #eee",
     overflow: "hidden",
-    backgroundColor: theme.palette.mode === "light" ? "#fff" : "#fff",
+    backgroundColor: theme.palette.mode === "light" ? "#fff" : "#131825",
     transition: theme.transitions.create([
       "border-color",
       "background-color",

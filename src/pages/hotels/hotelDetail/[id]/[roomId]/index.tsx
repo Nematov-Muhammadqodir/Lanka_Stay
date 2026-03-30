@@ -79,10 +79,19 @@ const RoomReservation = () => {
 
   const roomData = getPartnerPropertyRoomData?.getPartnerPropertyRoom;
 
-  const start = new Date(String(filteringData.startDate));
-  const end = new Date(String(filteringData.endDate));
+  const start = filteringData.startDate
+    ? new Date(filteringData.startDate)
+    : null;
+  const end = filteringData.endDate ? new Date(filteringData.endDate) : null;
   const bookedDays =
-    Number(String(end).split(" ")[2]) - Number(String(start).split(" ")[2]);
+    start && end
+      ? Math.max(
+          1,
+          Math.round(
+            (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
+          )
+        )
+      : 1;
 
   const options = {
     weekday: "short",
@@ -91,9 +100,8 @@ const RoomReservation = () => {
     year: "numeric",
   } as const;
 
-  const startDate = start.toLocaleDateString("en-US", options);
-
-  const endDate = end.toLocaleDateString("en-US", options);
+  const startDate = start ? start.toLocaleDateString("en-US", options) : "";
+  const endDate = end ? end.toLocaleDateString("en-US", options) : "";
 
   const nightlyPrice = roomData?.roomPricePerNight ?? 0;
   const doscountedPrice = Number(nightlyPrice) - 23000;
@@ -273,12 +281,16 @@ const RoomReservation = () => {
                 <Typography className="bold-text-medium">
                   {startDate}
                 </Typography>
-                <Typography>From 12:00</Typography>
+                <Typography>
+                  From {partnerProperty?.checkInTimeFrom || "14:00"}
+                </Typography>
               </Stack>
               <Stack pr={4} sx={{ alignItems: "flex-end" }}>
                 <Typography>Check-out</Typography>
                 <Typography className="bold-text-medium">{endDate}</Typography>
-                <Typography>Until 12:00</Typography>
+                <Typography>
+                  Until {partnerProperty?.checkOutTimeUntill || "12:00"}
+                </Typography>
               </Stack>
             </Stack>
 
