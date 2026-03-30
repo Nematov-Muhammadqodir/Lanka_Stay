@@ -35,14 +35,20 @@ const ReviewCard = ({ name, src, review, id, country }: ReviewCardProps) => {
           <Typography className="small-text">{country}</Typography>
         </Stack>
       </Stack>
-      <Stack maxHeight={200} overflow={"auto"}>
-        <Typography sx={{ fontStyle: "italic" }}>{review}</Typography>
+      <Stack>
+        <Typography
+          sx={{
+            fontStyle: "italic",
+            wordBreak: "break-word",
+            display: "-webkit-box",
+            WebkitLineClamp: 5,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+          }}
+        >
+          {review}
+        </Typography>
       </Stack>
-      <Button
-        sx={{ textTransform: "capitalize", color: "primary.main", width: 90 }}
-      >
-        Read more
-      </Button>
     </Stack>
   );
 };

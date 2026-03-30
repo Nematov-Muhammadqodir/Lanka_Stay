@@ -2,13 +2,12 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import BedIcon from "@mui/icons-material/Bed";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
+import PersonIcon from "@mui/icons-material/Person";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
-import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useState } from "react";
 import { Comment } from "../../types/comment/comment";
 import { formatShortDate } from "../../utils";
@@ -19,48 +18,48 @@ interface GuestReviewItemMenuProps {
 
 const GuestReviewItemMenu = (props: GuestReviewItemMenuProps) => {
   const { comment } = props;
-  console.log("comment", comment);
-  const [expand, setExpand] = useState("70px");
+  const [expanded, setExpanded] = useState(false);
+  const MAX_LENGTH = 250;
 
-  const handleExpand = () => {
-    if (expand === "70px") {
-      setExpand("auto");
-    } else {
-      setExpand("70px");
-    }
-  };
+  // Safe nights calculation
+  const startRaw = comment?.reservationData?.startDate;
+  const endRaw = comment?.reservationData?.endDate;
+  const start = startRaw ? new Date(startRaw) : null;
+  const end = endRaw ? new Date(endRaw) : null;
+  const hasValidDates =
+    start && end && !isNaN(start.getTime()) && !isNaN(end.getTime());
+  const nights = hasValidDates
+    ? Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
+    : null;
 
-  const getNights = (startDate: string, endDate: string) => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+  // Guest image
+  const guestImage = comment?.memberData?.guestImage
+    ? `${process.env.NEXT_PUBLIC_API_URL}/${comment.memberData.guestImage}`
+    : "/img/Villa.jpg";
 
-    const diffMs = end.getTime() - start.getTime();
-    const diffDays = diffMs / (1000 * 60 * 60 * 24);
-
-    return Math.ceil(diffDays);
-  };
-  const nights = getNights(
-    comment?.reservationData?.startDate
-      ? comment?.reservationData?.startDate
-      : "",
-    comment?.reservationData?.endDate ? comment?.reservationData?.endDate : ""
-  );
+  // Guest type
+  const guestType = comment?.memberData?.guestType;
+  const guestTypeLabel = guestType
+    ? guestType.charAt(0).toUpperCase() + guestType.slice(1).toLowerCase()
+    : null;
 
   return (
     <Stack
-      width={"auto"}
-      height={"auto"}
-      flexDirection={"row"}
-      gap={"10px"}
+      width="auto"
+      height="auto"
+      flexDirection="row"
+      gap="10px"
       p={1}
       pb={2}
-      mt={5}
-      borderBottom={"1px solid black"}
+      mt={3}
+      borderBottom="1px solid"
+      borderColor="divider"
     >
-      <Stack width={215} height={340} gap={2}>
-        <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
+      {/* Left: user info */}
+      <Stack width={215} gap={2}>
+        <Stack flexDirection="row" gap={1} alignItems="center">
           <Image
-            src={"/img/Villa.jpg"}
+            src={guestImage}
             alt="user-image"
             width={40}
             height={40}
@@ -68,130 +67,116 @@ const GuestReviewItemMenu = (props: GuestReviewItemMenuProps) => {
           />
           <Stack>
             <Typography fontWeight={700}>
-              {comment?.memberData?.guestName}
+              {comment?.memberData?.guestName ?? "Guest"}
             </Typography>
-            <Typography className="small-text">
-              {comment?.memberData?.guestCountry}
+            <Typography className="small-text" color="text.secondary">
+              {comment?.memberData?.guestCountry ?? ""}
             </Typography>
           </Stack>
         </Stack>
         <Stack gap={1}>
-          <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
-            <BedIcon />
-            <Typography className="small-text">
-              {comment?.roomData?.roomType}
-            </Typography>
-          </Stack>
-          <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
-            <CalendarMonthIcon />
-            <Typography className="small-text">
-              {nights} nights ·{" "}
-              {formatShortDate(comment?.reservationData?.endDate!)}
-            </Typography>
-          </Stack>
-          <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
-            <FamilyRestroomIcon />
-            <Typography className="small-text">Family</Typography>
-          </Stack>
-        </Stack>
-      </Stack>
-      <Stack width={675} height={"auto"} px={2} gap={1} pb={2}>
-        <Stack
-          flexDirection={"row"}
-          p={1}
-          justifyContent={"space-between"}
-          alignItems={"center"}
-        >
-          <Stack>
-            <Typography className="small-text">
-              Reviewed: {formatShortDate(comment.createdAt)}
-            </Typography>
-            <Typography className="bold-text">Exceptional</Typography>
-          </Stack>
-          <Stack>
-            <Stack
-              width={35}
-              height={35}
-              sx={{
-                backgroundColor: "primary.main",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 1,
-              }}
-            >
-              <Typography color={"secondary.contrastText"} fontWeight={700}>
-                10
+          {comment?.roomData?.roomType && (
+            <Stack flexDirection="row" gap={1} alignItems="center">
+              <BedIcon sx={{ fontSize: 20, color: "text.secondary" }} />
+              <Typography className="small-text">
+                {comment.roomData.roomType}
               </Typography>
             </Stack>
-          </Stack>
-        </Stack>
-        <Stack
-          flexDirection={"row"}
-          alignItems={"flex-start"}
-          gap={1}
-          height={"100px"}
-        >
-          <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
-            <SentimentSatisfiedAltIcon sx={{ fontSize: 20 }} />
-            <Typography>{comment?.commentContent}</Typography>
-          </Stack>
-        </Stack>
-        {/* HOTEL RESPONSE */}
-        <Stack className="hotel-response-section">
-          <Stack>
-            <Stack
-              height={"auto"}
-              width={630}
-              borderRadius={3}
-              px={2}
-              sx={{ backgroundColor: "secondary.main" }}
-            >
-              <Stack flexDirection={"row"} p={2} alignItems={"center"} gap={1}>
-                <ChatBubbleIcon sx={{ fontSize: 15 }} />
-                <Typography className="small-bold-text">
-                  Hotel response:
-                </Typography>
-              </Stack>
-              <Stack height={expand} overflow={"hidden"}>
-                <Typography>
-                  Dear valued guest, Thank you for your kind feedback, we are
-                  very delighted to receive your feedback. I am sure that your
-                  information about our hotel will make everyone who wants to
-                  stay at our hotel more enjoyable. Once again, thank you for
-                  your valuable patronage and we look forward to welcoming you
-                  back again at The Grand Sumorum soon. Best regards, The Grand
-                  Sumorum
-                </Typography>
-              </Stack>
-              <Button
-                sx={{
-                  width: "140px",
-                  textTransform: "capitalize",
-                  textDecoration: "underline",
-                  color: "primary.main",
-                  justifyContent: "flex-start",
-                }}
-                onClick={handleExpand}
-              >
-                {expand === "70px" ? "Continue Reading" : "Return"}
-              </Button>
+          )}
+          {hasValidDates && (
+            <Stack flexDirection="row" gap={1} alignItems="center">
+              <CalendarMonthIcon
+                sx={{ fontSize: 20, color: "text.secondary" }}
+              />
+              <Typography className="small-text">
+                {nights} {nights === 1 ? "night" : "nights"} &middot;{" "}
+                {formatShortDate(endRaw!)}
+              </Typography>
             </Stack>
+          )}
+          {guestTypeLabel && (
+            <Stack flexDirection="row" gap={1} alignItems="center">
+              <PersonIcon sx={{ fontSize: 20, color: "text.secondary" }} />
+              <Typography className="small-text">{guestTypeLabel}</Typography>
+            </Stack>
+          )}
+        </Stack>
+      </Stack>
+
+      {/* Right: review content */}
+      <Stack flex={1} px={2} gap={1} pb={2}>
+        <Stack
+          flexDirection="row"
+          p={1}
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Stack>
+            <Typography className="small-text" color="text.secondary">
+              Reviewed: {formatShortDate(comment.createdAt)}
+            </Typography>
+          </Stack>
+        </Stack>
+        <Stack flexDirection="row" alignItems="flex-start" gap={1}>
+          <SentimentSatisfiedAltIcon
+            sx={{ fontSize: 20, color: "success.main", mt: "2px", flexShrink: 0 }}
+          />
+          <Stack>
+            <Typography
+              fontSize={14}
+              lineHeight={1.6}
+              sx={{ wordBreak: "break-word" }}
+            >
+              {expanded || (comment?.commentContent?.length ?? 0) <= MAX_LENGTH
+                ? comment?.commentContent
+                : `${comment?.commentContent?.slice(0, MAX_LENGTH)}...`}
+            </Typography>
+            {(comment?.commentContent?.length ?? 0) > MAX_LENGTH && (
+              <Button
+                onClick={() => setExpanded(!expanded)}
+                sx={{
+                  textTransform: "none",
+                  color: "primary.main",
+                  p: 0,
+                  minWidth: "auto",
+                  justifyContent: "flex-start",
+                  fontWeight: 600,
+                  fontSize: 13,
+                  mt: 0.5,
+                }}
+                endIcon={expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              >
+                {expanded ? "Show less" : "Read more"}
+              </Button>
+            )}
+          </Stack>
+        </Stack>
+
+        {/* Actions */}
+        <Stack
+          flexDirection="row"
+          gap={2}
+          mt={2}
+          justifyContent="flex-end"
+          color="text.secondary"
+        >
+          <Stack
+            flexDirection="row"
+            gap={0.5}
+            alignItems="center"
+            sx={{ cursor: "pointer", "&:hover": { color: "primary.main" } }}
+          >
+            <ThumbUpOffAltIcon fontSize="small" />
+            <Typography fontSize={13}>Helpful</Typography>
           </Stack>
           <Stack
-            flexDirection={"row"}
-            gap={2}
-            mt={2}
-            justifyContent={"flex-end"}
-            color={"primary.main"}
+            flexDirection="row"
+            gap={0.5}
+            alignItems="center"
+            sx={{ cursor: "pointer", "&:hover": { color: "error.main" } }}
           >
-            <Stack flexDirection={"row"} gap={1}>
-              <ThumbUpOffAltIcon />
-              <Typography>Helpful</Typography>
-            </Stack>
-            <Stack flexDirection={"row"} gap={1}>
-              <ThumbDownOffAltIcon />
-              <Typography>Not helpful</Typography>
-            </Stack>
+            <ThumbDownOffAltIcon fontSize="small" />
+            <Typography fontSize={13}>Not helpful</Typography>
           </Stack>
         </Stack>
       </Stack>
