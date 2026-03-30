@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useState } from "react";
-import GuestReviewItemMenu from "../../../HotelDetail.tsx/GuestReviewItemMenu";
+import GuestReviewItemMenu from "../../../HotelDetail/GuestReviewItemMenu";
 import TourReviewItemForMenu from "./TourReviewItemForMenu";
 
 const TourReviewListForMenu = () => {

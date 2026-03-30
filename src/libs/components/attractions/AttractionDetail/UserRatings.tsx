@@ -1,8 +1,8 @@
 import { Box, Button, Drawer, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import HdrStrongIcon from "@mui/icons-material/HdrStrong";
-import ReviewBar from "../../HotelDetail.tsx/ReviewBar";
-import GuestReviewMenu from "../../HotelDetail.tsx/GuestReviewMenu";
+import ReviewBar from "../../HotelDetail/ReviewBar";
+import GuestReviewMenu from "../../HotelDetail/GuestReviewMenu";
 import StarIcon from "@mui/icons-material/Star";
 import TourReviewMenu from "./TourReviewMenu";
 import AttractionsReviewBar from "../AttractionsReviewBar";

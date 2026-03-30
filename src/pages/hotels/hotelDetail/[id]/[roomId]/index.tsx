@@ -5,9 +5,9 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Image from "next/image";
-import RoomReservationRight from "@/src/libs/components/HotelDetail.tsx/HotelRoom/RoomReservationRight";
+import RoomReservationRight from "@/src/libs/components/HotelDetail/HotelRoom/RoomReservationRight";
 import { useEffect, useState } from "react";
-import RoomPaymentRIght from "@/src/libs/components/HotelDetail.tsx/HotelRoom/RoomPaymentRIght";
+import RoomPaymentRIght from "@/src/libs/components/HotelDetail/HotelRoom/RoomPaymentRIght";
 import { useRouter } from "next/router";
 import { GET_PARTNER_PROPERTY_ROOM } from "@/apollo/user/query";
 import { useQuery, useReactiveVar } from "@apollo/client";
@@ -202,9 +202,12 @@ const RoomReservation = () => {
                 {partnerProperty?.propertyRegion}{" "}
                 {partnerProperty?.propertyCountry}
               </Typography>
-              <Typography className="small-text" color={"#018233"}>
-                Excellent location — 9.2
-              </Typography>
+              {partnerProperty?.locationRating ? (
+                <Typography className="small-text" color={"#018233"}>
+                  Excellent location —{" "}
+                  {partnerProperty.locationRating.toFixed(1)}
+                </Typography>
+              ) : null}
               <Stack flexDirection={"row"} alignItems={"center"} gap={1} mt={1}>
                 <Box
                   border={"1px solid"}
@@ -219,10 +222,27 @@ const RoomReservation = () => {
                     borderBottomLeftRadius: 0,
                   }}
                 >
-                  <Typography className="small-bold-text">8.2</Typography>
+                  <Typography className="small-bold-text">
+                    {(() => {
+                      const ratings = [
+                        partnerProperty?.staffRating,
+                        partnerProperty?.facilitiesRating,
+                        partnerProperty?.cleanlessRating,
+                        partnerProperty?.comfortRating,
+                        partnerProperty?.valueOfMoneyRating,
+                        partnerProperty?.locationRating,
+                        partnerProperty?.freeWiFiRating,
+                      ].filter((r) => r != null);
+                      if (ratings.length === 0) return "0";
+                      return (
+                        ratings.reduce((sum, val) => sum + val, 0) /
+                        ratings.length
+                      ).toFixed(1);
+                    })()}
+                  </Typography>
                 </Box>
                 <Typography className="small-bold-text">
-                  Fabulous · 4,488 reviews
+                  Fabulous · {partnerProperty?.totalReviews ?? 0} reviews
                 </Typography>
               </Stack>
             </Stack>

@@ -12,7 +12,7 @@ import { WriteReviewMenu } from "./WriteReview";
 interface GuestReviewMenuProps {
   handleClose: () => void;
   hotelReviewInput: HotelReviewsProps;
-  commentsRefetch: () => void;
+  commentsRefetch?: () => void;
 }
 
 const GuestReviewMenu = ({
@@ -141,7 +141,7 @@ const GuestReviewMenu = ({
         onSubmit={(value) => {
           console.log("Review submitted:", value);
           setOpenWriteMenu(false);
-          commentsRefetch();
+          commentsRefetch?.();
           // Later call GraphQL mutation here
         }}
       />

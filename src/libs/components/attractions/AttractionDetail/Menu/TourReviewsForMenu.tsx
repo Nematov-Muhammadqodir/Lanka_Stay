@@ -1,7 +1,7 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import React from "react";
 import HdrStrongIcon from "@mui/icons-material/HdrStrong";
-import ReviewBar from "../../../HotelDetail.tsx/ReviewBar";
+import ReviewBar from "../../../HotelDetail/ReviewBar";
 import AttractionsReviewBar from "../../AttractionsReviewBar";
 
 const TourReviewsForMenu = () => {

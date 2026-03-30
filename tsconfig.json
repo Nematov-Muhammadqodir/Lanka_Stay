@@ -19,6 +19,11 @@
       "@/*": ["./*"] // ← resolves @/libs/... and @/slices/...
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/libs/components/HotelDetail"
+  ],
   "exclude": ["node_modules"]
 }

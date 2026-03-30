@@ -1,6 +1,6 @@
 import { Stack, Typography } from "@mui/material";
 import React from "react";
-import FAQList from "../../../HotelDetail.tsx/FAQ/FAQList";
+import FAQList from "../../../HotelDetail/FAQ/FAQList";
 import AttractionsFAQList from "./AttractionsFAQList";
 
 const AttractionsFAQ = () => {

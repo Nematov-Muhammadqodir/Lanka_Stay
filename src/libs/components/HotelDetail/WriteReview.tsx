@@ -13,6 +13,7 @@ import GuestReviewListForMenu from "./GuestReviewListForMenu";
 import React from "react";
 import { HotelReviewsProps } from "@/src/pages/hotels/hotelDetail/[id]";
 import { CREATE_COMMENT } from "@/apollo/user/mutation";
+import { GET_COMMENTS } from "@/apollo/user/query";
 import { useMutation } from "@apollo/client";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
@@ -44,6 +45,20 @@ export const WriteReviewMenu = ({
             commentRefId: id,
           },
         },
+        refetchQueries: [
+          {
+            query: GET_COMMENTS,
+            variables: {
+              input: {
+                page: 1,
+                limit: 6,
+                direction: "DESC",
+                search: { commentRefId: id },
+              },
+            },
+          },
+        ],
+        awaitRefetchQueries: true,
       });
 
       console.log("Writing comment success:", data);
@@ -104,8 +119,8 @@ export const WriteReviewMenu = ({
         variant="contained"
         fullWidth
         sx={{ fontWeight: 700, color: colors.common.white }}
-        onClick={() => {
-          handleCreateComment();
+        onClick={async () => {
+          await handleCreateComment();
           onSubmit(text);
           setText("");
         }}

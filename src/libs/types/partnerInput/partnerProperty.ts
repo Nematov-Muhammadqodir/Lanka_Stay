@@ -72,6 +72,15 @@ export interface PartnerProperty {
   updatedAt?: string; // ISO string
   memberData?: Partner | null;
   meLiked?: MeLiked[] | null;
+  propertyLikes?: number;
+  totalReviews?: number;
+  staffRating?: number;
+  facilitiesRating?: number;
+  cleanlessRating?: number;
+  comfortRating?: number;
+  valueOfMoneyRating?: number;
+  locationRating?: number;
+  freeWiFiRating?: number;
 }
 
 // For service returning multiple properties

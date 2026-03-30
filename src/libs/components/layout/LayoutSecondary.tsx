@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import TopMain from "./TopMain";
 import Filtering from "./Filtering";
 import Footer from "./Footer";
-import DetailLayoutBanner from "../HotelDetail.tsx/DetailLayoutBanner";
+import DetailLayoutBanner from "../HotelDetail/DetailLayoutBanner";
 import { useReactiveVar } from "@apollo/client";
 import { userVar } from "@/apollo/store";
 import { UserRole } from "../../enums/user.enum";

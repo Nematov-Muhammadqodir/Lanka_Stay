@@ -1,8 +1,8 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import InfoIcon from "@mui/icons-material/Info";
-import GuestReviewListForMenu from "../../HotelDetail.tsx/GuestReviewListForMenu";
-import GuestReviewsForMenu from "../../HotelDetail.tsx/GuestReviewsForMenu";
+import GuestReviewListForMenu from "../../HotelDetail/GuestReviewListForMenu";
+import GuestReviewsForMenu from "../../HotelDetail/GuestReviewsForMenu";
 import StarIcon from "@mui/icons-material/Star";
 import TourReviewsForMenu from "./Menu/TourReviewsForMenu";
 import TourReviewListForMenu from "./Menu/TourReviewsListForMenu";

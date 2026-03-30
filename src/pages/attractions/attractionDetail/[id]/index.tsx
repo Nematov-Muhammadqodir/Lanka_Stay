@@ -1,5 +1,5 @@
 import React from "react";
-import FAQ from "@/src/libs/components/HotelDetail.tsx/FAQ/FAQ";
+import FAQ from "@/src/libs/components/HotelDetail/FAQ/FAQ";
 import { Stack } from "@mui/material";
 import withLayoutAttractions from "@/src/libs/components/layout/attractions/AttractionsLayout";
 import AttractionOverView from "@/src/libs/components/attractions/AttractionDetail/AttractionOverView";
