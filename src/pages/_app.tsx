@@ -1,5 +1,6 @@
 import "@/src/scss/app.scss";
 import "../scss/pc/main.scss";
+import "leaflet/dist/leaflet.css";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import type { AppProps } from "next/app";
 import { useMemo, useState } from "react";

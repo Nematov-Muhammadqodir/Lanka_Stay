@@ -1,18 +1,22 @@
 import {
+  Box,
   Button,
+  Dialog,
+  IconButton,
   Menu,
   MenuItem,
   Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import CloseIcon from "@mui/icons-material/Close";
 import WePriceMatchDialog from "./WePriceMatchDialog";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import TelegramIcon from "@mui/icons-material/Telegram";
@@ -20,6 +24,8 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import { PartnerProperty } from "../../types/partnerInput/partnerProperty";
+import { getCoordinates } from "../../handlers/common";
+import CustomMap from "./CustomMap";
 
 export interface PropertyOverviewProps {
   partnerProperty?: PartnerProperty | null;
@@ -50,6 +56,22 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
   };
   const isBeachFront = true;
   const like = true;
+
+  const [mapOpen, setMapOpen] = useState(false);
+  const [mapCoords, setMapCoords] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+
+  useEffect(() => {
+    if (!mapOpen || mapCoords || !partnerProperty) return;
+    getCoordinates(
+      partnerProperty.propertyCountry,
+      partnerProperty.propertyRegion,
+      partnerProperty.propertyCity,
+      partnerProperty.propertyPostCode
+    ).then(setMapCoords);
+  }, [mapOpen, partnerProperty]);
 
   const [anchorShareEl, setAnchorShareEl] = useState<null | HTMLElement>(null);
   const shareOpen = Boolean(anchorShareEl);
@@ -121,7 +143,7 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
             {partnerProperty.propertyCity}, {partnerProperty.propertyRegion},{" "}
             {partnerProperty.propertyCountry}
           </Typography>
-          <Button>
+          <Button onClick={() => setMapOpen(true)}>
             <Typography
               color="primary"
               fontWeight={700}
@@ -250,46 +272,85 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
           </Menu>
         </Stack>
         <Stack flexDirection={"row"}>
-          <Button
-            id="demo-positioned-button"
-            aria-controls={open ? "demo-positioned-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleClick}
-          >
+          <Button onClick={handleClick}>
             <LocalOfferIcon color="primary" />
             <Typography color={"primary"} textTransform={"capitalize"}>
               We Price Match
             </Typography>
           </Button>
-          <Menu
-            anchorReference="none"
-            id="demo-positioned-menu"
-            aria-labelledby="demo-positioned-button"
-            open={open}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            sx={{
-              width: 800,
-              height: 720,
-              justifySelf: "center",
-              alignSelf: "center",
-              borderRadius: 4,
-            }}
-          >
-            <Stack>
-              <WePriceMatchDialog open={open} handleClose={handleClose} />
-            </Stack>
-          </Menu>
+          <WePriceMatchDialog open={open} handleClose={handleClose} />
         </Stack>
       </Stack>
+      {/* Map Dialog */}
+      <Dialog
+        open={mapOpen}
+        onClose={() => setMapOpen(false)}
+        maxWidth={false}
+        PaperProps={{
+          sx: {
+            width: 750,
+            height: 550,
+            borderRadius: 3,
+            overflow: "hidden",
+            p: 0,
+          },
+        }}
+      >
+        <Stack height="100%">
+          {/* Header */}
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            px={2.5}
+            py={1.5}
+            borderBottom="1px solid"
+            borderColor="divider"
+          >
+            <Stack>
+              <Typography fontWeight={700} fontSize={18}>
+                {partnerProperty.propertyName}
+              </Typography>
+              <Stack direction="row" alignItems="center" gap={0.5}>
+                <FmdGoodIcon
+                  sx={{ fontSize: 16, color: "primary.main" }}
+                />
+                <Typography fontSize={13} color="text.secondary">
+                  {partnerProperty.propertyCity},{" "}
+                  {partnerProperty.propertyRegion},{" "}
+                  {partnerProperty.propertyCountry}
+                </Typography>
+              </Stack>
+            </Stack>
+            <IconButton onClick={() => setMapOpen(false)} size="small">
+              <CloseIcon />
+            </IconButton>
+          </Stack>
+
+          {/* Map */}
+          <Box flex={1} sx={{ "& .leaflet-container": { height: "100%", width: "100%" } }}>
+            {mapCoords ? (
+              <CustomMap
+                country={partnerProperty.propertyCountry}
+                city={partnerProperty.propertyCity}
+                propertyName={partnerProperty.propertyName}
+                lat={mapCoords.lat}
+                lng={mapCoords.lng}
+              />
+            ) : (
+              <Stack
+                height="100%"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Typography color="text.secondary">
+                  Loading map...
+                </Typography>
+              </Stack>
+            )}
+          </Box>
+        </Stack>
+      </Dialog>
     </Stack>
   );
 };

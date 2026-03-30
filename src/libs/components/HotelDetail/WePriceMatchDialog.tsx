@@ -1,24 +1,28 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogContent,
-  List,
-  ListItem,
-  ListItemText,
-  Stack,
-  Typography,
-} from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CancelIcon from "@mui/icons-material/Cancel";
+import { Box, Button, Dialog, IconButton, Stack, Typography } from "@mui/material";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import VerifiedIcon from "@mui/icons-material/Verified";
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import React from "react";
 
 interface WePriceMatchDialogProps {
   open: boolean;
   handleClose: () => void;
 }
+
+const checklistItems = [
+  "The other offer must be for the same property and accommodation type.",
+  "The other offer must be for the same check-in and check-out dates.",
+  "The other offer must have the same cancellation policy and conditions.",
+];
+
+const cantClaimItems = [
+  "If the other offer is on a website that doesn't reveal the property or accommodation type until after booking.",
+  "If the other offer is part of a loyalty or rewards programme, coupon code, referral, or any similar situation where the shown price changes.",
+  "If your current booking is a Partner offer or comparing with one of these offers.",
+];
 
 const WePriceMatchDialog: React.FC<WePriceMatchDialogProps> = ({
   open,
@@ -31,180 +35,162 @@ const WePriceMatchDialog: React.FC<WePriceMatchDialogProps> = ({
       maxWidth="md"
       fullWidth
       PaperProps={{
-        sx: { borderRadius: 4, p: 3 },
+        sx: {
+          borderRadius: 3,
+          overflow: "hidden",
+          p: 0,
+        },
       }}
     >
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography fontWeight={700} fontSize={24}>
-          We Price Match
-        </Typography>
-        <IconButton onClick={handleClose}>
+      {/* Header */}
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{
+          px: 3,
+          py: 2.5,
+          background: (theme) =>
+            theme.palette.mode === "light"
+              ? "linear-gradient(135deg, #2f52df 0%, #1a3abf 100%)"
+              : "linear-gradient(135deg, #5B7BF8 0%, #3A56C7 100%)",
+        }}
+      >
+        <Stack direction="row" alignItems="center" gap={1.5}>
+          <LocalOfferIcon sx={{ color: "#fff", fontSize: 28 }} />
+          <Stack>
+            <Typography fontWeight={700} fontSize={22} color="#fff">
+              We Price Match
+            </Typography>
+            <Typography fontSize={13} color="rgba(255,255,255,0.8)">
+              Our guarantee for the best rate
+            </Typography>
+          </Stack>
+        </Stack>
+        <IconButton
+          onClick={handleClose}
+          sx={{ color: "rgba(255,255,255,0.8)", "&:hover": { color: "#fff" } }}
+        >
           <CloseIcon />
         </IconButton>
       </Stack>
 
-      <DialogContent>
-        <Typography fontWeight={500} mb={2}>
-          You can claim a refund for the difference if you happen to find your
-          reservation cheaper on another website.
-        </Typography>
-        <Typography mb={4} color="text.secondary">
-          Just remember to contact us after booking with us and at least 24
-          hours before your check-in date. You'll need to provide us with the
-          link to the other offer and it must be online and available when we
-          check.
+      {/* Body */}
+      <Stack px={3} py={3} gap={3}>
+        {/* Description */}
+        <Typography fontSize={15} lineHeight={1.6} color="text.secondary">
+          You can claim a refund for the difference if you find your reservation
+          cheaper on another website. Just contact us after booking and at least
+          24 hours before your check-in date with a link to the other offer.
         </Typography>
 
-        <Stack direction="row" spacing={4} mb={4}>
-          {/* ✅ Left side */}
-          <Box flex={1}>
-            <Typography fontWeight={700} mb={2}>
-              We Price Match checklist
-            </Typography>
-            <Stack spacing={1.5}>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <CheckCircleIcon color="success" fontSize="small" />
-                <Typography>
-                  The other offer must be for the same property and
-                  accommodation type.
-                </Typography>
-              </Stack>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <CheckCircleIcon color="success" fontSize="small" />
-                <Typography>
-                  The other offer must be for the same check in and check out
-                  dates.
-                </Typography>
-              </Stack>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <CheckCircleIcon color="success" fontSize="small" />
-                <Typography>
-                  The other offer must have the same cancellation policy and
-                  conditions.
-                </Typography>
-              </Stack>
-            </Stack>
-          </Box>
-
-          {/* ❌ Right side */}
-          <Box flex={1}>
-            <Typography fontWeight={700} mb={2}>
-              When can't you make a claim?
-            </Typography>
-            <Stack spacing={1.5}>
-              <Stack direction="row" alignItems="flex-start" spacing={1}>
-                <CancelIcon color="error" fontSize="small" />
-                <Typography>
-                  If the other offer is on a website that doesn’t reveal the
-                  property or accommodation type you’ll be staying in until
-                  after booking.
-                </Typography>
-              </Stack>
-              <Stack direction="row" alignItems="flex-start" spacing={1}>
-                <CancelIcon color="error" fontSize="small" />
-                <Typography>
-                  If the other offer is part of a loyalty or rewards programme,
-                  coupon code, referral, or any similar situation where the
-                  shown price changes.
-                </Typography>
-              </Stack>
-              <Stack direction="row" alignItems="flex-start" spacing={1}>
-                <CancelIcon color="error" fontSize="small" />
-                <Typography>
-                  If your current Booking.com booking is a Partner offer or
-                  comparing with one of these offers.
-                </Typography>
-              </Stack>
-            </Stack>
-          </Box>
-        </Stack>
-
-        {/* 🔹 Bottom gray box */}
-        <Box
-          sx={{
-            borderRadius: 2,
-            p: 2,
-            mb: 3,
-          }}
-        >
-          <Typography fontWeight={700} mb={1}>
-            Found your booking cheaper elsewhere?
-          </Typography>
-          <Box
+        {/* Two columns */}
+        <Stack direction="row" gap={3}>
+          {/* Checklist */}
+          <Stack
+            flex={1}
+            gap={2}
             sx={{
+              p: 2.5,
               borderRadius: 2,
-              p: 2,
-              mb: 3,
+              border: "1px solid",
+              borderColor: "success.main",
+              backgroundColor: (theme) =>
+                theme.palette.mode === "light"
+                  ? "rgba(52, 211, 153, 0.05)"
+                  : "rgba(52, 211, 153, 0.05)",
             }}
           >
-            <Typography fontWeight={700} mb={1}>
-              Found your booking cheaper elsewhere?
-            </Typography>
-
-            <List sx={{ paddingLeft: 2 }}>
-              <ListItem
-                sx={{
-                  display: "list-item",
-                  padding: 0,
-                  mb: 0.5,
-                }}
-              >
-                <ListItemText
-                  primary={
-                    <>
-                      Look for{" "}
-                      <Typography>
-                        Found this room cheaper elsewhere?
-                      </Typography>{" "}
-                      on your confirmation page or in{" "}
-                      <Typography>View all bookings.</Typography>
-                    </>
-                  }
+            <Stack direction="row" alignItems="center" gap={1}>
+              <VerifiedIcon sx={{ color: "success.main", fontSize: 20 }} />
+              <Typography fontWeight={700} fontSize={15}>
+                Price Match Checklist
+              </Typography>
+            </Stack>
+            {checklistItems.map((item, i) => (
+              <Stack key={i} direction="row" alignItems="flex-start" gap={1.5}>
+                <CheckCircleOutlineIcon
+                  sx={{ color: "success.main", fontSize: 20, mt: "2px", flexShrink: 0 }}
                 />
-              </ListItem>
-              <ListItem
-                sx={{
-                  display: "list-item",
-                  padding: 0,
-                  mb: 0.5,
-                }}
-              >
-                <ListItemText primary="No account? Log in with your booking number and pin." />
-              </ListItem>
-              <ListItem
-                sx={{
-                  display: "list-item",
-                  padding: 0,
-                }}
-              >
-                <ListItemText
-                  primary={
-                    <>
-                      You can also contact our{" "}
-                      <Typography>Customer Care</Typography> team.
-                    </>
-                  }
-                />
-              </ListItem>
-            </List>
-          </Box>
-        </Box>
+                <Typography fontSize={14} lineHeight={1.5} color="text.secondary">
+                  {item}
+                </Typography>
+              </Stack>
+            ))}
+          </Stack>
 
-        <Stack alignItems="flex-end">
+          {/* Can't claim */}
+          <Stack
+            flex={1}
+            gap={2}
+            sx={{
+              p: 2.5,
+              borderRadius: 2,
+              border: "1px solid",
+              borderColor: "error.main",
+              backgroundColor: (theme) =>
+                theme.palette.mode === "light"
+                  ? "rgba(248, 113, 113, 0.05)"
+                  : "rgba(248, 113, 113, 0.05)",
+            }}
+          >
+            <Stack direction="row" alignItems="center" gap={1}>
+              <HighlightOffIcon sx={{ color: "error.main", fontSize: 20 }} />
+              <Typography fontWeight={700} fontSize={15}>
+                When You Can&apos;t Claim
+              </Typography>
+            </Stack>
+            {cantClaimItems.map((item, i) => (
+              <Stack key={i} direction="row" alignItems="flex-start" gap={1.5}>
+                <HighlightOffIcon
+                  sx={{ color: "error.main", fontSize: 20, mt: "2px", flexShrink: 0 }}
+                />
+                <Typography fontSize={14} lineHeight={1.5} color="text.secondary">
+                  {item}
+                </Typography>
+              </Stack>
+            ))}
+          </Stack>
+        </Stack>
+
+        {/* Bottom CTA */}
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{
+            p: 2.5,
+            borderRadius: 2,
+            backgroundColor: "secondary.main",
+          }}
+        >
+          <Stack direction="row" alignItems="center" gap={1.5}>
+            <SupportAgentIcon sx={{ color: "primary.main", fontSize: 28 }} />
+            <Stack>
+              <Typography fontWeight={600} fontSize={15}>
+                Found it cheaper elsewhere?
+              </Typography>
+              <Typography fontSize={13} color="text.secondary">
+                Contact our support team with the link to the other offer.
+              </Typography>
+            </Stack>
+          </Stack>
           <Button
             onClick={handleClose}
             variant="contained"
             sx={{
-              borderRadius: 1,
-              px: 4,
+              borderRadius: 2,
+              px: 3,
+              py: 1,
               textTransform: "none",
-              color: "secondary.main",
+              fontWeight: 600,
+              fontSize: 14,
             }}
           >
-            Close
+            Got it
           </Button>
         </Stack>
-      </DialogContent>
+      </Stack>
     </Dialog>
   );
 };
