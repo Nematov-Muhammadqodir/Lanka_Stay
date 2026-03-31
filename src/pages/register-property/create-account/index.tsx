@@ -21,6 +21,7 @@ import {
   setPartnerLastName,
   setPartnerPassword,
   setPartnerPhoneNumber,
+  setPartnerType,
 } from "@/src/slices/partnerSlice";
 import { Messages } from "@/src/libs/config";
 import { sweetErrorAlert, sweetMixinErrorAlert } from "@/src/libs/sweetAlert";
@@ -50,12 +51,17 @@ const CreateAccount = () => {
   const partnerLoginInput = useSelector(partnerLoginInputValue);
   const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
   const [isConfirmed, setIsConfirmed] = useState(false);
+  const [partnerType, setPartnerTypeLocal] = useState("HOTEL_OWNER");
   const partner = useReactiveVar(partnerVar);
   console.log("loggedin partner", partner);
 
   useEffect(() => {
     if (partner._id !== "") {
-      router.push("/register-property/add-new-property");
+      if (partner.partnerType === "ATTRACTION_OWNER") {
+        router.push("/register-property/attractions/create");
+      } else {
+        router.push("/register-property/add-new-property");
+      }
     }
   }, [partner]);
 
@@ -67,15 +73,21 @@ const CreateAccount = () => {
     if (confirmPasswordValue !== partnerInput.partnerPassword) {
       await sweetErrorAlert(Messages.error6);
     } else {
+      const role = partnerType === "ATTRACTION_OWNER" ? "ATTRACTION_OWNER" : "HOTEL_OWNER";
       await signUpPartner(
         partnerInput.partnerEmail,
         partnerInput.partnerFirstName,
         partnerInput.partnerLastName,
         partnerInput.partnerPhoneNumber,
         partnerInput.partnerPassword,
-        partnerInput.userRole
+        role,
+        partnerType
       );
-      router.push("/register-property/add-new-property");
+      if (partnerType === "ATTRACTION_OWNER") {
+        router.push("/register-property/attractions/create");
+      } else {
+        router.push("/register-property/add-new-property");
+      }
     }
   };
 
@@ -148,6 +160,35 @@ const CreateAccount = () => {
 
                     <form onSubmit={handleSubmit(onSubmit)}>
                       <Stack alignItems={"start"} className="form" gap={2}>
+                        <Stack width="100%">
+                          <Typography className="small-bold-text" sx={{ mb: 1 }}>
+                            I am a
+                          </Typography>
+                          <Stack direction="row" gap={1} mb={2}>
+                            <Button
+                              variant={partnerType === "HOTEL_OWNER" ? "contained" : "outlined"}
+                              onClick={() => {
+                                setPartnerTypeLocal("HOTEL_OWNER");
+                                dispatch(setPartnerType("HOTEL_OWNER"));
+                              }}
+                              fullWidth
+                              sx={{ textTransform: "none", fontWeight: 600 }}
+                            >
+                              Hotel Owner
+                            </Button>
+                            <Button
+                              variant={partnerType === "ATTRACTION_OWNER" ? "contained" : "outlined"}
+                              onClick={() => {
+                                setPartnerTypeLocal("ATTRACTION_OWNER");
+                                dispatch(setPartnerType("ATTRACTION_OWNER"));
+                              }}
+                              fullWidth
+                              sx={{ textTransform: "none", fontWeight: 600 }}
+                            >
+                              Attraction Owner
+                            </Button>
+                          </Stack>
+                        </Stack>
                         <Stack>
                           <Typography className="small-bold-text">
                             Email address

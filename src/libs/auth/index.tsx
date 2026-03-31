@@ -173,7 +173,8 @@ export const signUpPartner = async (
   partnerLastName: string,
   partnerPhoneNumber: string,
   partnerPassword: string,
-  userRole: string
+  userRole: string,
+  partnerType?: string
 ): Promise<void> => {
   try {
     const { jwtToken } = await requestPartnerSignUpJwtToken({
@@ -183,6 +184,7 @@ export const signUpPartner = async (
       partnerPhoneNumber,
       partnerPassword,
       userRole,
+      partnerType,
     });
 
     if (jwtToken) {
@@ -263,6 +265,7 @@ const requestPartnerSignUpJwtToken = async ({
   partnerPhoneNumber,
   partnerPassword,
   userRole,
+  partnerType,
 }: {
   partnerEmail: string;
   partnerFirstName: string;
@@ -270,6 +273,7 @@ const requestPartnerSignUpJwtToken = async ({
   partnerPhoneNumber: string;
   partnerPassword: string;
   userRole: string;
+  partnerType?: string;
 }): Promise<{ jwtToken: string }> => {
   const apolloClient = await initializeApollo();
   console.log("apolloClint", apolloClient);
@@ -285,6 +289,7 @@ const requestPartnerSignUpJwtToken = async ({
           partnerPhoneNumber: partnerPhoneNumber,
           partnerPassword: partnerPassword,
           userRole: userRole,
+          ...(partnerType ? { partnerType } : {}),
         },
       },
       fetchPolicy: "network-only",
@@ -355,6 +360,7 @@ export const updatePartnerInfo = (jwtToken: any) => {
     partnerLastName: claimsPartner.partnerLastName ?? "",
     partnerPhoneNumber: claimsPartner.partnerPhoneNumber ?? "",
     partnerPassword: claimsPartner.partnerPassword ?? "",
+    partnerType: claimsPartner.partnerType ?? "",
     userRole: claimsPartner.userRole ?? "",
     memberStatus: claimsPartner.memberStatus ?? "",
   });
@@ -408,6 +414,7 @@ const deletePartnerInfo = () => {
     partnerLastName: "",
     partnerPhoneNumber: "",
     partnerPassword: "",
+    partnerType: "",
     userRole: "",
     memberStatus: "",
   });

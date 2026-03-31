@@ -89,6 +89,7 @@ export const PARTNER_SIGNUP = gql`
       partnerLastName
       partnerPhoneNumber
       partnerPassword
+      partnerType
       userRole
       createdAt
       updatedAt
@@ -107,6 +108,7 @@ export const PARTNER_LOGIN = gql`
       partnerLastName
       partnerPhoneNumber
       partnerPassword
+      partnerType
       userRole
       createdAt
       updatedAt
@@ -378,6 +380,88 @@ export const UPDATE_PARTNER_PROPERTY_ROOM = gql`
 export const DELETE_PARTNER_PROPERTY_ROOM = gql`
   mutation DeletePartnerPropertyRoom($roomId: String!) {
     deletePartnerPropertyRoom(roomId: $roomId) {
+      _id
+    }
+  }
+`;
+
+/**************************
+ *       ATTRACTIONS      *
+ *************************/
+
+export const CREATE_ATTRACTION = gql`
+  mutation CreateAttraction($input: AttractionInput!) {
+    createAttraction(input: $input) {
+      _id
+      partnerId
+      attractionType
+      attractionName
+      attractionDescription
+      attractionCountry
+      attractionRegion
+      attractionCity
+      attractionImages
+      attractionAdultPrice
+      attractionChildPrice
+      attractionDuration
+      attractionHighlights
+      attractionIncludes
+      attractionExcludes
+      faqItems {
+        question
+        answer
+      }
+      maxParticipants
+      freeCancellation
+      attractionStatus
+      attractionViews
+      attractionLikes
+      totalReviews
+      averageRating
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const UPDATE_ATTRACTION = gql`
+  mutation UpdateAttraction($input: AttractionUpdate!) {
+    updateAttraction(input: $input) {
+      _id
+      partnerId
+      attractionType
+      attractionName
+      attractionDescription
+      attractionCountry
+      attractionRegion
+      attractionCity
+      attractionImages
+      attractionAdultPrice
+      attractionChildPrice
+      attractionDuration
+      attractionHighlights
+      attractionIncludes
+      attractionExcludes
+      faqItems {
+        question
+        answer
+      }
+      maxParticipants
+      freeCancellation
+      attractionStatus
+      attractionViews
+      attractionLikes
+      totalReviews
+      averageRating
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const DELETE_ATTRACTION = gql`
+  mutation DeleteAttraction($attractionId: String!) {
+    deleteAttraction(attractionId: $attractionId) {
       _id
     }
   }

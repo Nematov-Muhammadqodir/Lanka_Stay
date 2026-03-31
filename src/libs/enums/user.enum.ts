@@ -9,6 +9,7 @@ export enum GuestType {
 
 export enum UserRole {
   HOTEL_OWNER = "HOTEL_OWNER",
+  ATTRACTION_OWNER = "ATTRACTION_OWNER",
   ADMIN = "ADMIN",
   GUEST = "GUEST",
 }

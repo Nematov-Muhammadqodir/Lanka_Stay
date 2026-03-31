@@ -29,6 +29,7 @@ export const partnerVar = makeVar<CustomJwtPartnerPayload>({
   partnerLastName: "",
   partnerPhoneNumber: "",
   partnerPassword: "",
+  partnerType: "",
   userRole: "",
   memberStatus: "",
 });

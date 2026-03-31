@@ -8,6 +8,7 @@ export interface PartnerSignupInput {
   partnerPhoneNumber: string;
   partnerPassword: string;
   userRole: UserRole;
+  partnerType?: string;
 }
 
 export interface PartnerLoginInput {

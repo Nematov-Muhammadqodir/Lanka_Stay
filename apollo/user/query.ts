@@ -606,3 +606,131 @@ export const GET_COMMENTS = gql`
     }
   }
 `;
+
+/**************************
+ *       ATTRACTIONS      *
+ *************************/
+
+export const GET_ATTRACTION = gql`
+  query GetAttraction($input: String!) {
+    getAttraction(attractionId: $input) {
+      _id
+      partnerId
+      attractionType
+      attractionName
+      attractionDescription
+      attractionCountry
+      attractionRegion
+      attractionCity
+      attractionImages
+      attractionAdultPrice
+      attractionChildPrice
+      attractionDuration
+      attractionHighlights
+      attractionIncludes
+      attractionExcludes
+      faqItems {
+        question
+        answer
+      }
+      maxParticipants
+      freeCancellation
+      attractionStatus
+      attractionViews
+      attractionLikes
+      totalReviews
+      averageRating
+      createdAt
+      updatedAt
+      memberData {
+        _id
+        partnerEmail
+        partnerFirstName
+        partnerLastName
+        partnerPhoneNumber
+      }
+    }
+  }
+`;
+
+export const GET_ALL_ATTRACTIONS = gql`
+  query GetAllAttractions($input: AttractionsInquiry!) {
+    getAllAttractions(input: $input) {
+      list {
+        _id
+        partnerId
+        attractionType
+        attractionName
+        attractionDescription
+        attractionCountry
+        attractionRegion
+        attractionCity
+        attractionImages
+        attractionAdultPrice
+        attractionChildPrice
+        attractionDuration
+        attractionHighlights
+        attractionIncludes
+        attractionExcludes
+        faqItems {
+          question
+          answer
+        }
+        maxParticipants
+        freeCancellation
+        attractionStatus
+        attractionViews
+        attractionLikes
+        totalReviews
+        averageRating
+        createdAt
+        updatedAt
+        memberData {
+          _id
+          partnerEmail
+          partnerFirstName
+          partnerLastName
+          partnerPhoneNumber
+        }
+      }
+      metaCounter {
+        total
+      }
+    }
+  }
+`;
+
+export const GET_ATTRACTIONS_BY_OWNER = gql`
+  query GetAttractionsByOwner($input: String!) {
+    getAttractionsByOwner(partnerId: $input) {
+      _id
+      partnerId
+      attractionType
+      attractionName
+      attractionDescription
+      attractionCountry
+      attractionRegion
+      attractionCity
+      attractionImages
+      attractionAdultPrice
+      attractionChildPrice
+      attractionDuration
+      attractionHighlights
+      attractionIncludes
+      attractionExcludes
+      faqItems {
+        question
+        answer
+      }
+      maxParticipants
+      freeCancellation
+      attractionStatus
+      attractionViews
+      attractionLikes
+      totalReviews
+      averageRating
+      createdAt
+      updatedAt
+    }
+  }
+`;

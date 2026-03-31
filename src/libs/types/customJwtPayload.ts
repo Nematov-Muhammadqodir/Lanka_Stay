@@ -24,6 +24,7 @@ export interface CustomJwtPartnerPayload extends JwtPayload {
   partnerLastName: string;
   partnerPhoneNumber: string;
   partnerPassword: string;
+  partnerType: string;
   userRole: string;
   memberStatus: string;
 }

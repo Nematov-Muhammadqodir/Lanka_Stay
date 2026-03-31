@@ -20,6 +20,7 @@ const defaultInput: PartnerSignupInput = {
   partnerPhoneNumber: "",
   partnerPassword: "",
   userRole: UserRole.HOTEL_OWNER,
+  partnerType: "HOTEL_OWNER",
 };
 
 const initialState: CartSliceState = {
@@ -49,6 +50,9 @@ const partnerSlice = createSlice({
     setUserRole: (state, action) => {
       state.input.userRole = action.payload;
     },
+    setPartnerType: (state, action) => {
+      state.input.partnerType = action.payload;
+    },
   },
 });
 
@@ -59,6 +63,7 @@ export const {
   setPartnerPhoneNumber,
   setPartnerPassword,
   setUserRole,
+  setPartnerType,
 } = partnerSlice.actions;
 
 export const partnerSignupInputValue = (state: RootState) =>

@@ -28,10 +28,12 @@ import { useRouter } from "next/router";
 import {
   GET_PARTNER_PROPERTY_BY_HOTEL_OWNER,
   GET_OWNER_RESERVATIONS,
+  GET_ATTRACTIONS_BY_OWNER,
 } from "@/apollo/user/query";
 import {
   UPDATE_PARTNER_PROPERTY_ROOM,
   DELETE_PARTNER_PROPERTY_ROOM,
+  DELETE_ATTRACTION,
 } from "@/apollo/user/mutation";
 import { sweetConfirmAlert, sweetTopSuccessAlert, sweetErrorAlert } from "@/src/libs/sweetAlert";
 import { formatShortDate } from "@/src/libs/utils";
@@ -45,6 +47,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
+import AttractionIcon from "@mui/icons-material/Attractions";
 
 const Dashboard = () => {
   const partner = useReactiveVar(partnerVar);
@@ -52,6 +55,8 @@ const Dashboard = () => {
   const [tab, setTab] = useState(0);
   const [editRoom, setEditRoom] = useState<any>(null);
   const [editValues, setEditValues] = useState<any>({});
+
+  const isAttractionOwner = partner?.partnerType === "ATTRACTION_OWNER" || partner?.userRole === "ATTRACTION_OWNER";
 
   useEffect(() => {
     if (!partner?._id) {
@@ -77,9 +82,22 @@ const Dashboard = () => {
     skip: !partner?._id,
   });
 
+  // Attractions query
+  const {
+    data: attractionsData,
+    loading: attractionsLoading,
+    refetch: refetchAttractions,
+  } = useQuery(GET_ATTRACTIONS_BY_OWNER, {
+    variables: { input: partner?._id },
+    skip: !partner?._id,
+  });
+
+  const attractions = attractionsData?.getAttractionsByOwner ?? [];
+
   // Mutations
   const [updateRoom] = useMutation(UPDATE_PARTNER_PROPERTY_ROOM);
   const [deleteRoom] = useMutation(DELETE_PARTNER_PROPERTY_ROOM);
+  const [deleteAttractionMutation] = useMutation(DELETE_ATTRACTION);
 
   const property = propertyData?.getPartnerPropertyByHotelOwner;
   const rooms = property?.propertyRooms ?? [];
@@ -137,6 +155,18 @@ const Dashboard = () => {
     }
   };
 
+  const handleDeleteAttraction = async (attractionId: string) => {
+    const confirmed = await sweetConfirmAlert("Delete this attraction?");
+    if (!confirmed) return;
+    try {
+      await deleteAttractionMutation({ variables: { attractionId } });
+      await sweetTopSuccessAlert("Attraction deleted!", 1500);
+      refetchAttractions();
+    } catch (err: any) {
+      sweetErrorAlert(err.message || "Delete failed", 2500);
+    }
+  };
+
   if (!partner?._id) return null;
 
   return (
@@ -178,6 +208,7 @@ const Dashboard = () => {
           <Tab label="Overview" />
           <Tab label="Rooms" />
           <Tab label="Reservations" />
+          <Tab label="Attractions" />
         </Tabs>
 
         {/* Overview Tab */}
@@ -434,6 +465,90 @@ const Dashboard = () => {
                       <TableCell colSpan={7} align="center">
                         <Typography color="text.secondary" py={4}>
                           No reservations yet
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Stack>
+        )}
+
+        {/* Attractions Tab */}
+        {tab === 3 && (
+          <Stack gap={2}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
+              <Typography fontWeight={700} fontSize={18}>
+                All Attractions ({attractions.length})
+              </Typography>
+              <Button
+                variant="contained"
+                size="small"
+                onClick={() =>
+                  router.push("/register-property/attractions/create")
+                }
+                sx={{ textTransform: "none" }}
+              >
+                + Add Attraction
+              </Button>
+            </Stack>
+
+            <TableContainer
+              component={Paper}
+              sx={{ boxShadow: "none", border: "1px solid", borderColor: "divider" }}
+            >
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: 700 }}>Name</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Type</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>City</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Adult Price</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Views</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Status</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }} align="right">
+                      Actions
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {attractions.map((attraction: any) => (
+                    <TableRow key={attraction._id} hover>
+                      <TableCell>{attraction.attractionName}</TableCell>
+                      <TableCell>{attraction.attractionType}</TableCell>
+                      <TableCell>{attraction.attractionCity}</TableCell>
+                      <TableCell>
+                        {formatKoreanWon(String(attraction.attractionAdultPrice ?? 0))}
+                      </TableCell>
+                      <TableCell>{attraction.attractionViews ?? 0}</TableCell>
+                      <TableCell>
+                        <Chip
+                          label={attraction.attractionStatus ?? "ACTIVE"}
+                          size="small"
+                          color={
+                            attraction.attractionStatus === "ACTIVE"
+                              ? "success"
+                              : "default"
+                          }
+                        />
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton
+                          size="small"
+                          color="error"
+                          onClick={() => handleDeleteAttraction(attraction._id)}
+                        >
+                          <DeleteIcon fontSize="small" />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {attractions.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={7} align="center">
+                        <Typography color="text.secondary" py={4}>
+                          No attractions added yet
                         </Typography>
                       </TableCell>
                     </TableRow>

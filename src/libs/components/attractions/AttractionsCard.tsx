@@ -1,23 +1,30 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import React from "react";
 import Image from "next/image";
-import Rating from "@mui/material/Rating";
-import BeachAccessIcon from "@mui/icons-material/BeachAccess";
-import RestaurantIcon from "@mui/icons-material/Restaurant";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useRouter } from "next/router";
 import TimerIcon from "@mui/icons-material/Timer";
 import StarIcon from "@mui/icons-material/Star";
 import EventRepeatIcon from "@mui/icons-material/EventRepeat";
+import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
 
-const AttractionsListCard = () => {
-  const [value, setValue] = React.useState<number | null>(4);
+interface AttractionsListCardProps {
+  attraction: any;
+}
+
+const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
   const router = useRouter();
+
+  const imageUrl =
+    attraction.attractionImages && attraction.attractionImages.length > 0
+      ? `${process.env.NEXT_PUBLIC_API_URL}/${attraction.attractionImages[0]}`
+      : "/img/hotel.jpg";
+
   const handleClick = () => {
-    router.push("/attractions/attractionDetail/id=2"); // 🔹 replace "1" with dynamic id later
+    router.push(`/attractions/attractionDetail/${attraction._id}`);
   };
+
   return (
     <Stack
       pt={3}
@@ -41,8 +48,8 @@ const AttractionsListCard = () => {
     >
       <Stack flexDirection={"row"} gap={2} position={"relative"}>
         <Image
-          src={"/img/hotel.jpg"}
-          alt="left-image"
+          src={imageUrl}
+          alt={attraction.attractionName || "Attraction"}
           width={175}
           height={175}
           style={{ objectFit: "cover", borderRadius: 5 }}
@@ -68,51 +75,60 @@ const AttractionsListCard = () => {
           <Stack className="middle" gap={0.5}>
             <Stack flexDirection={"row"} gap={1}>
               <Typography className="bold-text">
-                Admission to the London Eye
+                {attraction.attractionName || "Untitled Attraction"}
               </Typography>
             </Stack>
             <Stack flexDirection={"row"} gap={1}>
-              <Typography className="small-bold-text">Busan</Typography>
+              <Typography className="small-bold-text">
+                {attraction.attractionCity || "Unknown City"}
+              </Typography>
             </Stack>
             <Stack flexDirection={"row"} gap={1}>
-              {/* <Typography className="small-text">Beach nearby</Typography> */}
               <Typography className="small-text">
-                With this admission ticket, you can hop aboard the iconic London
-                Eye for a 30-minute ride over the city. The observation wheel
-                reaches a
+                {attraction.attractionDescription
+                  ? attraction.attractionDescription.length > 150
+                    ? attraction.attractionDescription.substring(0, 150) + "..."
+                    : attraction.attractionDescription
+                  : "No description available"}
               </Typography>
             </Stack>
             <Stack flexDirection={"row"} justifyContent={"space-between"}>
               <Stack>
-                <Stack flexDirection={"row"} gap={1}>
-                  <TimerIcon />
-                  <Typography className="small-text">
-                    Duration: 30 minutes
-                  </Typography>
-                </Stack>
+                {attraction.attractionDuration && (
+                  <Stack flexDirection={"row"} gap={1}>
+                    <TimerIcon />
+                    <Typography className="small-text">
+                      Duration: {attraction.attractionDuration}
+                    </Typography>
+                  </Stack>
+                )}
                 <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
                   <StarIcon sx={{ color: "#FEBB05" }} />
                   <Typography className="small-bold-text">
-                    4.5 · Fabulous (5013 reviews)
+                    {attraction.averageRating ?? 0} ({attraction.totalReviews ?? 0} reviews)
                   </Typography>
                 </Stack>
-                <Stack
-                  flexDirection={"row"}
-                  gap={1}
-                  alignItems={"center"}
-                  sx={{ color: "#018233" }}
-                >
-                  <EventRepeatIcon />
-                  <Typography className="small-text">
-                    Free cancellation available
-                  </Typography>
-                </Stack>
+                {attraction.freeCancellation && (
+                  <Stack
+                    flexDirection={"row"}
+                    gap={1}
+                    alignItems={"center"}
+                    sx={{ color: "#018233" }}
+                  >
+                    <EventRepeatIcon />
+                    <Typography className="small-text">
+                      Free cancellation available
+                    </Typography>
+                  </Stack>
+                )}
               </Stack>
 
               <Stack className="right" textAlign={"right"}>
                 <Stack justifyContent={"space-between"} height={"100%"}>
                   <Stack>
-                    <Typography className="bold-text">KRW 828,820</Typography>
+                    <Typography className="bold-text">
+                      {formatKoreanWon(String(attraction.attractionAdultPrice ?? 0))}
+                    </Typography>
                     <Typography className="small-text">
                       Includes taxes and charges
                     </Typography>
@@ -121,7 +137,10 @@ const AttractionsListCard = () => {
                       sx={{
                         mt: 2,
                       }}
-                      onClick={handleClick}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleClick();
+                      }}
                     >
                       <Stack
                         flexDirection={"row"}
