@@ -461,6 +461,11 @@ export const GET_COMMENTS = gql`
         commentContent
         commentRefId
         memberId
+        commentScore
+        commentLikes
+        commentDislikes
+        likedBy
+        dislikedBy
         createdAt
         updatedAt
         memberData {

@@ -4,6 +4,8 @@ import BedIcon from "@mui/icons-material/Bed";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import PersonIcon from "@mui/icons-material/Person";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -11,6 +13,9 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useState } from "react";
 import { Comment } from "../../types/comment/comment";
 import { formatShortDate } from "../../utils";
+import { useMutation, useReactiveVar } from "@apollo/client";
+import { LIKE_COMMENT, DISLIKE_COMMENT } from "@/apollo/user/mutation";
+import { userVar } from "@/apollo/store";
 
 interface GuestReviewItemMenuProps {
   comment: Comment;
@@ -18,8 +23,55 @@ interface GuestReviewItemMenuProps {
 
 const GuestReviewItemMenu = (props: GuestReviewItemMenuProps) => {
   const { comment } = props;
+  const user = useReactiveVar(userVar);
   const [expanded, setExpanded] = useState(false);
   const MAX_LENGTH = 250;
+
+  const [likeCommentMutation] = useMutation(LIKE_COMMENT);
+  const [dislikeCommentMutation] = useMutation(DISLIKE_COMMENT);
+
+  const [likes, setLikes] = useState(comment?.commentLikes ?? 0);
+  const [dislikes, setDislikes] = useState(comment?.commentDislikes ?? 0);
+  const [likedByMe, setLikedByMe] = useState(
+    comment?.likedBy?.includes(user?._id) ?? false
+  );
+  const [dislikedByMe, setDislikedByMe] = useState(
+    comment?.dislikedBy?.includes(user?._id) ?? false
+  );
+
+  const handleLike = async () => {
+    if (!user?._id) return;
+    try {
+      const { data } = await likeCommentMutation({
+        variables: { commentId: comment._id },
+      });
+      if (data?.likeComment) {
+        setLikes(data.likeComment.commentLikes);
+        setDislikes(data.likeComment.commentDislikes);
+        setLikedByMe(data.likeComment.likedBy?.includes(user._id));
+        setDislikedByMe(data.likeComment.dislikedBy?.includes(user._id));
+      }
+    } catch (err) {
+      console.error("Like error:", err);
+    }
+  };
+
+  const handleDislike = async () => {
+    if (!user?._id) return;
+    try {
+      const { data } = await dislikeCommentMutation({
+        variables: { commentId: comment._id },
+      });
+      if (data?.dislikeComment) {
+        setLikes(data.dislikeComment.commentLikes);
+        setDislikes(data.dislikeComment.commentDislikes);
+        setLikedByMe(data.dislikeComment.likedBy?.includes(user._id));
+        setDislikedByMe(data.dislikeComment.dislikedBy?.includes(user._id));
+      }
+    } catch (err) {
+      console.error("Dislike error:", err);
+    }
+  };
 
   // Safe nights calculation
   const startRaw = comment?.reservationData?.startDate;
@@ -158,25 +210,47 @@ const GuestReviewItemMenu = (props: GuestReviewItemMenuProps) => {
           gap={2}
           mt={2}
           justifyContent="flex-end"
-          color="text.secondary"
+          alignItems="center"
         >
           <Stack
             flexDirection="row"
             gap={0.5}
             alignItems="center"
-            sx={{ cursor: "pointer", "&:hover": { color: "primary.main" } }}
+            onClick={handleLike}
+            sx={{
+              cursor: "pointer",
+              color: likedByMe ? "primary.main" : "text.secondary",
+              "&:hover": { color: "primary.main" },
+            }}
           >
-            <ThumbUpOffAltIcon fontSize="small" />
-            <Typography fontSize={13}>Helpful</Typography>
+            {likedByMe ? (
+              <ThumbUpIcon fontSize="small" />
+            ) : (
+              <ThumbUpOffAltIcon fontSize="small" />
+            )}
+            <Typography fontSize={13} fontWeight={likedByMe ? 600 : 400}>
+              {likes > 0 ? likes : ""} Helpful
+            </Typography>
           </Stack>
           <Stack
             flexDirection="row"
             gap={0.5}
             alignItems="center"
-            sx={{ cursor: "pointer", "&:hover": { color: "error.main" } }}
+            onClick={handleDislike}
+            sx={{
+              cursor: "pointer",
+              color: dislikedByMe ? "error.main" : "text.secondary",
+              "&:hover": { color: "error.main" },
+            }}
           >
-            <ThumbDownOffAltIcon fontSize="small" />
-            <Typography fontSize={13}>Not helpful</Typography>
+            {dislikedByMe ? (
+              <ThumbDownIcon fontSize="small" />
+            ) : (
+              <ThumbDownOffAltIcon fontSize="small" />
+            )}
+            <Typography fontSize={13} fontWeight={dislikedByMe ? 600 : 400}>
+              {dislikes > 0 ? dislikes : ""} Not helpful
+            </Typography>
           </Stack>
         </Stack>
       </Stack>

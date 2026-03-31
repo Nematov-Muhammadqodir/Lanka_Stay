@@ -333,6 +333,32 @@ export const CREATE_COMMENT = gql`
   }
 `;
 
+export const LIKE_COMMENT = gql`
+  mutation LikeComment($commentId: String!) {
+    likeComment(commentId: $commentId) {
+      _id
+      commentScore
+      commentLikes
+      commentDislikes
+      likedBy
+      dislikedBy
+    }
+  }
+`;
+
+export const DISLIKE_COMMENT = gql`
+  mutation DislikeComment($commentId: String!) {
+    dislikeComment(commentId: $commentId) {
+      _id
+      commentScore
+      commentLikes
+      commentDislikes
+      likedBy
+      dislikedBy
+    }
+  }
+`;
+
 export const SUBMIT_REVIEW = gql`
   mutation SubmitReview($input: ReviewInput!) {
     submitReview(input: $input) {

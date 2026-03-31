@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  IconButton,
   Typography,
   Button,
   Stack,
-  Divider,
+  Box,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import BusinessIcon from "@mui/icons-material/Business";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import BadgeIcon from "@mui/icons-material/Badge";
+import VerifiedIcon from "@mui/icons-material/Verified";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 interface BusinessDetailsMenuProps {
   open: boolean;
@@ -20,84 +24,155 @@ const BusinessDetailsMenu: React.FC<BusinessDetailsMenuProps> = ({
   handleClose,
 }) => {
   return (
-    <>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        maxWidth="sm"
-        fullWidth
-        PaperProps={{
-          sx: { borderRadius: 3, p: 1 },
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        sx: { borderRadius: 3, overflow: "hidden", p: 0 },
+      }}
+    >
+      {/* Header */}
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{
+          px: 3,
+          py: 2,
+          background: (theme) =>
+            theme.palette.mode === "light"
+              ? "linear-gradient(135deg, #f8fafc 0%, #e8f0fe 100%)"
+              : "linear-gradient(135deg, #1A2235 0%, #131825 100%)",
         }}
       >
-        <DialogTitle
+        <Stack direction="row" alignItems="center" gap={1.5}>
+          <BusinessIcon sx={{ color: "primary.main", fontSize: 26 }} />
+          <Typography fontWeight={700} fontSize={19}>
+            Business Details
+          </Typography>
+        </Stack>
+        <IconButton onClick={handleClose} size="small">
+          <CloseIcon />
+        </IconButton>
+      </Stack>
+
+      {/* Info Banner */}
+      <Stack
+        direction="row"
+        gap={1.5}
+        sx={{
+          mx: 3,
+          mt: 2.5,
+          p: 2,
+          borderRadius: 2,
+          backgroundColor: "secondary.main",
+          border: "1px solid",
+          borderColor: "divider",
+        }}
+      >
+        <InfoOutlinedIcon
+          sx={{ color: "primary.main", fontSize: 20, mt: "2px", flexShrink: 0 }}
+        />
+        <Typography fontSize={13} lineHeight={1.7} color="text.secondary">
+          This property is managed by a licensed business. The accommodation
+          itself is responsible for your stay. Please check your booking
+          confirmation for the property&apos;s specific details.
+        </Typography>
+      </Stack>
+
+      {/* Business Card */}
+      <Stack px={3} py={2.5} gap={2}>
+        <Stack
           sx={{
-            fontWeight: 700,
-            fontSize: 20,
-            pb: 1,
+            p: 2.5,
+            borderRadius: 2,
+            border: "1px solid",
+            borderColor: "divider",
+          }}
+          gap={2}
+        >
+          <Stack direction="row" alignItems="center" gap={1.5}>
+            <Box
+              sx={{
+                width: 40,
+                height: 40,
+                borderRadius: 2,
+                backgroundColor: "primary.main",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography color="white" fontWeight={700} fontSize={16}>
+                S
+              </Typography>
+            </Box>
+            <Stack>
+              <Typography fontWeight={700} fontSize={16}>
+                Sumorum
+              </Typography>
+              <Typography fontSize={12} color="text.secondary">
+                Licensed Property Manager
+              </Typography>
+            </Stack>
+          </Stack>
+
+          <Stack gap={1.5}>
+            <Stack direction="row" alignItems="flex-start" gap={1.5}>
+              <LocationOnIcon
+                sx={{ fontSize: 18, color: "text.secondary", mt: "2px" }}
+              />
+              <Typography fontSize={14} lineHeight={1.5}>
+                Jeju-do, South Korea
+              </Typography>
+            </Stack>
+            <Stack direction="row" alignItems="center" gap={1.5}>
+              <BadgeIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+              <Typography fontSize={14}>
+                Trade register: 6168531362
+              </Typography>
+            </Stack>
+          </Stack>
+        </Stack>
+
+        {/* Compliance */}
+        <Stack
+          direction="row"
+          alignItems="center"
+          gap={1}
+          px={1}
+        >
+          <VerifiedIcon sx={{ fontSize: 18, color: "success.main" }} />
+          <Typography fontSize={13} color="text.secondary">
+            This business certifies compliance with applicable regulations.
+          </Typography>
+        </Stack>
+      </Stack>
+
+      {/* Footer */}
+      <Stack
+        direction="row"
+        justifyContent="flex-end"
+        px={3}
+        pb={2.5}
+      >
+        <Button
+          variant="contained"
+          onClick={handleClose}
+          sx={{
+            textTransform: "none",
+            borderRadius: 2,
+            px: 3,
+            py: 1,
+            fontWeight: 600,
           }}
         >
-          This property is managed, licensed or represented by a business
-        </DialogTitle>
-
-        <DialogContent dividers sx={{ maxHeight: 500 }}>
-          <Typography variant="body2" sx={{ mb: 2, lineHeight: 1.6 }}>
-            A ‘business’ is typically either a party that makes their
-            accommodation(s) bookable on our platform as their primary trade or
-            as a significant secondary source of income, or a party that has
-            contracted with Booking.com for the benefit of a group of
-            accommodations that are owned or operated by independent third
-            parties (such as a hotel chain or a property manager managing a
-            large portfolio of vacation rentals). This accommodation operates
-            under a brand owned, licensed or represented by the business
-            mentioned below. Please note that the accommodation itself that you
-            may book is responsible for your stay.
-          </Typography>
-
-          <Typography variant="body2" sx={{ mb: 2, lineHeight: 1.6 }}>
-            Therefore, please check your booking confirmation for the
-            accommodation’s specific details, including its address. This
-            business and/or its affiliates certify or have obtained
-            certification that the accommodation is committing to only offer
-            products or services that comply with applicable EU law.
-          </Typography>
-
-          <Divider sx={{ my: 2 }} />
-
-          <Typography variant="h6" sx={{ mb: 1 }}>
-            Business details 👁
-          </Typography>
-
-          <Stack spacing={0.5}>
-            <Typography fontWeight={600}>sumorum</Typography>
-            <Typography variant="body2">
-              제주특별자치도 서귀포시 막속포로 114(법환동), 63573 제주도, South
-              Korea
-            </Typography>
-            <Typography variant="body2">jeju</Typography>
-            <Typography variant="body2">
-              Trade register number: 6168531362
-            </Typography>
-          </Stack>
-        </DialogContent>
-
-        <DialogActions sx={{ pr: 2.5, pb: 2 }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleClose}
-            sx={{
-              textTransform: "none",
-              borderRadius: 2,
-              px: 3,
-              color: "secondary.main",
-            }}
-          >
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </>
+          Got it
+        </Button>
+      </Stack>
+    </Dialog>
   );
 };
 

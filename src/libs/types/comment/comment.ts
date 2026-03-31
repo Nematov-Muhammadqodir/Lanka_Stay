@@ -10,7 +10,12 @@ export interface Comment {
   commentContent: string;
   commentRefId: string; // ObjectId
   memberId: string; // ObjectId
-  createdAt: string; // Date → string
+  commentScore: number;
+  commentLikes: number;
+  commentDislikes: number;
+  likedBy?: string[];
+  dislikedBy?: string[];
+  createdAt: string;
   updatedAt: string;
 
   /** Aggregated data (all nullable in GraphQL) */

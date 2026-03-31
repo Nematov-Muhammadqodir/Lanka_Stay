@@ -172,103 +172,76 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
             slotProps={{
               paper: {
                 sx: {
-                  border: "1px solid #ccc",
-                  boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)",
-                  borderRadius: 2,
-                  mt: 1,
-                  p: 1,
+                  backgroundColor: "background.paper",
+                  border: "1px solid",
+                  borderColor: "divider",
+                  boxShadow: "0 12px 32px rgba(0, 0, 0, 0.12)",
+                  borderRadius: 3,
+                  mt: 1.5,
+                  p: 0.5,
+                  minWidth: 220,
                 },
               },
             }}
           >
+            <Typography
+              fontSize={12}
+              fontWeight={600}
+              color="text.secondary"
+              px={2}
+              pt={1}
+              pb={0.5}
+              textTransform="uppercase"
+              letterSpacing={0.5}
+            >
+              Share this property
+            </Typography>
             <MenuItem
               onClick={handleShare}
-              sx={{ borderBottom: "1px solid", borderColor: "primary" }}
+              sx={{ borderRadius: 1.5, mx: 0.5, py: 1.2 }}
             >
-              <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
-                <Typography fontWeight={800}>Copy Link</Typography>{" "}
-                <ContentCopyIcon sx={{ fontSize: "15px" }} />
+              <Stack
+                flexDirection="row"
+                gap={1.5}
+                alignItems="center"
+                width="100%"
+              >
+                <ContentCopyIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+                <Typography fontSize={14} fontWeight={600}>
+                  Copy Link
+                </Typography>
               </Stack>
             </MenuItem>
-            <MenuItem onClick={handleShareClose}>
-              <a
-                href={shareLinks.telegram}
-                target="_blank"
-                rel="noopener noreferrer"
+            {[
+              { href: shareLinks.telegram, icon: <TelegramIcon sx={{ fontSize: 18, color: "#229ED9" }} />, label: "Telegram" },
+              { href: shareLinks.whatsapp, icon: <WhatsAppIcon sx={{ fontSize: 18, color: "#25D366" }} />, label: "WhatsApp" },
+              { href: shareLinks.twitter, icon: <TwitterIcon sx={{ fontSize: 18, color: "text.primary" }} />, label: "Twitter" },
+              { href: shareLinks.facebook, icon: <FacebookIcon sx={{ fontSize: 18, color: "#1877F2" }} />, label: "Facebook" },
+            ].map((item) => (
+              <MenuItem
+                key={item.label}
+                onClick={handleShareClose}
+                sx={{ borderRadius: 1.5, mx: 0.5, py: 1.2 }}
               >
-                <Stack
-                  flexDirection={"row"}
-                  gap={1}
-                  alignItems={"center"}
-                  justifyContent={"space-between"}
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "none", width: "100%" }}
                 >
-                  <Typography fontWeight={800} color={"primary"}>
-                    {" "}
-                    Telegram
-                  </Typography>{" "}
-                  <TelegramIcon sx={{ fontSize: "19px" }} />
-                </Stack>
-              </a>
-            </MenuItem>
-            <MenuItem onClick={handleShareClose}>
-              <a
-                href={shareLinks.whatsapp}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Stack
-                  flexDirection={"row"}
-                  gap={1}
-                  alignItems={"center"}
-                  justifyContent={"space-between"}
-                >
-                  <Typography fontWeight={800} color={"primary"}>
-                    {" "}
-                    WhatsApp
-                  </Typography>{" "}
-                  <WhatsAppIcon sx={{ fontSize: "19px" }} />
-                </Stack>
-              </a>
-            </MenuItem>
-            <MenuItem onClick={handleShareClose}>
-              <a
-                href={shareLinks.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Stack
-                  flexDirection={"row"}
-                  gap={1}
-                  alignItems={"center"}
-                  justifyContent={"space-between"}
-                >
-                  <Typography fontWeight={800} color={"primary"}>
-                    Twitter
-                  </Typography>{" "}
-                  <TwitterIcon sx={{ fontSize: "19px" }} />
-                </Stack>
-              </a>
-            </MenuItem>
-            <MenuItem onClick={handleShareClose}>
-              <a
-                href={shareLinks.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Stack
-                  flexDirection={"row"}
-                  gap={1}
-                  alignItems={"center"}
-                  justifyContent={"space-between"}
-                >
-                  <Typography fontWeight={800} color={"primary"}>
-                    {" "}
-                    Facebook
-                  </Typography>{" "}
-                  <FacebookIcon sx={{ fontSize: "19px" }} />
-                </Stack>
-              </a>
-            </MenuItem>
+                  <Stack
+                    flexDirection="row"
+                    gap={1.5}
+                    alignItems="center"
+                  >
+                    {item.icon}
+                    <Typography fontSize={14} fontWeight={600} color="text.primary">
+                      {item.label}
+                    </Typography>
+                  </Stack>
+                </a>
+              </MenuItem>
+            ))}
           </Menu>
         </Stack>
         <Stack flexDirection={"row"}>

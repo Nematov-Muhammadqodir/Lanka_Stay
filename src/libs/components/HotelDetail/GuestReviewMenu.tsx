@@ -1,11 +1,16 @@
-import { Box, Button, Stack, Typography, TextField } from "@mui/material";
+import { Box, Button, Chip, Stack, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import InfoIcon from "@mui/icons-material/Info";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import GuestReviewsForMenu from "./GuestReviewsForMenu";
 import GuestReviewListForMenu from "./GuestReviewListForMenu";
 import React from "react";
 import { HotelReviewsProps } from "@/src/pages/hotels/hotelDetail/[id]";
 import { WriteReviewMenu } from "./WriteReview";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
 
 // Drawer component for writing review
 
@@ -45,6 +50,14 @@ const GuestReviewMenu = ({
     ratings.reduce((sum, val) => sum + (val || 0), 0) / ratings.length;
 
   const formattedTotalScore = Number(totalScore.toFixed(1));
+
+  const user = useReactiveVar(userVar);
+  const comments = useSelector(
+    (state: RootState) => state.comments.data?.list
+  );
+  const hasReviewed = comments?.some(
+    (c: any) => c.memberId === user?._id
+  );
 
   // State for review writing menu
   const [openWriteMenu, setOpenWriteMenu] = React.useState(false);
@@ -111,17 +124,26 @@ const GuestReviewMenu = ({
               <InfoIcon color="primary" />
             </Stack>
 
-            <Button
-              variant="outlined"
-              sx={{
-                borderColor: "primary",
-                color: "primary.main",
-                fontWeight: "bold",
-              }}
-              onClick={() => setOpenWriteMenu(true)}
-            >
-              Write a Comment
-            </Button>
+            {hasReviewed ? (
+              <Chip
+                icon={<CheckCircleIcon />}
+                label="You already reviewed this hotel"
+                color="success"
+                variant="outlined"
+              />
+            ) : (
+              <Button
+                variant="outlined"
+                sx={{
+                  borderColor: "primary",
+                  color: "primary.main",
+                  fontWeight: "bold",
+                }}
+                onClick={() => setOpenWriteMenu(true)}
+              >
+                Write a Comment
+              </Button>
+            )}
           </Stack>
 
           <Stack borderBottom={"1px solid"} pb={3} borderColor={"text"}>

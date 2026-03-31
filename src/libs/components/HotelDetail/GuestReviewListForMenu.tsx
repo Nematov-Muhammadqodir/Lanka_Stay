@@ -2,12 +2,52 @@ import { Button, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useState } from "react";
 import GuestReviewItemMenu from "./GuestReviewItemMenu";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
+import { GET_COMMENTS } from "@/apollo/user/query";
+import { useQuery } from "@apollo/client";
+import { setComments } from "@/src/slices/commentSlice";
+
+interface SortOption {
+  label: string;
+  sort: string;
+  direction: "ASC" | "DESC";
+}
+
+const sortOptions: SortOption[] = [
+  { label: "Newest first", sort: "createdAt", direction: "DESC" },
+  { label: "Oldest first", sort: "createdAt", direction: "ASC" },
+  { label: "Highest score", sort: "commentScore", direction: "DESC" },
+  { label: "Lowest score", sort: "commentScore", direction: "ASC" },
+];
 
 const GuestReviewListForMenu = () => {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedSort, setSelectedSort] = useState<SortOption>(sortOptions[0]);
   const open = Boolean(anchorEl);
+
+  const id = useSelector((state: RootState) => state.partnerProperty.data?._id);
+  const reviews = useSelector((state: RootState) => state.comments.data?.list);
+
+  const { refetch } = useQuery(GET_COMMENTS, {
+    variables: {
+      input: {
+        page: 1,
+        limit: 100,
+        sort: selectedSort.sort,
+        direction: selectedSort.direction,
+        search: { commentRefId: id },
+      },
+    },
+    skip: !id,
+    onCompleted: (data) => {
+      if (data?.getComments) {
+        dispatch(setComments(data.getComments));
+      }
+    },
+  });
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -15,39 +55,45 @@ const GuestReviewListForMenu = () => {
     setAnchorEl(null);
   };
 
-  const reviews = useSelector((state: RootState) => state.comments.data?.list);
+  const handleSortSelect = (option: SortOption) => {
+    setSelectedSort(option);
+    refetch({
+      input: {
+        page: 1,
+        limit: 100,
+        sort: option.sort,
+        direction: option.direction,
+        search: { commentRefId: id },
+      },
+    });
+    handleClose();
+  };
 
-  console.log("commentsData", reviews);
   return (
     <Stack mt={2}>
       <Stack
-        flexDirection={"row"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
       >
         <Typography sx={{ fontWeight: 700, fontSize: 20 }}>
           Guest reviews
         </Typography>
-        <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
+        <Stack flexDirection="row" gap={1} alignItems="center">
           <Typography className="small-bold-text">Sort reviews by:</Typography>
           <Button
             variant="outlined"
             sx={{ borderColor: "text.primary" }}
-            id="basic-button"
-            aria-controls={open ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
             onClick={handleClick}
           >
-            <Stack flexDirection={"row"} gap={1}>
-              <Typography textTransform={"capitalize"}>
-                Most Relevant
+            <Stack flexDirection="row" gap={1}>
+              <Typography textTransform="capitalize">
+                {selectedSort.label}
               </Typography>
               <KeyboardArrowDownIcon />
             </Stack>
           </Button>
           <Menu
-            id="basic-menu"
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
@@ -63,30 +109,24 @@ const GuestReviewListForMenu = () => {
                   "& .MuiMenuItem-root": {
                     fontSize: 14,
                     color: "#333",
-                    "&:hover": {
-                      backgroundColor: "#f5f5f5",
-                    },
-                  },
-                  "&:before": {
-                    content: '""',
-                    display: "block",
-                    position: "absolute",
-                    top: 0,
-                    right: 14,
-                    width: 10,
-                    height: 10,
-                    bgcolor: "background.paper",
-                    transform: "translateY(-50%) rotate(45deg)",
-                    zIndex: 0,
+                    "&:hover": { backgroundColor: "#f5f5f5" },
                   },
                 },
               },
             }}
           >
-            <MenuItem onClick={handleClose}>Newest first</MenuItem>
-            <MenuItem onClick={handleClose}>Oldest first</MenuItem>
-            <MenuItem onClick={handleClose}>Highest scores</MenuItem>
-            <MenuItem onClick={handleClose}>Lower scores</MenuItem>
+            {sortOptions.map((option) => (
+              <MenuItem
+                key={`${option.sort}-${option.direction}`}
+                onClick={() => handleSortSelect(option)}
+                selected={
+                  option.sort === selectedSort.sort &&
+                  option.direction === selectedSort.direction
+                }
+              >
+                {option.label}
+              </MenuItem>
+            ))}
           </Menu>
         </Stack>
       </Stack>
