@@ -80,6 +80,14 @@ const CreateAccount = () => {
   };
 
   const handleLogin = useCallback(async () => {
+    if (!partnerLoginInput.partnerEmail?.trim()) {
+      await sweetErrorAlert("Please enter your email address", 2500);
+      return;
+    }
+    if (!partnerLoginInput.partnerPassword?.trim()) {
+      await sweetErrorAlert("Please enter your password", 2500);
+      return;
+    }
     try {
       await logInPartner(
         partnerLoginInput.partnerEmail,
@@ -87,7 +95,11 @@ const CreateAccount = () => {
       );
       await router.push("/register-property/add-new-property");
     } catch (err: any) {
-      await sweetMixinErrorAlert(err.message);
+      // Error alerts are already shown in requestPartnerJwtToken,
+      // but if an unexpected error occurs, show it here
+      if (!err.message?.includes("token error")) {
+        await sweetErrorAlert(err.message || "Login failed", 2500);
+      }
     }
   }, [partnerLoginInput]);
 

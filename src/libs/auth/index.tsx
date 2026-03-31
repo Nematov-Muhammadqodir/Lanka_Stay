@@ -52,17 +52,13 @@ export const logInPartner = async (
   email: string,
   password: string
 ): Promise<void> => {
-  try {
-    const { jwtToken } = await requestPartnerJwtToken({ email, password });
+  const { jwtToken } = await requestPartnerJwtToken({ email, password });
 
-    if (jwtToken) {
-      updatePartnerStorage({ jwtToken });
-      updatePartnerInfo(jwtToken);
-    }
-  } catch (err) {
-    console.warn("loginPartner err", err);
-    logOutPartner();
-    // throw new Error('Login Err');
+  if (jwtToken) {
+    updatePartnerStorage({ jwtToken });
+    updatePartnerInfo(jwtToken);
+  } else {
+    throw new Error("Login failed");
   }
 };
 
@@ -122,13 +118,15 @@ const requestPartnerJwtToken = async ({
     return { jwtToken: accessToken };
   } catch (err: any) {
     console.log("request token err", err.graphQLErrors);
-    switch (err.graphQLErrors[0].message) {
-      case "Definer: login and password do not match":
-        await sweetMixinErrorAlert("Please check your password again");
-        break;
-      case "Definer: user has been blocked!":
-        await sweetMixinErrorAlert("User has been blocked!");
-        break;
+    const message = err.graphQLErrors?.[0]?.message || "";
+    if (message.includes("login and password do not match")) {
+      await sweetMixinErrorAlert("Incorrect password. Please try again.", 2500);
+    } else if (message.includes("user has been blocked")) {
+      await sweetMixinErrorAlert("Your account has been blocked.", 2500);
+    } else if (message.includes("No data found")) {
+      await sweetMixinErrorAlert("No account found with this email.", 2500);
+    } else {
+      await sweetMixinErrorAlert("Login failed. Please try again.", 2500);
     }
     throw new Error("token error");
   }
