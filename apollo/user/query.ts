@@ -452,6 +452,35 @@ export const GET_RESERVED_ROOMS = gql`
   }
 `;
 
+export const GET_OWNER_RESERVATIONS = gql`
+  query GetOwnerReservations($input: OrdinaryInquery!) {
+    getOwnerReservations(input: $input) {
+      list {
+        _id
+        guestId
+        guestName
+        guestLastName
+        guestEmail
+        guestPhoneNumber
+        paymentStatus
+        paymentAmount
+        roomId
+        propertyId
+        startDate
+        endDate
+        roomType
+        roomName
+        roomPricePerNight
+        createdAt
+        updatedAt
+      }
+      metaCounter {
+        total
+      }
+    }
+  }
+`;
+
 export const GET_COMMENTS = gql`
   query GetComments($input: CommentsInquiry!) {
     getComments(input: $input) {

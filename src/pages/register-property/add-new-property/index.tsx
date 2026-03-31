@@ -39,9 +39,7 @@ const AddNewProperty = () => {
       if (
         getPartnerPropertyByHotelOwnerData.getPartnerPropertyByHotelOwner._id
       ) {
-        router.push(
-          "/register-property/add-new-property/property-details-complete"
-        );
+        router.push("/register-property/dashboard");
       }
     }
   }, [getPartnerPropertyByHotelOwnerData]);

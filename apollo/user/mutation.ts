@@ -359,6 +359,30 @@ export const DISLIKE_COMMENT = gql`
   }
 `;
 
+export const UPDATE_PARTNER_PROPERTY_ROOM = gql`
+  mutation UpdatePartnerPropertyRoom($input: PartnerPropertyRoomUpdate!) {
+    updatePartnerPropertyRoom(input: $input) {
+      _id
+      roomType
+      roomName
+      roomPricePerNight
+      numberOfGuestsCanStay
+      isSmokingAllowed
+      isBathroomPrivate
+      roomFacilities
+      availableBathroomFacilities
+    }
+  }
+`;
+
+export const DELETE_PARTNER_PROPERTY_ROOM = gql`
+  mutation DeletePartnerPropertyRoom($roomId: String!) {
+    deletePartnerPropertyRoom(roomId: $roomId) {
+      _id
+    }
+  }
+`;
+
 export const SUBMIT_REVIEW = gql`
   mutation SubmitReview($input: ReviewInput!) {
     submitReview(input: $input) {
