@@ -79,6 +79,9 @@ const CheckoutForm = ({
 
     try {
       // 1. Create payment intent on the backend
+      console.log("totalPrice", totalPrice);
+      console.log("initalValue.roomId", initalValue.roomId);
+      console.log("initalValue.propertyId", initalValue.propertyId);
       const { data: piData } = await createPaymentIntent({
         variables: {
           input: {
@@ -89,7 +92,7 @@ const CheckoutForm = ({
         },
       });
 
-      const clientSecret = piData.createPaymentIntent.clientSecret;
+      const clientSecret = piData.createPaymentIntent;
 
       // 2. Confirm payment with Stripe
       const { error, paymentIntent } = await stripe.confirmCardPayment(
@@ -105,6 +108,8 @@ const CheckoutForm = ({
           },
         }
       );
+      console.log("paymentIntent", paymentIntent);
+      console.log("error", error);
 
       if (error) {
         sweetErrorAlert(error.message || "Payment failed", 3000);
@@ -113,18 +118,19 @@ const CheckoutForm = ({
       }
 
       if (paymentIntent?.status === "succeeded") {
+        console.log("initalValue", initalValue);
         // 3. Save reservation to database
         const { data } = await addReservation({
           variables: {
             input: {
               guestId: initalValue.guestId,
               guestName: initalValue.guestName,
-              guestLastName: initalValue.guestLastName || "",
+              guestLastName: initalValue.guestLastName || undefined,
               guestEmail: initalValue.guestEmail,
               guestPhoneNumber: initalValue.guestPhoneNumber,
               travelForWork: initalValue.travelForWork,
               stripePaymentIntentId: paymentIntent.id,
-              paymentAmount: totalPrice,
+              paymentAmount: Math.round(totalPrice),
               roomId: initalValue.roomId,
               propertyId: initalValue.propertyId,
               startDate: initalValue.startDate,
@@ -135,7 +141,10 @@ const CheckoutForm = ({
         });
 
         if (data) {
-          await sweetTopSuccessAlert("Reservation completed successfully!", 2000);
+          await sweetTopSuccessAlert(
+            "Reservation completed successfully!",
+            2000
+          );
           router.push(`/myPage/${user._id}/reservations`);
         }
       }

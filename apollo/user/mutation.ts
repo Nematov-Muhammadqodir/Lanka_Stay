@@ -293,9 +293,7 @@ export const LIKE_TARGET_PROPERTY = gql`
 
 export const CREATE_PAYMENT_INTENT = gql`
   mutation CreatePaymentIntent($input: CreatePaymentIntentInput!) {
-    createPaymentIntent(input: $input) {
-      clientSecret
-    }
+    createPaymentIntent(input: $input)
   }
 `;
 
