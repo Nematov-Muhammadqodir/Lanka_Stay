@@ -490,6 +490,34 @@ export const GET_ATTRACTION_RESERVATIONS = gql`
   }
 `;
 
+export const GET_OWNER_ATTRACTION_RESERVATIONS = gql`
+  query GetOwnerAttractionReservations {
+    getOwnerAttractionReservations {
+      _id
+      guestId
+      attractionId
+      guestName
+      guestLastName
+      guestEmail
+      guestPhoneNumber
+      ticketCount
+      selectedDate
+      selectedTime
+      paymentStatus
+      paymentAmount
+      createdAt
+      updatedAt
+      attractionData {
+        _id
+        attractionName
+        attractionCity
+        attractionCountry
+        attractionType
+      }
+    }
+  }
+`;
+
 export const GET_OWNER_RESERVATIONS = gql`
   query GetOwnerReservations($input: OrdinaryInquery!) {
     getOwnerReservations(input: $input) {

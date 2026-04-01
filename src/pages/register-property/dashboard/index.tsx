@@ -29,6 +29,7 @@ import {
   GET_PARTNER_PROPERTY_BY_HOTEL_OWNER,
   GET_OWNER_RESERVATIONS,
   GET_ATTRACTIONS_BY_OWNER,
+  GET_OWNER_ATTRACTION_RESERVATIONS,
 } from "@/apollo/user/query";
 import {
   UPDATE_PARTNER_PROPERTY_ROOM,
@@ -95,6 +96,15 @@ const Dashboard = () => {
   });
 
   const attractions = attractionsData?.getAttractionsByOwner ?? [];
+
+  // Attraction owner reservations
+  const {
+    data: ownerAttrReservationsData,
+  } = useQuery(GET_OWNER_ATTRACTION_RESERVATIONS, {
+    skip: !partner?._id || isHotelOwner,
+  });
+  const ownerAttrReservations =
+    ownerAttrReservationsData?.getOwnerAttractionReservations ?? [];
 
   // Mutations
   const [updateRoom] = useMutation(UPDATE_PARTNER_PROPERTY_ROOM);
@@ -213,6 +223,7 @@ const Dashboard = () => {
           {isHotelOwner && <Tab label="Rooms" />}
           {isHotelOwner && <Tab label="Reservations" />}
           {isAttractionOwner && <Tab label="Attractions" />}
+          {isAttractionOwner && <Tab label="Reservations" />}
         </Tabs>
 
         {/* Overview Tab */}
@@ -280,11 +291,21 @@ const Dashboard = () => {
                       ),
                     },
                     {
+                      icon: <CalendarMonthIcon />,
+                      label: "Total Reservations",
+                      value: ownerAttrReservations.length,
+                    },
+                    {
                       icon: <AttachMoneyIcon />,
-                      label: "Total Likes",
-                      value: attractions.reduce(
-                        (sum: number, a: any) => sum + (a.attractionLikes ?? 0),
-                        0
+                      label: "Total Earnings",
+                      value: formatKoreanWon(
+                        String(
+                          ownerAttrReservations.reduce(
+                            (sum: number, r: any) =>
+                              sum + (r.paymentAmount ?? 0),
+                            0
+                          )
+                        )
                       ),
                     },
                   ].map((card) => (
@@ -629,6 +650,92 @@ const Dashboard = () => {
                       <TableCell colSpan={7} align="center">
                         <Typography color="text.secondary" py={4}>
                           No attractions added yet
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Stack>
+        )}
+
+        {/* Attraction Reservations Tab - Attraction Owner only */}
+        {isAttractionOwner && tab === 2 && (
+          <Stack gap={2}>
+            <Typography fontWeight={700} fontSize={18}>
+              Guest Reservations ({ownerAttrReservations.length})
+            </Typography>
+
+            <TableContainer
+              component={Paper}
+              sx={{ boxShadow: "none", border: "1px solid", borderColor: "divider" }}
+            >
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: 700 }}>Guest</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Attraction</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Date</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Time</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }} align="center">Tickets</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Amount</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>Status</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {ownerAttrReservations.map((r: any) => (
+                    <TableRow key={r._id} hover>
+                      <TableCell>
+                        <Typography fontSize={14} fontWeight={600}>
+                          {r.guestName} {r.guestLastName ?? ""}
+                        </Typography>
+                        <Typography fontSize={12} color="text.secondary">
+                          {r.guestEmail}
+                        </Typography>
+                        {r.guestPhoneNumber && (
+                          <Typography fontSize={11} color="text.secondary">
+                            {r.guestPhoneNumber}
+                          </Typography>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <Typography fontSize={14}>
+                          {r.attractionData?.attractionName ?? "-"}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        {r.selectedDate
+                          ? new Date(r.selectedDate).toLocaleDateString("en-GB", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })
+                          : "-"}
+                      </TableCell>
+                      <TableCell>{r.selectedTime}</TableCell>
+                      <TableCell align="center">{r.ticketCount}</TableCell>
+                      <TableCell>
+                        {formatKoreanWon(String(r.paymentAmount ?? 0))}
+                      </TableCell>
+                      <TableCell>
+                        <Chip
+                          label={
+                            r.paymentStatus === "succeeded" ? "Paid" : r.paymentStatus ?? "N/A"
+                          }
+                          size="small"
+                          color={
+                            r.paymentStatus === "succeeded" ? "success" : "default"
+                          }
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {ownerAttrReservations.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={7} align="center">
+                        <Typography color="text.secondary" py={4}>
+                          No reservations yet
                         </Typography>
                       </TableCell>
                     </TableRow>
