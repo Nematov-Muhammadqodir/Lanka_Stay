@@ -64,14 +64,16 @@ const Dashboard = () => {
     }
   }, [partner]);
 
-  // Queries
+  const isHotelOwner = !isAttractionOwner;
+
+  // Queries - only fetch what's relevant to the partner type
   const {
     data: propertyData,
     loading: propertyLoading,
     refetch: refetchProperty,
   } = useQuery(GET_PARTNER_PROPERTY_BY_HOTEL_OWNER, {
     variables: { input: partner?._id },
-    skip: !partner?._id,
+    skip: !partner?._id || isAttractionOwner,
   });
 
   const {
@@ -79,7 +81,7 @@ const Dashboard = () => {
     loading: reservationsLoading,
   } = useQuery(GET_OWNER_RESERVATIONS, {
     variables: { input: { page: 1, limit: 100 } },
-    skip: !partner?._id,
+    skip: !partner?._id || isAttractionOwner,
   });
 
   // Attractions query
@@ -89,7 +91,7 @@ const Dashboard = () => {
     refetch: refetchAttractions,
   } = useQuery(GET_ATTRACTIONS_BY_OWNER, {
     variables: { input: partner?._id },
-    skip: !partner?._id,
+    skip: !partner?._id || isHotelOwner,
   });
 
   const attractions = attractionsData?.getAttractionsByOwner ?? [];
@@ -188,10 +190,12 @@ const Dashboard = () => {
         >
           <Stack>
             <Typography fontWeight={700} fontSize={26}>
-              Property Dashboard
+              {isAttractionOwner ? "Attractions Dashboard" : "Property Dashboard"}
             </Typography>
             <Typography color="text.secondary" fontSize={14}>
-              {property?.propertyName ?? "Loading..."}
+              {isAttractionOwner
+                ? `${attractions.length} attraction${attractions.length !== 1 ? "s" : ""} listed`
+                : property?.propertyName ?? "No property yet"}
             </Typography>
           </Stack>
         </Stack>
@@ -206,106 +210,182 @@ const Dashboard = () => {
           }}
         >
           <Tab label="Overview" />
-          <Tab label="Rooms" />
-          <Tab label="Reservations" />
-          <Tab label="Attractions" />
+          {isHotelOwner && <Tab label="Rooms" />}
+          {isHotelOwner && <Tab label="Reservations" />}
+          {isAttractionOwner && <Tab label="Attractions" />}
         </Tabs>
 
         {/* Overview Tab */}
         {tab === 0 && (
           <Stack gap={3}>
             <Stack direction="row" gap={2} flexWrap="wrap">
-              {[
-                {
-                  icon: <MeetingRoomIcon />,
-                  label: "Total Rooms",
-                  value: rooms.length,
-                },
-                {
-                  icon: <CalendarMonthIcon />,
-                  label: "Total Reservations",
-                  value: totalReservations,
-                },
-                {
-                  icon: <AttachMoneyIcon />,
-                  label: "Total Earnings",
-                  value: formatKoreanWon(String(totalEarnings)),
-                },
-                {
-                  icon: <PeopleIcon />,
-                  label: "Property Views",
-                  value: property?.propertyViews ?? 0,
-                },
-              ].map((card) => (
-                <Stack
-                  key={card.label}
-                  sx={{
-                    flex: "1 1 230px",
-                    p: 3,
-                    borderRadius: 2,
-                    border: "1px solid",
-                    borderColor: "divider",
-                    backgroundColor: "background.paper",
-                  }}
-                  gap={1}
-                >
-                  <Stack direction="row" alignItems="center" gap={1}>
-                    <Box sx={{ color: "primary.main" }}>{card.icon}</Box>
-                    <Typography fontSize={13} color="text.secondary">
-                      {card.label}
-                    </Typography>
-                  </Stack>
-                  <Typography fontWeight={700} fontSize={24}>
-                    {card.value}
-                  </Typography>
-                </Stack>
-              ))}
+              {isHotelOwner
+                ? [
+                    {
+                      icon: <MeetingRoomIcon />,
+                      label: "Total Rooms",
+                      value: rooms.length,
+                    },
+                    {
+                      icon: <CalendarMonthIcon />,
+                      label: "Total Reservations",
+                      value: totalReservations,
+                    },
+                    {
+                      icon: <AttachMoneyIcon />,
+                      label: "Total Earnings",
+                      value: formatKoreanWon(String(totalEarnings)),
+                    },
+                    {
+                      icon: <PeopleIcon />,
+                      label: "Property Views",
+                      value: property?.propertyViews ?? 0,
+                    },
+                  ].map((card) => (
+                    <Stack
+                      key={card.label}
+                      sx={{
+                        flex: "1 1 230px",
+                        p: 3,
+                        borderRadius: 2,
+                        border: "1px solid",
+                        borderColor: "divider",
+                        backgroundColor: "background.paper",
+                      }}
+                      gap={1}
+                    >
+                      <Stack direction="row" alignItems="center" gap={1}>
+                        <Box sx={{ color: "primary.main" }}>{card.icon}</Box>
+                        <Typography fontSize={13} color="text.secondary">
+                          {card.label}
+                        </Typography>
+                      </Stack>
+                      <Typography fontWeight={700} fontSize={24}>
+                        {card.value}
+                      </Typography>
+                    </Stack>
+                  ))
+                : [
+                    {
+                      icon: <AttractionIcon />,
+                      label: "Total Attractions",
+                      value: attractions.length,
+                    },
+                    {
+                      icon: <PeopleIcon />,
+                      label: "Total Views",
+                      value: attractions.reduce(
+                        (sum: number, a: any) => sum + (a.attractionViews ?? 0),
+                        0
+                      ),
+                    },
+                    {
+                      icon: <AttachMoneyIcon />,
+                      label: "Total Likes",
+                      value: attractions.reduce(
+                        (sum: number, a: any) => sum + (a.attractionLikes ?? 0),
+                        0
+                      ),
+                    },
+                  ].map((card) => (
+                    <Stack
+                      key={card.label}
+                      sx={{
+                        flex: "1 1 230px",
+                        p: 3,
+                        borderRadius: 2,
+                        border: "1px solid",
+                        borderColor: "divider",
+                        backgroundColor: "background.paper",
+                      }}
+                      gap={1}
+                    >
+                      <Stack direction="row" alignItems="center" gap={1}>
+                        <Box sx={{ color: "primary.main" }}>{card.icon}</Box>
+                        <Typography fontSize={13} color="text.secondary">
+                          {card.label}
+                        </Typography>
+                      </Stack>
+                      <Typography fontWeight={700} fontSize={24}>
+                        {card.value}
+                      </Typography>
+                    </Stack>
+                  ))}
             </Stack>
 
-            {/* Property Info */}
-            <Stack
-              sx={{
-                p: 3,
-                borderRadius: 2,
-                border: "1px solid",
-                borderColor: "divider",
-                backgroundColor: "background.paper",
-              }}
-              gap={2}
-            >
-              <Typography fontWeight={700} fontSize={18}>
-                Property Info
-              </Typography>
-              <Stack direction="row" gap={4} flexWrap="wrap">
-                <Typography fontSize={14}>
-                  <b>Type:</b> {property?.propertyType}
+            {/* Property / Attraction Info */}
+            {isHotelOwner ? (
+              <Stack
+                sx={{
+                  p: 3,
+                  borderRadius: 2,
+                  border: "1px solid",
+                  borderColor: "divider",
+                  backgroundColor: "background.paper",
+                }}
+                gap={2}
+              >
+                <Typography fontWeight={700} fontSize={18}>
+                  Property Info
                 </Typography>
-                <Typography fontSize={14}>
-                  <b>Stars:</b> {property?.propertyStars}
-                </Typography>
-                <Typography fontSize={14}>
-                  <b>Location:</b> {property?.propertyCity},{" "}
-                  {property?.propertyRegion}, {property?.propertyCountry}
-                </Typography>
-                <Typography fontSize={14}>
-                  <b>Status:</b>{" "}
-                  <Chip
-                    label={property?.propertyStatus}
-                    size="small"
-                    color={
-                      property?.propertyStatus === "ACTIVE"
-                        ? "success"
-                        : "default"
-                    }
-                  />
-                </Typography>
+                <Stack direction="row" gap={4} flexWrap="wrap">
+                  <Typography fontSize={14}>
+                    <b>Type:</b> {property?.propertyType}
+                  </Typography>
+                  <Typography fontSize={14}>
+                    <b>Stars:</b> {property?.propertyStars}
+                  </Typography>
+                  <Typography fontSize={14}>
+                    <b>Location:</b> {property?.propertyCity},{" "}
+                    {property?.propertyRegion}, {property?.propertyCountry}
+                  </Typography>
+                  <Typography fontSize={14}>
+                    <b>Status:</b>{" "}
+                    <Chip
+                      label={property?.propertyStatus}
+                      size="small"
+                      color={
+                        property?.propertyStatus === "ACTIVE"
+                          ? "success"
+                          : "default"
+                      }
+                    />
+                  </Typography>
+                </Stack>
               </Stack>
-            </Stack>
+            ) : (
+              <Stack
+                sx={{
+                  p: 3,
+                  borderRadius: 2,
+                  border: "1px solid",
+                  borderColor: "divider",
+                  backgroundColor: "background.paper",
+                }}
+                gap={2}
+              >
+                <Typography fontWeight={700} fontSize={18}>
+                  Partner Info
+                </Typography>
+                <Stack direction="row" gap={4} flexWrap="wrap">
+                  <Typography fontSize={14}>
+                    <b>Name:</b> {partner?.partnerFirstName}{" "}
+                    {partner?.partnerLastName}
+                  </Typography>
+                  <Typography fontSize={14}>
+                    <b>Email:</b> {partner?.partnerEmail}
+                  </Typography>
+                  <Typography fontSize={14}>
+                    <b>Type:</b> Attraction Owner
+                  </Typography>
+                </Stack>
+              </Stack>
+            )}
           </Stack>
         )}
 
-        {/* Rooms Tab */}
-        {tab === 1 && (
+        {/* Rooms Tab - Hotel Owner only */}
+        {isHotelOwner && tab === 1 && (
           <Stack gap={2}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Typography fontWeight={700} fontSize={18}>
@@ -386,8 +466,8 @@ const Dashboard = () => {
           </Stack>
         )}
 
-        {/* Reservations Tab */}
-        {tab === 2 && (
+        {/* Reservations Tab - Hotel Owner only */}
+        {isHotelOwner && tab === 2 && (
           <Stack gap={2}>
             <Typography fontWeight={700} fontSize={18}>
               Guest Reservations ({totalReservations})
@@ -475,8 +555,8 @@ const Dashboard = () => {
           </Stack>
         )}
 
-        {/* Attractions Tab */}
-        {tab === 3 && (
+        {/* Attractions Tab - Attraction Owner only */}
+        {isAttractionOwner && tab === 1 && (
           <Stack gap={2}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Typography fontWeight={700} fontSize={18}>

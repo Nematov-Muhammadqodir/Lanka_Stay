@@ -1,36 +1,48 @@
-import { logIn } from "@/src/libs/auth";
+import { logIn, logInPartner } from "@/src/libs/auth";
 import { sweetMixinErrorAlert } from "@/src/libs/sweetAlert";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import PersonIcon from "@mui/icons-material/Person";
+import BusinessIcon from "@mui/icons-material/Business";
 
 const Login = () => {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  // LOGIN PROCESS
+  const [loginMode, setLoginMode] = useState<"guest" | "partner">("guest");
   const [input, setInput] = useState({
     email: "",
     password: "",
   });
 
-  const handleInput = useCallback((name: any, value: any) => {
-    setInput((prev) => {
-      return { ...prev, [name]: value };
-    });
+  const handleInput = useCallback((name: string, value: string) => {
+    setInput((prev) => ({ ...prev, [name]: value }));
   }, []);
 
   const doLogin = useCallback(async () => {
-    console.log("login", input);
     try {
-      await logIn(input.email, input.password);
-      await router.push(`${router.query.referrer ?? "/"}`);
+      if (loginMode === "guest") {
+        await logIn(input.email, input.password);
+        await router.push(`${router.query.referrer ?? "/"}`);
+      } else {
+        await logInPartner(input.email, input.password);
+        await router.push("/register-property/dashboard");
+      }
     } catch (err: any) {
       await sweetMixinErrorAlert(err.message);
     }
-  }, [input]);
-  const router = useRouter();
+  }, [input, loginMode]);
 
   return (
     <Stack
@@ -119,80 +131,84 @@ const Login = () => {
           >
             Login
           </Typography>
-          <Stack gap={2} overflow={"auto"} height={620}>
+
+          {/* Guest / Partner Toggle */}
+          <Tabs
+            value={loginMode}
+            onChange={(_, v) => setLoginMode(v)}
+            variant="fullWidth"
+            sx={{
+              mb: 3,
+              "& .MuiTab-root": {
+                textTransform: "none",
+                fontWeight: 600,
+                fontSize: 15,
+              },
+            }}
+          >
+            <Tab
+              icon={<PersonIcon />}
+              iconPosition="start"
+              label="Guest"
+              value="guest"
+            />
+            <Tab
+              icon={<BusinessIcon />}
+              iconPosition="start"
+              label="Partner"
+              value="partner"
+            />
+          </Tabs>
+
+          <Stack gap={2} overflow={"auto"} height={520}>
             <Stack gap={1}>
               <Typography sx={{ fontWeight: 500 }}>E-mail</Typography>
               <TextField
                 onChange={(e) => handleInput("email", e.target.value)}
-                id="outlined-basic"
+                value={input.email}
                 label="example@gmail.com"
                 variant="outlined"
                 sx={{
-                  "& .MuiOutlinedInput-root": {
-                    borderRadius: "10px",
-                  },
+                  "& .MuiOutlinedInput-root": { borderRadius: "10px" },
                   "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "#D2D2D2", // border color
+                    borderColor: "#D2D2D2",
                   },
                   "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "blue", // hover border color
+                    borderColor: "blue",
                   },
-                  "& .MuiInputLabel-root": {
-                    color: "#D2D2D2", // label color
-                  },
-                  "&:hover .MuiInputLabel-root": {
-                    color: "blue", // label hover color
-                  },
+                  "& .MuiInputLabel-root": { color: "#D2D2D2" },
+                  "&:hover .MuiInputLabel-root": { color: "blue" },
                 }}
               />
             </Stack>
-            <Stack gap={1}>
+            <Stack gap={1} position="relative">
               <Typography sx={{ fontWeight: 500 }}>Password</Typography>
               <TextField
                 onChange={(e) => handleInput("password", e.target.value)}
+                value={input.password}
                 type={showPassword ? "text" : "password"}
-                id="outlined-basic"
                 label="6+ characters"
                 variant="outlined"
                 sx={{
-                  "& .MuiOutlinedInput-root": {
-                    borderRadius: "10px",
-                  },
+                  "& .MuiOutlinedInput-root": { borderRadius: "10px" },
                   "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "#D2D2D2", // border color
+                    borderColor: "#D2D2D2",
                   },
                   "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "blue", // hover border color
+                    borderColor: "blue",
                   },
-                  "& .MuiInputLabel-root": {
-                    color: "#D2D2D2", // label color
-                  },
-                  "&:hover .MuiInputLabel-root": {
-                    color: "blue", // label hover color
-                  },
+                  "& .MuiInputLabel-root": { color: "#D2D2D2" },
+                  "&:hover .MuiInputLabel-root": { color: "blue" },
                 }}
               />
-              <Button>
+              <Button
+                onClick={() => setShowPassword(!showPassword)}
+                sx={{ position: "absolute", right: 4, bottom: 8, minWidth: 40 }}
+              >
                 {showPassword ? (
-                  <VisibilityOffIcon
-                    onClick={() => setShowPassword(false)}
-                    sx={{
-                      color: "grey.500",
-                      position: "absolute",
-                      right: 20,
-                      bottom: 30,
-                    }}
-                  />
+                  <VisibilityOffIcon sx={{ color: "grey.500" }} />
                 ) : (
-                  <RemoveRedEyeIcon
-                    onClick={() => setShowPassword(true)}
-                    sx={{
-                      color: "grey.500",
-                      position: "absolute",
-                      right: 20,
-                      bottom: 30,
-                    }}
-                  />
+                  <RemoveRedEyeIcon sx={{ color: "grey.500" }} />
                 )}
               </Button>
             </Stack>
@@ -211,8 +227,9 @@ const Login = () => {
               }}
               variant="contained"
             >
-              Login
+              {loginMode === "guest" ? "Login" : "Login as Partner"}
             </Button>
+
             <Button
               sx={{ textDecoration: "underline", alignSelf: "flex-end" }}
               onClick={() => router.push("/join/register")}

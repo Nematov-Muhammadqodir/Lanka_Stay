@@ -101,12 +101,10 @@ export default function CreateAccountTop(partner: any) {
   };
   const handleClose = () => {
     setAnchorEl(null);
-    router.push(
-      "/register-property/add-new-property/property-details-complete"
-    );
   };
   const handleSignOut = () => {
     logOutPartner();
+    router.push("/register-property");
   };
 
   const handleLangClose = (e: any, lang: string) => {

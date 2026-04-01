@@ -26,7 +26,7 @@ const AttractionDetail = () => {
   return (
     <Stack className="container">
       <AttractionOverView attraction={attraction} />
-      <AttractionInfoSection />
+      <AttractionInfoSection attraction={attraction} />
       <Stack
         flexDirection={"row"}
         className="attractions-main-container"

@@ -57,11 +57,7 @@ const CreateAccount = () => {
 
   useEffect(() => {
     if (partner._id !== "") {
-      if (partner.partnerType === "ATTRACTION_OWNER") {
-        router.push("/register-property/attractions/create");
-      } else {
-        router.push("/register-property/add-new-property");
-      }
+      router.push("/register-property/dashboard");
     }
   }, [partner]);
 
@@ -83,11 +79,7 @@ const CreateAccount = () => {
         role,
         partnerType
       );
-      if (partnerType === "ATTRACTION_OWNER") {
-        router.push("/register-property/attractions/create");
-      } else {
-        router.push("/register-property/add-new-property");
-      }
+      router.push("/register-property/dashboard");
     }
   };
 
@@ -105,7 +97,7 @@ const CreateAccount = () => {
         partnerLoginInput.partnerEmail,
         partnerLoginInput.partnerPassword
       );
-      await router.push("/register-property/add-new-property");
+      await router.push("/register-property/dashboard");
     } catch (err: any) {
       // Error alerts are already shown in requestPartnerJwtToken,
       // but if an unexpected error occurs, show it here

@@ -1,8 +1,19 @@
 import { Stack } from "@mui/material";
 import React from "react";
 import Image from "next/image";
+import { Attraction } from "../../../types/attraction/attraction";
 
-const AttractionInfoSection = () => {
+interface AttractionInfoSectionProps {
+  attraction?: Attraction | null;
+}
+
+const AttractionInfoSection = ({ attraction }: AttractionInfoSectionProps) => {
+  const images = (attraction?.attractionImages ?? []).map(
+    (img) => `${process.env.NEXT_PUBLIC_API_URL}/${img}`
+  );
+
+  const fallback = "/img/hotel.jpg";
+
   return (
     <Stack
       flexDirection={"row"}
@@ -24,8 +35,8 @@ const AttractionInfoSection = () => {
         >
           <Stack className="left-big-image">
             <Image
-              src="/img/forest.jpg"
-              alt="user-image"
+              src={images[0] ?? fallback}
+              alt="attraction-image-1"
               width={800}
               height={470}
               style={{
@@ -45,8 +56,8 @@ const AttractionInfoSection = () => {
               justifyContent={"space-between"}
             >
               <Image
-                src="/img/capadokia.jpg"
-                alt="user-image"
+                src={images[1] ?? fallback}
+                alt="attraction-image-2"
                 width={250}
                 height={230}
                 style={{
@@ -55,15 +66,15 @@ const AttractionInfoSection = () => {
               />
               <Stack justifyContent={"space-between"}>
                 <Image
-                  src="/img/Busan.jpg"
-                  alt="user-image"
+                  src={images[2] ?? fallback}
+                  alt="attraction-image-3"
                   width={220}
                   height={110}
                   style={{ objectFit: "cover", borderTopRightRadius: 5 }}
                 />
                 <Image
-                  src="/img/boat.jpg"
-                  alt="user-image"
+                  src={images[3] ?? fallback}
+                  alt="attraction-image-4"
                   width={220}
                   height={110}
                   style={{ objectFit: "cover" }}
@@ -76,16 +87,16 @@ const AttractionInfoSection = () => {
               justifyContent={"space-between"}
             >
               <Image
-                src="/img/Tokyo.jpg"
-                alt="user-image"
+                src={images[4] ?? fallback}
+                alt="attraction-image-5"
                 width={250}
                 height={230}
                 style={{ objectFit: "cover" }}
               />
               <Stack justifyContent={"space-between"}>
                 <Image
-                  src="/img/Jeju.jpg"
-                  alt="user-image"
+                  src={images[5] ?? fallback}
+                  alt="attraction-image-6"
                   width={220}
                   height={110}
                   style={{
@@ -93,13 +104,12 @@ const AttractionInfoSection = () => {
                   }}
                 />
                 <Image
-                  src="/img/village.jpg"
-                  alt="user-image"
+                  src={images[6] ?? fallback}
+                  alt="attraction-image-7"
                   width={220}
                   height={110}
                   style={{
                     objectFit: "cover",
-
                     borderBottomRightRadius: 5,
                   }}
                 />
