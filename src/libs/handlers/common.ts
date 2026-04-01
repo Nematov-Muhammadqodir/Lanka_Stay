@@ -1,35 +1,42 @@
+const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 export const getCoordinates = async (
   country?: string,
   region?: string,
   city?: string,
   postCode?: string
 ) => {
-  // Try most specific first, then fall back to broader queries
-  const queries = [
-    [postCode, city, region, country],
-    [city, region, country],
-    [city, country],
-    [region, country],
-    [city],
-    [country],
+  const structuredQueries = [
+    { city, state: region, country, postalcode: postCode },
+    { city, country },
+    { city: city },
+    { country: country },
   ];
 
-  for (const parts of queries) {
-    const query = encodeURIComponent(
-      parts.filter((p) => p && p.trim()).join(", ")
+  for (let i = 0; i < structuredQueries.length; i++) {
+    const params = structuredQueries[i];
+    const filtered = Object.entries(params).filter(
+      ([, v]) => v && v.trim()
     );
-    if (!query) continue;
+    if (filtered.length === 0) continue;
+
+    const qs = filtered
+      .map(([k, v]) => `${k}=${encodeURIComponent(v!.trim())}`)
+      .join("&");
 
     try {
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=1`
-      );
+      const res = await fetch(`/api/geocode?${qs}`);
       const data = await res.json();
-      if (data.length > 0) {
+      if (Array.isArray(data) && data.length > 0) {
         return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
       }
     } catch {
-      continue;
+      // continue to next query
+    }
+
+    // Small delay between requests to avoid rate limiting
+    if (i < structuredQueries.length - 1) {
+      await delay(300);
     }
   }
 

@@ -9,7 +9,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -24,7 +24,6 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import { PartnerProperty } from "../../types/partnerInput/partnerProperty";
-import { getCoordinates } from "../../handlers/common";
 import CustomMap from "./CustomMap";
 import { useMutation, useReactiveVar } from "@apollo/client";
 import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
@@ -79,20 +78,6 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
   };
 
   const [mapOpen, setMapOpen] = useState(false);
-  const [mapCoords, setMapCoords] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
-
-  useEffect(() => {
-    if (!mapOpen || mapCoords || !partnerProperty) return;
-    getCoordinates(
-      partnerProperty.propertyCountry,
-      partnerProperty.propertyRegion,
-      partnerProperty.propertyCity,
-      partnerProperty.propertyPostCode
-    ).then(setMapCoords);
-  }, [mapOpen, partnerProperty]);
 
   const [anchorShareEl, setAnchorShareEl] = useState<null | HTMLElement>(null);
   const shareOpen = Boolean(anchorShareEl);
@@ -229,17 +214,37 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
                 alignItems="center"
                 width="100%"
               >
-                <ContentCopyIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+                <ContentCopyIcon
+                  sx={{ fontSize: 18, color: "text.secondary" }}
+                />
                 <Typography fontSize={14} fontWeight={600}>
                   Copy Link
                 </Typography>
               </Stack>
             </MenuItem>
             {[
-              { href: shareLinks.telegram, icon: <TelegramIcon sx={{ fontSize: 18, color: "#229ED9" }} />, label: "Telegram" },
-              { href: shareLinks.whatsapp, icon: <WhatsAppIcon sx={{ fontSize: 18, color: "#25D366" }} />, label: "WhatsApp" },
-              { href: shareLinks.twitter, icon: <TwitterIcon sx={{ fontSize: 18, color: "text.primary" }} />, label: "Twitter" },
-              { href: shareLinks.facebook, icon: <FacebookIcon sx={{ fontSize: 18, color: "#1877F2" }} />, label: "Facebook" },
+              {
+                href: shareLinks.telegram,
+                icon: <TelegramIcon sx={{ fontSize: 18, color: "#229ED9" }} />,
+                label: "Telegram",
+              },
+              {
+                href: shareLinks.whatsapp,
+                icon: <WhatsAppIcon sx={{ fontSize: 18, color: "#25D366" }} />,
+                label: "WhatsApp",
+              },
+              {
+                href: shareLinks.twitter,
+                icon: (
+                  <TwitterIcon sx={{ fontSize: 18, color: "text.primary" }} />
+                ),
+                label: "Twitter",
+              },
+              {
+                href: shareLinks.facebook,
+                icon: <FacebookIcon sx={{ fontSize: 18, color: "#1877F2" }} />,
+                label: "Facebook",
+              },
             ].map((item) => (
               <MenuItem
                 key={item.label}
@@ -252,13 +257,13 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
                   rel="noopener noreferrer"
                   style={{ textDecoration: "none", width: "100%" }}
                 >
-                  <Stack
-                    flexDirection="row"
-                    gap={1.5}
-                    alignItems="center"
-                  >
+                  <Stack flexDirection="row" gap={1.5} alignItems="center">
                     {item.icon}
-                    <Typography fontSize={14} fontWeight={600} color="text.primary">
+                    <Typography
+                      fontSize={14}
+                      fontWeight={600}
+                      color="text.primary"
+                    >
                       {item.label}
                     </Typography>
                   </Stack>
@@ -308,9 +313,7 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
                 {partnerProperty.propertyName}
               </Typography>
               <Stack direction="row" alignItems="center" gap={0.5}>
-                <FmdGoodIcon
-                  sx={{ fontSize: 16, color: "primary.main" }}
-                />
+                <FmdGoodIcon sx={{ fontSize: 16, color: "primary.main" }} />
                 <Typography fontSize={13} color="text.secondary">
                   {partnerProperty.propertyCity},{" "}
                   {partnerProperty.propertyRegion},{" "}
@@ -324,26 +327,14 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
           </Stack>
 
           {/* Map */}
-          <Box flex={1} sx={{ "& .leaflet-container": { height: "100%", width: "100%" } }}>
-            {mapCoords ? (
-              <CustomMap
-                country={partnerProperty.propertyCountry}
-                city={partnerProperty.propertyCity}
-                propertyName={partnerProperty.propertyName}
-                lat={mapCoords.lat}
-                lng={mapCoords.lng}
-              />
-            ) : (
-              <Stack
-                height="100%"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Typography color="text.secondary">
-                  Loading map...
-                </Typography>
-              </Stack>
-            )}
+          <Box flex={1}>
+            <CustomMap
+              country={partnerProperty.propertyCountry}
+              city={partnerProperty.propertyCity}
+              region={partnerProperty.propertyRegion}
+              postCode={partnerProperty.propertyPostCode}
+              propertyName={partnerProperty.propertyName}
+            />
           </Box>
         </Stack>
       </Dialog>

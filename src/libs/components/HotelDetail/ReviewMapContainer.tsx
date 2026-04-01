@@ -1,7 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
-import { getCoordinates } from "../../handlers/common";
 import { PartnerProperty } from "../../types/partnerInput/partnerProperty";
 import CustomMap from "./CustomMap";
 import { useSelector } from "react-redux";
@@ -13,9 +12,6 @@ export interface ReviewMapContainerProps {
 
 const ReviewMapContainer = (props: ReviewMapContainerProps) => {
   const { partnerProperty } = props;
-  const [latLng, setLatLng] = useState<{ lat: number; lng: number } | null>(
-    null
-  );
 
   const comments = useSelector(
     (state: RootState) => state.comments.data?.list
@@ -41,24 +37,6 @@ const ReviewMapContainer = (props: ReviewMapContainerProps) => {
   const totalReviews = partnerProperty?.totalReviews ?? 0;
 
   const locationScore = partnerProperty?.locationRating?.toFixed(1) ?? avgScore;
-
-  useEffect(() => {
-    if (!partnerProperty) return;
-
-    const fetchCoordinates = async () => {
-      const coords = await getCoordinates(
-        partnerProperty.propertyCountry,
-        partnerProperty.propertyRegion,
-        partnerProperty.propertyCity,
-        partnerProperty.propertyPostCode
-      );
-      setLatLng(coords);
-    };
-
-    fetchCoordinates();
-  }, [partnerProperty]);
-
-  if (!latLng) return <div>Loading map...</div>;
   return (
     <Stack
       className="right-review-map-container"
@@ -174,9 +152,9 @@ const ReviewMapContainer = (props: ReviewMapContainerProps) => {
         <CustomMap
           country={partnerProperty?.propertyCountry}
           city={partnerProperty?.propertyCity}
+          region={partnerProperty?.propertyRegion}
+          postCode={partnerProperty?.propertyPostCode}
           propertyName={partnerProperty?.propertyName}
-          lat={latLng.lat}
-          lng={latLng.lng}
         />
       </Box>
     </Stack>

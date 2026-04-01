@@ -4,13 +4,13 @@ interface MapProps {
   country?: string;
   city?: string;
   propertyName?: string;
-  lat: number;
-  lng: number;
+  region?: string;
+  postCode?: string;
 }
 
-const CustomMap = ({ country, city, propertyName, lat, lng }: MapProps) => {
+const CustomMap = ({ country, city, propertyName, region, postCode }: MapProps) => {
   const query = encodeURIComponent(
-    [propertyName, city, country].filter(Boolean).join(", ")
+    [propertyName, city, region, country].filter(Boolean).join(", ")
   );
 
   return (
@@ -20,8 +20,9 @@ const CustomMap = ({ country, city, propertyName, lat, lng }: MapProps) => {
       style={{ border: 0 }}
       loading="lazy"
       referrerPolicy="no-referrer-when-downgrade"
-      src={`https://www.openstreetmap.org/export/embed.html?bbox=${lng - 0.01}%2C${lat - 0.01}%2C${lng + 0.01}%2C${lat + 0.01}&layer=mapnik&marker=${lat}%2C${lng}`}
+      src={`https://maps.google.com/maps?q=${query}&z=15&ie=UTF8&iwloc=B&output=embed`}
       title={propertyName || "Map"}
+      allowFullScreen
     />
   );
 };
