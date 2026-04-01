@@ -230,13 +230,22 @@ const TourReviewMenu = ({ handleClose, attraction }: TourReviewMenuProps) => {
               ))}
             </Stack>
 
-            <TextField
+            <textarea
               placeholder="Share your experience..."
-              multiline
-              rows={3}
-              fullWidth
+              rows={4}
               value={reviewText}
               onChange={(e) => setReviewText(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "12px",
+                fontSize: "14px",
+                fontFamily: "inherit",
+                borderRadius: "8px",
+                border: "1px solid #c4c4c4",
+                resize: "vertical",
+                outline: "none",
+                boxSizing: "border-box",
+              }}
             />
             <Stack direction="row" gap={1} justifyContent="flex-end">
               <Button

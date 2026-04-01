@@ -4,9 +4,47 @@ import InfoIcon from "@mui/icons-material/Info";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useRouter } from "next/router";
+import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
+import { sweetErrorAlert } from "@/src/libs/sweetAlert";
 
-const TicketPurchase = () => {
+interface TicketPurchaseProps {
+  attraction?: any;
+  ticketCount: number;
+  setTicketCount: (count: number) => void;
+  selectedDate?: Date;
+  selectedTime: string;
+}
+
+const TicketPurchase = ({
+  attraction,
+  ticketCount,
+  setTicketCount,
+  selectedDate,
+  selectedTime,
+}: TicketPurchaseProps) => {
   const router = useRouter();
+  const adultPrice = attraction?.attractionAdultPrice ?? 0;
+  const totalPrice = adultPrice * ticketCount;
+
+  const handleNext = async () => {
+    if (!selectedDate) {
+      await sweetErrorAlert("Please select a date");
+      return;
+    }
+
+    const dateStr = selectedDate.toISOString().split("T")[0];
+    const query = new URLSearchParams({
+      tickets: String(ticketCount),
+      date: dateStr,
+      time: selectedTime,
+      total: String(totalPrice),
+    }).toString();
+
+    router.push(
+      `/attractions/attractionDetail/${attraction?._id}/reserve?${query}`
+    );
+  };
+
   return (
     <Stack
       sx={{
@@ -18,14 +56,20 @@ const TicketPurchase = () => {
       }}
     >
       <Typography className="bold-text-medium">
-        Busan Yacht Experience (Yacht G)
+        {attraction?.attractionName ?? "Loading..."}
       </Typography>
       <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
         <InfoIcon />
         <Stack>
-          <Typography>Non-refundable</Typography>
+          <Typography>
+            {attraction?.freeCancellation
+              ? "Free cancellation"
+              : "Non-refundable"}
+          </Typography>
           <Typography className="small-text">
-            Your current selection is within 7 days of the start time
+            {attraction?.freeCancellation
+              ? "Cancel up to 24 hours before start time"
+              : "Your current selection is non-refundable"}
           </Typography>
         </Stack>
       </Stack>
@@ -36,23 +80,43 @@ const TicketPurchase = () => {
         alignItems={"center"}
       >
         <Stack>
-          <Typography>Regular</Typography>
-          <Typography className="small-bold-text">KRW 29,745</Typography>
+          <Typography>Adult</Typography>
+          <Typography className="small-bold-text">
+            {formatKoreanWon(String(adultPrice))}
+          </Typography>
         </Stack>
         <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
-          <Button variant="outlined">
-            <AddIcon />
-          </Button>
-          <Typography>0</Typography>
-          <Button variant="outlined">
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => setTicketCount(Math.max(1, ticketCount - 1))}
+            sx={{ minWidth: 36 }}
+          >
             <RemoveIcon />
+          </Button>
+          <Typography fontWeight={700} fontSize={18} width={30} textAlign="center">
+            {ticketCount}
+          </Typography>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() =>
+              setTicketCount(
+                Math.min(attraction?.maxParticipants ?? 50, ticketCount + 1)
+              )
+            }
+            sx={{ minWidth: 36 }}
+          >
+            <AddIcon />
           </Button>
         </Stack>
       </Stack>
       <Stack>
         <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
           <Typography className="small-bold-text">Total:</Typography>
-          <Typography className="bold-text-medium">KRW 0</Typography>
+          <Typography className="bold-text-medium">
+            {formatKoreanWon(String(totalPrice))}
+          </Typography>
         </Stack>
         <Typography className="small-text">
           Includes taxes and charges
@@ -61,9 +125,7 @@ const TicketPurchase = () => {
       <Button
         variant="contained"
         sx={{ alignSelf: "flex-end", width: 90 }}
-        onClick={() =>
-          router.push("/attractions/attractionDetail/id=2/reserve")
-        }
+        onClick={handleNext}
       >
         <Typography
           color={"secondary.contrastText"}

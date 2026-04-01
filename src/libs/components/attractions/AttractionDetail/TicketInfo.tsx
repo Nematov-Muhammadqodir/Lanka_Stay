@@ -11,6 +11,7 @@ interface TicketInfoProps {
 const TicketInfo = ({ attraction }: TicketInfoProps) => {
   const [selected, setSelected] = useState<Date | undefined>();
   const [selectedTime, setSelectedTime] = useState("11:00");
+  const [ticketCount, setTicketCount] = useState(1);
   const times = [
     "11:00",
     "12:00",
@@ -22,6 +23,7 @@ const TicketInfo = ({ attraction }: TicketInfoProps) => {
     "18:00",
     "19:00",
   ];
+
   return (
     <Stack>
       <Typography className="bold-text">Tickets and prices</Typography>
@@ -29,7 +31,12 @@ const TicketInfo = ({ attraction }: TicketInfoProps) => {
         Search ticket availability by date
       </Typography>
       <Stack sx={{ mt: 2 }}>
-        <DayPicker mode="single" selected={selected} onSelect={setSelected} />
+        <DayPicker
+          mode="single"
+          selected={selected}
+          onSelect={setSelected}
+          disabled={{ before: new Date() }}
+        />
       </Stack>
       <Stack spacing={2} mt={2}>
         <Typography className="bold-text">Select time</Typography>
@@ -37,12 +44,14 @@ const TicketInfo = ({ attraction }: TicketInfoProps) => {
           {times.map((time) => (
             <Button
               key={time}
-              variant={selectedTime === time ? "outlined" : "outlined"}
+              variant="outlined"
               color={selectedTime === time ? "primary" : "inherit"}
               onClick={() => setSelectedTime(time)}
               sx={{
                 borderRadius: "20px",
                 minWidth: 70,
+                fontWeight: selectedTime === time ? 700 : 400,
+                borderWidth: selectedTime === time ? 2 : 1,
               }}
             >
               {time}
@@ -51,7 +60,13 @@ const TicketInfo = ({ attraction }: TicketInfoProps) => {
         </Stack>
       </Stack>
       <Stack mt={2}>
-        <TicketPurchase />
+        <TicketPurchase
+          attraction={attraction}
+          ticketCount={ticketCount}
+          setTicketCount={setTicketCount}
+          selectedDate={selected}
+          selectedTime={selectedTime}
+        />
       </Stack>
     </Stack>
   );

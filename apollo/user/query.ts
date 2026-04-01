@@ -460,6 +460,36 @@ export const GET_RESERVED_ROOMS = gql`
   }
 `;
 
+export const GET_ATTRACTION_RESERVATIONS = gql`
+  query GetAttractionReservations {
+    getAttractionReservations {
+      _id
+      guestId
+      attractionId
+      guestName
+      guestLastName
+      guestEmail
+      guestPhoneNumber
+      ticketCount
+      selectedDate
+      selectedTime
+      stripePaymentIntentId
+      paymentStatus
+      paymentAmount
+      createdAt
+      updatedAt
+      attractionData {
+        _id
+        attractionName
+        attractionCity
+        attractionCountry
+        attractionImages
+        attractionType
+      }
+    }
+  }
+`;
+
 export const GET_OWNER_RESERVATIONS = gql`
   query GetOwnerReservations($input: OrdinaryInquery!) {
     getOwnerReservations(input: $input) {

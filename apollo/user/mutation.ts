@@ -322,6 +322,32 @@ export const LIKE_TARGET_ATTRACTION = gql`
   }
 `;
 
+export const CREATE_ATTRACTION_PAYMENT_INTENT = gql`
+  mutation CreateAttractionPaymentIntent(
+    $input: CreateAttractionPaymentIntentInput!
+  ) {
+    createAttractionPaymentIntent(input: $input)
+  }
+`;
+
+export const ADD_ATTRACTION_RESERVATION = gql`
+  mutation AddAttractionReservation($input: AttractionReservationInput!) {
+    addAttractionReservation(input: $input) {
+      _id
+      guestId
+      attractionId
+      guestName
+      guestEmail
+      ticketCount
+      selectedDate
+      selectedTime
+      paymentStatus
+      paymentAmount
+      createdAt
+    }
+  }
+`;
+
 export const CREATE_PAYMENT_INTENT = gql`
   mutation CreatePaymentIntent($input: CreatePaymentIntentInput!) {
     createPaymentIntent(input: $input)
