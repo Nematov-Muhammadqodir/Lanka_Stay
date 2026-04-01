@@ -1,9 +1,28 @@
 import React from "react";
 import { Stack, Typography } from "@mui/material";
 import Image from "next/image";
-import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
-const AttractionsReviewCard = () => {
+interface AttractionsReviewCardProps {
+  comment: any;
+}
+
+const AttractionsReviewCard = ({ comment }: AttractionsReviewCardProps) => {
+  const memberData = comment.memberData;
+  const avatarUrl = memberData?.guestImage
+    ? `${process.env.NEXT_PUBLIC_API_URL}/${memberData.guestImage}`
+    : "/img/logo/uniface.jpg";
+
+  const createdAt = comment.createdAt
+    ? new Date(comment.createdAt).toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : "";
+
+  const content = comment.commentContent ?? "";
+
   return (
     <Stack
       width={380}
@@ -12,36 +31,37 @@ const AttractionsReviewCard = () => {
         border: "1px solid",
         borderRadius: 2,
         p: 2,
-        borderColor: "text.disabled",
-        gap: 2,
+        borderColor: "divider",
+        gap: 1.5,
+        justifyContent: "space-between",
       }}
     >
       <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
         <Image
-          src={"/img/Villa.jpg"}
+          src={avatarUrl}
           alt="user-image"
           width={40}
           height={40}
           style={{ objectFit: "cover", borderRadius: 200 }}
         />
         <Stack>
-          <Typography fontWeight={700}>Shakh</Typography>
-          <Typography className="small-text">Russia</Typography>
+          <Typography fontWeight={700} fontSize={14}>
+            {memberData?.guestName ?? "Guest"}
+          </Typography>
+          <Typography fontSize={12} color="text.secondary">
+            {memberData?.guestCountry ?? ""}
+          </Typography>
         </Stack>
       </Stack>
-      <Stack>
-        <Typography>
-          Great attraction. A must see when travelling in London. The view from
-          ther eye in amazing.{" "}
+      <Stack flex={1}>
+        <Typography fontSize={14}>
+          {content.length > 120 ? content.slice(0, 120) + "..." : content}
         </Typography>
       </Stack>
-      <Stack>
-        <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
-          <FamilyRestroomIcon />
-          <Typography>Visited with family</Typography>
-        </Stack>
-        <Typography className="small-text">
-          Posted 30 March 2025 on LankStay.com
+      <Stack flexDirection={"row"} gap={0.5} alignItems={"center"}>
+        <CalendarMonthIcon sx={{ fontSize: 14, color: "text.secondary" }} />
+        <Typography fontSize={12} color="text.secondary">
+          Posted {createdAt} on LankaStay.com
         </Typography>
       </Stack>
     </Stack>

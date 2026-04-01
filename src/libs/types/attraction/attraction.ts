@@ -27,6 +27,10 @@ export interface Attraction {
   attractionLikes: number;
   totalReviews: number;
   averageRating: number;
+  valueRating?: number;
+  facilitiesRating?: number;
+  qualityRating?: number;
+  accessRating?: number;
   createdAt: string;
   updatedAt: string;
   memberData?: {

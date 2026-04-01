@@ -684,6 +684,10 @@ export const GET_ATTRACTION = gql`
       attractionLikes
       totalReviews
       averageRating
+      valueRating
+      facilitiesRating
+      qualityRating
+      accessRating
       createdAt
       updatedAt
       memberData {
