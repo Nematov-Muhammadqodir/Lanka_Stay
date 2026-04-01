@@ -1,5 +1,5 @@
-import { Box, Rating, Stack, Typography } from "@mui/material";
-import React from "react";
+import { Box, IconButton, Rating, Stack, Typography } from "@mui/material";
+import React, { useState } from "react";
 import Image from "next/image";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
@@ -10,14 +10,38 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
+import { useMutation, useReactiveVar } from "@apollo/client";
+import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
+import { userVar } from "@/apollo/store";
+import { sweetMixinErrorAlert } from "@/src/libs/sweetAlert";
 
 const GridCard = ({ item }: { item: any }) => {
-  const [value, setValue] = React.useState<number | null>(4);
   const filters = useSelector((state: RootState) => state.filters);
   const router = useRouter();
+  const user = useReactiveVar(userVar);
+  const [likeProperty] = useMutation(LIKE_TARGET_PROPERTY);
+  const [liked, setLiked] = useState(
+    item?.meLiked?.[0]?.myFavorite ?? false
+  );
+
   const handleClick = () => {
     router.push(`/hotels/hotelDetail/${item._id}`);
   };
+
+  const handleLike = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!user?._id) {
+      await sweetMixinErrorAlert("Please login first");
+      return;
+    }
+    try {
+      await likeProperty({ variables: { input: item._id } });
+      setLiked(!liked);
+    } catch (err: any) {
+      console.error("Like error:", err);
+    }
+  };
+
   return (
     <Stack
       width={314}
@@ -47,7 +71,7 @@ const GridCard = ({ item }: { item: any }) => {
       >
         <Image
           src={
-            item.propertyImages[0]
+            item.propertyImages?.[0]
               ? `${process.env.NEXT_PUBLIC_API_URL}/${item.propertyImages[0]}`
               : "/img/hotel.jpg"
           }
@@ -61,19 +85,24 @@ const GridCard = ({ item }: { item: any }) => {
         />
       </Box>
 
-      <Box
-        width={40}
-        height={40}
-        position={"absolute"}
-        top={10}
-        left={260}
-        textAlign={"center"}
-        pt={1}
-        bgcolor={"secondary.contrastText"}
-        borderRadius={"50%"}
+      <IconButton
+        onClick={handleLike}
+        sx={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+          backgroundColor: "rgba(255,255,255,0.9)",
+          "&:hover": { backgroundColor: "white" },
+          width: 40,
+          height: 40,
+        }}
       >
-        <FavoriteIcon sx={{ color: "#D40F1D" }} />
-      </Box>
+        {liked ? (
+          <FavoriteIcon sx={{ color: "#D40F1D" }} />
+        ) : (
+          <FavoriteBorderIcon sx={{ color: "#D40F1D" }} />
+        )}
+      </IconButton>
 
       <Stack height={"100%"} justifyContent={"space-between"}>
         <Stack p={2} gap={0.5}>
@@ -104,29 +133,29 @@ const GridCard = ({ item }: { item: any }) => {
                 borderRadius={1}
                 sx={{ backgroundColor: "primary.main", color: "white" }}
               >
-                <Typography className="bold-text">8.3</Typography>
+                <Typography className="bold-text">
+                  {item.totalReviews > 0 ? (item.staffRating ?? 0).toFixed(1) : "-"}
+                </Typography>
               </Stack>
-              <Typography className="bold-text">Very good</Typography>
+              <Typography className="bold-text">
+                {item.totalReviews > 0 ? "Very good" : "New"}
+              </Typography>
               <MoreHorizIcon />
-              <Typography className="small-text">124 reviews</Typography>
+              <Typography className="small-text">
+                {item.totalReviews ?? 0} reviews
+              </Typography>
             </Stack>
           </Stack>
-          <Typography className="small-bold-text" color={"primary.main"}>
-            Comfort 8.9
-          </Typography>
           <Stack>
             <Typography className="small-bold-text" color={"primary.main"}>
               {item.propertyCity}, {item.propertyRegion}
             </Typography>
-            <Typography className="small-text">7.7 km from centre</Typography>
-          </Stack>
-          <Stack flexDirection={"row"} gap={1}>
-            <Typography className="small-bold-text">Metro access</Typography>
-            <Typography className="small-text">Beach nearby</Typography>
           </Stack>
           <Stack flexDirection={"row"} gap={1}>
             <BeachAccessIcon />
-            <Typography className="small-text">2.3 km from beach</Typography>
+            <Typography className="small-text">
+              {item.propertyCountry}
+            </Typography>
           </Stack>
           <Stack flexDirection={"row"} gap={1} color={"primary.main"}>
             <RestaurantIcon />
@@ -141,20 +170,11 @@ const GridCard = ({ item }: { item: any }) => {
           borderColor={"secondary.main"}
         ></Box>
         <Stack p={2}>
-          <Stack flexDirection={"row"} gap={1} justifyContent={"flex-end"}>
-            <Typography className="small-text">
-              {" "}
-              {Number(filters.endDate?.split("-")[2].split("T")[0]) -
-                Number(filters.startDate?.split("-")[2].split("T")[0])}{" "}
-              nights,
-            </Typography>
-            <Typography className="small-text">
-              {item.propertyRooms[0].numberOfGuestsCanStay} adults
-            </Typography>
-          </Stack>
           <Stack alignItems={"flex-end"}>
             <Typography className="bold-text">
-              {formatKoreanWon(item.propertyRooms[0].roomPricePerNight)}
+              {item.propertyRooms?.[0]
+                ? formatKoreanWon(item.propertyRooms[0].roomPricePerNight)
+                : "Price unavailable"}
             </Typography>
             <Typography className="small-text">
               Includes taxes and charges

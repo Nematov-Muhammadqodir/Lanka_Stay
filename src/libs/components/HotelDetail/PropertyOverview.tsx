@@ -26,6 +26,10 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import { PartnerProperty } from "../../types/partnerInput/partnerProperty";
 import { getCoordinates } from "../../handlers/common";
 import CustomMap from "./CustomMap";
+import { useMutation, useReactiveVar } from "@apollo/client";
+import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
+import { userVar } from "@/apollo/store";
+import { sweetMixinErrorAlert } from "../../sweetAlert";
 
 export interface PropertyOverviewProps {
   partnerProperty?: PartnerProperty | null;
@@ -55,7 +59,24 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
     }
   };
   const isBeachFront = true;
-  const like = true;
+  const user = useReactiveVar(userVar);
+  const [likeProperty] = useMutation(LIKE_TARGET_PROPERTY);
+  const [liked, setLiked] = useState(
+    partnerProperty?.meLiked?.[0]?.myFavorite ?? false
+  );
+
+  const handleLike = async () => {
+    if (!user?._id) {
+      await sweetMixinErrorAlert("Please login first");
+      return;
+    }
+    try {
+      await likeProperty({ variables: { input: partnerProperty?._id } });
+      setLiked(!liked);
+    } catch (err: any) {
+      console.error("Like error:", err);
+    }
+  };
 
   const [mapOpen, setMapOpen] = useState(false);
   const [mapCoords, setMapCoords] = useState<{
@@ -157,11 +178,13 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
       </Stack>
       <Stack justifyContent={"space-around"}>
         <Stack flexDirection={"row"} gap={3} alignItems={"center"}>
-          {like ? (
-            <FavoriteIcon sx={{ color: "red", fontSize: 29 }} />
-          ) : (
-            <FavoriteBorderIcon sx={{ color: "red", fontSize: 29 }} />
-          )}
+          <IconButton onClick={handleLike} sx={{ p: 0 }}>
+            {liked ? (
+              <FavoriteIcon sx={{ color: "red", fontSize: 29 }} />
+            ) : (
+              <FavoriteBorderIcon sx={{ color: "red", fontSize: 29 }} />
+            )}
+          </IconButton>
           <Button onClick={handleShareClick}>
             <ShareIcon />
           </Button>

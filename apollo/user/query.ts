@@ -189,8 +189,16 @@ export const GET_ALL_AVAILABLE_PROPERTIES = gql`
       checkOutTimeUntill
       allowChildren
       allowPets
+      totalReviews
+      staffRating
+      propertyLikes
       createdAt
       updatedAt
+      meLiked {
+        memberId
+        likeRefId
+        myFavorite
+      }
       propertyRooms {
         roomId
         roomType
