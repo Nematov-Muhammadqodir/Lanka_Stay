@@ -34,8 +34,8 @@ const AttractionDetail = () => {
       >
         <Stack className="left-side" width={"72%"}>
           <TourHighlights attraction={attraction} />
-          <UserRatings attraction={attraction} />
-          <AttractionsReviewsList attractionId={attraction?._id} />
+          <UserRatings />
+          <AttractionsReviewsList />
         </Stack>
         <Stack className="right-side" width={"23%"} alignItems={"end"}>
           <TicketInfo attraction={attraction} />
