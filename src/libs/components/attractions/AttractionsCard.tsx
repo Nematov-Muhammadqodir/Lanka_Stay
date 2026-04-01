@@ -105,7 +105,8 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
                 <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
                   <StarIcon sx={{ color: "#FEBB05" }} />
                   <Typography className="small-bold-text">
-                    {attraction.averageRating ?? 0} ({attraction.totalReviews ?? 0} reviews)
+                    {attraction.averageRating ?? 0} (
+                    {attraction.totalReviews ?? 0} reviews)
                   </Typography>
                 </Stack>
                 {attraction.freeCancellation && (
@@ -127,7 +128,9 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
                 <Stack justifyContent={"space-between"} height={"100%"}>
                   <Stack>
                     <Typography className="bold-text">
-                      {formatKoreanWon(String(attraction.attractionAdultPrice ?? 0))}
+                      {formatKoreanWon(
+                        String(attraction.attractionAdultPrice ?? 0)
+                      )}
                     </Typography>
                     <Typography className="small-text">
                       Includes taxes and charges

@@ -106,7 +106,7 @@ const HotelDetail = () => {
       <GuestReviews hotelReviewInput={hotelReviewInput} />
       <ReviewsList hotelReviewInput={hotelReviewInput} />
       <HouseRules partnerProperty={partnerProperty} />
-      <LegalInformation />
+      <LegalInformation partnerProperty={partnerProperty} />
       <FAQ />
     </Stack>
   );

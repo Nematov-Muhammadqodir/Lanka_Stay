@@ -10,19 +10,29 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import BusinessIcon from "@mui/icons-material/Business";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import BadgeIcon from "@mui/icons-material/Badge";
+import EmailIcon from "@mui/icons-material/Email";
+import PhoneIcon from "@mui/icons-material/Phone";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { PartnerProperty } from "@/src/libs/types/partnerInput/partnerProperty";
 
 interface BusinessDetailsMenuProps {
   open: boolean;
   handleClose: () => void;
+  partnerProperty?: PartnerProperty | null;
 }
 
 const BusinessDetailsMenu: React.FC<BusinessDetailsMenuProps> = ({
   open,
   handleClose,
+  partnerProperty,
 }) => {
+  const owner = partnerProperty?.memberData;
+  const ownerName = owner
+    ? `${owner.partnerFirstName ?? ""} ${owner.partnerLastName ?? ""}`.trim()
+    : "Property Manager";
+  const initial = ownerName.charAt(0).toUpperCase();
+
   return (
     <Dialog
       open={open}
@@ -73,7 +83,12 @@ const BusinessDetailsMenu: React.FC<BusinessDetailsMenuProps> = ({
         }}
       >
         <InfoOutlinedIcon
-          sx={{ color: "primary.main", fontSize: 20, mt: "2px", flexShrink: 0 }}
+          sx={{
+            color: "primary.main",
+            fontSize: 20,
+            mt: "2px",
+            flexShrink: 0,
+          }}
         />
         <Typography fontSize={13} lineHeight={1.7} color="text.secondary">
           This property is managed by a licensed business. The accommodation
@@ -106,12 +121,12 @@ const BusinessDetailsMenu: React.FC<BusinessDetailsMenuProps> = ({
               }}
             >
               <Typography color="white" fontWeight={700} fontSize={16}>
-                S
+                {initial}
               </Typography>
             </Box>
             <Stack>
               <Typography fontWeight={700} fontSize={16}>
-                Sumorum
+                {ownerName}
               </Typography>
               <Typography fontSize={12} color="text.secondary">
                 Licensed Property Manager
@@ -125,25 +140,57 @@ const BusinessDetailsMenu: React.FC<BusinessDetailsMenuProps> = ({
                 sx={{ fontSize: 18, color: "text.secondary", mt: "2px" }}
               />
               <Typography fontSize={14} lineHeight={1.5}>
-                Jeju-do, South Korea
+                {[
+                  partnerProperty?.propertyCity,
+                  partnerProperty?.propertyRegion,
+                  partnerProperty?.propertyCountry,
+                ]
+                  .filter(Boolean)
+                  .join(", ") || "Location not provided"}
               </Typography>
             </Stack>
-            <Stack direction="row" alignItems="center" gap={1.5}>
-              <BadgeIcon sx={{ fontSize: 18, color: "text.secondary" }} />
-              <Typography fontSize={14}>
-                Trade register: 6168531362
-              </Typography>
-            </Stack>
+            {owner?.partnerEmail && (
+              <Stack direction="row" alignItems="center" gap={1.5}>
+                <EmailIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+                <Typography fontSize={14}>{owner.partnerEmail}</Typography>
+              </Stack>
+            )}
+            {owner?.partnerPhoneNumber && (
+              <Stack direction="row" alignItems="center" gap={1.5}>
+                <PhoneIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+                <Typography fontSize={14}>
+                  {owner.partnerPhoneNumber}
+                </Typography>
+              </Stack>
+            )}
           </Stack>
         </Stack>
 
+        {/* Property Info */}
+        {partnerProperty?.propertyName && (
+          <Stack
+            sx={{
+              p: 2,
+              borderRadius: 2,
+              border: "1px solid",
+              borderColor: "divider",
+            }}
+            gap={1}
+          >
+            <Typography fontWeight={600} fontSize={14}>
+              Property
+            </Typography>
+            <Typography fontSize={14} color="text.secondary">
+              {partnerProperty.propertyName}
+              {partnerProperty.propertyType
+                ? ` (${partnerProperty.propertyType})`
+                : ""}
+            </Typography>
+          </Stack>
+        )}
+
         {/* Compliance */}
-        <Stack
-          direction="row"
-          alignItems="center"
-          gap={1}
-          px={1}
-        >
+        <Stack direction="row" alignItems="center" gap={1} px={1}>
           <VerifiedIcon sx={{ fontSize: 18, color: "success.main" }} />
           <Typography fontSize={13} color="text.secondary">
             This business certifies compliance with applicable regulations.
@@ -152,12 +199,7 @@ const BusinessDetailsMenu: React.FC<BusinessDetailsMenuProps> = ({
       </Stack>
 
       {/* Footer */}
-      <Stack
-        direction="row"
-        justifyContent="flex-end"
-        px={3}
-        pb={2.5}
-      >
+      <Stack direction="row" justifyContent="flex-end" px={3} pb={2.5}>
         <Button
           variant="contained"
           onClick={handleClose}

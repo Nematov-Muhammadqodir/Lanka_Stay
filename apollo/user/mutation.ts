@@ -52,6 +52,25 @@ export const GUEST_LOGIN = gql`
   }
 `;
 
+export const CHANGE_PASSWORD = gql`
+  mutation ChangePassword($oldPassword: String!, $newPassword: String!) {
+    changePassword(oldPassword: $oldPassword, newPassword: $newPassword) {
+      _id
+      guestName
+      accessToken
+    }
+  }
+`;
+
+export const DELETE_ACCOUNT = gql`
+  mutation DeleteAccount {
+    deleteAccount {
+      _id
+      guestStatus
+    }
+  }
+`;
+
 export const UPDATE_GUEST = gql`
   mutation UpdateGuest($input: GuestUpdateInput!) {
     updateGuest(input: $input) {

@@ -36,11 +36,12 @@ export interface MeLiked {
 
 export interface Partner {
   _id: string;
-  partnerName: string;
   partnerEmail: string;
+  partnerFirstName?: string;
+  partnerLastName?: string;
   partnerPhoneNumber: string;
+  partnerType?: string;
   accessToken?: string;
-  // Add other Partner fields if needed
 }
 
 export interface PartnerProperty {
