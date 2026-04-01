@@ -22,6 +22,7 @@ export interface Comment {
   memberData?: Guest | null;
   reservationData?: ReservationInfo | null;
   propertyData?: PartnerProperty | null;
+  attractionData?: any | null;
   roomData?: IPartnerPropertyRoom | null;
 }
 

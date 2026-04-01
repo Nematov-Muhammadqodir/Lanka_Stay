@@ -481,6 +481,42 @@ export const GET_OWNER_RESERVATIONS = gql`
   }
 `;
 
+export const GET_MY_COMMENTS = gql`
+  query GetMyComments($input: OrdinaryInquery!) {
+    getMyComments(input: $input) {
+      list {
+        _id
+        commentStatus
+        commentContent
+        commentRefId
+        memberId
+        commentScore
+        commentLikes
+        commentDislikes
+        createdAt
+        updatedAt
+        propertyData {
+          _id
+          propertyName
+          propertyCity
+          propertyCountry
+          propertyImages
+        }
+        attractionData {
+          _id
+          attractionName
+          attractionCity
+          attractionCountry
+          attractionImages
+        }
+      }
+      metaCounter {
+        total
+      }
+    }
+  }
+`;
+
 export const GET_COMMENTS = gql`
   query GetComments($input: CommentsInquiry!) {
     getComments(input: $input) {
