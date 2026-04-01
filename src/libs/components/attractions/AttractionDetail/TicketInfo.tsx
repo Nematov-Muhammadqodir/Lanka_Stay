@@ -4,7 +4,11 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import TicketPurchase from "./Ticket/TicketPurchase";
 
-const TicketInfo = () => {
+interface TicketInfoProps {
+  attraction?: any;
+}
+
+const TicketInfo = ({ attraction }: TicketInfoProps) => {
   const [selected, setSelected] = useState<Date | undefined>();
   const [selectedTime, setSelectedTime] = useState("11:00");
   const times = [

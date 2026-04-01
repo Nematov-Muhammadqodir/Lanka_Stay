@@ -3,7 +3,11 @@ import React from "react";
 import FAQList from "../../../HotelDetail/FAQ/FAQList";
 import AttractionsFAQList from "./AttractionsFAQList";
 
-const AttractionsFAQ = () => {
+interface AttractionsFAQProps {
+  attraction?: any;
+}
+
+const AttractionsFAQ = ({ attraction }: AttractionsFAQProps) => {
   return (
     <Stack
       className="container"

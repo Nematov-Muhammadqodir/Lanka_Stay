@@ -72,7 +72,7 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
           justifyContent={"space-between"}
           width={"100%"}
         >
-          <Stack className="middle" gap={0.5}>
+          <Stack className="middle" gap={0.5} flex={1}>
             <Stack flexDirection={"row"} gap={1}>
               <Typography className="bold-text">
                 {attraction.attractionName || "Untitled Attraction"}

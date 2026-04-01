@@ -9,7 +9,11 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import FacebookIcon from "@mui/icons-material/Facebook";
 
-const AttractionOverView = () => {
+interface AttractionOverViewProps {
+  attraction?: any;
+}
+
+const AttractionOverView = ({ attraction }: AttractionOverViewProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -59,12 +63,15 @@ const AttractionOverView = () => {
     >
       <Stack>
         <Typography fontSize={30} fontWeight={700}>
-          Admission to the London Eye
+          {attraction?.attractionName ?? "Loading..."}
         </Typography>
         <Stack flexDirection={"row"} alignItems={"center"}>
           <Typography>
-            A 30-minute ride on the London Eye to see the city's most famous
-            landmarks
+            {attraction?.attractionDescription
+              ? attraction.attractionDescription.length > 100
+                ? attraction.attractionDescription.slice(0, 100) + "..."
+                : attraction.attractionDescription
+              : ""}
           </Typography>
         </Stack>
       </Stack>
