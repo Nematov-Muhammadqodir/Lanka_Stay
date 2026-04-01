@@ -322,6 +322,79 @@ export const LIKE_TARGET_ATTRACTION = gql`
   }
 `;
 
+export const SEND_MESSAGE = gql`
+  mutation SendMessage($input: SendMessageInput!) {
+    sendMessage(input: $input) {
+      _id
+      conversationId
+      senderId
+      senderRole
+      messageContent
+      isRead
+      createdAt
+    }
+  }
+`;
+
+export const MARK_NOTIFICATION_AS_READ = gql`
+  mutation MarkNotificationAsRead($notificationId: String!) {
+    markNotificationAsRead(notificationId: $notificationId) {
+      _id
+      isRead
+    }
+  }
+`;
+
+export const MARK_ALL_NOTIFICATIONS_AS_READ = gql`
+  mutation MarkAllNotificationsAsRead {
+    markAllNotificationsAsRead
+  }
+`;
+
+export const UPDATE_RESERVATION_STATUS = gql`
+  mutation UpdateReservationStatus($input: UpdateReservationStatusInput!) {
+    updateReservationStatus(input: $input) {
+      _id
+      reservationStatus
+      paymentStatus
+    }
+  }
+`;
+
+export const REFUND_RESERVATION = gql`
+  mutation RefundReservation($reservationId: String!) {
+    refundReservation(reservationId: $reservationId) {
+      _id
+      reservationStatus
+      paymentStatus
+      paymentAmount
+    }
+  }
+`;
+
+export const UPDATE_ATTRACTION_RESERVATION_STATUS = gql`
+  mutation UpdateAttractionReservationStatus(
+    $input: UpdateReservationStatusInput!
+  ) {
+    updateAttractionReservationStatus(input: $input) {
+      _id
+      reservationStatus
+      paymentStatus
+    }
+  }
+`;
+
+export const REFUND_ATTRACTION_RESERVATION = gql`
+  mutation RefundAttractionReservation($reservationId: String!) {
+    refundAttractionReservation(reservationId: $reservationId) {
+      _id
+      reservationStatus
+      paymentStatus
+      paymentAmount
+    }
+  }
+`;
+
 export const CREATE_ATTRACTION_PAYMENT_INTENT = gql`
   mutation CreateAttractionPaymentIntent(
     $input: CreateAttractionPaymentIntentInput!

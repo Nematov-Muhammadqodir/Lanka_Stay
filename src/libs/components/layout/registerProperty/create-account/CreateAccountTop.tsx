@@ -1,6 +1,8 @@
 import {
   alpha,
   Avatar,
+  Badge,
+  Box,
   Button,
   Divider,
   IconButton,
@@ -9,6 +11,7 @@ import {
   Menu,
   MenuItem,
   MenuProps,
+  Popover,
   Stack,
   styled,
   Tooltip,
@@ -17,6 +20,12 @@ import {
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import HelpIcon from "@mui/icons-material/Help";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import InfoIcon from "@mui/icons-material/Info";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 import { useRouter } from "next/router";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
@@ -26,6 +35,15 @@ import AddHomeWorkIcon from "@mui/icons-material/AddHomeWork";
 
 import _Flag from "react-world-flags";
 import { logOutPartner } from "@/src/libs/auth";
+import { useMutation, useQuery } from "@apollo/client";
+import {
+  GET_MY_NOTIFICATIONS,
+  GET_UNREAD_NOTIFICATION_COUNT,
+} from "@/apollo/user/query";
+import {
+  MARK_NOTIFICATION_AS_READ,
+  MARK_ALL_NOTIFICATIONS_AS_READ,
+} from "@/apollo/user/mutation";
 
 const Flag = _Flag as unknown as React.FC<{
   code: string;
@@ -107,6 +125,33 @@ export default function CreateAccountTop(partner: any) {
     router.push("/register-property");
   };
 
+  // Notifications
+  const [notifAnchor, setNotifAnchor] = useState<null | HTMLElement>(null);
+  const notifOpen = Boolean(notifAnchor);
+  const isPartnerLoggedIn = partner?.partner?._id && partner.partner._id !== "";
+
+  const { data: notifData } = useQuery(GET_MY_NOTIFICATIONS, {
+    skip: !isPartnerLoggedIn,
+    pollInterval: 5000,
+  });
+  const { data: unreadData } = useQuery(GET_UNREAD_NOTIFICATION_COUNT, {
+    skip: !isPartnerLoggedIn,
+    pollInterval: 5000,
+  });
+  const notifications = notifData?.getMyNotifications ?? [];
+  const unreadCount = unreadData?.getUnreadNotificationCount ?? 0;
+  const [markAsRead] = useMutation(MARK_NOTIFICATION_AS_READ);
+  const [markAllAsRead] = useMutation(MARK_ALL_NOTIFICATIONS_AS_READ);
+
+  const getNotifIcon = (type: string) => {
+    switch (type) {
+      case "RESERVATION_CONFIRMED": return <CheckCircleIcon sx={{ color: "success.main", fontSize: 18 }} />;
+      case "RESERVATION_CANCELLED": return <CancelIcon sx={{ color: "warning.main", fontSize: 18 }} />;
+      case "RESERVATION_REFUNDED": return <CurrencyExchangeIcon sx={{ color: "error.main", fontSize: 18 }} />;
+      default: return <InfoIcon sx={{ color: "primary.main", fontSize: 18 }} />;
+    }
+  };
+
   const handleLangClose = (e: any, lang: string) => {
     setLang(lang);
     localStorage.setItem("lang", lang);
@@ -155,6 +200,15 @@ export default function CreateAccountTop(partner: any) {
                 <Flag code="UZB" />
               )}
             </Button>
+
+            {/* Notification Bell */}
+            {isPartnerLoggedIn && (
+              <IconButton onClick={(e) => setNotifAnchor(e.currentTarget)}>
+                <Badge badgeContent={unreadCount} color="error" max={99}>
+                  <NotificationsIcon sx={{ color: "white" }} />
+                </Badge>
+              </IconButton>
+            )}
 
             {authenticated ? (
               <Stack flexDirection={"row"} alignItems={"center"}>
@@ -278,6 +332,130 @@ export default function CreateAccountTop(partner: any) {
           </Stack>
         </Stack>
       </Stack>
+
+      {/* Notification Popover */}
+      <Popover
+        open={notifOpen}
+        anchorEl={notifAnchor}
+        onClose={() => setNotifAnchor(null)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        slotProps={{
+          paper: {
+            sx: {
+              width: 370,
+              maxHeight: 450,
+              borderRadius: 3,
+              boxShadow: "0 12px 40px rgba(0,0,0,0.15)",
+              overflow: "hidden",
+            },
+          },
+        }}
+      >
+        <Stack>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            px={2}
+            py={1.5}
+            borderBottom="1px solid"
+            borderColor="divider"
+          >
+            <Typography fontWeight={700} fontSize={15}>
+              Notifications
+            </Typography>
+            {unreadCount > 0 && (
+              <Button
+                size="small"
+                startIcon={<DoneAllIcon sx={{ fontSize: 14 }} />}
+                onClick={() =>
+                  markAllAsRead({
+                    refetchQueries: [
+                      "GetMyNotifications",
+                      "GetUnreadNotificationCount",
+                    ],
+                  })
+                }
+                sx={{ textTransform: "none", fontSize: 12 }}
+              >
+                Mark all read
+              </Button>
+            )}
+          </Stack>
+          <Stack sx={{ maxHeight: 380, overflow: "auto" }}>
+            {notifications.length === 0 ? (
+              <Stack alignItems="center" py={4}>
+                <Typography color="text.secondary" fontSize={13}>
+                  No notifications yet
+                </Typography>
+              </Stack>
+            ) : (
+              notifications.map((n: any) => (
+                <Stack
+                  key={n._id}
+                  direction="row"
+                  gap={1.5}
+                  px={2}
+                  py={1.5}
+                  onClick={() => {
+                    if (!n.isRead)
+                      markAsRead({
+                        variables: { notificationId: n._id },
+                        refetchQueries: [
+                          "GetMyNotifications",
+                          "GetUnreadNotificationCount",
+                        ],
+                      });
+                    setNotifAnchor(null);
+                    if (n.notificationType === "GENERAL") {
+                      router.push("/register-property/dashboard?tab=messages");
+                    }
+                  }}
+                  sx={{
+                    cursor: "pointer",
+                    backgroundColor: n.isRead ? "transparent" : "action.hover",
+                    borderBottom: "1px solid",
+                    borderColor: "divider",
+                    "&:hover": { backgroundColor: "action.selected" },
+                  }}
+                >
+                  <Box mt={0.3}>{getNotifIcon(n.notificationType)}</Box>
+                  <Stack flex={1} gap={0.2}>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center">
+                      <Typography fontSize={13} fontWeight={n.isRead ? 400 : 700}>
+                        {n.notificationTitle}
+                      </Typography>
+                      {!n.isRead && (
+                        <Box
+                          sx={{
+                            width: 8,
+                            height: 8,
+                            borderRadius: "50%",
+                            backgroundColor: "primary.main",
+                            flexShrink: 0,
+                          }}
+                        />
+                      )}
+                    </Stack>
+                    <Typography fontSize={12} color="text.secondary" lineHeight={1.3}>
+                      {n.notificationMessage}
+                    </Typography>
+                    <Typography fontSize={11} color="text.disabled">
+                      {new Date(n.createdAt).toLocaleDateString("en-GB", {
+                        day: "numeric",
+                        month: "short",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </Typography>
+                  </Stack>
+                </Stack>
+              ))
+            )}
+          </Stack>
+        </Stack>
+      </Popover>
     </Stack>
   );
 }

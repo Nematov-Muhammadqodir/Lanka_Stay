@@ -30,11 +30,16 @@ import {
   GET_OWNER_RESERVATIONS,
   GET_ATTRACTIONS_BY_OWNER,
   GET_OWNER_ATTRACTION_RESERVATIONS,
+  GET_REVENUE_ANALYTICS,
 } from "@/apollo/user/query";
 import {
   UPDATE_PARTNER_PROPERTY_ROOM,
   DELETE_PARTNER_PROPERTY_ROOM,
   DELETE_ATTRACTION,
+  UPDATE_RESERVATION_STATUS,
+  REFUND_RESERVATION,
+  UPDATE_ATTRACTION_RESERVATION_STATUS,
+  REFUND_ATTRACTION_RESERVATION,
 } from "@/apollo/user/mutation";
 import { sweetConfirmAlert, sweetTopSuccessAlert, sweetErrorAlert } from "@/src/libs/sweetAlert";
 import { formatShortDate } from "@/src/libs/utils";
@@ -49,6 +54,12 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import AttractionIcon from "@mui/icons-material/Attractions";
+import ChatIcon from "@mui/icons-material/Chat";
+import OwnerMessagesPanel from "@/src/libs/components/chat/OwnerMessagesPanel";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
+import RefundIcon from "@mui/icons-material/CurrencyExchange";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 
 const Dashboard = () => {
   const partner = useReactiveVar(partnerVar);
@@ -64,6 +75,13 @@ const Dashboard = () => {
       router.push("/register-property/create-account");
     }
   }, [partner]);
+
+  // Handle ?tab=messages query param
+  useEffect(() => {
+    if (router.query.tab === "messages") {
+      setTab(3); // Messages tab is always index 3
+    }
+  }, [router.query.tab]);
 
   const isHotelOwner = !isAttractionOwner;
 
@@ -106,10 +124,20 @@ const Dashboard = () => {
   const ownerAttrReservations =
     ownerAttrReservationsData?.getOwnerAttractionReservations ?? [];
 
+  // Revenue analytics
+  const { data: revenueData } = useQuery(GET_REVENUE_ANALYTICS, {
+    skip: !partner?._id,
+  });
+  const revenuePoints = revenueData?.getRevenueAnalytics ?? [];
+
   // Mutations
   const [updateRoom] = useMutation(UPDATE_PARTNER_PROPERTY_ROOM);
   const [deleteRoom] = useMutation(DELETE_PARTNER_PROPERTY_ROOM);
   const [deleteAttractionMutation] = useMutation(DELETE_ATTRACTION);
+  const [updateReservationStatus] = useMutation(UPDATE_RESERVATION_STATUS);
+  const [refundReservation] = useMutation(REFUND_RESERVATION);
+  const [updateAttrReservationStatus] = useMutation(UPDATE_ATTRACTION_RESERVATION_STATUS);
+  const [refundAttrReservation] = useMutation(REFUND_ATTRACTION_RESERVATION);
 
   const property = propertyData?.getPartnerPropertyByHotelOwner;
   const rooms = property?.propertyRooms ?? [];
@@ -179,6 +207,129 @@ const Dashboard = () => {
     }
   };
 
+  // Reservation status handlers
+  const handleConfirmReservation = async (id: string, type: "hotel" | "attraction") => {
+    try {
+      if (type === "hotel") {
+        await updateReservationStatus({
+          variables: { input: { reservationId: id, reservationStatus: "CONFIRMED" } },
+          refetchQueries: ["GetOwnerReservations"],
+        });
+      } else {
+        await updateAttrReservationStatus({
+          variables: { input: { reservationId: id, reservationStatus: "CONFIRMED" } },
+          refetchQueries: ["GetOwnerAttractionReservations"],
+        });
+      }
+      await sweetTopSuccessAlert("Reservation confirmed!", 1500);
+    } catch (err: any) {
+      sweetErrorAlert(err.message || "Failed", 2500);
+    }
+  };
+
+  const handleCancelReservation = async (id: string, type: "hotel" | "attraction") => {
+    const confirmed = await sweetConfirmAlert("Cancel this reservation?");
+    if (!confirmed) return;
+    try {
+      if (type === "hotel") {
+        await updateReservationStatus({
+          variables: { input: { reservationId: id, reservationStatus: "CANCELLED" } },
+          refetchQueries: ["GetOwnerReservations"],
+        });
+      } else {
+        await updateAttrReservationStatus({
+          variables: { input: { reservationId: id, reservationStatus: "CANCELLED" } },
+          refetchQueries: ["GetOwnerAttractionReservations"],
+        });
+      }
+      await sweetTopSuccessAlert("Reservation cancelled!", 1500);
+    } catch (err: any) {
+      sweetErrorAlert(err.message || "Failed", 2500);
+    }
+  };
+
+  const handleRefund = async (id: string, type: "hotel" | "attraction") => {
+    const confirmed = await sweetConfirmAlert("Refund this reservation? The amount will be returned to the guest via Stripe.");
+    if (!confirmed) return;
+    try {
+      if (type === "hotel") {
+        await refundReservation({
+          variables: { reservationId: id },
+          refetchQueries: ["GetOwnerReservations"],
+        });
+      } else {
+        await refundAttrReservation({
+          variables: { reservationId: id },
+          refetchQueries: ["GetOwnerAttractionReservations"],
+        });
+      }
+      await sweetTopSuccessAlert("Refund processed successfully!", 1500);
+    } catch (err: any) {
+      sweetErrorAlert(err.message || "Refund failed", 2500);
+    }
+  };
+
+  const getStatusChip = (status?: string) => {
+    const s = status || "CONFIRMED";
+    const colorMap: Record<string, "success" | "warning" | "error" | "default"> = {
+      CONFIRMED: "success",
+      PENDING: "default",
+      CANCELLED: "warning",
+      REFUNDED: "error",
+    };
+    return (
+      <Chip
+        label={s}
+        size="small"
+        color={colorMap[s] ?? "default"}
+      />
+    );
+  };
+
+  const getActionButtons = (r: any, type: "hotel" | "attraction") => {
+    const status = r.reservationStatus || "CONFIRMED";
+    return (
+      <Stack direction="row" gap={0.5}>
+        {status === "PENDING" && (
+          <IconButton
+            size="small"
+            color="success"
+            title="Confirm"
+            onClick={() => handleConfirmReservation(r._id, type)}
+          >
+            <CheckCircleIcon fontSize="small" />
+          </IconButton>
+        )}
+        {(status === "CONFIRMED" || status === "PENDING") && (
+          <IconButton
+            size="small"
+            color="warning"
+            title="Cancel"
+            onClick={() => handleCancelReservation(r._id, type)}
+          >
+            <CancelIcon fontSize="small" />
+          </IconButton>
+        )}
+        {status === "CANCELLED" && r.paymentStatus === "succeeded" && (
+          <IconButton
+            size="small"
+            color="error"
+            title="Refund"
+            onClick={() => handleRefund(r._id, type)}
+          >
+            <RefundIcon fontSize="small" />
+          </IconButton>
+        )}
+        {status === "REFUNDED" && (
+          <Chip label="Refunded" size="small" color="error" variant="outlined" />
+        )}
+      </Stack>
+    );
+  };
+
+  // Revenue chart helpers
+  const maxRevenue = Math.max(...revenuePoints.map((p: any) => p.revenue), 1);
+
   if (!partner?._id) return null;
 
   return (
@@ -224,6 +375,7 @@ const Dashboard = () => {
           {isHotelOwner && <Tab label="Reservations" />}
           {isAttractionOwner && <Tab label="Attractions" />}
           {isAttractionOwner && <Tab label="Reservations" />}
+          <Tab icon={<ChatIcon />} iconPosition="start" label="Messages" />
         </Tabs>
 
         {/* Overview Tab */}
@@ -402,6 +554,49 @@ const Dashboard = () => {
                 </Stack>
               </Stack>
             )}
+
+            {/* Revenue Chart */}
+            {revenuePoints.length > 0 && (
+              <Stack
+                sx={{
+                  p: 3,
+                  borderRadius: 2,
+                  border: "1px solid",
+                  borderColor: "divider",
+                  backgroundColor: "background.paper",
+                }}
+                gap={2}
+              >
+                <Stack direction="row" alignItems="center" gap={1}>
+                  <TrendingUpIcon sx={{ color: "primary.main" }} />
+                  <Typography fontWeight={700} fontSize={18}>
+                    Monthly Revenue
+                  </Typography>
+                </Stack>
+                <Stack gap={1}>
+                  {revenuePoints.map((point: any) => (
+                    <Stack key={point.month} direction="row" alignItems="center" gap={2}>
+                      <Typography fontSize={13} width={70} color="text.secondary">
+                        {point.month}
+                      </Typography>
+                      <Box
+                        sx={{
+                          height: 24,
+                          width: `${Math.max((point.revenue / maxRevenue) * 100, 3)}%`,
+                          backgroundColor: "primary.main",
+                          borderRadius: 1,
+                          transition: "width 0.5s ease",
+                          maxWidth: "75%",
+                        }}
+                      />
+                      <Typography fontSize={13} fontWeight={600}>
+                        {formatKoreanWon(String(point.revenue))}
+                      </Typography>
+                    </Stack>
+                  ))}
+                </Stack>
+              </Stack>
+            )}
           </Stack>
         )}
 
@@ -505,24 +700,13 @@ const Dashboard = () => {
                     <TableCell sx={{ fontWeight: 700 }}>Room</TableCell>
                     <TableCell sx={{ fontWeight: 700 }}>Check-in</TableCell>
                     <TableCell sx={{ fontWeight: 700 }}>Check-out</TableCell>
-                    <TableCell sx={{ fontWeight: 700 }}>Nights</TableCell>
                     <TableCell sx={{ fontWeight: 700 }}>Amount</TableCell>
                     <TableCell sx={{ fontWeight: 700 }}>Status</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }} align="right">Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {reservations.map((r: any) => {
-                    const start = r.startDate ? new Date(r.startDate) : null;
-                    const end = r.endDate ? new Date(r.endDate) : null;
-                    const nights =
-                      start && end && !isNaN(start.getTime()) && !isNaN(end.getTime())
-                        ? Math.ceil(
-                            (end.getTime() - start.getTime()) /
-                              (1000 * 60 * 60 * 24)
-                          )
-                        : "-";
-
-                    return (
+                  {reservations.map((r: any) => (
                       <TableRow key={r._id} hover>
                         <TableCell>
                           <Typography fontSize={14} fontWeight={600}>
@@ -539,28 +723,19 @@ const Dashboard = () => {
                         <TableCell>
                           {r.endDate ? formatShortDate(r.endDate) : "-"}
                         </TableCell>
-                        <TableCell>{nights}</TableCell>
                         <TableCell>
                           {r.paymentAmount
                             ? formatKoreanWon(String(r.paymentAmount))
                             : "-"}
                         </TableCell>
                         <TableCell>
-                          <Chip
-                            label={
-                              r.paymentStatus === "succeeded" ? "Paid" : r.paymentStatus ?? "N/A"
-                            }
-                            size="small"
-                            color={
-                              r.paymentStatus === "succeeded"
-                                ? "success"
-                                : "default"
-                            }
-                          />
+                          {getStatusChip(r.reservationStatus)}
+                        </TableCell>
+                        <TableCell align="right">
+                          {getActionButtons(r, "hotel")}
                         </TableCell>
                       </TableRow>
-                    );
-                  })}
+                    ))}
                   {reservations.length === 0 && (
                     <TableRow>
                       <TableCell colSpan={7} align="center">
@@ -681,6 +856,7 @@ const Dashboard = () => {
                     <TableCell sx={{ fontWeight: 700 }} align="center">Tickets</TableCell>
                     <TableCell sx={{ fontWeight: 700 }}>Amount</TableCell>
                     <TableCell sx={{ fontWeight: 700 }}>Status</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }} align="right">Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -693,11 +869,6 @@ const Dashboard = () => {
                         <Typography fontSize={12} color="text.secondary">
                           {r.guestEmail}
                         </Typography>
-                        {r.guestPhoneNumber && (
-                          <Typography fontSize={11} color="text.secondary">
-                            {r.guestPhoneNumber}
-                          </Typography>
-                        )}
                       </TableCell>
                       <TableCell>
                         <Typography fontSize={14}>
@@ -719,21 +890,16 @@ const Dashboard = () => {
                         {formatKoreanWon(String(r.paymentAmount ?? 0))}
                       </TableCell>
                       <TableCell>
-                        <Chip
-                          label={
-                            r.paymentStatus === "succeeded" ? "Paid" : r.paymentStatus ?? "N/A"
-                          }
-                          size="small"
-                          color={
-                            r.paymentStatus === "succeeded" ? "success" : "default"
-                          }
-                        />
+                        {getStatusChip(r.reservationStatus)}
+                      </TableCell>
+                      <TableCell align="right">
+                        {getActionButtons(r, "attraction")}
                       </TableCell>
                     </TableRow>
                   ))}
                   {ownerAttrReservations.length === 0 && (
                     <TableRow>
-                      <TableCell colSpan={7} align="center">
+                      <TableCell colSpan={8} align="center">
                         <Typography color="text.secondary" py={4}>
                           No reservations yet
                         </Typography>
@@ -744,6 +910,11 @@ const Dashboard = () => {
               </Table>
             </TableContainer>
           </Stack>
+        )}
+
+        {/* Messages Tab */}
+        {((isHotelOwner && tab === 3) || (isAttractionOwner && tab === 3)) && (
+          <OwnerMessagesPanel />
         )}
 
         {/* Room Edit Dialog */}

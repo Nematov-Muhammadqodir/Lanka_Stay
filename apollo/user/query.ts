@@ -490,6 +490,86 @@ export const GET_ATTRACTION_RESERVATIONS = gql`
   }
 `;
 
+export const GET_MY_CONVERSATIONS = gql`
+  query GetMyConversations {
+    getMyConversations {
+      _id
+      participantIds
+      participantRoles
+      lastMessage
+      lastMessageAt
+      propertyId
+      attractionId
+      unreadCount
+      otherParticipantName
+      otherParticipantImage
+      createdAt
+    }
+  }
+`;
+
+export const GET_CONVERSATION_MESSAGES = gql`
+  query GetConversationMessages($conversationId: String!) {
+    getConversationMessages(conversationId: $conversationId) {
+      _id
+      conversationId
+      senderId
+      senderRole
+      messageContent
+      isRead
+      createdAt
+    }
+  }
+`;
+
+export const GET_OR_CREATE_CONVERSATION = gql`
+  query GetOrCreateConversation(
+    $receiverId: String!
+    $propertyId: String
+    $attractionId: String
+  ) {
+    getOrCreateConversation(
+      receiverId: $receiverId
+      propertyId: $propertyId
+      attractionId: $attractionId
+    ) {
+      _id
+      participantIds
+    }
+  }
+`;
+
+export const GET_MY_NOTIFICATIONS = gql`
+  query GetMyNotifications {
+    getMyNotifications {
+      _id
+      receiverId
+      notificationType
+      notificationTitle
+      notificationMessage
+      notificationRefId
+      isRead
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const GET_UNREAD_NOTIFICATION_COUNT = gql`
+  query GetUnreadNotificationCount {
+    getUnreadNotificationCount
+  }
+`;
+
+export const GET_REVENUE_ANALYTICS = gql`
+  query GetRevenueAnalytics {
+    getRevenueAnalytics {
+      month
+      revenue
+    }
+  }
+`;
+
 export const GET_OWNER_ATTRACTION_RESERVATIONS = gql`
   query GetOwnerAttractionReservations {
     getOwnerAttractionReservations {
@@ -505,6 +585,8 @@ export const GET_OWNER_ATTRACTION_RESERVATIONS = gql`
       selectedTime
       paymentStatus
       paymentAmount
+      reservationStatus
+      stripePaymentIntentId
       createdAt
       updatedAt
       attractionData {
@@ -537,6 +619,8 @@ export const GET_OWNER_RESERVATIONS = gql`
         roomType
         roomName
         roomPricePerNight
+        reservationStatus
+        stripePaymentIntentId
         createdAt
         updatedAt
       }

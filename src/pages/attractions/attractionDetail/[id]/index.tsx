@@ -11,6 +11,7 @@ import TicketInfo from "@/src/libs/components/attractions/AttractionDetail/Ticke
 import UserRatings from "@/src/libs/components/attractions/AttractionDetail/UserRatings";
 import AttractionsReviewsList from "@/src/libs/components/attractions/AttractionDetail/AttractionsReviewsList";
 import AttractionsFAQ from "@/src/libs/components/attractions/AttractionDetail/FAQ/AttractionsFAQ";
+import ChatWidget from "@/src/libs/components/chat/ChatWidget";
 
 const AttractionDetail = () => {
   const router = useRouter();
@@ -42,6 +43,13 @@ const AttractionDetail = () => {
         </Stack>
       </Stack>
       <AttractionsFAQ attraction={attraction} />
+      {attraction?.partnerId && attraction?.memberData && (
+        <ChatWidget
+          ownerId={attraction.partnerId}
+          ownerName={`${attraction.memberData.partnerFirstName ?? ""} ${attraction.memberData.partnerLastName ?? ""}`.trim() || "Attraction Owner"}
+          attractionId={attraction._id}
+        />
+      )}
     </Stack>
   );
 };

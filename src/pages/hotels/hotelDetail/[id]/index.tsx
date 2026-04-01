@@ -10,6 +10,7 @@ import LegalInformation from "@/src/libs/components/HotelDetail/Legal_Informatio
 import PropertyOverview from "@/src/libs/components/HotelDetail/PropertyOverview";
 import ReviewsList from "@/src/libs/components/HotelDetail/ReviewsList";
 import withLayoutSecondary from "@/src/libs/components/layout/LayoutSecondary";
+import ChatWidget from "@/src/libs/components/chat/ChatWidget";
 import { T } from "@/src/libs/types/common";
 import { PartnerProperty } from "@/src/libs/types/partnerInput/partnerProperty";
 import { setPartnerProperty } from "@/src/slices/partnerPropertySlice";
@@ -108,6 +109,13 @@ const HotelDetail = () => {
       <HouseRules partnerProperty={partnerProperty} />
       <LegalInformation partnerProperty={partnerProperty} />
       <FAQ />
+      {data?.partnerId && data?.memberData && (
+        <ChatWidget
+          ownerId={data.partnerId}
+          ownerName={`${data.memberData.partnerFirstName ?? ""} ${data.memberData.partnerLastName ?? ""}`.trim() || "Property Owner"}
+          propertyId={data._id}
+        />
+      )}
     </Stack>
   );
 };
