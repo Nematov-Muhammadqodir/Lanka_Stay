@@ -4,9 +4,18 @@ import AttractionsFilter from "./AttractionsFilter";
 import AttractionSorting from "./AttractionsSorting";
 import AttractionsList from "./AttractionsList";
 import ThemeParksList from "./ThemeParks-Resorts/ThemeParksList";
-import AttractionsReviewsList from "./AttractionDetail/AttractionsReviewsList";
 
-const AttractionsContainer = () => {
+interface AttractionsContainerProps {
+  selectedType: string | null;
+  sort: string | null;
+  onSortChange: (sort: string | null) => void;
+}
+
+const AttractionsContainer = ({
+  selectedType,
+  sort,
+  onSortChange,
+}: AttractionsContainerProps) => {
   return (
     <Stack
       flexDirection={"row"}
@@ -18,8 +27,8 @@ const AttractionsContainer = () => {
         <AttractionsFilter />
       </Stack>
       <Stack width={870} gap={2}>
-        <AttractionSorting />
-        <AttractionsList />
+        <AttractionSorting sort={sort} onSortChange={onSortChange} />
+        <AttractionsList selectedType={selectedType} sort={sort} />
         <ThemeParksList />
       </Stack>
     </Stack>

@@ -1,5 +1,12 @@
-import { Button, Menu, MenuItem, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import {
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Stack,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
@@ -8,6 +15,10 @@ import TelegramIcon from "@mui/icons-material/Telegram";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import { useMutation, useReactiveVar } from "@apollo/client";
+import { LIKE_TARGET_ATTRACTION } from "@/apollo/user/mutation";
+import { userVar } from "@/apollo/store";
+import { sweetMixinErrorAlert } from "@/src/libs/sweetAlert";
 
 interface AttractionOverViewProps {
   attraction?: any;
@@ -33,8 +44,28 @@ const AttractionOverView = ({ attraction }: AttractionOverViewProps) => {
       console.error("Failed to copy:", err);
     }
   };
-  const isBeachFront = true;
-  const like = true;
+  const user = useReactiveVar(userVar);
+  const [likeAttraction] = useMutation(LIKE_TARGET_ATTRACTION);
+  const [liked, setLiked] = useState(false);
+
+  useEffect(() => {
+    if (attraction?.meLiked?.[0]?.myFavorite) {
+      setLiked(true);
+    }
+  }, [attraction]);
+
+  const handleLike = async () => {
+    if (!user?._id) {
+      await sweetMixinErrorAlert("Please login first");
+      return;
+    }
+    try {
+      await likeAttraction({ variables: { input: attraction?._id } });
+      setLiked(!liked);
+    } catch (err: any) {
+      console.error("Like error:", err);
+    }
+  };
 
   const [anchorShareEl, setAnchorShareEl] = useState<null | HTMLElement>(null);
   const shareOpen = Boolean(anchorShareEl);
@@ -77,11 +108,13 @@ const AttractionOverView = ({ attraction }: AttractionOverViewProps) => {
       </Stack>
       <Stack justifyContent={"space-around"}>
         <Stack flexDirection={"row"} gap={3} alignItems={"center"}>
-          {like ? (
-            <FavoriteIcon sx={{ color: "red", fontSize: 29 }} />
-          ) : (
-            <FavoriteBorderIcon sx={{ color: "red", fontSize: 29 }} />
-          )}
+          <IconButton onClick={handleLike} sx={{ p: 0 }}>
+            {liked ? (
+              <FavoriteIcon sx={{ color: "red", fontSize: 29 }} />
+            ) : (
+              <FavoriteBorderIcon sx={{ color: "red", fontSize: 29 }} />
+            )}
+          </IconButton>
           <Button onClick={handleShareClick}>
             <ShareIcon />
           </Button>

@@ -693,6 +693,11 @@ export const GET_ATTRACTION = gql`
         partnerLastName
         partnerPhoneNumber
       }
+      meLiked {
+        memberId
+        likeRefId
+        myFavorite
+      }
     }
   }
 `;
@@ -735,6 +740,11 @@ export const GET_ALL_ATTRACTIONS = gql`
           partnerFirstName
           partnerLastName
           partnerPhoneNumber
+        }
+        meLiked {
+          memberId
+          likeRefId
+          myFavorite
         }
       }
       metaCounter {

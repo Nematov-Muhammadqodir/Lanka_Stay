@@ -1,13 +1,18 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
-import React from "react";
+import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
+import React, { useState } from "react";
 import Image from "next/image";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useRouter } from "next/router";
 import TimerIcon from "@mui/icons-material/Timer";
 import StarIcon from "@mui/icons-material/Star";
 import EventRepeatIcon from "@mui/icons-material/EventRepeat";
 import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
+import { useMutation, useReactiveVar } from "@apollo/client";
+import { LIKE_TARGET_ATTRACTION } from "@/apollo/user/mutation";
+import { userVar } from "@/apollo/store";
+import { sweetMixinErrorAlert } from "@/src/libs/sweetAlert";
 
 interface AttractionsListCardProps {
   attraction: any;
@@ -15,6 +20,11 @@ interface AttractionsListCardProps {
 
 const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
   const router = useRouter();
+  const user = useReactiveVar(userVar);
+  const [liked, setLiked] = useState(
+    attraction?.meLiked?.[0]?.myFavorite ?? false
+  );
+  const [likeAttraction] = useMutation(LIKE_TARGET_ATTRACTION);
 
   const imageUrl =
     attraction.attractionImages && attraction.attractionImages.length > 0
@@ -23,6 +33,20 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
 
   const handleClick = () => {
     router.push(`/attractions/attractionDetail/${attraction._id}`);
+  };
+
+  const handleLike = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!user?._id) {
+      await sweetMixinErrorAlert("Please login first");
+      return;
+    }
+    try {
+      await likeAttraction({ variables: { input: attraction._id } });
+      setLiked(!liked);
+    } catch (err: any) {
+      console.error("Like error:", err);
+    }
   };
 
   return (
@@ -36,6 +60,7 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
       borderRadius={3}
       justifyContent={"flex-start"}
       onClick={handleClick}
+      position="relative"
       sx={{
         transition: "all 0.3s ease",
         cursor: "pointer",
@@ -46,7 +71,28 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
         },
       }}
     >
-      <Stack flexDirection={"row"} gap={2} position={"relative"}>
+      {/* Like button - top right corner */}
+      <IconButton
+        onClick={handleLike}
+        sx={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+          zIndex: 1,
+          backgroundColor: "rgba(255,255,255,0.9)",
+          "&:hover": { backgroundColor: "rgba(255,255,255,1)" },
+          width: 38,
+          height: 38,
+        }}
+      >
+        {liked ? (
+          <FavoriteIcon sx={{ color: "#D40F1D", fontSize: 22 }} />
+        ) : (
+          <FavoriteBorderIcon sx={{ color: "#D40F1D", fontSize: 22 }} />
+        )}
+      </IconButton>
+
+      <Stack flexDirection={"row"} gap={2}>
         <Image
           src={imageUrl}
           alt={attraction.attractionName || "Attraction"}
@@ -54,19 +100,6 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
           height={175}
           style={{ objectFit: "cover", borderRadius: 5 }}
         />
-        <Box
-          width={40}
-          height={40}
-          position={"absolute"}
-          top={10}
-          left={125}
-          textAlign={"center"}
-          pt={1}
-          bgcolor={"secondary.contrastText"}
-          borderRadius={"50%"}
-        >
-          <FavoriteIcon sx={{ color: "#D40F1D" }} />
-        </Box>
         <Stack
           flexDirection={"row"}
           justifyContent={"space-between"}

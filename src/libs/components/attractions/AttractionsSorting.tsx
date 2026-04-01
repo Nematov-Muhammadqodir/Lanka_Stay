@@ -3,11 +3,27 @@ import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
-export default function AttractionSorting() {
-  const [value, setValue] = React.useState(0);
+const SORT_OPTIONS = [
+  { label: "Our top picks", value: null },
+  { label: "Lowest price", value: "PRICE_LOW" },
+  { label: "Highest price", value: "PRICE_HIGH" },
+  { label: "Newest listings", value: "NEWEST" },
+];
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+interface AttractionSortingProps {
+  sort: string | null;
+  onSortChange: (sort: string | null) => void;
+}
+
+export default function AttractionSorting({
+  sort,
+  onSortChange,
+}: AttractionSortingProps) {
+  const currentIndex = SORT_OPTIONS.findIndex((o) => o.value === sort);
+  const value = currentIndex === -1 ? 0 : currentIndex;
+
+  const handleChange = (_: React.SyntheticEvent, newValue: number) => {
+    onSortChange(SORT_OPTIONS[newValue].value);
   };
 
   return (
@@ -22,10 +38,9 @@ export default function AttractionSorting() {
       }}
     >
       <Tabs value={value} onChange={handleChange} centered>
-        <Tab label="Our top picks" />
-        <Tab label="Lowest price" />
-        <Tab label="Highest price" />
-        <Tab label="Newest listings" />
+        {SORT_OPTIONS.map((option) => (
+          <Tab key={option.label} label={option.label} />
+        ))}
       </Tabs>
     </Box>
   );

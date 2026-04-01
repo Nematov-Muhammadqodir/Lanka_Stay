@@ -312,6 +312,16 @@ export const LIKE_TARGET_PROPERTY = gql`
   }
 `;
 
+export const LIKE_TARGET_ATTRACTION = gql`
+  mutation LikeTargetAttraction($input: String!) {
+    likeTargetAttraction(attractionId: $input) {
+      _id
+      attractionName
+      attractionLikes
+    }
+  }
+`;
+
 export const CREATE_PAYMENT_INTENT = gql`
   mutation CreatePaymentIntent($input: CreatePaymentIntentInput!) {
     createPaymentIntent(input: $input)

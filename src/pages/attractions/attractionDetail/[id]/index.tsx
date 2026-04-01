@@ -18,6 +18,7 @@ const AttractionDetail = () => {
 
   const { data, loading } = useQuery(GET_ATTRACTION, {
     variables: { input: id as string },
+
     skip: !id,
   });
 
