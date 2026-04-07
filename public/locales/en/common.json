@@ -516,6 +516,21 @@
     "createAttraction": "Create Attraction",
     "main": "MAIN"
   },
+  "priceMatch": {
+    "guarantee": "Our guarantee for the best rate",
+    "description": "You can claim a refund for the difference if you find your reservation cheaper on another website. Just contact us after booking and at least 24 hours before your check-in date with a link to the other offer.",
+    "checklist": "Price Match Checklist",
+    "checkSameProperty": "The other offer must be for the same property and accommodation type.",
+    "checkSameDates": "The other offer must be for the same check-in and check-out dates.",
+    "checkSamePolicy": "The other offer must have the same cancellation policy and conditions.",
+    "cantClaim": "When You Can't Claim",
+    "cantHiddenProperty": "If the other offer is on a website that doesn't reveal the property or accommodation type until after booking.",
+    "cantLoyalty": "If the other offer is part of a loyalty or rewards programme, coupon code, referral, or any similar situation where the shown price changes.",
+    "cantPartnerOffer": "If your current booking is a Partner offer or comparing with one of these offers.",
+    "foundCheaper": "Found it cheaper elsewhere?",
+    "contactSupport": "Contact our support team with the link to the other offer.",
+    "gotIt": "Got it"
+  },
   "why": {
     "title": "Why LankaStay.com?",
     "bookNowHeader": "Book now, pay at the property",

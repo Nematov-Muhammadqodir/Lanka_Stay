@@ -6,28 +6,31 @@ import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import React from "react";
+import { useTranslation } from "next-i18next";
 
 interface WePriceMatchDialogProps {
   open: boolean;
   handleClose: () => void;
 }
 
-const checklistItems = [
-  "The other offer must be for the same property and accommodation type.",
-  "The other offer must be for the same check-in and check-out dates.",
-  "The other offer must have the same cancellation policy and conditions.",
-];
-
-const cantClaimItems = [
-  "If the other offer is on a website that doesn't reveal the property or accommodation type until after booking.",
-  "If the other offer is part of a loyalty or rewards programme, coupon code, referral, or any similar situation where the shown price changes.",
-  "If your current booking is a Partner offer or comparing with one of these offers.",
-];
-
 const WePriceMatchDialog: React.FC<WePriceMatchDialogProps> = ({
   open,
   handleClose,
 }) => {
+  const { t } = useTranslation("common");
+
+  const checklistItems = [
+    t("priceMatch.checkSameProperty"),
+    t("priceMatch.checkSameDates"),
+    t("priceMatch.checkSamePolicy"),
+  ];
+
+  const cantClaimItems = [
+    t("priceMatch.cantHiddenProperty"),
+    t("priceMatch.cantLoyalty"),
+    t("priceMatch.cantPartnerOffer"),
+  ];
+
   return (
     <Dialog
       open={open}
@@ -60,10 +63,10 @@ const WePriceMatchDialog: React.FC<WePriceMatchDialogProps> = ({
           <LocalOfferIcon sx={{ color: "#fff", fontSize: 28 }} />
           <Stack>
             <Typography fontWeight={700} fontSize={22} color="#fff">
-              We Price Match
+              {t("hotel.wePriceMatch")}
             </Typography>
             <Typography fontSize={13} color="rgba(255,255,255,0.8)">
-              Our guarantee for the best rate
+              {t("priceMatch.guarantee")}
             </Typography>
           </Stack>
         </Stack>
@@ -77,14 +80,10 @@ const WePriceMatchDialog: React.FC<WePriceMatchDialogProps> = ({
 
       {/* Body */}
       <Stack px={3} py={3} gap={3}>
-        {/* Description */}
         <Typography fontSize={15} lineHeight={1.6} color="text.secondary">
-          You can claim a refund for the difference if you find your reservation
-          cheaper on another website. Just contact us after booking and at least
-          24 hours before your check-in date with a link to the other offer.
+          {t("priceMatch.description")}
         </Typography>
 
-        {/* Two columns */}
         <Stack direction="row" gap={3}>
           {/* Checklist */}
           <Stack
@@ -95,16 +94,13 @@ const WePriceMatchDialog: React.FC<WePriceMatchDialogProps> = ({
               borderRadius: 2,
               border: "1px solid",
               borderColor: "success.main",
-              backgroundColor: (theme) =>
-                theme.palette.mode === "light"
-                  ? "rgba(52, 211, 153, 0.05)"
-                  : "rgba(52, 211, 153, 0.05)",
+              backgroundColor: "rgba(52, 211, 153, 0.05)",
             }}
           >
             <Stack direction="row" alignItems="center" gap={1}>
               <VerifiedIcon sx={{ color: "success.main", fontSize: 20 }} />
               <Typography fontWeight={700} fontSize={15}>
-                Price Match Checklist
+                {t("priceMatch.checklist")}
               </Typography>
             </Stack>
             {checklistItems.map((item, i) => (
@@ -128,16 +124,13 @@ const WePriceMatchDialog: React.FC<WePriceMatchDialogProps> = ({
               borderRadius: 2,
               border: "1px solid",
               borderColor: "error.main",
-              backgroundColor: (theme) =>
-                theme.palette.mode === "light"
-                  ? "rgba(248, 113, 113, 0.05)"
-                  : "rgba(248, 113, 113, 0.05)",
+              backgroundColor: "rgba(248, 113, 113, 0.05)",
             }}
           >
             <Stack direction="row" alignItems="center" gap={1}>
               <HighlightOffIcon sx={{ color: "error.main", fontSize: 20 }} />
               <Typography fontWeight={700} fontSize={15}>
-                When You Can&apos;t Claim
+                {t("priceMatch.cantClaim")}
               </Typography>
             </Stack>
             {cantClaimItems.map((item, i) => (
@@ -168,10 +161,10 @@ const WePriceMatchDialog: React.FC<WePriceMatchDialogProps> = ({
             <SupportAgentIcon sx={{ color: "primary.main", fontSize: 28 }} />
             <Stack>
               <Typography fontWeight={600} fontSize={15}>
-                Found it cheaper elsewhere?
+                {t("priceMatch.foundCheaper")}
               </Typography>
               <Typography fontSize={13} color="text.secondary">
-                Contact our support team with the link to the other offer.
+                {t("priceMatch.contactSupport")}
               </Typography>
             </Stack>
           </Stack>
@@ -187,7 +180,7 @@ const WePriceMatchDialog: React.FC<WePriceMatchDialogProps> = ({
               fontSize: 14,
             }}
           >
-            Got it
+            {t("priceMatch.gotIt")}
           </Button>
         </Stack>
       </Stack>

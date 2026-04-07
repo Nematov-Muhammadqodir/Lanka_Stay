@@ -518,6 +518,21 @@
     "creating": "생성 중...",
     "main": "대표"
   },
+  "priceMatch": {
+    "guarantee": "최저가 보장",
+    "description": "다른 웹사이트에서 더 저렴한 가격을 발견하시면 차액을 환불받으실 수 있습니다. 예약 후 체크인 최소 24시간 전에 다른 제안의 링크를 포함하여 문의해 주세요.",
+    "checklist": "최저가 보장 체크리스트",
+    "checkSameProperty": "다른 제안은 동일한 숙소 및 객실 유형이어야 합니다.",
+    "checkSameDates": "다른 제안은 동일한 체크인 및 체크아웃 날짜여야 합니다.",
+    "checkSamePolicy": "다른 제안은 동일한 취소 정책 및 조건이어야 합니다.",
+    "cantClaim": "청구할 수 없는 경우",
+    "cantHiddenProperty": "예약 후까지 숙소나 객실 유형을 공개하지 않는 웹사이트의 제안인 경우.",
+    "cantLoyalty": "로열티 또는 보상 프로그램, 쿠폰 코드, 추천 등 표시된 가격이 변경되는 유사한 상황의 제안인 경우.",
+    "cantPartnerOffer": "현재 예약이 파트너 제안이거나 이러한 제안과 비교하는 경우.",
+    "foundCheaper": "다른 곳에서 더 저렴하게 찾으셨나요?",
+    "contactSupport": "다른 제안의 링크를 포함하여 고객 지원팀에 문의하세요.",
+    "gotIt": "확인"
+  },
   "why": {
     "title": "왜 LankaStay.com인가요?",
     "bookNowHeader": "지금 예약하고, 숙소에서 결제하세요",

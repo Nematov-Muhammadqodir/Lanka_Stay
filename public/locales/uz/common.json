@@ -518,6 +518,21 @@
     "creating": "Yaratilmoqda...",
     "main": "ASOSIY"
   },
+  "priceMatch": {
+    "guarantee": "Eng yaxshi narx kafolatimiz",
+    "description": "Agar boshqa veb-saytda bronlashingizni arzonroq topsangiz, farqni qaytarib olishingiz mumkin. Buyurtmadan keyin va kirish sanasidan kamida 24 soat oldin boshqa taklifga havolani yuborib biz bilan bog'laning.",
+    "checklist": "Narx moslashtirish ro'yxati",
+    "checkSameProperty": "Boshqa taklif xuddi shu mulk va turar joy turi uchun bo'lishi kerak.",
+    "checkSameDates": "Boshqa taklif xuddi shu kirish va chiqish sanalari uchun bo'lishi kerak.",
+    "checkSamePolicy": "Boshqa taklif xuddi shu bekor qilish siyosati va shartlariga ega bo'lishi kerak.",
+    "cantClaim": "Qachon talab qilib bo'lmaydi",
+    "cantHiddenProperty": "Agar boshqa taklif band qilgandan keyin mulk yoki turar joy turini ko'rsatmaydigan veb-saytda bo'lsa.",
+    "cantLoyalty": "Agar boshqa taklif sodiqlik yoki mukofot dasturi, kupon kodi, tavsiya yoki ko'rsatilgan narx o'zgaradigan shunga o'xshash vaziyatning bir qismi bo'lsa.",
+    "cantPartnerOffer": "Agar joriy buyurtmangiz Hamkor taklifi bo'lsa yoki ushbu takliflardan biri bilan taqqoslayotgan bo'lsangiz.",
+    "foundCheaper": "Boshqa joyda arzonroq topdingizmi?",
+    "contactSupport": "Boshqa taklifga havola bilan qo'llab-quvvatlash jamoamiz bilan bog'laning.",
+    "gotIt": "Tushundim"
+  },
   "why": {
     "title": "Nima uchun LankaStay.com?",
     "bookNowHeader": "Hozir band qiling, mulkda to'lang",
