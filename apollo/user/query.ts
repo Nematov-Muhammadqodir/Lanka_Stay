@@ -490,6 +490,26 @@ export const GET_ATTRACTION_RESERVATIONS = gql`
   }
 `;
 
+export const GET_MOST_PICKED = gql`
+  query GetMostPicked {
+    getMostPicked {
+      _id
+      itemType
+      name
+      city
+      country
+      image
+      price
+      rating
+      totalReviews
+      views
+      likes
+      propertyType
+      attractionType
+    }
+  }
+`;
+
 export const GET_MY_CONVERSATIONS = gql`
   query GetMyConversations {
     getMyConversations {

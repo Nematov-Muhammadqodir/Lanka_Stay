@@ -1,31 +1,12 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import { Pagination, Stack, Typography } from "@mui/material";
+import { CircularProgress, Stack, Typography } from "@mui/material";
 import MostPickedCard from "./MostPickedCard";
+import { useQuery } from "@apollo/client";
+import { GET_MOST_PICKED } from "@/apollo/user/query";
 
 export default function MostPickedList() {
-  // Example data — imagine you have more than 4 items
-  const data = Array.from({ length: 24 }, (_, i) => i + 1);
-
-  // Pagination states
-  const [page, setPage] = React.useState(1);
-  const itemsPerPage = 4;
-
-  // Calculate which items to show for current page
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = data.slice(startIndex, endIndex);
-
-  // Total pages
-  const pageCount = Math.ceil(data.length / itemsPerPage);
-
-  const handleChange = (event: any, value: any) => {
-    setPage(value);
-    console.log("value", value);
-  };
+  const { data, loading } = useQuery(GET_MOST_PICKED);
+  const items = data?.getMostPicked ?? [];
 
   return (
     <Stack
@@ -36,28 +17,36 @@ export default function MostPickedList() {
         <Typography sx={{ fontSize: 24, fontWeight: 500 }}>
           Most Picked
         </Typography>
+        <Typography fontSize={14} color="text.secondary" mt={0.5}>
+          Top-rated hotels and attractions loved by travelers
+        </Typography>
       </Stack>
-      <Stack
-        sx={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          gap: 2,
-          mt: 2,
-          justifyContent: "start",
-        }}
-      >
-        {currentItems.map((item, index) => (
-          <MostPickedCard key={index} />
-        ))}
-      </Stack>
-      <Stack spacing={2} mt={2} alignItems="center">
-        <Pagination
-          count={pageCount}
-          page={page}
-          onChange={handleChange}
-          color="primary"
-        />
-      </Stack>
+
+      {loading ? (
+        <Stack alignItems="center" py={4}>
+          <CircularProgress size={30} />
+        </Stack>
+      ) : items.length === 0 ? (
+        <Stack alignItems="center" py={4}>
+          <Typography color="text.secondary">
+            No recommendations yet
+          </Typography>
+        </Stack>
+      ) : (
+        <Stack
+          sx={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            gap: 2,
+            mt: 2,
+            justifyContent: "start",
+          }}
+        >
+          {items.map((item: any) => (
+            <MostPickedCard key={item._id} item={item} />
+          ))}
+        </Stack>
+      )}
     </Stack>
   );
 }
