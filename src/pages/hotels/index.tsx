@@ -18,18 +18,28 @@ const Hotels = () => {
   const filters = useSelector((state: RootState) => state.filters);
   console.log("FILTERS", filters);
 
+  // Build input dynamically — only include set filters
+  const queryInput: any = {
+    page: filters.page,
+    limit: filters.limit,
+  };
+  if (filters.propertyRegion) queryInput.propertyRegion = filters.propertyRegion;
+  if (filters.propertyCity) queryInput.propertyCity = filters.propertyCity;
+  if (filters.propertyType && filters.propertyType.length > 0)
+    queryInput.propertyType = filters.propertyType;
+  if (filters.breakfastIncluded) queryInput.breakfastIncluded = true;
+  if (filters.parkingIncluded) queryInput.parkingIncluded = true;
+  if (filters.allowPets) queryInput.allowPets = true;
+  if (filters.allowChildren === false) queryInput.allowChildren = false;
+  if (filters.startDate) queryInput.from = filters.startDate;
+  if (filters.endDate) queryInput.until = filters.endDate;
+  if (filters.adults) queryInput.adults = filters.adults;
+  if (filters.children) queryInput.children = filters.children;
+  if (filters.priceMin) queryInput.priceMin = filters.priceMin;
+  if (filters.priceMax) queryInput.priceMax = filters.priceMax;
+
   const { data, loading, refetch } = useQuery(GET_ALL_AVAILABLE_PROPERTIES, {
-    variables: {
-      input: {
-        propertyRegion: filters.propertyRegion,
-        from: filters.startDate,
-        until: filters.endDate,
-        adults: filters.adults,
-        children: filters.children,
-        page: filters.page,
-        limit: filters.limit,
-      },
-    },
+    variables: { input: queryInput },
   });
 
   const {

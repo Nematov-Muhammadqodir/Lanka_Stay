@@ -13,6 +13,8 @@ import {
   setParkingIncluded,
   setAllowChildren,
   setAllowPets,
+  setPriceMin,
+  setPriceMax,
 } from "@/src/slices/filteringSlice";
 import {
   Box,
@@ -26,27 +28,19 @@ import Slider from "@mui/material/Slider";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const MAX = 4000000.0;
-const MIN = 50000.0;
-const marks = [
-  {
-    value: MIN,
-    label: "",
-  },
-  {
-    value: MAX,
-    label: "",
-  },
-];
+const MAX = 400000;
+const MIN = 30000;
+
 const Filter = () => {
   const filterSliceInput = useSelector(filterSliceValue);
-  console.log("filterSliceInput", filterSliceInput);
-  const [val, setVal] = React.useState<number>(MIN);
+  const [priceRange, setPriceRange] = React.useState<number[]>([MIN, MAX]);
   const dispatch = useDispatch();
-  const handleChange = (_: any, newValue: number | number[]) => {
-    if (typeof newValue === "number") {
-      setVal(newValue);
-    }
+
+  const handlePriceChange = (_: any, newValue: number | number[]) => {
+    const val = newValue as number[];
+    setPriceRange(val);
+    dispatch(setPriceMin(val[0] > MIN ? val[0] : undefined));
+    dispatch(setPriceMax(val[1] < MAX ? val[1] : undefined));
   };
   return (
     <Stack width={"100%"}>
@@ -83,19 +77,23 @@ const Filter = () => {
             Your budget (per night)
           </Typography>
           <Stack flexDirection={"row"} justifyContent={"space-around"}>
-            <Typography>KRW 30,000</Typography>
-            <Typography>-</Typography>
-            <Typography>KRW 400,000+</Typography>
+            <Typography fontSize={13}>
+              ₩{priceRange[0].toLocaleString()}
+            </Typography>
+            <Typography fontSize={13}>-</Typography>
+            <Typography fontSize={13}>
+              ₩{priceRange[1].toLocaleString()}
+              {priceRange[1] >= MAX ? "+" : ""}
+            </Typography>
           </Stack>
           <Box sx={{ width: 270 }}>
             <Slider
-              marks={marks}
-              step={10}
-              value={val}
+              value={priceRange}
               valueLabelDisplay="auto"
               min={MIN}
               max={MAX}
-              onChange={handleChange}
+              step={10000}
+              onChange={handlePriceChange}
             />
           </Box>
         </Stack>
@@ -308,12 +306,15 @@ const Filter = () => {
           <Typography className="small-bold-text">Facilities</Typography>
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox />}
+              control={
+                <Checkbox
+                  checked={filterSliceInput.parkingIncluded || false}
+                  onChange={(e) =>
+                    dispatch(setParkingIncluded(e.target.checked))
+                  }
+                />
+              }
               label="Parking"
-              value={true}
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
             />
             <FormControlLabel
               control={<Checkbox />}

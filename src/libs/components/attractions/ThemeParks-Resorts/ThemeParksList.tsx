@@ -1,12 +1,26 @@
-import { Stack, Typography } from "@mui/material";
+import { CircularProgress, Stack, Typography } from "@mui/material";
 import React from "react";
 import ThemeParksCard from "./ThemeParksCard";
 import AttractionsIcon from "@mui/icons-material/Attractions";
+import { useQuery } from "@apollo/client";
+import { GET_THEME_PARKS_AND_RESORTS } from "@/apollo/user/query";
 
 const ThemeParksList = () => {
-  const data = [1, 2, 3];
+  const { data, loading } = useQuery(GET_THEME_PARKS_AND_RESORTS);
+  const items = data?.getThemeParksAndResorts ?? [];
+
+  if (loading) {
+    return (
+      <Stack alignItems="center" py={4}>
+        <CircularProgress size={24} />
+      </Stack>
+    );
+  }
+
+  if (items.length === 0) return null;
+
   return (
-    <Stack alignItems={"center"} mt={5} gap={1}>
+    <Stack alignItems={"center"} mt={5} gap={2}>
       <Stack
         alignSelf={"flex-start"}
         flexDirection={"row"}
@@ -17,10 +31,16 @@ const ThemeParksList = () => {
         <AttractionsIcon sx={{ fontSize: 30 }} />
         <Typography className="xxlText">Theme parks and resorts</Typography>
       </Stack>
-      <Stack flexDirection={"row"} justifyContent={"space-between"} width={800}>
-        {data.map((item, index) => {
-          return <ThemeParksCard key={index} />;
-        })}
+      <Stack
+        flexDirection={"row"}
+        gap={2}
+        width={"100%"}
+        px={3}
+        sx={{ overflowX: "auto", pb: 1 }}
+      >
+        {items.map((item: any) => (
+          <ThemeParksCard key={item._id} item={item} />
+        ))}
       </Stack>
     </Stack>
   );

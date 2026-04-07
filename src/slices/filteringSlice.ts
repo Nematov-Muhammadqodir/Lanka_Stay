@@ -10,6 +10,8 @@ interface FilterState {
   parkingIncluded?: boolean;
   allowChildren?: boolean;
   allowPets?: boolean;
+  priceMin?: number;
+  priceMax?: number;
   startDate?: string;
   endDate?: string;
   adults?: number;
@@ -93,6 +95,12 @@ const filterSlice = createSlice({
     setAllowPets(state, action: PayloadAction<boolean>) {
       state.allowPets = action.payload;
     },
+    setPriceMin(state, action: PayloadAction<number | undefined>) {
+      state.priceMin = action.payload;
+    },
+    setPriceMax(state, action: PayloadAction<number | undefined>) {
+      state.priceMax = action.payload;
+    },
   },
 });
 
@@ -116,6 +124,8 @@ export const {
   setParkingIncluded,
   setAllowChildren,
   setAllowPets,
+  setPriceMin,
+  setPriceMax,
 } = filterSlice.actions;
 
 export const filterSliceValue = (state: RootState) => state.filters;

@@ -143,7 +143,9 @@ export default function TopMain(user: any) {
   const handleNotifClose = () => setNotifAnchor(null);
 
   const handleMarkAllRead = async () => {
-    await markAllAsRead({ refetchQueries: ["GetMyNotifications", "GetUnreadNotificationCount"] });
+    await markAllAsRead({
+      refetchQueries: ["GetMyNotifications", "GetUnreadNotificationCount"],
+    });
   };
 
   const handleMarkRead = async (id: string) => {
@@ -155,10 +157,16 @@ export default function TopMain(user: any) {
 
   const getNotifIcon = (type: string) => {
     switch (type) {
-      case "RESERVATION_CONFIRMED": return <CheckCircleIcon sx={{ color: "success.main", fontSize: 20 }} />;
-      case "RESERVATION_CANCELLED": return <CancelIcon sx={{ color: "warning.main", fontSize: 20 }} />;
-      case "RESERVATION_REFUNDED": return <CurrencyExchangeIcon sx={{ color: "error.main", fontSize: 20 }} />;
-      default: return <InfoIcon sx={{ color: "primary.main", fontSize: 20 }} />;
+      case "RESERVATION_CONFIRMED":
+        return <CheckCircleIcon sx={{ color: "success.main", fontSize: 20 }} />;
+      case "RESERVATION_CANCELLED":
+        return <CancelIcon sx={{ color: "warning.main", fontSize: 20 }} />;
+      case "RESERVATION_REFUNDED":
+        return (
+          <CurrencyExchangeIcon sx={{ color: "error.main", fontSize: 20 }} />
+        );
+      default:
+        return <InfoIcon sx={{ color: "primary.main", fontSize: 20 }} />;
     }
   };
 
@@ -268,9 +276,7 @@ export default function TopMain(user: any) {
             <Link href="/attractions" className="links">
               Attractions
             </Link>
-            <Link href="#" className="links">
-              About
-            </Link>
+
             <Link
               href={`/myPage/${user?.user?._id}/reservations`}
               className="links"
@@ -297,11 +303,7 @@ export default function TopMain(user: any) {
             </Link>
             {isLoggedIn && (
               <IconButton onClick={handleNotifClick} sx={{ ml: 0.5 }}>
-                <Badge
-                  badgeContent={unreadCount}
-                  color="error"
-                  max={99}
-                >
+                <Badge badgeContent={unreadCount} color="error" max={99}>
                   <NotificationsIcon sx={{ color: "text.primary" }} />
                 </Badge>
               </IconButton>
@@ -469,7 +471,9 @@ export default function TopMain(user: any) {
               <Stack sx={{ maxHeight: 400, overflow: "auto" }}>
                 {notifications.length === 0 ? (
                   <Stack alignItems="center" py={5}>
-                    <NotificationsIcon sx={{ fontSize: 40, color: "text.disabled", mb: 1 }} />
+                    <NotificationsIcon
+                      sx={{ fontSize: 40, color: "text.disabled", mb: 1 }}
+                    />
                     <Typography color="text.secondary" fontSize={14}>
                       No notifications yet
                     </Typography>
@@ -486,12 +490,19 @@ export default function TopMain(user: any) {
                         if (!n.isRead) handleMarkRead(n._id);
                         handleNotifClose();
                         // Navigate based on notification type
-                        if (n.notificationType === "GENERAL" && n.notificationRefId) {
+                        if (
+                          n.notificationType === "GENERAL" &&
+                          n.notificationRefId
+                        ) {
                           // Message notification
                           if (isPartner) {
-                            router.push("/register-property/dashboard?tab=messages");
+                            router.push(
+                              "/register-property/dashboard?tab=messages"
+                            );
                           } else {
-                            router.push(`/myPage/${user.user._id}/reservations`);
+                            router.push(
+                              `/myPage/${user.user._id}/reservations`
+                            );
                           }
                         } else if (
                           n.notificationType === "RESERVATION_CONFIRMED" ||
@@ -503,7 +514,9 @@ export default function TopMain(user: any) {
                       }}
                       sx={{
                         cursor: "pointer",
-                        backgroundColor: n.isRead ? "transparent" : "action.hover",
+                        backgroundColor: n.isRead
+                          ? "transparent"
+                          : "action.hover",
                         borderBottom: "1px solid",
                         borderColor: "divider",
                         transition: "background-color 0.2s",
@@ -514,8 +527,15 @@ export default function TopMain(user: any) {
                     >
                       <Box mt={0.3}>{getNotifIcon(n.notificationType)}</Box>
                       <Stack flex={1} gap={0.3}>
-                        <Stack direction="row" justifyContent="space-between" alignItems="center">
-                          <Typography fontSize={13} fontWeight={n.isRead ? 400 : 700}>
+                        <Stack
+                          direction="row"
+                          justifyContent="space-between"
+                          alignItems="center"
+                        >
+                          <Typography
+                            fontSize={13}
+                            fontWeight={n.isRead ? 400 : 700}
+                          >
                             {n.notificationTitle}
                           </Typography>
                           {!n.isRead && (
@@ -530,7 +550,11 @@ export default function TopMain(user: any) {
                             />
                           )}
                         </Stack>
-                        <Typography fontSize={12} color="text.secondary" lineHeight={1.4}>
+                        <Typography
+                          fontSize={12}
+                          color="text.secondary"
+                          lineHeight={1.4}
+                        >
                           {n.notificationMessage}
                         </Typography>
                         <Typography fontSize={11} color="text.disabled">

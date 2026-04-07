@@ -4,23 +4,41 @@ import withLayoutAttractions from "@/src/libs/components/layout/attractions/Attr
 import { Stack } from "@mui/material";
 import React, { useState } from "react";
 
+export interface AttractionFilters {
+  selectedType: string | null;
+  sort: string | null;
+  freeCancellation: boolean | null;
+  priceMin: number | null;
+  priceMax: number | null;
+  attractionCountry: string | null;
+}
+
 const Attractions = () => {
-  const [selectedType, setSelectedType] = useState<string | null>(null);
-  const [sort, setSort] = useState<string | null>(null);
+  const [filters, setFilters] = useState<AttractionFilters>({
+    selectedType: null,
+    sort: null,
+    freeCancellation: null,
+    priceMin: null,
+    priceMax: null,
+    attractionCountry: null,
+  });
+
+  const updateFilter = (key: keyof AttractionFilters, value: any) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+  };
 
   return (
     <Stack className="container">
       <Stack>
         <AttractionTypes
-          selectedType={selectedType}
-          onSelectType={setSelectedType}
+          selectedType={filters.selectedType}
+          onSelectType={(type) => updateFilter("selectedType", type)}
         />
       </Stack>
       <Stack>
         <AttractionsContainer
-          selectedType={selectedType}
-          sort={sort}
-          onSortChange={setSort}
+          filters={filters}
+          updateFilter={updateFilter}
         />
       </Stack>
     </Stack>

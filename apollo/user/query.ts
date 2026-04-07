@@ -506,6 +506,24 @@ export const GET_AVAILABLE_CITIES = gql`
   }
 `;
 
+export const GET_THEME_PARKS_AND_RESORTS = gql`
+  query GetThemeParksAndResorts {
+    getThemeParksAndResorts {
+      _id
+      itemType
+      name
+      city
+      country
+      image
+      price
+      rating
+      totalReviews
+      propertyType
+      attractionType
+    }
+  }
+`;
+
 export const GET_POPULAR_ATTRACTIONS = gql`
   query GetPopularAttractions {
     getPopularAttractions {
