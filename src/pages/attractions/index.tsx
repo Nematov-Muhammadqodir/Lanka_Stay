@@ -3,6 +3,7 @@ import AttractionTypes from "@/src/libs/components/attractions/AttractionTypes";
 import withLayoutAttractions from "@/src/libs/components/layout/attractions/AttractionsLayout";
 import { Stack } from "@mui/material";
 import React, { useState } from "react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export interface AttractionFilters {
   selectedType: string | null;
@@ -44,5 +45,11 @@ const Attractions = () => {
     </Stack>
   );
 };
+
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 
 export default withLayoutAttractions(Attractions);

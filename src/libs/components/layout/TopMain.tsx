@@ -46,6 +46,7 @@ import {
   MARK_NOTIFICATION_AS_READ,
   MARK_ALL_NOTIFICATIONS_AS_READ,
 } from "@/apollo/user/mutation";
+import { useTranslation } from "next-i18next";
 
 const Flag = _Flag as unknown as React.FC<{
   code: string;
@@ -100,8 +101,8 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 
 export default function TopMain(user: any) {
-  console.log("user in top main hompage:", user);
-  const [lang, setLang] = useState("GB");
+  const { t, i18n } = useTranslation("common");
+  const [lang, setLang] = useState("KR");
   const [anchorLangEl, setAnchorLangEl] = React.useState<null | HTMLElement>(
     null
   );
@@ -111,7 +112,12 @@ export default function TopMain(user: any) {
 
   useEffect(() => {
     const savedLang = localStorage.getItem("lang");
-    if (savedLang) setLang(savedLang);
+    if (savedLang) {
+      setLang(savedLang);
+    } else {
+      // Default to Korean
+      localStorage.setItem("lang", "KR");
+    }
   }, []);
 
   // Notification state
@@ -179,10 +185,14 @@ export default function TopMain(user: any) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleLangClose = (e: any, lang: string) => {
-    setLang(lang);
-    localStorage.setItem("lang", lang);
+  const handleLangClose = (e: any, langCode: string) => {
+    setLang(langCode);
+    localStorage.setItem("lang", langCode);
     setAnchorLangEl(null);
+    // Map flag code to i18n locale
+    const localeMap: Record<string, string> = { KR: "ko", GB: "en", UZB: "uz" };
+    const newLocale = localeMap[langCode] || "ko";
+    router.push(router.pathname, router.asPath, { locale: newLocale });
   };
   const router = useRouter();
   return (
@@ -268,25 +278,25 @@ export default function TopMain(user: any) {
             alignItems={"center"}
           >
             <Link href="/" className="links">
-              Home
+              {t("nav.home")}
             </Link>
             <Link href="/hotels" className="links">
-              Hotels
+              {t("nav.hotels")}
             </Link>
             <Link href="/attractions" className="links">
-              Attractions
+              {t("nav.attractions")}
             </Link>
 
             <Link
               href={`/myPage/${user?.user?._id}/reservations`}
               className="links"
             >
-              My Dashboard
+              {t("nav.myDashboard")}
             </Link>
             {user.user._id !== "" && (
               <Link href="/register-property" className="links">
                 <Typography sx={{ fontWeight: 700 }}>
-                  List your property
+                  {t("nav.listProperty")}
                 </Typography>
               </Link>
             )}
@@ -320,14 +330,14 @@ export default function TopMain(user: any) {
                 sx={{ color: "white" }}
                 onClick={() => router.push("/join/register")}
               >
-                SignUp
+                {t("nav.signUp")}
               </Button>
               <Button
                 variant="contained"
                 sx={{ color: "white" }}
                 onClick={() => router.push("/join/login")}
               >
-                Login
+                {t("nav.login")}
               </Button>
             </Stack>
           ) : (
@@ -399,14 +409,14 @@ export default function TopMain(user: any) {
                 router.push(`/myAccount?id=${user.user._id}`);
               }}
             >
-              <Avatar /> My account
+              <Avatar /> {t("nav.myAccount")}
             </MenuItem>
             <Divider />
             <MenuItem onClick={handleClose}>
               <ListItemIcon>
                 <Settings fontSize="small" />
               </ListItemIcon>
-              Settings
+              {t("nav.settings")}
             </MenuItem>
             <MenuItem
               onClick={async () => {
@@ -418,7 +428,7 @@ export default function TopMain(user: any) {
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>
-              Logout
+              {t("nav.logout")}
             </MenuItem>
           </Menu>
 
@@ -453,7 +463,7 @@ export default function TopMain(user: any) {
                 borderColor="divider"
               >
                 <Typography fontWeight={700} fontSize={16}>
-                  Notifications
+                  {t("notification.notifications")}
                 </Typography>
                 {unreadCount > 0 && (
                   <Button
@@ -462,7 +472,7 @@ export default function TopMain(user: any) {
                     onClick={handleMarkAllRead}
                     sx={{ textTransform: "none", fontSize: 12 }}
                   >
-                    Mark all read
+                    {t("notification.markAllRead")}
                   </Button>
                 )}
               </Stack>
@@ -475,7 +485,7 @@ export default function TopMain(user: any) {
                       sx={{ fontSize: 40, color: "text.disabled", mb: 1 }}
                     />
                     <Typography color="text.secondary" fontSize={14}>
-                      No notifications yet
+                      {t("notification.noNotifications")}
                     </Typography>
                   </Stack>
                 ) : (

@@ -13,6 +13,7 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import dynamic from "next/dynamic";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const Hotels = () => {
   const filters = useSelector((state: RootState) => state.filters);
@@ -94,6 +95,12 @@ const Hotels = () => {
     </Stack>
   );
 };
+
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 
 export default dynamic(() => Promise.resolve(withLayoutSecondary(Hotels)), {
   ssr: false,

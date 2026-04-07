@@ -10,6 +10,7 @@ import BrowseByPropertyType from "../libs/components/homePage/BrowseByPropertyTy
 import PopularAttractions from "../libs/components/homePage/PopularAttractions";
 import WhyOurHotel from "../libs/components/general/whyOurHotel";
 import { logOutPartner } from "../libs/auth";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 function HomePage() {
   useEffect(() => {
@@ -27,5 +28,11 @@ function HomePage() {
     </Stack>
   );
 }
+
+export const getStaticProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 
 export default withLayoutMain(HomePage);

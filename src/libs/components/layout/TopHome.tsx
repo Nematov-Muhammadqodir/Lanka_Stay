@@ -5,8 +5,10 @@ import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import Image from "next/image";
 import { useQuery } from "@apollo/client";
 import { GET_PLATFORM_STATS } from "@/apollo/user/query";
+import { useTranslation } from "next-i18next";
 
 const TopHome = () => {
+  const { t } = useTranslation("common");
   const { data } = useQuery(GET_PLATFORM_STATS);
   const stats = data?.getPlatformStats;
   return (
@@ -20,8 +22,8 @@ const TopHome = () => {
       }}
     >
       <Stack className="left-side">
-        <Typography sx={{ fontSize: "42px", fontWeight: 700, lineHeight: 1.2 }}>
-          Forget Busy Work, <br /> Start Next Vacation
+        <Typography sx={{ fontSize: "42px", fontWeight: 700, lineHeight: 1.2 }} whiteSpace="pre-line">
+          {t("home.heroTitle")}
         </Typography>
         <Typography
           sx={{
@@ -30,9 +32,9 @@ const TopHome = () => {
             color: "text.disabled",
             lineHeight: 1.5,
           }}
+          whiteSpace="pre-line"
         >
-          We provide what you need to enjoy your <br /> holiday with family.
-          Time to make another <br /> memorable moments.
+          {t("home.heroSubtitle")}
         </Typography>
         <Button
           variant="contained"
@@ -44,7 +46,7 @@ const TopHome = () => {
             borderRadius: "7px",
           }}
         >
-          Show More
+          {t("home.showMore")}
         </Button>
         <Stack sx={{ mt: 10 }} direction={"row"} spacing={5}>
           <Stack>
@@ -59,7 +61,7 @@ const TopHome = () => {
               >
                 {stats?.totalUsers ?? 0}
               </Typography>
-              Users
+              {t("home.users")}
             </Stack>
           </Stack>
           <Stack>
@@ -75,7 +77,7 @@ const TopHome = () => {
               >
                 {stats?.totalListings ?? 0}
               </Typography>
-              Listings
+              {t("home.listings")}
             </Stack>
           </Stack>
           <Stack>
@@ -90,7 +92,7 @@ const TopHome = () => {
               >
                 {stats?.totalCities ?? 0}
               </Typography>
-              Cities
+              {t("home.cities")}
             </Stack>
           </Stack>
         </Stack>

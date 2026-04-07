@@ -13,6 +13,7 @@ import { userVar } from "@/apollo/store";
 import withLayoutMyPage from "@/src/libs/components/layout/myPage/MyPageLayout";
 import Image from "next/image";
 import MyFavorites from "@/src/libs/components/myAccount/MyFavorites";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import AddReactionIcon from "@mui/icons-material/AddReaction";
 import Activities from "@/src/libs/components/myAccount/Activities";
 import Settings from "@/src/libs/components/myAccount/Settings";
@@ -211,5 +212,11 @@ const MyAccount = () => {
     </Stack>
   );
 };
+
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 
 export default withLayoutMyPage(MyAccount);
