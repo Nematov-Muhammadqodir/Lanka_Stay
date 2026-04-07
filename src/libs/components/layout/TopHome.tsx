@@ -3,8 +3,12 @@ import LuggageIcon from "@mui/icons-material/Luggage";
 import CameraIcon from "@mui/icons-material/Camera";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import Image from "next/image";
+import { useQuery } from "@apollo/client";
+import { GET_PLATFORM_STATS } from "@/apollo/user/query";
 
 const TopHome = () => {
+  const { data } = useQuery(GET_PLATFORM_STATS);
+  const stats = data?.getPlatformStats;
   return (
     <Stack
       className="container"
@@ -53,7 +57,7 @@ const TopHome = () => {
                   flexDirection: "row",
                 }}
               >
-                2500
+                {stats?.totalUsers ?? 0}
               </Typography>
               Users
             </Stack>
@@ -69,9 +73,9 @@ const TopHome = () => {
                   flexDirection: "row",
                 }}
               >
-                200
+                {stats?.totalListings ?? 0}
               </Typography>
-              treasure
+              Listings
             </Stack>
           </Stack>
           <Stack>
@@ -84,9 +88,9 @@ const TopHome = () => {
                   flexDirection: "row",
                 }}
               >
-                100
+                {stats?.totalCities ?? 0}
               </Typography>
-              cities
+              Cities
             </Stack>
           </Stack>
         </Stack>

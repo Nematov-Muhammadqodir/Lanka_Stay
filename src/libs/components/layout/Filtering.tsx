@@ -29,7 +29,7 @@ import {
   setLocation,
 } from "@/src/slices/filteringSlice";
 import { useQuery } from "@apollo/client";
-import { GET_ALL_AVAILABLE_PROPERTIES } from "@/apollo/user/query";
+import { GET_ALL_AVAILABLE_PROPERTIES, GET_AVAILABLE_CITIES } from "@/apollo/user/query";
 import { useRouter } from "next/router";
 
 export default function Filtering() {
@@ -115,6 +115,15 @@ export default function Filtering() {
   //     );
   //   },
   // });
+
+  const { data: citiesData } = useQuery(GET_AVAILABLE_CITIES);
+  const availableCities: string[] = citiesData?.getAvailableCities ?? [];
+  const [citySearch, setCitySearch] = useState("");
+  const filteredCities = citySearch
+    ? availableCities.filter((c) =>
+        c.toLowerCase().includes(citySearch.toLowerCase())
+      )
+    : availableCities;
 
   const { data, loading, refetch } = useQuery(GET_ALL_AVAILABLE_PROPERTIES, {
     skip: !filters.propertyRegion, // skip if no region
@@ -203,8 +212,64 @@ export default function Filtering() {
           onClose={handleClose}
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          slotProps={{
+            paper: {
+              sx: {
+                borderRadius: 3,
+                boxShadow: "0 12px 40px rgba(0,0,0,0.15)",
+                overflow: "hidden",
+                "& .rdrCalendarWrapper": {
+                  backgroundColor: "background.paper",
+                  color: "text.primary",
+                },
+                "& .rdrMonthAndYearPickers select": {
+                  color: "text.primary",
+                  backgroundColor: "background.paper",
+                },
+                "& .rdrDayNumber span": {
+                  color: "text.primary",
+                },
+                "& .rdrDayPassive .rdrDayNumber span": {
+                  color: "text.disabled",
+                },
+                "& .rdrMonthName": {
+                  color: "text.primary",
+                },
+                "& .rdrWeekDay": {
+                  color: "text.secondary",
+                },
+                "& .rdrDayToday .rdrDayNumber span::after": {
+                  backgroundColor: "primary.main",
+                },
+                "& .rdrMonth": {
+                  backgroundColor: "background.paper",
+                },
+                "& .rdrDateDisplayWrapper": {
+                  backgroundColor: "background.default",
+                },
+                "& .rdrDateDisplayItem": {
+                  backgroundColor: "background.paper",
+                  borderColor: "divider",
+                },
+                "& .rdrDateDisplayItem input": {
+                  color: "text.primary",
+                },
+                "& .rdrNextPrevButton": {
+                  backgroundColor: "action.hover",
+                },
+                "& .rdrPprevButton i": {
+                  borderColor: "transparent transparent transparent",
+                  borderRightColor: "text.secondary",
+                },
+                "& .rdrNextButton i": {
+                  borderColor: "transparent transparent transparent",
+                  borderLeftColor: "text.secondary",
+                },
+              },
+            },
+          }}
         >
-          <MenuItem>
+          <Stack sx={{ p: 1 }}>
             <DateRange
               ranges={range}
               onChange={(item: any) => {
@@ -214,7 +279,7 @@ export default function Filtering() {
                 dispatch(setDates({ startDate: start, endDate: end }));
               }}
             />
-          </MenuItem>
+          </Stack>
         </Menu>
       </Stack>
 
@@ -331,42 +396,63 @@ export default function Filtering() {
           onClose={handleLocationClose}
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          slotProps={{
+            paper: {
+              sx: {
+                borderRadius: 3,
+                boxShadow: "0 12px 40px rgba(0,0,0,0.15)",
+                maxHeight: 400,
+              },
+            },
+          }}
         >
-          <MenuItem>
-            <Stack gap={2} width={431}>
-              <Input
-                autoFocus={inputRef ? true : false}
-                inputRef={inputRef}
-                placeholder="Search for location!"
-                onChange={(e) => dispatch(setLocation(e.target.value))}
-              />
-              <Typography sx={{ fontWeight: "bold" }}>
-                Trending Destinations
-              </Typography>
-              {["Busan", "Seoul", "Tokyo", "Kyoto", "Fukuoka", "Osaka"].map(
-                (city) => (
+          <Stack gap={1.5} width={350} px={2} py={1.5}>
+            <Input
+              autoFocus
+              inputRef={inputRef}
+              placeholder="Search for a city..."
+              value={citySearch}
+              onChange={(e) => setCitySearch(e.target.value)}
+              sx={{ fontSize: 14 }}
+            />
+            <Typography fontSize={13} fontWeight={700} color="text.secondary">
+              {citySearch ? "Search Results" : "Available Destinations"}
+            </Typography>
+            <Stack sx={{ maxHeight: 260, overflowY: "auto" }} gap={0.5}>
+              {filteredCities.length === 0 ? (
+                <Typography fontSize={13} color="text.disabled" py={2} textAlign="center">
+                  No cities found
+                </Typography>
+              ) : (
+                filteredCities.map((city) => (
                   <Button
                     key={city}
                     onClick={(e) => {
                       e.stopPropagation();
                       dispatch(setLocation(city));
+                      setCitySearch("");
                       handleLocationClose();
                     }}
                     sx={{
                       gap: 1,
-                      textTransform: "capitalize",
+                      textTransform: "none",
                       width: "100%",
                       justifyContent: "flex-start",
-                      borderRadius: 0,
+                      borderRadius: 1.5,
+                      py: 1,
+                      color: "text.primary",
+                      "&:hover": { backgroundColor: "action.hover" },
                     }}
                   >
-                    <WhereToVoteIcon />
-                    <Typography fontWeight={700}>{city}</Typography>
+                    <WhereToVoteIcon sx={{ fontSize: 18, color: "primary.main" }} />
+                    <Typography fontSize={14} fontWeight={600}>
+                      {city}
+                    </Typography>
                   </Button>
-                )
+                ))
               )}
             </Stack>
-          </MenuItem>
+          </Stack>
         </Menu>
       </Stack>
 

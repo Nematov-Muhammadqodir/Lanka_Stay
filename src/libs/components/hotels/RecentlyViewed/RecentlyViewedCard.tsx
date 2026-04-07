@@ -4,8 +4,6 @@ import Image from "next/image";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
-import { GET_PARTNER_PROPERTY } from "@/apollo/user/query";
-import { useQuery } from "@apollo/client";
 import { formatShortDate } from "@/src/libs/utils";
 
 interface RecentlyViewedCardProps {
@@ -17,6 +15,35 @@ const RecentlyViewedCard = ({ item }: RecentlyViewedCardProps) => {
   const roomPrice = firstRoom?.roomPricePerNight
     ? Number(firstRoom.roomPricePerNight)
     : 0;
+
+  const ratings = [
+    item?.staffRating,
+    item?.facilitiesRating,
+    item?.cleanlessRating,
+    item?.comfortRating,
+    item?.valueOfMoneyRating,
+    item?.locationRating,
+    item?.freeWiFiRating,
+  ].filter((r) => r != null && r > 0);
+
+  const avgRating =
+    ratings.length > 0
+      ? (ratings.reduce((sum: number, val: number) => sum + val, 0) / ratings.length).toFixed(1)
+      : "0";
+
+  const ratingLabel =
+    Number(avgRating) >= 9
+      ? "Superb"
+      : Number(avgRating) >= 8
+      ? "Fabulous"
+      : Number(avgRating) >= 7
+      ? "Very Good"
+      : Number(avgRating) >= 6
+      ? "Good"
+      : Number(avgRating) > 0
+      ? "Pleasant"
+      : "";
+
   return (
     <Stack width={200} height={"auto"}>
       <Image
@@ -48,28 +75,32 @@ const RecentlyViewedCard = ({ item }: RecentlyViewedCardProps) => {
         >
           {item.propertyName}
         </Typography>
-        <Stack
-          flexDirection={"row"}
-          alignItems={"center"}
-          gap={1}
-          width={"auto"}
-        >
+        {Number(avgRating) > 0 && (
           <Stack
-            border={"1px solid"}
-            width={30}
-            height={30}
-            justifyContent={"center"}
+            flexDirection={"row"}
             alignItems={"center"}
-            borderRadius={1}
-            sx={{ backgroundColor: "primary.main", color: "white" }}
+            gap={1}
+            width={"auto"}
           >
-            <Typography className="small-bold-text">8.3</Typography>
+            <Stack
+              border={"1px solid"}
+              width={30}
+              height={30}
+              justifyContent={"center"}
+              alignItems={"center"}
+              borderRadius={1}
+              sx={{ backgroundColor: "primary.main", color: "white" }}
+            >
+              <Typography className="small-bold-text">{avgRating}</Typography>
+            </Stack>
+            <Typography className="small-bold-text">{ratingLabel}</Typography>
           </Stack>
-          <Typography className="small-bold-text">Very good</Typography>
-        </Stack>
+        )}
         <Stack flexDirection={"row"} alignItems={"center"}>
-          <LocationOnIcon />
-          <Typography className="small-text">8.9 km from the centre</Typography>
+          <LocationOnIcon sx={{ fontSize: 16, color: "text.secondary" }} />
+          <Typography className="small-text">
+            {item?.propertyCity}, {item?.propertyCountry}
+          </Typography>
         </Stack>
         <Stack alignItems={"flex-end"}>
           <Typography className="small-text">Starting from</Typography>

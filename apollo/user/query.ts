@@ -490,6 +490,22 @@ export const GET_ATTRACTION_RESERVATIONS = gql`
   }
 `;
 
+export const GET_PLATFORM_STATS = gql`
+  query GetPlatformStats {
+    getPlatformStats {
+      totalUsers
+      totalListings
+      totalCities
+    }
+  }
+`;
+
+export const GET_AVAILABLE_CITIES = gql`
+  query GetAvailableCities {
+    getAvailableCities
+  }
+`;
+
 export const GET_POPULAR_ATTRACTIONS = gql`
   query GetPopularAttractions {
     getPopularAttractions {
