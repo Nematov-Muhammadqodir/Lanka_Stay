@@ -26,12 +26,14 @@ import {
 } from "@mui/material";
 import Slider from "@mui/material/Slider";
 import React from "react";
+import { useTranslation } from "next-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
 const MAX = 400000;
 const MIN = 30000;
 
 const Filter = () => {
+  const { t } = useTranslation("common");
   const filterSliceInput = useSelector(filterSliceValue);
   const [priceRange, setPriceRange] = React.useState<number[]>([MIN, MAX]);
   const dispatch = useDispatch();
@@ -64,7 +66,7 @@ const Filter = () => {
       >
         <Box pt={1} pl={1} alignSelf={"start"} justifyContent={"center"}>
           <Typography className="bold-text-medium" alignSelf={"start"}>
-            Filter by:
+            {t("filter.filterBy")}
           </Typography>
         </Box>
         <Box
@@ -74,7 +76,7 @@ const Filter = () => {
         ></Box>
         <Stack gap={1}>
           <Typography className="small-bold-text">
-            Your budget (per night)
+            {t("filter.yourBudget")}
           </Typography>
           <Stack flexDirection={"row"} justifyContent={"space-around"}>
             <Typography fontSize={13}>
@@ -105,36 +107,36 @@ const Filter = () => {
         ></Box>
 
         <Stack gap={1} py={1} px={2} sx={{ width: "100%" }}>
-          <Typography className="small-bold-text">Popular filters</Typography>
+          <Typography className="small-bold-text">{t("filter.popularFilters")}</Typography>
           <FormGroup>
             {[
-              "Hotel",
-              "Guest House",
-              "Bed and Breakfast",
-              "Homestay",
-              "Hostel",
-              "Aparthotel",
-              "Capsule Hotel",
-              "Country House",
-              "Farm Stay",
-              "Inn",
-              "Love Hotel",
-              "Motel",
-              "Riad",
-              "Ryokan",
-              "Lodge",
+              { value: "Hotel", labelKey: "filter.propertyHotel" },
+              { value: "Guest House", labelKey: "filter.propertyGuestHouse" },
+              { value: "Bed and Breakfast", labelKey: "filter.propertyBnB" },
+              { value: "Homestay", labelKey: "filter.propertyHomestay" },
+              { value: "Hostel", labelKey: "filter.propertyHostel" },
+              { value: "Aparthotel", labelKey: "filter.propertyAparthotel" },
+              { value: "Capsule Hotel", labelKey: "filter.propertyCapsuleHotel" },
+              { value: "Country House", labelKey: "filter.propertyCountryHouse" },
+              { value: "Farm Stay", labelKey: "filter.propertyFarmStay" },
+              { value: "Inn", labelKey: "filter.propertyInn" },
+              { value: "Love Hotel", labelKey: "filter.propertyLoveHotel" },
+              { value: "Motel", labelKey: "filter.propertyMotel" },
+              { value: "Riad", labelKey: "filter.propertyRiad" },
+              { value: "Ryokan", labelKey: "filter.propertyRyokan" },
+              { value: "Lodge", labelKey: "filter.propertyLodge" },
             ].map((type) => (
               <FormControlLabel
-                key={type}
+                key={type.value}
                 control={
                   <Checkbox
                     checked={
-                      filterSliceInput.propertyType?.includes(type) || false
+                      filterSliceInput.propertyType?.includes(type.value) || false
                     }
-                    onChange={() => dispatch(setPropertyType(type))}
+                    onChange={() => dispatch(setPropertyType(type.value))}
                   />
                 }
-                label={type}
+                label={t(type.labelKey)}
               />
             ))}
           </FormGroup>
@@ -147,11 +149,11 @@ const Filter = () => {
         ></Box>
 
         <Stack gap={1} py={1} px={2} sx={{ width: "100%" }}>
-          <Typography className="small-bold-text">Review score</Typography>
+          <Typography className="small-bold-text">{t("filter.reviewScore")}</Typography>
           <FormGroup>
             <FormControlLabel
               control={<Checkbox />}
-              label="Superb: 9+"
+              label={`${t("hotel.superb")}: 9+`}
               value={"9"}
               onChange={(e: any) => {
                 console.log("e", e.target.value);
@@ -159,7 +161,7 @@ const Filter = () => {
             />
             <FormControlLabel
               control={<Checkbox />}
-              label="Very good: 8+"
+              label={`${t("hotel.veryGood")}: 8+`}
               value={"8"}
               onChange={(e: any) => {
                 console.log("e", e.target.value);
@@ -168,7 +170,7 @@ const Filter = () => {
             <FormControlLabel
               value={"7"}
               control={<Checkbox />}
-              label="Good: 7+"
+              label={`${t("hotel.good")}: 7+`}
               onChange={(e: any) => {
                 console.log("e", e.target.value);
               }}
@@ -176,7 +178,7 @@ const Filter = () => {
             <FormControlLabel
               value={"6"}
               control={<Checkbox />}
-              label="Pleasant: 6+"
+              label={`${t("hotel.pleasant")}: 6+`}
               onChange={(e: any) => {
                 console.log("e", e.target.value);
               }}
@@ -191,11 +193,11 @@ const Filter = () => {
         ></Box>
 
         <Stack gap={1} py={1} px={2} sx={{ width: "100%" }}>
-          <Typography className="small-bold-text">Beach access</Typography>
+          <Typography className="small-bold-text">{t("filter.beachAccess")}</Typography>
           <FormGroup>
             <FormControlLabel
               control={<Checkbox />}
-              label="Beach Front"
+              label={t("filter.beachFront")}
               value={true}
               onChange={(e: any) => {
                 console.log("e", e.target.value);
@@ -213,10 +215,10 @@ const Filter = () => {
         <Stack gap={1} py={1} px={2} sx={{ width: "100%" }}>
           <Stack>
             <Typography className="small-bold-text">
-              Highly rated features
+              {t("filter.highlyRated")}
             </Typography>
             <Typography className="small-text">
-              Based on guest reviews
+              {t("Based on guest reviews")}
             </Typography>
           </Stack>
           <FormGroup>
@@ -229,7 +231,7 @@ const Filter = () => {
                   }
                 />
               }
-              label="Tasty breakfast"
+              label={t("filter.tastyBreakfast")}
             />
           </FormGroup>
         </Stack>
@@ -241,7 +243,7 @@ const Filter = () => {
         ></Box>
 
         <Stack gap={1} py={1} px={2} sx={{ width: "100%" }}>
-          <Typography className="small-bold-text">Travel group</Typography>
+          <Typography className="small-bold-text">{t("filter.travelGroup")}</Typography>
           <FormGroup>
             <FormControlLabel
               control={
@@ -250,7 +252,7 @@ const Filter = () => {
                   onChange={(e) => dispatch(setAllowPets(e.target.checked))}
                 />
               }
-              label="Pets allowed"
+              label={t("filter.petsAllowed")}
               value={true}
             />
             <FormControlLabel
@@ -262,7 +264,7 @@ const Filter = () => {
                   }
                 />
               }
-              label="Adults only"
+              label={t("filter.adultsOnly")}
               value={true}
             />
           </FormGroup>
@@ -275,7 +277,7 @@ const Filter = () => {
         ></Box>
 
         <Stack gap={1} py={1} px={2} sx={{ width: "100%" }}>
-          <Typography className="small-bold-text">Brands</Typography>
+          <Typography className="small-bold-text">{t("Brands")}</Typography>
           <FormGroup>
             <FormControlLabel
               control={<Checkbox />}
@@ -303,7 +305,7 @@ const Filter = () => {
         ></Box>
 
         <Stack gap={1} py={1} px={2} sx={{ width: "100%" }}>
-          <Typography className="small-bold-text">Facilities</Typography>
+          <Typography className="small-bold-text">{t("filter.facilities")}</Typography>
           <FormGroup>
             <FormControlLabel
               control={
@@ -314,11 +316,11 @@ const Filter = () => {
                   }
                 />
               }
-              label="Parking"
+              label={t("filter.parking")}
             />
             <FormControlLabel
               control={<Checkbox />}
-              label="Restaurant"
+              label={t("filter.restaurant")}
               value={true}
               onChange={(e: any) => {
                 console.log("e", e.target.value);
@@ -326,7 +328,7 @@ const Filter = () => {
             />
             <FormControlLabel
               control={<Checkbox />}
-              label="Room service"
+              label={t("filter.roomService")}
               value={true}
               onChange={(e: any) => {
                 console.log("e", e.target.value);
@@ -334,7 +336,7 @@ const Filter = () => {
             />
             <FormControlLabel
               control={<Checkbox />}
-              label="24-hour front desk"
+              label={t("filter.frontDesk")}
               value={true}
               onChange={(e: any) => {
                 console.log("e", e.target.value);
@@ -342,7 +344,7 @@ const Filter = () => {
             />
             <FormControlLabel
               control={<Checkbox />}
-              label="Fitness centre"
+              label={t("filter.fitnessCenter")}
               value={true}
               onChange={(e: any) => {
                 console.log("e", e.target.value);
@@ -350,7 +352,7 @@ const Filter = () => {
             />
             <FormControlLabel
               control={<Checkbox />}
-              label="Airport shuttle"
+              label={t("filter.airportShuttle")}
               value={true}
               onChange={(e: any) => {
                 console.log("e", e.target.value);
@@ -358,7 +360,7 @@ const Filter = () => {
             />
             <FormControlLabel
               control={<Checkbox />}
-              label="Hot tub/Jacuzzi"
+              label={t("filter.hotTub")}
               value={true}
               onChange={(e: any) => {
                 console.log("e", e.target.value);
@@ -375,57 +377,15 @@ const Filter = () => {
 
         <Stack gap={1} py={1} px={2} sx={{ width: "100%" }}>
           <Typography className="small-bold-text">
-            Swimming pool type
+            {t("filter.swimmingPoolType")}
           </Typography>
           <FormGroup>
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Swimming pool"
-              value={true}
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
-            />
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Heated pool"
-              value={true}
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
-            />
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Indoor pool"
-              value={true}
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
-            />
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Outdoor pool"
-              value={true}
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
-            />
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Private pool"
-              value={true}
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
-            />
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Infinity pool"
-              value={true}
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
-            />
+            <FormControlLabel control={<Checkbox />} label={t("filter.swimmingPool")} />
+            <FormControlLabel control={<Checkbox />} label={t("filter.heatedPool")} />
+            <FormControlLabel control={<Checkbox />} label={t("filter.indoorPool")} />
+            <FormControlLabel control={<Checkbox />} label={t("filter.outdoorPool")} />
+            <FormControlLabel control={<Checkbox />} label={t("filter.privatePool")} />
+            <FormControlLabel control={<Checkbox />} label={t("filter.infinityPool")} />
           </FormGroup>
         </Stack>
 
@@ -436,24 +396,10 @@ const Filter = () => {
         ></Box>
 
         <Stack gap={1} py={1} px={2} sx={{ width: "100%" }}>
-          <Typography className="small-bold-text">Meals</Typography>
+          <Typography className="small-bold-text">{t("filter.meals")}</Typography>
           <FormGroup>
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Self catering"
-              value={true}
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
-            />
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Breakfast included"
-              value={true}
-              onChange={(e: any) => {
-                console.log("e", e.target.value);
-              }}
-            />
+            <FormControlLabel control={<Checkbox />} label={t("filter.selfCatering")} />
+            <FormControlLabel control={<Checkbox />} label={t("filter.breakfastIncluded")} />
           </FormGroup>
         </Stack>
       </Stack>

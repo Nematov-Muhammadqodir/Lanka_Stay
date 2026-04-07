@@ -3,8 +3,10 @@ import { CircularProgress, Stack, Typography } from "@mui/material";
 import MostPickedCard from "./MostPickedCard";
 import { useQuery } from "@apollo/client";
 import { GET_MOST_PICKED } from "@/apollo/user/query";
+import { useTranslation } from "next-i18next";
 
 export default function MostPickedList() {
+  const { t } = useTranslation("common");
   const { data, loading } = useQuery(GET_MOST_PICKED);
   const items = data?.getMostPicked ?? [];
 
@@ -15,10 +17,10 @@ export default function MostPickedList() {
     >
       <Stack>
         <Typography sx={{ fontSize: 24, fontWeight: 500 }}>
-          Most Picked
+          {t("home.mostPicked")}
         </Typography>
         <Typography fontSize={14} color="text.secondary" mt={0.5}>
-          Top-rated hotels and attractions loved by travelers
+          {t("home.mostPickedDesc")}
         </Typography>
       </Stack>
 

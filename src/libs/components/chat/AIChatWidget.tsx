@@ -14,6 +14,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { useLazyQuery } from "@apollo/client";
 import { ASK_AI_AGENT } from "@/apollo/user/query";
 import ReactMarkdown from "react-markdown";
+import { useTranslation } from "next-i18next";
 
 interface Message {
   id: string;
@@ -23,11 +24,12 @@ interface Message {
 }
 
 const AIChatWidget = () => {
+  const { t } = useTranslation("common");
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
-      text: "Hi! I'm your AI travel assistant. Ask me anything about hotels, attractions, prices, availability, or recommendations!",
+      text: t("ai.welcome"),
       role: "assistant",
       createdAt: new Date(),
     },
@@ -147,10 +149,10 @@ const AIChatWidget = () => {
               <AutoAwesomeIcon sx={{ color: "white", fontSize: 22 }} />
               <Stack>
                 <Typography fontWeight={700} fontSize={14} color="white">
-                  AI Travel Assistant
+                  {t("ai.travelAssistant")}
                 </Typography>
                 <Typography fontSize={11} color="rgba(255,255,255,0.7)">
-                  Powered by Gemini
+                  {t("ai.poweredBy")}
                 </Typography>
               </Stack>
             </Stack>
@@ -178,7 +180,7 @@ const AIChatWidget = () => {
                       sx={{ fontSize: 14, color: "primary.main" }}
                     />
                     <Typography fontSize={11} color="text.secondary" fontWeight={600}>
-                      AI Assistant
+                      {t("ai.aiAssistant")}
                     </Typography>
                   </Stack>
                 )}
@@ -222,7 +224,7 @@ const AIChatWidget = () => {
               <Stack direction="row" gap={1} alignItems="center" px={0.5}>
                 <CircularProgress size={16} sx={{ color: "primary.main" }} />
                 <Typography fontSize={12} color="text.secondary">
-                  Searching the database...
+                  {t("ai.searching")}
                 </Typography>
               </Stack>
             )}
@@ -240,7 +242,7 @@ const AIChatWidget = () => {
             borderColor="divider"
           >
             <TextField
-              placeholder="Ask about hotels, attractions, prices..."
+              placeholder={t("ai.askAbout")}
               size="small"
               fullWidth
               value={input}

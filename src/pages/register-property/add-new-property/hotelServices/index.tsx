@@ -14,6 +14,7 @@ import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import LayoutCreateAccountMain from "@/src/libs/components/layout/registerProperty/create-account/CreateAccountMainLayout";
 import { useDispatch, useSelector } from "react-redux";
 import {
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
   partnerPropertyInputValue,
   setBreakfastIncluded,
   setParkingIncluded,
@@ -147,4 +148,9 @@ const DefineHotelServices = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default DefineHotelServices;

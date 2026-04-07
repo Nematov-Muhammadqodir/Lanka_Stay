@@ -31,9 +31,11 @@ import {
 import { useQuery } from "@apollo/client";
 import { GET_ALL_AVAILABLE_PROPERTIES, GET_AVAILABLE_CITIES } from "@/apollo/user/query";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 
 export default function Filtering() {
   const router = useRouter();
+  const { t } = useTranslation("common");
   const dispatch = useDispatch();
   const filters = useSelector((state: RootState) => state.filters);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -83,9 +85,9 @@ export default function Filtering() {
   const handleLocationClose = () => setAnchorElLocation(null);
 
   const getPeopleText = () => {
-    if (!mounted) return "Person";
+    if (!mounted) return t("filter.person");
     const total = (filters.adults || 0) + (filters.children || 0);
-    return `${total} Person${total !== 1 ? "s" : ""}`;
+    return `${total} ${total !== 1 ? t("filter.persons") : t("filter.person")}`;
   };
 
   /** APOLLO REQUESTS **/
@@ -202,7 +204,7 @@ export default function Filtering() {
               textTransform="capitalize"
               letterSpacing={1}
             >
-              Check Available
+              {t("filter.checkAvailable")}
             </Typography>
           </Button>
         </Tooltip>
@@ -386,7 +388,7 @@ export default function Filtering() {
           >
             <PinDropIcon />
             <Typography fontSize="12px" textTransform="capitalize">
-              {!mounted ? "Location" : filters.propertyRegion || "Location"}
+              {!mounted ? t("filter.location") : filters.propertyRegion || t("filter.location")}
             </Typography>
           </Button>
         </Tooltip>
@@ -410,18 +412,18 @@ export default function Filtering() {
             <Input
               autoFocus
               inputRef={inputRef}
-              placeholder="Search for a city..."
+              placeholder={t("filter.searchCity")}
               value={citySearch}
               onChange={(e) => setCitySearch(e.target.value)}
               sx={{ fontSize: 14 }}
             />
             <Typography fontSize={13} fontWeight={700} color="text.secondary">
-              {citySearch ? "Search Results" : "Available Destinations"}
+              {citySearch ? t("filter.searchResults") : t("filter.availableDestinations")}
             </Typography>
             <Stack sx={{ maxHeight: 260, overflowY: "auto" }} gap={0.5}>
               {filteredCities.length === 0 ? (
                 <Typography fontSize={13} color="text.disabled" py={2} textAlign="center">
-                  No cities found
+                  {t("filter.noCities")}
                 </Typography>
               ) : (
                 filteredCities.map((city) => (
@@ -492,7 +494,7 @@ export default function Filtering() {
             router.push("/hotels");
           }}
         >
-          <Typography>Search</Typography>
+          <Typography>{t("filter.search")}</Typography>
           <SearchIcon />
         </Button>
       </Stack>

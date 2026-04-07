@@ -29,6 +29,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import { getPartnerJwtToken } from "@/src/libs/auth";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -548,4 +549,9 @@ const CreateAttraction = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default CreateAttraction;

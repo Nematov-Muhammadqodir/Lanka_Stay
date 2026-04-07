@@ -12,6 +12,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { useMutation } from "@apollo/client";
 import { ASK_PARTNER_AI_AGENT } from "@/apollo/user/mutation";
 import ReactMarkdown from "react-markdown";
+import { useTranslation } from "next-i18next";
 
 interface Message {
   id: string;
@@ -20,10 +21,11 @@ interface Message {
 }
 
 const PartnerAIChatWidget = () => {
+  const { t } = useTranslation("common");
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
-      text: "Hi! I'm your AI business assistant. Ask me about your properties, rooms, reservations, revenue, or reviews!",
+      text: t("ai.welcomeBusiness"),
       role: "assistant",
     },
   ]);
@@ -93,10 +95,10 @@ const PartnerAIChatWidget = () => {
         <AutoAwesomeIcon sx={{ color: "white", fontSize: 22 }} />
         <Stack>
           <Typography fontWeight={700} fontSize={14} color="white">
-            AI Business Assistant
+            {t("ai.businessAssistant")}
           </Typography>
           <Typography fontSize={11} color="rgba(255,255,255,0.7)">
-            Powered by Gemini — queries your data only
+            {t("ai.businessPoweredBy")}
           </Typography>
         </Stack>
       </Stack>
@@ -118,7 +120,7 @@ const PartnerAIChatWidget = () => {
               <Stack direction="row" gap={0.5} alignItems="center" mb={0.3}>
                 <AutoAwesomeIcon sx={{ fontSize: 14, color: "primary.main" }} />
                 <Typography fontSize={11} color="text.secondary" fontWeight={600}>
-                  AI Assistant
+                  {t("ai.aiAssistant")}
                 </Typography>
               </Stack>
             )}
@@ -152,7 +154,7 @@ const PartnerAIChatWidget = () => {
           <Stack direction="row" gap={1} alignItems="center">
             <CircularProgress size={16} sx={{ color: "primary.main" }} />
             <Typography fontSize={12} color="text.secondary">
-              Analyzing your data...
+              {t("ai.analyzingData")}
             </Typography>
           </Stack>
         )}
@@ -170,7 +172,7 @@ const PartnerAIChatWidget = () => {
         borderColor="divider"
       >
         <TextField
-          placeholder="Ask about your business..."
+          placeholder={t("ai.askBusiness")}
           size="small"
           fullWidth
           value={input}

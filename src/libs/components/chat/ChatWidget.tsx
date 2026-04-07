@@ -19,6 +19,7 @@ import {
 import { SEND_MESSAGE } from "@/apollo/user/mutation";
 import { userVar } from "@/apollo/store";
 import { sweetMixinErrorAlert } from "../../sweetAlert";
+import { useTranslation } from "next-i18next";
 
 interface ChatWidgetProps {
   ownerId: string;
@@ -33,6 +34,7 @@ const ChatWidget = ({
   propertyId,
   attractionId,
 }: ChatWidgetProps) => {
+  const { t } = useTranslation("common");
   const user = useReactiveVar(userVar);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -173,7 +175,7 @@ const ChatWidget = ({
                 {ownerName}
               </Typography>
               <Typography fontSize={11} color="rgba(255,255,255,0.7)">
-                Usually replies within a few hours
+                {t("chat.usuallyReplies")}
               </Typography>
             </Stack>
             <IconButton onClick={() => setOpen(false)} size="small">
@@ -192,7 +194,7 @@ const ChatWidget = ({
             {messages.length === 0 && (
               <Stack alignItems="center" justifyContent="center" flex={1}>
                 <Typography fontSize={13} color="text.secondary" textAlign="center">
-                  Send a message to {ownerName}
+                  {t("chat.sendMessageTo", { name: ownerName })}
                 </Typography>
               </Stack>
             )}
@@ -242,7 +244,7 @@ const ChatWidget = ({
             borderColor="divider"
           >
             <TextField
-              placeholder="Type a message..."
+              placeholder={t("chat.typeMessage")}
               size="small"
               fullWidth
               value={message}

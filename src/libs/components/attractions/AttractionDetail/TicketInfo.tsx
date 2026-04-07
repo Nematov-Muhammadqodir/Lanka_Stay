@@ -3,12 +3,14 @@ import { Button, Stack, Typography } from "@mui/material";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import TicketPurchase from "./Ticket/TicketPurchase";
+import { useTranslation } from "next-i18next";
 
 interface TicketInfoProps {
   attraction?: any;
 }
 
 const TicketInfo = ({ attraction }: TicketInfoProps) => {
+  const { t } = useTranslation("common");
   const [selected, setSelected] = useState<Date | undefined>();
   const [selectedTime, setSelectedTime] = useState("11:00");
   const [ticketCount, setTicketCount] = useState(1);
@@ -26,9 +28,9 @@ const TicketInfo = ({ attraction }: TicketInfoProps) => {
 
   return (
     <Stack>
-      <Typography className="bold-text">Tickets and prices</Typography>
+      <Typography className="bold-text">{t("attraction.ticketsAndPrices")}</Typography>
       <Typography className="bold-text-medium" sx={{ mt: 2 }}>
-        Search ticket availability by date
+        {t("attraction.searchByDate")}
       </Typography>
       <Stack sx={{ mt: 2 }}>
         <DayPicker
@@ -39,7 +41,7 @@ const TicketInfo = ({ attraction }: TicketInfoProps) => {
         />
       </Stack>
       <Stack spacing={2} mt={2}>
-        <Typography className="bold-text">Select time</Typography>
+        <Typography className="bold-text">{t("attraction.selectTime")}</Typography>
         <Stack direction="row" flexWrap="wrap" gap={1}>
           {times.map((time) => (
             <Button

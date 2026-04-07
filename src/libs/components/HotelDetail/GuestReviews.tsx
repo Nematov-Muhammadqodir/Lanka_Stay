@@ -1,5 +1,6 @@
 import { Box, Button, Drawer, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
+import { useTranslation } from "next-i18next";
 import HdrStrongIcon from "@mui/icons-material/HdrStrong";
 import ReviewBar from "./ReviewBar";
 import GuestReviewMenu from "./GuestReviewMenu";
@@ -20,6 +21,7 @@ const GuestReviews = ({
     freeWiFiRating,
     totalReviews,
   } = hotelReviewInput;
+  const { t } = useTranslation("common");
   console.log("hotelReviewInput in GuestReviews:", hotelReviewInput);
 
   const ratings = [
@@ -48,7 +50,7 @@ const GuestReviews = ({
   };
   return (
     <Stack className="container" mt={"50px !important"} gap={2}>
-      <Typography className="bold-text">Guest reviews</Typography>
+      <Typography className="bold-text">{t("hotel.guestReviews")}</Typography>
       <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
         <Box
           sx={{
@@ -62,9 +64,19 @@ const GuestReviews = ({
         >
           {formattedTotalScore}
         </Box>
-        <Typography className="small-bold-text">Fabulous</Typography>
+        <Typography className="small-bold-text">
+          {formattedTotalScore >= 9
+            ? t("hotel.superb")
+            : formattedTotalScore >= 8
+            ? t("hotel.fabulous")
+            : formattedTotalScore >= 7
+            ? t("hotel.veryGood")
+            : formattedTotalScore >= 6
+            ? t("hotel.good")
+            : t("hotel.pleasant")}
+        </Typography>
         <HdrStrongIcon />
-        <Typography>{totalReviews} reviews</Typography>
+        <Typography>{totalReviews} {t("hotel.reviews")}</Typography>
         <Button
           id="basic-button"
           aria-controls={open ? "basic-menu" : undefined}
@@ -77,7 +89,7 @@ const GuestReviews = ({
             textDecoration: "underline",
           }}
         >
-          Read all reviews
+          {t("hotel.readAllReviews")}
         </Button>
         <Drawer
           anchor="right" // 👈 this positions it to the right
@@ -98,15 +110,15 @@ const GuestReviews = ({
           />
         </Drawer>
       </Stack>
-      <Typography className="bold-text">Categories:</Typography>
+      <Typography className="bold-text">{t("hotel.categories")}</Typography>
       <Stack flexDirection={"row"} flexWrap={"wrap"} gap={3}>
-        <ReviewBar label={"Staff"} value={staffRating} />
-        <ReviewBar label={"Facilities"} value={facilitiesRating} />
-        <ReviewBar label={"Cleanliness"} value={cleanlessRating} />
-        <ReviewBar label={"Comfort"} value={comfortRating} />
-        <ReviewBar label={"Value for money"} value={valueOfMoneyRating} />
-        <ReviewBar label={"Location"} value={locationRating} />
-        <ReviewBar label={"Free WiFi"} value={freeWiFiRating} />
+        <ReviewBar label={t("hotel.staff")} value={staffRating} />
+        <ReviewBar label={t("hotel.facilitiesRating")} value={facilitiesRating} />
+        <ReviewBar label={t("hotel.cleanliness")} value={cleanlessRating} />
+        <ReviewBar label={t("hotel.comfort")} value={comfortRating} />
+        <ReviewBar label={t("hotel.valueForMoney")} value={valueOfMoneyRating} />
+        <ReviewBar label={t("hotel.locationLabel")} value={locationRating} />
+        <ReviewBar label={t("hotel.freeWifi")} value={freeWiFiRating} />
       </Stack>
     </Stack>
   );

@@ -29,6 +29,7 @@ import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AttractionsIcon from "@mui/icons-material/Attractions";
 import React, { useState } from "react";
+import { useTranslation } from "next-i18next";
 import { TableVirtuoso, TableComponents } from "react-virtuoso";
 import {
   GET_RESERVED_ROOMS,
@@ -62,6 +63,7 @@ interface HotelColumnData {
 }
 
 const Reservations = () => {
+  const { t } = useTranslation("common");
   const [tab, setTab] = useState(0);
   const [selectedReservation, setSelectedReservation] =
     useState<HotelData | null>(null);
@@ -87,11 +89,11 @@ const Reservations = () => {
     attractionResData?.getAttractionReservations || [];
 
   const hotelColumns: HotelColumnData[] = [
-    { width: 120, label: "Hotel", dataKey: "propertyName" },
-    { width: 100, label: "Room", dataKey: "roomType" },
-    { width: 50, label: "Nights", dataKey: "nights", numeric: true },
-    { width: 80, label: "Price", dataKey: "roomPricePerNight" },
-    { width: 150, label: "Contact", dataKey: "hotelOwnerPhoneNumber" },
+    { width: 120, label: t("booking.hotel"), dataKey: "propertyName" },
+    { width: 100, label: t("booking.room"), dataKey: "roomType" },
+    { width: 50, label: t("booking.nights"), dataKey: "nights", numeric: true },
+    { width: 80, label: t("booking.price"), dataKey: "roomPricePerNight" },
+    { width: 150, label: t("booking.contact"), dataKey: "hotelOwnerPhoneNumber" },
   ];
 
   const hotelRows: HotelData[] = reservationsList.map(
@@ -184,7 +186,7 @@ const Reservations = () => {
   return (
     <Stack width={"100%"} mb={10} gap={2}>
       <Typography variant="h4" fontWeight={700}>
-        My Reservations
+        {t("myPage.myReservations")}
       </Typography>
 
       {/* Tabs */}
@@ -196,13 +198,13 @@ const Reservations = () => {
         <Tab
           icon={<HotelIcon />}
           iconPosition="start"
-          label="Hotel Reservations"
+          label={t("myPage.hotelReservations")}
           sx={{ textTransform: "none", fontWeight: 600 }}
         />
         <Tab
           icon={<AttractionsIcon />}
           iconPosition="start"
-          label="Attraction Reservations"
+          label={t("myPage.attractionReservations")}
           sx={{ textTransform: "none", fontWeight: 600 }}
         />
       </Tabs>
@@ -213,7 +215,7 @@ const Reservations = () => {
           {hotelRows.length === 0 ? (
             <Stack alignItems="center" py={6}>
               <Typography color="text.secondary">
-                No hotel reservations yet
+                {t("myPage.noHotelReservations")}
               </Typography>
             </Stack>
           ) : (
@@ -242,7 +244,7 @@ const Reservations = () => {
           {attractionReservations.length === 0 ? (
             <Stack alignItems="center" py={6}>
               <Typography color="text.secondary">
-                No attraction reservations yet
+                {t("myPage.noAttractionReservations")}
               </Typography>
             </Stack>
           ) : (
@@ -257,14 +259,14 @@ const Reservations = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: 700 }}>Attraction</TableCell>
-                    <TableCell sx={{ fontWeight: 700 }}>Date</TableCell>
-                    <TableCell sx={{ fontWeight: 700 }}>Time</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>{t("booking.attraction")}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>{t("booking.date")}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>{t("booking.time")}</TableCell>
                     <TableCell sx={{ fontWeight: 700 }} align="center">
-                      Tickets
+                      {t("booking.tickets")}
                     </TableCell>
-                    <TableCell sx={{ fontWeight: 700 }}>Amount</TableCell>
-                    <TableCell sx={{ fontWeight: 700 }}>Status</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>{t("booking.amount")}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>{t("booking.status")}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -428,7 +430,7 @@ const Reservations = () => {
                 />
                 <Stack flex={1}>
                   <Typography fontWeight={600} fontSize={14}>
-                    Stay Dates
+                    {t("booking.stayDates")}
                   </Typography>
                   <Stack direction="row" alignItems="center" gap={1} mt={0.5}>
                     <Chip
@@ -473,7 +475,7 @@ const Reservations = () => {
                       sx={{ color: "primary.main" }}
                     />
                     <Typography fontSize={13} color="text.secondary">
-                      Room Type
+                      {t("booking.roomType")}
                     </Typography>
                   </Stack>
                   <Typography fontWeight={600}>
@@ -495,7 +497,7 @@ const Reservations = () => {
                       sx={{ color: "primary.main" }}
                     />
                     <Typography fontSize={13} color="text.secondary">
-                      Price / night
+                      {t("booking.pricePerNight")}
                     </Typography>
                   </Stack>
                   <Typography fontWeight={600}>
@@ -506,7 +508,7 @@ const Reservations = () => {
 
               <Stack gap={1.5}>
                 <Typography fontWeight={700} fontSize={16}>
-                  Guest & Payment
+                  {t("booking.guestAndPayment")}
                 </Typography>
                 <Stack
                   gap={1.5}
@@ -554,7 +556,7 @@ const Reservations = () => {
 
               <Stack gap={1.5}>
                 <Typography fontWeight={700} fontSize={16}>
-                  Location & Contact
+                  {t("booking.locationAndContact")}
                 </Typography>
                 <Stack
                   gap={1.5}
@@ -590,7 +592,7 @@ const Reservations = () => {
               {selectedReservation.propertyImages.length > 1 && (
                 <Stack gap={1.5}>
                   <Typography fontWeight={700} fontSize={16}>
-                    Photos
+                    {t("booking.photos")}
                   </Typography>
                   <Stack direction="row" gap={1} flexWrap="wrap">
                     {selectedReservation.propertyImages.map(
@@ -759,7 +761,7 @@ const Reservations = () => {
                 />
                 <Stack flex={1}>
                   <Typography fontWeight={600} fontSize={14}>
-                    Date & Time
+                    {t("booking.dateAndTime")}
                   </Typography>
                   <Stack direction="row" alignItems="center" gap={1} mt={0.5}>
                     <Chip
@@ -805,7 +807,7 @@ const Reservations = () => {
                       sx={{ color: "primary.main" }}
                     />
                     <Typography fontSize={13} color="text.secondary">
-                      Tickets
+                      {t("booking.tickets")}
                     </Typography>
                   </Stack>
                   <Typography fontWeight={600}>
@@ -830,7 +832,7 @@ const Reservations = () => {
                       sx={{ color: "primary.main" }}
                     />
                     <Typography fontSize={13} color="text.secondary">
-                      Amount Paid
+                      {t("booking.amountPaid")}
                     </Typography>
                   </Stack>
                   <Typography fontWeight={600}>
@@ -845,7 +847,7 @@ const Reservations = () => {
               {selectedAttraction.attractionData && (
                 <Stack gap={1.5}>
                   <Typography fontWeight={700} fontSize={16}>
-                    Attraction Info
+                    {t("booking.attractionInfo")}
                   </Typography>
                   <Stack
                     gap={1.5}
@@ -882,7 +884,7 @@ const Reservations = () => {
               {/* Guest Info */}
               <Stack gap={1.5}>
                 <Typography fontWeight={700} fontSize={16}>
-                  Guest Details
+                  {t("booking.guestDetails")}
                 </Typography>
                 <Stack
                   gap={1.5}
@@ -925,7 +927,7 @@ const Reservations = () => {
               {/* Payment Status */}
               <Stack gap={1.5}>
                 <Typography fontWeight={700} fontSize={16}>
-                  Payment
+                  {t("booking.payment")}
                 </Typography>
                 <Stack
                   sx={{
@@ -966,7 +968,7 @@ const Reservations = () => {
                 1 && (
                 <Stack gap={1.5}>
                   <Typography fontWeight={700} fontSize={16}>
-                    Photos
+                    {t("booking.photos")}
                   </Typography>
                   <Stack direction="row" gap={1} flexWrap="wrap">
                     {selectedAttraction.attractionData.attractionImages.map(

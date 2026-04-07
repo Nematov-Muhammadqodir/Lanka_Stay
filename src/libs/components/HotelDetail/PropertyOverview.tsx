@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import { useTranslation } from "next-i18next";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -37,6 +38,7 @@ export interface PropertyOverviewProps {
 
 const PropertyOverview = (props: PropertyOverviewProps) => {
   const { partnerProperty, loading } = props;
+  const { t } = useTranslation("common");
   if (!partnerProperty) return null;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -138,7 +140,7 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
       <Stack>
         <Stack flexDirection={"row"}>
           <BeachAccessIcon />
-          {isBeachFront ? <Typography>Beachfront</Typography> : ""}
+          {isBeachFront ? <Typography>{t("filter.beachFront")}</Typography> : ""}
         </Stack>
         <Typography fontSize={30} fontWeight={700}>
           {partnerProperty.propertyName}
@@ -156,7 +158,7 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
               textTransform={"lowercase"}
               borderBottom={"1px solid"}
             >
-              Show map
+              {t("hotel.showMap")}
             </Typography>
           </Button>
         </Stack>
@@ -202,7 +204,7 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
               textTransform="uppercase"
               letterSpacing={0.5}
             >
-              Share this property
+              {t("hotel.shareProperty")}
             </Typography>
             <MenuItem
               onClick={handleShare}
@@ -218,7 +220,7 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
                   sx={{ fontSize: 18, color: "text.secondary" }}
                 />
                 <Typography fontSize={14} fontWeight={600}>
-                  Copy Link
+                  {t("common.copyLink")}
                 </Typography>
               </Stack>
             </MenuItem>
@@ -276,7 +278,7 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
           <Button onClick={handleClick}>
             <LocalOfferIcon color="primary" />
             <Typography color={"primary"} textTransform={"capitalize"}>
-              We Price Match
+              {t("hotel.wePriceMatch")}
             </Typography>
           </Button>
           <WePriceMatchDialog open={open} handleClose={handleClose} />

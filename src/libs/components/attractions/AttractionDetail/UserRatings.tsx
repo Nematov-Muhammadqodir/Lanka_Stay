@@ -5,6 +5,7 @@ import StarIcon from "@mui/icons-material/Star";
 import TourReviewMenu from "./TourReviewMenu";
 import AttractionsReviewBar from "../AttractionsReviewBar";
 import { Attraction } from "../../../types/attraction/attraction";
+import { useTranslation } from "next-i18next";
 
 interface UserRatingsProps {
   attraction?: Attraction | null;
@@ -12,6 +13,7 @@ interface UserRatingsProps {
 }
 
 const UserRatings = ({ attraction, comments }: UserRatingsProps) => {
+  const { t } = useTranslation("common");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -26,24 +28,24 @@ const UserRatings = ({ attraction, comments }: UserRatingsProps) => {
 
   const ratingLabel =
     avgRating >= 4.5
-      ? "Superb"
+      ? t("attraction.ratingSuperb")
       : avgRating >= 4
-      ? "Fabulous"
+      ? t("attraction.ratingFabulous")
       : avgRating >= 3.5
-      ? "Very Good"
+      ? t("attraction.ratingVeryGood")
       : avgRating >= 3
-      ? "Good"
-      : "Pleasant";
+      ? t("attraction.ratingGood")
+      : t("attraction.ratingPleasant");
 
   return (
     <Stack className="container" mt={"50px !important"} gap={2} width={"100%"}>
-      <Typography className="bold-text">Guest reviews</Typography>
+      <Typography className="bold-text">{t("attraction.guestReviews")}</Typography>
       <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
         <StarIcon sx={{ color: "#FEBB05" }} />
         <Typography className="small-bold-text">{ratingLabel}</Typography>
         <HdrStrongIcon />
         <Typography>
-          {totalReviews} {totalReviews === 1 ? "review" : "reviews"}
+          {totalReviews} {totalReviews === 1 ? t("attraction.review") : t("attraction.reviews")}
         </Typography>
         <Button
           onClick={handleClick}
@@ -53,7 +55,7 @@ const UserRatings = ({ attraction, comments }: UserRatingsProps) => {
             textDecoration: "underline",
           }}
         >
-          Read all reviews
+          {t("attraction.readAllReviews")}
         </Button>
         <Drawer
           anchor="right"
@@ -75,10 +77,10 @@ const UserRatings = ({ attraction, comments }: UserRatingsProps) => {
         </Drawer>
       </Stack>
       <Stack flexDirection={"row"} flexWrap={"wrap"} gap={3} width={"60%"}>
-        <AttractionsReviewBar label={"Good value"} value={attraction?.valueRating ?? 0} />
-        <AttractionsReviewBar label={"Facilities"} value={attraction?.facilitiesRating ?? 0} />
-        <AttractionsReviewBar label={"Quality of service"} value={attraction?.qualityRating ?? 0} />
-        <AttractionsReviewBar label={"Ease of access"} value={attraction?.accessRating ?? 0} />
+        <AttractionsReviewBar label={t("attraction.goodValue")} value={attraction?.valueRating ?? 0} />
+        <AttractionsReviewBar label={t("attraction.facilities")} value={attraction?.facilitiesRating ?? 0} />
+        <AttractionsReviewBar label={t("attraction.qualityOfService")} value={attraction?.qualityRating ?? 0} />
+        <AttractionsReviewBar label={t("attraction.easeOfAccess")} value={attraction?.accessRating ?? 0} />
       </Stack>
     </Stack>
   );

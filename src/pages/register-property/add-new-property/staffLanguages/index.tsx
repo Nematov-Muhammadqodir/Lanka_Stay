@@ -18,6 +18,7 @@ import {
 } from "@/src/slices/createPartnerPropertySlice";
 import { HotelStaffLanguages } from "@/src/libs/enums/property.enum";
 import { sweetBasicAlert } from "@/src/libs/sweetAlert";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const DefineHotelStaffLanguages = () => {
   const router = useRouter();
@@ -126,4 +127,9 @@ const DefineHotelStaffLanguages = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default DefineHotelStaffLanguages;

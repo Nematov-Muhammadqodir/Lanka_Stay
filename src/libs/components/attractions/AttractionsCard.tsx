@@ -13,12 +13,14 @@ import { useMutation, useReactiveVar } from "@apollo/client";
 import { LIKE_TARGET_ATTRACTION } from "@/apollo/user/mutation";
 import { userVar } from "@/apollo/store";
 import { sweetMixinErrorAlert } from "@/src/libs/sweetAlert";
+import { useTranslation } from "next-i18next";
 
 interface AttractionsListCardProps {
   attraction: any;
 }
 
 const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
+  const { t } = useTranslation("common");
   const router = useRouter();
   const user = useReactiveVar(userVar);
   const [liked, setLiked] = useState(
@@ -122,7 +124,7 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
                   ? attraction.attractionDescription.length > 150
                     ? attraction.attractionDescription.substring(0, 150) + "..."
                     : attraction.attractionDescription
-                  : "No description available"}
+                  : t("attraction.noDescriptionAvailable")}
               </Typography>
             </Stack>
             <Stack flexDirection={"row"} justifyContent={"space-between"}>
@@ -131,7 +133,7 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
                   <Stack flexDirection={"row"} gap={1}>
                     <TimerIcon />
                     <Typography className="small-text">
-                      Duration: {attraction.attractionDuration}
+                      {t("attraction.duration")}: {attraction.attractionDuration}
                     </Typography>
                   </Stack>
                 )}
@@ -139,7 +141,7 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
                   <StarIcon sx={{ color: "#FEBB05" }} />
                   <Typography className="small-bold-text">
                     {attraction.averageRating ?? 0} (
-                    {attraction.totalReviews ?? 0} reviews)
+                    {attraction.totalReviews ?? 0} {t("attraction.reviews")})
                   </Typography>
                 </Stack>
                 {attraction.freeCancellation && (
@@ -151,7 +153,7 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
                   >
                     <EventRepeatIcon />
                     <Typography className="small-text">
-                      Free cancellation available
+                      {t("attraction.freeCancellationAvailable")}
                     </Typography>
                   </Stack>
                 )}
@@ -166,7 +168,7 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
                       )}
                     </Typography>
                     <Typography className="small-text">
-                      Includes taxes and charges
+                      {t("attraction.includesTaxes")}
                     </Typography>
                     <Button
                       variant="outlined"
@@ -190,7 +192,7 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
                             fontWeight: "bold",
                           }}
                         >
-                          See Availability
+                          {t("attraction.seeAvailability")}
                         </Typography>
                         <NavigateNextIcon />
                       </Stack>

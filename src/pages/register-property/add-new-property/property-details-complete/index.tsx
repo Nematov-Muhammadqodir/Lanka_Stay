@@ -6,6 +6,7 @@ import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import { useRouter } from "next/router";
 import LayoutCreateAccountMain from "@/src/libs/components/layout/registerProperty/create-account/CreateAccountMainLayout";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const PropertyDetailsComplete = () => {
   const router = useRouter();
@@ -132,4 +133,9 @@ const PropertyDetailsComplete = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default PropertyDetailsComplete;

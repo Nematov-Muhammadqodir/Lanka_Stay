@@ -7,6 +7,7 @@ import { useQuery, useReactiveVar } from "@apollo/client";
 import { partnerVar } from "@/apollo/store";
 import { GET_PARTNER_PROPERTY_BY_HOTEL_OWNER } from "@/apollo/user/query";
 import { T } from "@/src/libs/types/common";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const AddNewProperty = () => {
   const router = useRouter();
@@ -56,4 +57,9 @@ const AddNewProperty = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default AddNewProperty;

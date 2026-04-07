@@ -1,5 +1,6 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import Image from "next/image";
+import { useTranslation } from "next-i18next";
 import BedIcon from "@mui/icons-material/Bed";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import PersonIcon from "@mui/icons-material/Person";
@@ -23,6 +24,7 @@ interface GuestReviewItemMenuProps {
 
 const GuestReviewItemMenu = (props: GuestReviewItemMenuProps) => {
   const { comment } = props;
+  const { t } = useTranslation("common");
   const user = useReactiveVar(userVar);
   const [expanded, setExpanded] = useState(false);
   const MAX_LENGTH = 250;
@@ -141,7 +143,7 @@ const GuestReviewItemMenu = (props: GuestReviewItemMenuProps) => {
                 sx={{ fontSize: 20, color: "text.secondary" }}
               />
               <Typography className="small-text">
-                {nights} {nights === 1 ? "night" : "nights"} &middot;{" "}
+                {nights} {nights === 1 ? t("hotel.night") : t("hotel.nights")} &middot;{" "}
                 {formatShortDate(endRaw!)}
               </Typography>
             </Stack>
@@ -165,7 +167,7 @@ const GuestReviewItemMenu = (props: GuestReviewItemMenuProps) => {
         >
           <Stack>
             <Typography className="small-text" color="text.secondary">
-              Reviewed: {formatShortDate(comment.createdAt)}
+              {t("hotel.postedOn")}: {formatShortDate(comment.createdAt)}
             </Typography>
           </Stack>
         </Stack>
@@ -198,7 +200,7 @@ const GuestReviewItemMenu = (props: GuestReviewItemMenuProps) => {
                 }}
                 endIcon={expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               >
-                {expanded ? "Show less" : "Read more"}
+                {expanded ? t("hotel.showLess") : t("hotel.readMore")}
               </Button>
             )}
           </Stack>
@@ -229,7 +231,7 @@ const GuestReviewItemMenu = (props: GuestReviewItemMenuProps) => {
               <ThumbUpOffAltIcon fontSize="small" />
             )}
             <Typography fontSize={13} fontWeight={likedByMe ? 600 : 400}>
-              {likes > 0 ? likes : ""} Helpful
+              {likes > 0 ? likes : ""} {t("hotel.helpful")}
             </Typography>
           </Stack>
           <Stack
@@ -249,7 +251,7 @@ const GuestReviewItemMenu = (props: GuestReviewItemMenuProps) => {
               <ThumbDownOffAltIcon fontSize="small" />
             )}
             <Typography fontSize={13} fontWeight={dislikedByMe ? 600 : 400}>
-              {dislikes > 0 ? dislikes : ""} Not helpful
+              {dislikes > 0 ? dislikes : ""} {t("hotel.notHelpful")}
             </Typography>
           </Stack>
         </Stack>

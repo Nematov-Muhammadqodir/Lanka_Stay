@@ -2,13 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-
-const SORT_OPTIONS = [
-  { label: "Our top picks", value: null },
-  { label: "Lowest price", value: "PRICE_LOW" },
-  { label: "Highest price", value: "PRICE_HIGH" },
-  { label: "Newest listings", value: "NEWEST" },
-];
+import { useTranslation } from "next-i18next";
 
 interface AttractionSortingProps {
   sort: string | null;
@@ -19,6 +13,15 @@ export default function AttractionSorting({
   sort,
   onSortChange,
 }: AttractionSortingProps) {
+  const { t } = useTranslation("common");
+
+  const SORT_OPTIONS = [
+    { label: t("attraction.ourTopPicks"), value: null },
+    { label: t("attraction.lowestPrice"), value: "PRICE_LOW" },
+    { label: t("attraction.highestPrice"), value: "PRICE_HIGH" },
+    { label: t("attraction.newestListings"), value: "NEWEST" },
+  ];
+
   const currentIndex = SORT_OPTIONS.findIndex((o) => o.value === sort);
   const value = currentIndex === -1 ? 0 : currentIndex;
 

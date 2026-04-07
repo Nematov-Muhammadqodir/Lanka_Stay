@@ -3,8 +3,10 @@ import React from "react";
 import BrowseByPropertyTypeCard from "./BrowseByPropertyTypeCard";
 import { useQuery } from "@apollo/client";
 import { GET_PROPERTY_TYPE_STATS } from "@/apollo/user/query";
+import { useTranslation } from "next-i18next";
 
 const BrowseByPropertyType = () => {
+  const { t } = useTranslation("common");
   const { data, loading } = useQuery(GET_PROPERTY_TYPE_STATS);
   const types = data?.getPropertyTypeStats ?? [];
 
@@ -15,10 +17,10 @@ const BrowseByPropertyType = () => {
     >
       <Stack>
         <Typography sx={{ fontSize: 24, fontWeight: 700 }}>
-          Browse by property type
+          {t("home.browseByType")}
         </Typography>
         <Typography fontSize={14} color="text.secondary" mt={0.5}>
-          Find the perfect stay for your next trip
+          {t("home.browseByTypeDesc")}
         </Typography>
       </Stack>
 

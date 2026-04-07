@@ -1,6 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 import React from "react";
 import AttractionTypesCard from "./AttractionTypesCard";
+import { useTranslation } from "next-i18next";
 
 interface AttractionTypesProps {
   selectedType: string | null;
@@ -19,10 +20,11 @@ const ATTRACTION_TYPE_OPTIONS = [
 ];
 
 const AttractionTypes = ({ selectedType, onSelectType }: AttractionTypesProps) => {
+  const { t } = useTranslation("common");
   return (
     <Stack className="container" gap={1}>
       <Stack mt={5}>
-        <Typography className="xxlText">Explore attractions</Typography>
+        <Typography className="xxlText">{t("attraction.exploreAttractions")}</Typography>
       </Stack>
       <Stack flexDirection={"row"} gap={2} flexWrap="wrap">
         {ATTRACTION_TYPE_OPTIONS.map((item) => (

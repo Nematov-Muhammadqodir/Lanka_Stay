@@ -20,6 +20,7 @@ import {
   setRoomName,
 } from "@/src/slices/partnerPropertyRoomSlice";
 import { RoomNames } from "@/src/libs/enums/propertyRoom.enum";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const RoomName = () => {
   const router = useRouter();
@@ -160,4 +161,9 @@ const RoomName = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default RoomName;

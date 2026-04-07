@@ -3,6 +3,7 @@ import React from "react";
 import StillInterestedCard from "./StillInterestedCard";
 import { GET_VISITED_PROPERTIES } from "@/apollo/user/query";
 import { useMutation, useQuery, useReactiveVar } from "@apollo/client";
+import { useTranslation } from "next-i18next";
 import { userVar } from "@/apollo/store";
 import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
 import {
@@ -12,6 +13,7 @@ import {
 import { T } from "../../types/common";
 
 const StillInterestedList = () => {
+  const { t } = useTranslation("common");
   const user = useReactiveVar(userVar);
 
   const { data, loading, refetch } = useQuery(GET_VISITED_PROPERTIES, {
@@ -72,7 +74,7 @@ const StillInterestedList = () => {
     >
       <Stack>
         <Typography sx={{ fontSize: 24, fontWeight: 700 }}>
-          Still interested in these properties?
+          {t("home.stillInterested")}
         </Typography>
       </Stack>
       <Stack

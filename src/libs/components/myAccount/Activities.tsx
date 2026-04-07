@@ -15,8 +15,10 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 
 const Activities = () => {
+  const { t } = useTranslation("common");
   const router = useRouter();
 
   const { data, loading } = useQuery(GET_MY_COMMENTS, {
@@ -30,7 +32,7 @@ const Activities = () => {
   if (loading) {
     return (
       <Stack width="100%" py={6} alignItems="center">
-        <Typography color="text.secondary">Loading activities...</Typography>
+        <Typography color="text.secondary">{t("myPage.loadingActivities")}</Typography>
       </Stack>
     );
   }
@@ -39,9 +41,9 @@ const Activities = () => {
     <Stack width="100%" gap={2}>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Typography variant="h4" fontWeight={700}>
-          My Activities
+          {t("myPage.myActivities")}
         </Typography>
-        <Chip label={`${total} reviews`} size="small" />
+        <Chip label={`${total} ${t("attraction.reviews")}`} size="small" />
       </Stack>
 
       {comments.length === 0 ? (
@@ -60,10 +62,10 @@ const Activities = () => {
             sx={{ fontSize: 48, color: "text.disabled" }}
           />
           <Typography color="text.secondary" fontSize={15}>
-            You haven&apos;t left any reviews yet
+            {t("myPage.noReviewsYet")}
           </Typography>
           <Typography color="text.secondary" fontSize={13}>
-            Your hotel and attraction reviews will appear here
+            {t("myPage.reviewsWillAppearHere")}
           </Typography>
         </Stack>
       ) : (
@@ -157,7 +159,7 @@ const Activities = () => {
                         {name}
                       </Typography>
                       <Chip
-                        label={isHotel ? "Hotel" : "Attraction"}
+                        label={isHotel ? t("booking.hotel") : t("booking.attraction")}
                         size="small"
                         variant="outlined"
                         sx={{ fontSize: 11, height: 22 }}
@@ -222,7 +224,7 @@ const Activities = () => {
                     )}
                     {comment.commentScore !== 0 && (
                       <Chip
-                        label={`Score: ${comment.commentScore}`}
+                        label={`${t("myPage.score")}: ${comment.commentScore}`}
                         size="small"
                         color={comment.commentScore > 0 ? "success" : "error"}
                         variant="outlined"

@@ -17,6 +17,7 @@ import {
   setPropertyFacilities,
 } from "@/src/slices/createPartnerPropertySlice";
 import { PropertyFacilities } from "@/src/libs/enums/property.enum";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const DefineHotelFacilities = () => {
   const router = useRouter();
@@ -130,4 +131,9 @@ const DefineHotelFacilities = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default DefineHotelFacilities;

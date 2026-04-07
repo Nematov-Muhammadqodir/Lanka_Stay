@@ -3,34 +3,15 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import PublicIcon from "@mui/icons-material/Public";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+import { useTranslation } from "next-i18next";
 
 const WhyOurHotel = () => {
-  const data = [
-    {
-      src: "https://t-cf.bstatic.com/design-assets/assets/v3.160.0/illustrations-traveller/FreeCancellation.png",
-      header: "Book now, pay at the property",
-      definition: "FREE cancellation on most rooms",
-    },
-    {
-      src: "https://t-cf.bstatic.com/design-assets/assets/v3.160.0/illustrations-traveller/FreeCancellation.png",
-      header: "Book now, pay at the property",
-      definition: "FREE cancellation on most rooms",
-    },
-    {
-      src: "https://t-cf.bstatic.com/design-assets/assets/v3.160.0/illustrations-traveller/FreeCancellation.png",
-      header: "Book now, pay at the property",
-      definition: "FREE cancellation on most rooms",
-    },
-    {
-      src: "https://t-cf.bstatic.com/design-assets/assets/v3.160.0/illustrations-traveller/FreeCancellation.png",
-      header: "Book now, pay at the property",
-      definition: "FREE cancellation on most rooms",
-    },
-  ];
+  const { t } = useTranslation("common");
+
   return (
     <Stack>
       <Typography alignSelf={"center"} mb={2} fontWeight={700} fontSize={23}>
-        Why Lanka Stay.com?{" "}
+        {t("why.title")}
       </Typography>
       <Stack flexDirection={"row"} justifyContent={"center"} gap={2} mb={20}>
         <Stack
@@ -45,9 +26,9 @@ const WhyOurHotel = () => {
         >
           <CalendarMonthIcon />
           <Typography fontWeight={700} fontSize={18}>
-            Book now, pay at the property
+            {t("why.bookNowHeader")}
           </Typography>
-          <Typography>FREE cancellation on most rooms</Typography>
+          <Typography>{t("why.bookNowDesc")}</Typography>
         </Stack>
         <Stack
           width={290}
@@ -61,9 +42,9 @@ const WhyOurHotel = () => {
         >
           <ReviewsIcon />
           <Typography fontWeight={700} fontSize={18}>
-            300M+ reviews from fellow travellers
+            {t("why.reviewsHeader")}
           </Typography>
-          <Typography>Get trusted information from guests like you</Typography>
+          <Typography>{t("why.reviewsDesc")}</Typography>
         </Stack>
         <Stack
           width={290}
@@ -77,9 +58,9 @@ const WhyOurHotel = () => {
         >
           <PublicIcon />
           <Typography fontWeight={700} fontSize={18}>
-            2+ million properties worldwide
+            {t("why.propertiesHeader")}
           </Typography>
-          <Typography>Hotels, guest houses, apartments, and more…</Typography>
+          <Typography>{t("why.propertiesDesc")}</Typography>
         </Stack>
         <Stack
           width={290}
@@ -93,9 +74,9 @@ const WhyOurHotel = () => {
         >
           <SupportAgentIcon />
           <Typography fontWeight={700} fontSize={18}>
-            Trusted customer service you can rely on, 24/7
+            {t("why.supportHeader")}
           </Typography>
-          <Typography>We're always here to help</Typography>
+          <Typography>{t("why.supportDesc")}</Typography>
         </Stack>
       </Stack>
     </Stack>

@@ -6,6 +6,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { useRouter } from "next/router";
 import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
 import { sweetErrorAlert } from "@/src/libs/sweetAlert";
+import { useTranslation } from "next-i18next";
 
 interface TicketPurchaseProps {
   attraction?: any;
@@ -23,6 +24,7 @@ const TicketPurchase = ({
   selectedTime,
 }: TicketPurchaseProps) => {
   const router = useRouter();
+  const { t } = useTranslation("common");
   const adultPrice = attraction?.attractionAdultPrice ?? 0;
   const totalPrice = adultPrice * ticketCount;
 
@@ -56,31 +58,31 @@ const TicketPurchase = ({
       }}
     >
       <Typography className="bold-text-medium">
-        {attraction?.attractionName ?? "Loading..."}
+        {attraction?.attractionName ?? t("common.loading")}
       </Typography>
       <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
         <InfoIcon />
         <Stack>
           <Typography>
             {attraction?.freeCancellation
-              ? "Free cancellation"
-              : "Non-refundable"}
+              ? t("attraction.freeCancellationShort")
+              : t("attraction.nonRefundable")}
           </Typography>
           <Typography className="small-text">
             {attraction?.freeCancellation
-              ? "Cancel up to 24 hours before start time"
-              : "Your current selection is non-refundable"}
+              ? t("attraction.cancelBefore")
+              : t("attraction.nonRefundableDesc")}
           </Typography>
         </Stack>
       </Stack>
-      <Typography className="small-bold-text">How many tickets?</Typography>
+      <Typography className="small-bold-text">{t("attraction.howManyTickets")}</Typography>
       <Stack
         flexDirection={"row"}
         justifyContent={"space-between"}
         alignItems={"center"}
       >
         <Stack>
-          <Typography>Adult</Typography>
+          <Typography>{t("attraction.adult")}</Typography>
           <Typography className="small-bold-text">
             {formatKoreanWon(String(adultPrice))}
           </Typography>
@@ -113,13 +115,13 @@ const TicketPurchase = ({
       </Stack>
       <Stack>
         <Stack flexDirection={"row"} alignItems={"center"} gap={1}>
-          <Typography className="small-bold-text">Total:</Typography>
+          <Typography className="small-bold-text">{t("attraction.total")}:</Typography>
           <Typography className="bold-text-medium">
             {formatKoreanWon(String(totalPrice))}
           </Typography>
         </Stack>
         <Typography className="small-text">
-          Includes taxes and charges
+          {t("attraction.includesTaxes")}
         </Typography>
       </Stack>
       <Button
@@ -131,7 +133,7 @@ const TicketPurchase = ({
           color={"secondary.contrastText"}
           sx={{ textTransform: "capitalize" }}
         >
-          Next
+          {t("common.next")}
         </Typography>
       </Button>
     </Stack>

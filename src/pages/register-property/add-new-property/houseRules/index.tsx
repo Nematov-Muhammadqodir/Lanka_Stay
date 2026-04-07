@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useMutation, useReactiveVar } from "@apollo/client";
 import { partnerVar, userVar } from "@/apollo/store";
 import { CREATE_PARTNER_PROPERTY } from "@/apollo/user/mutation";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const DefineHouseRules = () => {
   const partner = useReactiveVar(partnerVar);
@@ -278,4 +279,9 @@ const DefineHouseRules = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default DefineHouseRules;

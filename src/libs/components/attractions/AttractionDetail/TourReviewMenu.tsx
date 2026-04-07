@@ -15,6 +15,7 @@ import {
   sweetMixinErrorAlert,
   sweetTopSuccessAlert,
 } from "../../../sweetAlert";
+import { useTranslation } from "next-i18next";
 
 interface TourReviewMenuProps {
   handleClose: () => void;
@@ -22,6 +23,7 @@ interface TourReviewMenuProps {
 }
 
 const TourReviewMenu = ({ handleClose, attraction }: TourReviewMenuProps) => {
+  const { t } = useTranslation("common");
   const user = useReactiveVar(userVar);
   const [writeOpen, setWriteOpen] = useState(false);
   const [reviewText, setReviewText] = useState("");
@@ -39,14 +41,14 @@ const TourReviewMenu = ({ handleClose, attraction }: TourReviewMenuProps) => {
 
   const ratingLabel =
     avgRating >= 4.5
-      ? "Superb"
+      ? t("attraction.ratingSuperb")
       : avgRating >= 4
-      ? "Fabulous"
+      ? t("attraction.ratingFabulous")
       : avgRating >= 3.5
-      ? "Very Good"
+      ? t("attraction.ratingVeryGood")
       : avgRating >= 3
-      ? "Good"
-      : "Pleasant";
+      ? t("attraction.ratingGood")
+      : t("attraction.ratingPleasant");
 
   const hasReviewed = comments?.some(
     (c: any) => c.memberId === user?._id
@@ -124,7 +126,7 @@ const TourReviewMenu = ({ handleClose, attraction }: TourReviewMenuProps) => {
           mb={3}
         >
           <Typography sx={{ fontWeight: 700, fontSize: 20 }}>
-            Reviews
+            {t("attraction.reviews")}
           </Typography>
           <Button onClick={handleClose}>
             <CloseIcon />
@@ -145,17 +147,17 @@ const TourReviewMenu = ({ handleClose, attraction }: TourReviewMenuProps) => {
                 {ratingLabel}
               </Typography>
               <Typography className="small-text">
-                {totalReviews} {totalReviews === 1 ? "review" : "reviews"}
+                {totalReviews} {totalReviews === 1 ? t("attraction.review") : t("attraction.reviews")}
               </Typography>
             </Stack>
           </Stack>
           <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
-            <Typography color={"primary"}>We aim 100% real reviews</Typography>
+            <Typography color={"primary"}>{t("attraction.weAimRealReviews")}</Typography>
             <InfoIcon color="primary" />
           </Stack>
           {hasReviewed ? (
             <Chip
-              label="You already reviewed this attraction"
+              label={t("attraction.alreadyReviewed")}
               color="success"
               variant="outlined"
               size="small"
@@ -177,7 +179,7 @@ const TourReviewMenu = ({ handleClose, attraction }: TourReviewMenuProps) => {
                 setWriteOpen(!writeOpen);
               }}
             >
-              Leave a Review
+              {t("attraction.leaveAReview")}
             </Button>
           )}
         </Stack>
@@ -196,16 +198,16 @@ const TourReviewMenu = ({ handleClose, attraction }: TourReviewMenuProps) => {
             }}
           >
             <Typography fontWeight={700} fontSize={16}>
-              Write your review
+              {t("attraction.writeYourReview")}
             </Typography>
 
             {/* Star Ratings */}
             <Stack gap={1.5}>
               {[
-                { key: "value", label: "Good value" },
-                { key: "facilities", label: "Facilities" },
-                { key: "quality", label: "Quality of service" },
-                { key: "access", label: "Ease of access" },
+                { key: "value", label: t("attraction.goodValue") },
+                { key: "facilities", label: t("attraction.facilities") },
+                { key: "quality", label: t("attraction.qualityOfService") },
+                { key: "access", label: t("attraction.easeOfAccess") },
               ].map((item) => (
                 <Stack
                   key={item.key}
@@ -231,7 +233,7 @@ const TourReviewMenu = ({ handleClose, attraction }: TourReviewMenuProps) => {
             </Stack>
 
             <textarea
-              placeholder="Share your experience..."
+              placeholder={t("attraction.shareExperience")}
               rows={4}
               value={reviewText}
               onChange={(e) => setReviewText(e.target.value)}
@@ -252,7 +254,7 @@ const TourReviewMenu = ({ handleClose, attraction }: TourReviewMenuProps) => {
                 onClick={() => setWriteOpen(false)}
                 sx={{ textTransform: "none" }}
               >
-                Cancel
+                {t("common.cancel")}
               </Button>
               <Button
                 variant="contained"
@@ -264,7 +266,7 @@ const TourReviewMenu = ({ handleClose, attraction }: TourReviewMenuProps) => {
                   textTransform: "none",
                 }}
               >
-                Submit Review
+                {t("attraction.submitReview")}
               </Button>
             </Stack>
           </Stack>

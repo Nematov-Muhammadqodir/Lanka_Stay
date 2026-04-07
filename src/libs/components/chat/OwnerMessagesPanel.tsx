@@ -17,8 +17,10 @@ import {
 } from "@/apollo/user/query";
 import { SEND_MESSAGE } from "@/apollo/user/mutation";
 import { partnerVar } from "@/apollo/store";
+import { useTranslation } from "next-i18next";
 
 const OwnerMessagesPanel = () => {
+  const { t } = useTranslation("common");
   const partner = useReactiveVar(partnerVar);
   const [selectedConv, setSelectedConv] = useState<any>(null);
   const [messages, setMessages] = useState<any[]>([]);
@@ -129,7 +131,7 @@ const OwnerMessagesPanel = () => {
           borderColor="divider"
         >
           <Typography fontWeight={700} fontSize={16}>
-            Messages ({conversations.length})
+            {t("chat.messages")} ({conversations.length})
           </Typography>
         </Stack>
         <Stack sx={{ overflowY: "auto", flex: 1 }}>
@@ -139,7 +141,7 @@ const OwnerMessagesPanel = () => {
                 sx={{ fontSize: 40, color: "text.disabled", mb: 1 }}
               />
               <Typography color="text.secondary" fontSize={14}>
-                No messages yet
+                {t("chat.noMessages")}
               </Typography>
             </Stack>
           ) : (
@@ -318,7 +320,7 @@ const OwnerMessagesPanel = () => {
             borderColor="divider"
           >
             <TextField
-              placeholder="Type a message..."
+              placeholder={t("chat.typeMessage")}
               size="small"
               fullWidth
               value={newMessage}
@@ -352,7 +354,7 @@ const OwnerMessagesPanel = () => {
             sx={{ fontSize: 50, color: "text.disabled", mb: 1 }}
           />
           <Typography color="text.secondary">
-            Select a conversation to start chatting
+            {t("chat.selectConversation")}
           </Typography>
         </Stack>
       )}

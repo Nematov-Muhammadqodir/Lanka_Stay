@@ -1,5 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
 import { useState } from "react";
+import { useTranslation } from "next-i18next";
 import BusinessDetailsMenu from "./BusinessDetails";
 import { PartnerProperty } from "@/src/libs/types/partnerInput/partnerProperty";
 
@@ -8,11 +9,12 @@ interface LegalInformationProps {
 }
 
 const LegalInformation = ({ partnerProperty }: LegalInformationProps) => {
+  const { t } = useTranslation("common");
   const [open, setOpen] = useState(false);
 
   return (
     <Stack className="container" sx={{ mt: "50px !important", gap: 1 }}>
-      <Typography className="bold-text-medium">Legal information</Typography>
+      <Typography className="bold-text-medium">{t("hotel.legalInfo")}</Typography>
       <Stack
         padding={2}
         sx={{ backgroundColor: "secondary.main", borderRadius: 3 }}
@@ -32,7 +34,7 @@ const LegalInformation = ({ partnerProperty }: LegalInformationProps) => {
             color="primary"
             sx={{ textDecoration: "underline" }}
           >
-            See business details
+            {t("hotel.businessDetails")}
           </Typography>
         </Button>
       </Stack>

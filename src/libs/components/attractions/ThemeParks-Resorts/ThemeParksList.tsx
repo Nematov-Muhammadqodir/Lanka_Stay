@@ -4,8 +4,10 @@ import ThemeParksCard from "./ThemeParksCard";
 import AttractionsIcon from "@mui/icons-material/Attractions";
 import { useQuery } from "@apollo/client";
 import { GET_THEME_PARKS_AND_RESORTS } from "@/apollo/user/query";
+import { useTranslation } from "next-i18next";
 
 const ThemeParksList = () => {
+  const { t } = useTranslation("common");
   const { data, loading } = useQuery(GET_THEME_PARKS_AND_RESORTS);
   const items = data?.getThemeParksAndResorts ?? [];
 
@@ -29,7 +31,7 @@ const ThemeParksList = () => {
         gap={1}
       >
         <AttractionsIcon sx={{ fontSize: 30 }} />
-        <Typography className="xxlText">Theme parks and resorts</Typography>
+        <Typography className="xxlText">{t("attraction.themeParksAndResorts")}</Typography>
       </Stack>
       <Stack
         flexDirection={"row"}

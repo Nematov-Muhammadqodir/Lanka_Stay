@@ -1,6 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material";
 import React from "react";
 import Image from "next/image";
+import { useTranslation } from "next-i18next";
 import { PartnerProperty } from "../../types/partnerInput/partnerProperty";
 import CustomMap from "./CustomMap";
 import { useSelector } from "react-redux";
@@ -12,6 +13,7 @@ export interface ReviewMapContainerProps {
 
 const ReviewMapContainer = (props: ReviewMapContainerProps) => {
   const { partnerProperty } = props;
+  const { t } = useTranslation("common");
 
   const comments = useSelector(
     (state: RootState) => state.comments.data?.list
@@ -64,17 +66,17 @@ const ReviewMapContainer = (props: ReviewMapContainerProps) => {
           <Stack>
             <Typography fontWeight={700}>
               {Number(avgScore) >= 9
-                ? "Superb"
+                ? t("hotel.superb")
                 : Number(avgScore) >= 8
-                ? "Fabulous"
+                ? t("hotel.fabulous")
                 : Number(avgScore) >= 7
-                ? "Very Good"
+                ? t("hotel.veryGood")
                 : Number(avgScore) >= 6
-                ? "Good"
-                : "Pleasant"}
+                ? t("hotel.good")
+                : t("hotel.pleasant")}
             </Typography>
             <Typography fontSize={12} color="text.secondary">
-              {totalReviews} {totalReviews === 1 ? "review" : "reviews"}
+              {totalReviews} {totalReviews === 1 ? t("hotel.review") : t("hotel.reviews")}
             </Typography>
           </Stack>
           <Box
@@ -94,7 +96,7 @@ const ReviewMapContainer = (props: ReviewMapContainerProps) => {
           flex={1}
         >
           <Typography fontSize={13} fontWeight={600}>
-            Guests who stayed here loved
+            {t("hotel.guestsLoved")}
           </Typography>
           {latestComment ? (
             <Stack gap={1}>
@@ -123,7 +125,7 @@ const ReviewMapContainer = (props: ReviewMapContainerProps) => {
             </Stack>
           ) : (
             <Typography fontSize={14} color="text.secondary">
-              No reviews yet
+              {t("hotel.noReviews")}
             </Typography>
           )}
         </Stack>
@@ -135,7 +137,7 @@ const ReviewMapContainer = (props: ReviewMapContainerProps) => {
           flexDirection={"row"}
         >
           <Typography fontWeight={700} fontSize={14}>
-            Location Score
+            {t("hotel.locationScore")}
           </Typography>
           <Box
             padding={"5px"}

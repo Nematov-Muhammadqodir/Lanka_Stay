@@ -4,6 +4,7 @@ import { PropertyOverviewProps } from "./PropertyOverview";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { useMemo } from "react";
+import { useTranslation } from "next-i18next";
 
 const isRoomAvailable = (
   reservedDates: { from: string; until: string }[] | undefined,
@@ -26,6 +27,7 @@ const AllAvailableRooms = ({
   partnerProperty,
   loading,
 }: PropertyOverviewProps) => {
+  const { t } = useTranslation("common");
   const filters = useSelector((state: RootState) => state.filters);
 
   const availableRooms = useMemo(() => {
@@ -37,7 +39,7 @@ const AllAvailableRooms = ({
   return (
     <Stack className="container" mt={"50px !important"}>
       <Stack mb={1}>
-        <Typography className="bold-text">All available rooms</Typography>
+        <Typography className="bold-text">{t("hotel.availableRooms")}</Typography>
       </Stack>
       <Stack width={"100%"} height={"auto"}>
         <Stack
@@ -52,37 +54,37 @@ const AllAvailableRooms = ({
         >
           <Stack width={220} alignItems={"center"}>
             <Typography className="available-rooms-header-text">
-              Room Type
+              {t("hotel.roomType")}
             </Typography>
           </Stack>
           <Box height={"100%"} borderRight={"1px solid black"}></Box>
           <Stack width={140} alignItems={"center"}>
             <Typography className="available-rooms-header-text">
-              Number of guests
+              {t("hotel.numberOfGuests")}
             </Typography>
           </Stack>
           <Box height={"100%"} borderRight={"1px solid black"}></Box>
           <Stack width={175} alignItems={"center"}>
             <Typography className="available-rooms-header-text">
-              Today's price
+              {t("hotel.todaysPrice")}
             </Typography>
           </Stack>
           <Box height={"100%"} borderRight={"1px solid black"}></Box>
           <Stack width={260} alignItems={"center"}>
             <Typography className="available-rooms-header-text">
-              Your choices
+              {t("hotel.yourChoices")}
             </Typography>
           </Stack>
           <Box height={"100%"} borderRight={"1px solid black"}></Box>
           <Stack width={65} alignItems={"center"}>
             <Typography className="available-rooms-header-text">
-              Select rooms
+              {t("hotel.selectRooms")}
             </Typography>
           </Stack>
           <Box height={"100%"} borderRight={"1px solid black"}></Box>
           <Stack width={255} alignItems={"center"}>
             <Typography className="available-rooms-header-text">
-              Payment
+              {t("hotel.payment")}
             </Typography>
           </Stack>
         </Stack>
@@ -104,8 +106,7 @@ const AllAvailableRooms = ({
               borderColor="text.disabled"
             >
               <Typography color="text.secondary" fontSize={15}>
-                No rooms available for your selected dates. Please try different
-                dates.
+                {t("hotel.noRoomsAvailable")}
               </Typography>
             </Stack>
           )}

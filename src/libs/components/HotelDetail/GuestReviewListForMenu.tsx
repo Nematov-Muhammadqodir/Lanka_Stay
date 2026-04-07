@@ -1,6 +1,7 @@
 import { Button, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useState } from "react";
+import { useTranslation } from "next-i18next";
 import GuestReviewItemMenu from "./GuestReviewItemMenu";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
@@ -9,19 +10,20 @@ import { useQuery } from "@apollo/client";
 import { setComments } from "@/src/slices/commentSlice";
 
 interface SortOption {
-  label: string;
+  labelKey: string;
   sort: string;
   direction: "ASC" | "DESC";
 }
 
 const sortOptions: SortOption[] = [
-  { label: "Newest first", sort: "createdAt", direction: "DESC" },
-  { label: "Oldest first", sort: "createdAt", direction: "ASC" },
-  { label: "Highest score", sort: "commentScore", direction: "DESC" },
-  { label: "Lowest score", sort: "commentScore", direction: "ASC" },
+  { labelKey: "hotel.newestFirst", sort: "createdAt", direction: "DESC" },
+  { labelKey: "hotel.oldestFirst", sort: "createdAt", direction: "ASC" },
+  { labelKey: "hotel.highestScore", sort: "commentScore", direction: "DESC" },
+  { labelKey: "hotel.lowestScore", sort: "commentScore", direction: "ASC" },
 ];
 
 const GuestReviewListForMenu = () => {
+  const { t } = useTranslation("common");
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedSort, setSelectedSort] = useState<SortOption>(sortOptions[0]);
@@ -77,10 +79,10 @@ const GuestReviewListForMenu = () => {
         alignItems="center"
       >
         <Typography sx={{ fontWeight: 700, fontSize: 20 }}>
-          Guest reviews
+          {t("hotel.guestReviews")}
         </Typography>
         <Stack flexDirection="row" gap={1} alignItems="center">
-          <Typography className="small-bold-text">Sort reviews by:</Typography>
+          <Typography className="small-bold-text">{t("hotel.sortReviewsBy")}</Typography>
           <Button
             variant="outlined"
             sx={{ borderColor: "text.primary" }}
@@ -88,7 +90,7 @@ const GuestReviewListForMenu = () => {
           >
             <Stack flexDirection="row" gap={1}>
               <Typography textTransform="capitalize">
-                {selectedSort.label}
+                {t(selectedSort.labelKey)}
               </Typography>
               <KeyboardArrowDownIcon />
             </Stack>
@@ -124,7 +126,7 @@ const GuestReviewListForMenu = () => {
                   option.direction === selectedSort.direction
                 }
               >
-                {option.label}
+                {t(option.labelKey)}
               </MenuItem>
             ))}
           </Menu>

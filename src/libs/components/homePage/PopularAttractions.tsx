@@ -2,8 +2,10 @@ import { CircularProgress, Stack, Typography } from "@mui/material";
 import PopularAttractionCard from "./PopularAttractionCard";
 import { useQuery } from "@apollo/client";
 import { GET_POPULAR_ATTRACTIONS } from "@/apollo/user/query";
+import { useTranslation } from "next-i18next";
 
 const PopularAttractions = () => {
+  const { t } = useTranslation("common");
   const { data, loading } = useQuery(GET_POPULAR_ATTRACTIONS);
   const attractions = data?.getPopularAttractions ?? [];
 
@@ -37,10 +39,10 @@ const PopularAttractions = () => {
           <Stack key={country} gap={2}>
             <Stack>
               <Typography sx={{ fontSize: 24, fontWeight: 700 }}>
-                Popular attractions in {country}
+                {t("home.popularAttractions")} {country}
               </Typography>
               <Typography fontSize={14} color="text.secondary">
-                Experience everything this destination has to offer
+                {t("home.popularAttractionsDesc")}
               </Typography>
             </Stack>
             <Stack

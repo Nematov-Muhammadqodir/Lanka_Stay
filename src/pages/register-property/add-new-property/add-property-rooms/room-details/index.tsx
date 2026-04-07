@@ -35,6 +35,7 @@ import {
 } from "@/src/slices/partnerPropertyRoomSlice";
 import { RoomTypes } from "@/src/libs/enums/propertyRoom.enum";
 import { sweetBasicAlert } from "@/src/libs/sweetAlert";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const RoomDetails = () => {
   const router = useRouter();
@@ -511,4 +512,9 @@ const RoomDetails = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default RoomDetails;

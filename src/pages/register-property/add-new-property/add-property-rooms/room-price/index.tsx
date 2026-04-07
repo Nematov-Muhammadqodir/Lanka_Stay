@@ -31,6 +31,7 @@ import { getPartnerJwtToken, updatePartnerInfo } from "@/src/libs/auth";
 import { partnerVar } from "@/apollo/store";
 import { T } from "@/src/libs/types/common";
 import { IPartnerProperty } from "@/src/libs/types/partnerInput/partnerPropertyInput";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const RoomPrice = () => {
   const partner = useReactiveVar(partnerVar);
@@ -240,4 +241,9 @@ const RoomPrice = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default RoomPrice;

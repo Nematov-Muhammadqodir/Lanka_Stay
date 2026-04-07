@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import InfoIcon from "@mui/icons-material/Info";
+import { useTranslation } from "next-i18next";
 import GuestReviewsForMenu from "./GuestReviewsForMenu";
 import GuestReviewListForMenu from "./GuestReviewListForMenu";
 import React from "react";
@@ -30,6 +31,7 @@ export const WriteReviewMenu = ({
   onSubmit: (value: string) => void;
 }) => {
   const [text, setText] = React.useState("");
+  const { t } = useTranslation("common");
   const router = useRouter();
 
   const [createComment] = useMutation(CREATE_COMMENT);
@@ -99,7 +101,7 @@ export const WriteReviewMenu = ({
     >
       <Stack direction="row" justifyContent="space-between">
         <Typography sx={{ fontSize: 20, fontWeight: 700 }}>
-          Write a Review
+          {t("hotel.writeReview")}
         </Typography>
         <Button onClick={onClose}>
           <CloseIcon />
@@ -107,7 +109,7 @@ export const WriteReviewMenu = ({
       </Stack>
 
       <TextField
-        label="Your Review"
+        label={t("hotel.yourReview")}
         multiline
         rows={2}
         fullWidth
@@ -126,7 +128,7 @@ export const WriteReviewMenu = ({
         }}
         disabled={!text.trim()}
       >
-        Submit Comment
+        {t("hotel.submitComment")}
       </Button>
     </Stack>
   );

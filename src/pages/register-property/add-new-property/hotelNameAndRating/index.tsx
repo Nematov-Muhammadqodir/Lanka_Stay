@@ -19,6 +19,7 @@ import {
   setPropertyStars,
 } from "@/src/slices/createPartnerPropertySlice";
 import { sweetBasicAlert } from "@/src/libs/sweetAlert";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const DefineHotelNameRating = () => {
   const rating = [1, 2, 3, 4, 5];
@@ -146,4 +147,9 @@ const DefineHotelNameRating = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default DefineHotelNameRating;

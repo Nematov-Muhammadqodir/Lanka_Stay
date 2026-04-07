@@ -1,12 +1,18 @@
 import { Stack, Typography } from "@mui/material";
 import React from "react";
+import { useTranslation } from "next-i18next";
 
-const HouseRulesHeader = () => {
+interface HouseRulesHeaderProps {
+  propertyName?: string;
+}
+
+const HouseRulesHeader = ({ propertyName }: HouseRulesHeaderProps) => {
+  const { t } = useTranslation("common");
   return (
     <Stack>
-      <Typography className="bold-text">House rules</Typography>
+      <Typography className="bold-text">{t("hotel.houseRules")}</Typography>
       <Typography>
-        The Grand Sumorum takes special requests - add in the next step!
+        {propertyName ?? ""} {t("hotel.specialRequests")}
       </Typography>
     </Stack>
   );

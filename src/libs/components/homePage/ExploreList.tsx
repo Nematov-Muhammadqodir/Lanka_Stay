@@ -3,8 +3,10 @@ import React from "react";
 import ExploreCard from "./ExploreCard";
 import { useQuery } from "@apollo/client";
 import { GET_EXPLORE_REGIONS } from "@/apollo/user/query";
+import { useTranslation } from "next-i18next";
 
 const ExploreList = () => {
+  const { t } = useTranslation("common");
   const { data, loading } = useQuery(GET_EXPLORE_REGIONS);
   const regions = data?.getExploreRegions ?? [];
 
@@ -37,10 +39,10 @@ const ExploreList = () => {
           <Stack key={country} gap={2}>
             <Stack>
               <Typography sx={{ fontSize: 24, fontWeight: 700 }}>
-                Explore {country}
+                {t("Explore {{country}}", { country })}
               </Typography>
               <Typography fontSize={14} color="text.secondary">
-                These popular destinations have a lot to offer
+                {t("home.exploreDesc")}
               </Typography>
             </Stack>
             <Stack

@@ -117,9 +117,9 @@ const HouseRulesBody = ({
                 Child policies
               </Typography>
               <Typography width={"100%"}>
-                Children of any age are welcome. To see correct prices and
-                occupancy information, please add the number of children in your
-                group and their ages to your search.
+                {partnerProperty?.allowChildren
+                  ? "Children of any age are welcome. To see correct prices and occupancy information, please add the number of children in your group and their ages to your search."
+                  : "Children are not allowed at this property."}
               </Typography>
             </Stack>
             <Stack gap={1}>
@@ -168,7 +168,9 @@ const HouseRulesBody = ({
               </Typography>
             </Stack>
           </Stack>
-          <Typography width={"75%"}>Pets are not allowed.</Typography>
+          <Typography width={"75%"}>
+            {partnerProperty?.allowPets ? "Pets are allowed." : "Pets are not allowed."}
+          </Typography>
         </Stack>
         <Stack
           flexDirection={"row"}

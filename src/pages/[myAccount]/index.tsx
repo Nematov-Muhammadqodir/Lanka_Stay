@@ -28,6 +28,7 @@ import {
   sweetMixinSuccessAlert,
 } from "@/src/libs/sweetAlert";
 import axios from "axios";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const MyAccount = () => {
   const router = useRouter();
@@ -622,4 +623,9 @@ const MyAccount = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default withLayoutAttractionsReserve(MyAccount);

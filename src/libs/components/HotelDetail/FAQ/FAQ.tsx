@@ -1,17 +1,24 @@
 import { Stack, Typography } from "@mui/material";
 import React from "react";
+import { useTranslation } from "next-i18next";
 import FAQList from "./FAQList";
+import { PartnerProperty } from "../../../types/partnerInput/partnerProperty";
 
-const FAQ = () => {
+interface FAQProps {
+  partnerProperty?: PartnerProperty | null;
+}
+
+const FAQ = ({ partnerProperty }: FAQProps) => {
+  const { t } = useTranslation("common");
   return (
     <Stack
       className="container"
       sx={{ mt: "50px !important", gap: 2, mb: "70px !important" }}
     >
       <Typography className="bold-text">
-        FAQs about The Grand Sumorum
+        {t("hotel.faq")}
       </Typography>
-      <FAQList />
+      <FAQList partnerProperty={partnerProperty} />
     </Stack>
   );
 };

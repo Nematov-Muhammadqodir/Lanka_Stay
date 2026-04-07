@@ -12,13 +12,7 @@ import { useEffect, useState } from "react";
 import TourReviewItemForMenu from "./TourReviewItemForMenu";
 import { useQuery } from "@apollo/client";
 import { GET_COMMENTS } from "@/apollo/user/query";
-
-const SORT_OPTIONS = [
-  { label: "Newest first", sort: "createdAt", direction: "DESC" },
-  { label: "Oldest first", sort: "createdAt", direction: "ASC" },
-  { label: "Highest score", sort: "commentScore", direction: "DESC" },
-  { label: "Lowest score", sort: "commentScore", direction: "ASC" },
-];
+import { useTranslation } from "next-i18next";
 
 interface TourReviewListForMenuProps {
   attractionId?: string;
@@ -29,6 +23,15 @@ const TourReviewListForMenu = ({
   attractionId,
   onCommentsLoaded,
 }: TourReviewListForMenuProps) => {
+  const { t } = useTranslation("common");
+
+  const SORT_OPTIONS = [
+    { label: t("attraction.newestFirst"), sort: "createdAt", direction: "DESC" },
+    { label: t("attraction.oldestFirst"), sort: "createdAt", direction: "ASC" },
+    { label: t("attraction.highestScore"), sort: "commentScore", direction: "DESC" },
+    { label: t("attraction.lowestScore"), sort: "commentScore", direction: "ASC" },
+  ];
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
@@ -78,7 +81,7 @@ const TourReviewListForMenu = ({
       {/* Sort */}
       <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1}>
         <Typography fontWeight={600} fontSize={14}>
-          {total} {total === 1 ? "review" : "reviews"}
+          {total} {total === 1 ? t("attraction.review") : t("attraction.reviews")}
         </Typography>
         <Button
           onClick={(e) => setAnchorEl(e.currentTarget)}
@@ -104,7 +107,7 @@ const TourReviewListForMenu = ({
       <Stack>
         {comments.length === 0 ? (
           <Typography color="text.secondary" textAlign="center" py={4}>
-            No reviews yet. Be the first to review!
+            {t("attraction.noReviewsYet")}
           </Typography>
         ) : (
           comments.map((comment: any) => (

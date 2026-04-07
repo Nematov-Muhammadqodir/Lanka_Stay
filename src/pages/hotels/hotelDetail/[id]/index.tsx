@@ -100,7 +100,7 @@ const HotelDetail = () => {
         partnerProperty={partnerProperty}
         loading={getPartnerPropertyLoading}
       />
-      <GreatForYourStay />
+      <GreatForYourStay partnerProperty={partnerProperty} />
       <AllAvailableRooms
         partnerProperty={partnerProperty}
         loading={getPartnerPropertyLoading}
@@ -109,7 +109,7 @@ const HotelDetail = () => {
       <ReviewsList hotelReviewInput={hotelReviewInput} />
       <HouseRules partnerProperty={partnerProperty} />
       <LegalInformation partnerProperty={partnerProperty} />
-      <FAQ />
+      <FAQ partnerProperty={partnerProperty} />
       {data?.partnerId && data?.memberData && (
         <ChatWidget
           ownerId={data.partnerId}

@@ -4,6 +4,7 @@ import RecentlyViewedCard from "./RecentlyViewedCard";
 import { GET_VISITED_PROPERTIES } from "@/apollo/user/query";
 import { useQuery } from "@apollo/client";
 import { PartnerPropertiesResponse } from "@/src/libs/types/partnerInput/partnerProperty";
+import { useTranslation } from "next-i18next";
 
 interface RecentlyViewedProps {
   visitedHotelsData: PartnerPropertiesResponse;
@@ -13,6 +14,7 @@ const RecentlyViewed = ({
   visitedHotelsData,
   visitedHotelsLoading,
 }: RecentlyViewedProps) => {
+  const { t } = useTranslation("common");
   const visitedList = visitedHotelsData?.list || [];
 
   const [page, setPage] = useState(1);
@@ -40,7 +42,7 @@ const RecentlyViewed = ({
       height={"auto"}
     >
       <Typography className="bold-text">
-        You've Recently Viewed Hotels
+        {t("You've Recently Viewed Hotels")}
       </Typography>
 
       {/* Cards */}

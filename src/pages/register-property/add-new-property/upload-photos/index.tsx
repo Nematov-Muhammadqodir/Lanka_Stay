@@ -34,6 +34,7 @@ import { UPDATE_PARTNER_PROPERTY } from "@/apollo/user/mutation";
 import { GET_PARTNER_PROPERTY_BY_HOTEL_OWNER } from "@/apollo/user/query";
 import { partnerVar } from "@/apollo/store";
 import { T } from "@/src/libs/types/common";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const UploadPhotos = () => {
   const router = useRouter();
@@ -607,4 +608,9 @@ const UploadPhotos = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default UploadPhotos;

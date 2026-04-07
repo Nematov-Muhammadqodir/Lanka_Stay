@@ -13,6 +13,7 @@ import {
   setPropertyRegion,
 } from "@/src/slices/createPartnerPropertySlice";
 import { sweetErrorAlert } from "@/src/libs/sweetAlert";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const DefineAddress = () => {
   const router = useRouter();
@@ -137,4 +138,9 @@ const DefineAddress = () => {
     </LayoutCreateAccountMain>
   );
 };
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default DefineAddress;

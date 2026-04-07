@@ -19,8 +19,10 @@ import {
 } from "../../sweetAlert";
 import { logOut } from "../../auth";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 
 const Settings = () => {
+  const { t } = useTranslation("common");
   const router = useRouter();
 
   // Password change state
@@ -99,7 +101,7 @@ const Settings = () => {
   return (
     <Stack width="100%" gap={4}>
       <Typography variant="h4" fontWeight={700}>
-        Settings
+        {t("myPage.settings")}
       </Typography>
 
       {/* Change Password Section */}
@@ -116,12 +118,12 @@ const Settings = () => {
         <Stack direction="row" alignItems="center" gap={1.5}>
           <LockIcon sx={{ color: "primary.main" }} />
           <Typography fontWeight={700} fontSize={18}>
-            Change Password
+            {t("myPage.changePassword")}
           </Typography>
         </Stack>
 
         <TextField
-          label="Current Password"
+          label={t("myPage.currentPassword")}
           type="password"
           fullWidth
           value={oldPassword}
@@ -129,16 +131,16 @@ const Settings = () => {
           sx={{ maxWidth: 400 }}
         />
         <TextField
-          label="New Password"
+          label={t("myPage.newPassword")}
           type="password"
           fullWidth
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
-          helperText="Minimum 6 characters"
+          helperText={t("myPage.minimumCharacters")}
           sx={{ maxWidth: 400 }}
         />
         <TextField
-          label="Confirm New Password"
+          label={t("myPage.confirmNewPassword")}
           type="password"
           fullWidth
           value={confirmPassword}
@@ -148,7 +150,7 @@ const Settings = () => {
           }
           helperText={
             confirmPassword.length > 0 && confirmPassword !== newPassword
-              ? "Passwords do not match"
+              ? t("myPage.passwordsDoNotMatch")
               : ""
           }
           sx={{ maxWidth: 400 }}
@@ -173,7 +175,7 @@ const Settings = () => {
             )
           }
         >
-          {changingPassword ? "Changing..." : "Update Password"}
+          {changingPassword ? t("myPage.changing") : t("myPage.updatePassword")}
         </Button>
       </Stack>
 
@@ -191,14 +193,12 @@ const Settings = () => {
         <Stack direction="row" alignItems="center" gap={1.5}>
           <WarningAmberIcon sx={{ color: "error.main" }} />
           <Typography fontWeight={700} fontSize={18} color="error.main">
-            Danger Zone
+            {t("myPage.dangerZone")}
           </Typography>
         </Stack>
 
         <Typography fontSize={14} color="text.secondary">
-          Permanently delete your account and all associated data. This includes
-          your profile, reservations history, reviews, and favorites. This
-          action cannot be undone.
+          {t("myPage.deleteAccountDescription")}
         </Typography>
 
         <Button
@@ -221,7 +221,7 @@ const Settings = () => {
             )
           }
         >
-          {deleting ? "Deleting..." : "Delete My Account"}
+          {deleting ? t("myPage.deleting") : t("myPage.deleteMyAccount")}
         </Button>
       </Stack>
     </Stack>

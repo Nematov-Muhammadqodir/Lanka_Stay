@@ -3,8 +3,10 @@ import { RootState } from "@/store";
 import { Box, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "next-i18next";
 
 const TrendingDestinations = () => {
+  const { t } = useTranslation("common");
   const stripEmoji = (text: string) =>
     text.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "");
 
@@ -71,10 +73,10 @@ const TrendingDestinations = () => {
     <Stack className="container" alignItems="center" gap={3}>
       <Stack alignSelf={"start"}>
         <Typography fontSize={"30px"} fontWeight={800}>
-          Trending destinations
+          {t("home.trendingDestinations")}
         </Typography>
         <Typography>
-          Travellers searching for South Korea also booked these
+          {t("home.trendingDesc")}
         </Typography>
       </Stack>
       <Stack flexDirection="row" justifyContent="center" gap={3}>

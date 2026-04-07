@@ -17,6 +17,7 @@ import {
   removeBathroomFacility,
 } from "@/src/slices/partnerPropertyRoomSlice";
 import { sweetBasicAlert } from "@/src/libs/sweetAlert";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const BathRoomDetails = () => {
   const router = useRouter();
@@ -176,4 +177,9 @@ const BathRoomDetails = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default BathRoomDetails;

@@ -10,6 +10,7 @@ import { useMutation, useReactiveVar } from "@apollo/client";
 import { LIKE_COMMENT, DISLIKE_COMMENT } from "@/apollo/user/mutation";
 import { userVar } from "@/apollo/store";
 import { sweetMixinErrorAlert } from "../../../../sweetAlert";
+import { useTranslation } from "next-i18next";
 
 interface TourReviewItemForMenuProps {
   comment: any;
@@ -20,6 +21,7 @@ const TourReviewItemForMenu = ({
   comment,
   refetchComments,
 }: TourReviewItemForMenuProps) => {
+  const { t } = useTranslation("common");
   const user = useReactiveVar(userVar);
   const [expanded, setExpanded] = useState(false);
   const [likes, setLikes] = useState(comment.commentLikes ?? 0);
@@ -139,7 +141,7 @@ const TourReviewItemForMenu = ({
               fontSize: 13,
             }}
           >
-            {expanded ? "Show less" : "Read more"}
+            {expanded ? t("attraction.showLess") : t("attraction.readMore")}
           </Button>
         )}
 
@@ -151,7 +153,7 @@ const TourReviewItemForMenu = ({
         >
           <CalendarMonthIcon sx={{ fontSize: 16, color: "text.secondary" }} />
           <Typography fontSize={12} color="text.secondary">
-            Posted {createdAt} on LankaStay.com
+            {t("attraction.postedOnLankaStay", { date: createdAt })}
           </Typography>
         </Stack>
 

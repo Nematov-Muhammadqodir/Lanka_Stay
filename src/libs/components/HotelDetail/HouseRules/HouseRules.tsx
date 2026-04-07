@@ -8,7 +8,7 @@ const HouseRules = ({ partnerProperty, loading }: PropertyOverviewProps) => {
   return (
     <Stack className="container" mt={"50px !important"}>
       <Stack className="houseRulesHeaderMainContainer">
-        <HouseRulesHeader />
+        <HouseRulesHeader propertyName={partnerProperty?.propertyName} />
       </Stack>
       <Stack className="houseRulesBodyMainContainer">
         <HouseRulesBody partnerProperty={partnerProperty} />

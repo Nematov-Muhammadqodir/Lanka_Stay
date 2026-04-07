@@ -6,12 +6,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CustomMap from "../../HotelDetail/CustomMap";
 import { Attraction } from "../../../types/attraction/attraction";
+import { useTranslation } from "next-i18next";
 
 interface TourHighlightsProps {
   attraction?: Attraction | null;
 }
 
 const TourHighlights = ({ attraction }: TourHighlightsProps) => {
+  const { t } = useTranslation("common");
   return (
     <Stack gap={2}>
       {attraction?.freeCancellation && (
@@ -19,10 +21,10 @@ const TourHighlights = ({ attraction }: TourHighlightsProps) => {
           <CheckIcon sx={{ color: "#018233" }} />
           <Stack>
             <Typography className="bold-text-medium" color={"#018233"}>
-              Free cancellation available
+              {t("attraction.freeCancellation")}
             </Typography>
             <Typography className="small-text">
-              Up to 24 hours before the start time
+              {t("attraction.cancelBefore")}
             </Typography>
           </Stack>
         </Stack>
@@ -32,7 +34,7 @@ const TourHighlights = ({ attraction }: TourHighlightsProps) => {
           <TimelapseIcon />
           <Stack>
             <Typography className="bold-text-medium">
-              Duration: {attraction.attractionDuration}
+              {t("attraction.duration")}: {attraction.attractionDuration}
             </Typography>
           </Stack>
         </Stack>
@@ -45,7 +47,7 @@ const TourHighlights = ({ attraction }: TourHighlightsProps) => {
       {attraction?.attractionHighlights &&
         attraction.attractionHighlights.length > 0 && (
           <Stack gap={0.5}>
-            <Typography className="bold-text-medium">Why visit</Typography>
+            <Typography className="bold-text-medium">{t("attraction.whyVisit")}</Typography>
             <Stack>
               {attraction.attractionHighlights.map((highlight, i) => (
                 <Stack
@@ -65,7 +67,7 @@ const TourHighlights = ({ attraction }: TourHighlightsProps) => {
         attraction.attractionIncludes.length > 0 && (
           <Stack gap={0.5}>
             <Typography className="bold-text-medium">
-              What&apos;s included
+              {t("attraction.whatsIncluded")}
             </Typography>
             <Stack>
               {attraction.attractionIncludes.map((item, i) => (
@@ -85,7 +87,7 @@ const TourHighlights = ({ attraction }: TourHighlightsProps) => {
       {attraction?.attractionExcludes &&
         attraction.attractionExcludes.length > 0 && (
           <Stack gap={0.5}>
-            <Typography className="bold-text-medium">Restrictions</Typography>
+            <Typography className="bold-text-medium">{t("attraction.restrictions")}</Typography>
             <Stack>
               {attraction.attractionExcludes.map((item, i) => (
                 <Stack
@@ -102,7 +104,7 @@ const TourHighlights = ({ attraction }: TourHighlightsProps) => {
           </Stack>
         )}
       <Stack gap={1}>
-        <Typography className="bold-text-medium">Location</Typography>
+        <Typography className="bold-text-medium">{t("attraction.location")}</Typography>
         <Stack gap={1}>
           <Box width={"100%"} height={245}>
             <CustomMap

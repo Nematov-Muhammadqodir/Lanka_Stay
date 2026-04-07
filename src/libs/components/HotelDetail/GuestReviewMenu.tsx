@@ -2,6 +2,7 @@ import { Box, Button, Chip, Stack, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import InfoIcon from "@mui/icons-material/Info";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { useTranslation } from "next-i18next";
 import GuestReviewsForMenu from "./GuestReviewsForMenu";
 import GuestReviewListForMenu from "./GuestReviewListForMenu";
 import React from "react";
@@ -51,6 +52,7 @@ const GuestReviewMenu = ({
 
   const formattedTotalScore = Number(totalScore.toFixed(1));
 
+  const { t } = useTranslation("common");
   const user = useReactiveVar(userVar);
   const comments = useSelector(
     (state: RootState) => state.comments.data?.list
@@ -79,7 +81,7 @@ const GuestReviewMenu = ({
             mb={5}
           >
             <Typography sx={{ fontWeight: 700, fontSize: 20 }}>
-              Guest reviews for The Grand Sumorum
+              {t("hotel.guestReviews")}
             </Typography>
             <Button onClick={handleClose}>
               <CloseIcon />
@@ -109,17 +111,25 @@ const GuestReviewMenu = ({
 
               <Stack>
                 <Typography sx={{ fontWeight: 700, fontSize: 15 }}>
-                  Fabulous
+                  {formattedTotalScore >= 9
+                    ? t("hotel.superb")
+                    : formattedTotalScore >= 8
+                    ? t("hotel.fabulous")
+                    : formattedTotalScore >= 7
+                    ? t("hotel.veryGood")
+                    : formattedTotalScore >= 6
+                    ? t("hotel.good")
+                    : t("hotel.pleasant")}
                 </Typography>
                 <Typography className="small-text">
-                  {totalReviews} reviews
+                  {totalReviews} {t("hotel.reviews")}
                 </Typography>
               </Stack>
             </Stack>
 
             <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
               <Typography color={"primary"}>
-                We aim 100% real reviews
+                {t("hotel.weAimReal")}
               </Typography>
               <InfoIcon color="primary" />
             </Stack>
@@ -127,7 +137,7 @@ const GuestReviewMenu = ({
             {hasReviewed ? (
               <Chip
                 icon={<CheckCircleIcon />}
-                label="You already reviewed this hotel"
+                label={t("hotel.alreadyReviewed")}
                 color="success"
                 variant="outlined"
               />
@@ -141,7 +151,7 @@ const GuestReviewMenu = ({
                 }}
                 onClick={() => setOpenWriteMenu(true)}
               >
-                Write a Comment
+                {t("hotel.leaveReview")}
               </Button>
             )}
           </Stack>
