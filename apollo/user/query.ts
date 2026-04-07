@@ -490,6 +490,25 @@ export const GET_ATTRACTION_RESERVATIONS = gql`
   }
 `;
 
+export const GET_POPULAR_ATTRACTIONS = gql`
+  query GetPopularAttractions {
+    getPopularAttractions {
+      _id
+      attractionName
+      attractionCity
+      attractionCountry
+      attractionImages
+      attractionAdultPrice
+      attractionType
+      attractionViews
+      attractionLikes
+      averageRating
+      totalReviews
+      freeCancellation
+    }
+  }
+`;
+
 export const GET_PROPERTY_TYPE_STATS = gql`
   query GetPropertyTypeStats {
     getPropertyTypeStats {

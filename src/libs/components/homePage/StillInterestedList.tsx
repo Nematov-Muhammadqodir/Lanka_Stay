@@ -92,14 +92,16 @@ const StillInterestedList = () => {
           />
         ))}
       </Stack>
-      <Stack spacing={2} mt={2} alignItems="center">
-        <Pagination
-          count={pageCount}
-          page={page}
-          onChange={handleChange}
-          color="secondary"
-        />
-      </Stack>
+      {pageCount > 1 && (
+        <Stack spacing={2} mt={2} alignItems="center">
+          <Pagination
+            count={pageCount}
+            page={page}
+            onChange={handleChange}
+            color="secondary"
+          />
+        </Stack>
+      )}
     </Stack>
   );
 };

@@ -22,7 +22,37 @@ const StillInterestedCard = ({
   console.log("propertyyy", property);
   const user = useReactiveVar(userVar);
   const router = useRouter();
-  const like = true;
+
+  const ratings = [
+    property?.staffRating,
+    property?.facilitiesRating,
+    property?.cleanlessRating,
+    property?.comfortRating,
+    property?.valueOfMoneyRating,
+    property?.locationRating,
+    property?.freeWiFiRating,
+  ].filter((r) => r != null && r > 0);
+
+  const avgRating =
+    ratings.length > 0
+      ? (ratings.reduce((sum, val) => sum + val!, 0) / ratings.length).toFixed(1)
+      : "0";
+
+  const totalReviews = property?.totalReviews ?? 0;
+
+  const ratingLabel =
+    Number(avgRating) >= 9
+      ? "Superb"
+      : Number(avgRating) >= 8
+      ? "Fabulous"
+      : Number(avgRating) >= 7
+      ? "Very Good"
+      : Number(avgRating) >= 6
+      ? "Good"
+      : Number(avgRating) > 0
+      ? "Pleasant"
+      : "";
+
   return (
     <Stack
       sx={{
@@ -99,37 +129,39 @@ const StillInterestedCard = ({
         <Typography fontSize={12}>
           {property?.propertyRegion}, {property?.propertyCountry}
         </Typography>
-        <Stack flexDirection={"row"}>
-          <Box
-            sx={{
-              width: 28,
-              height: 28,
-              backgroundColor: "primary.main",
-              border: "1px solid #eee",
-              borderRadius: "6px",
-              mr: 1,
-              mt: 0.3,
-              textAlign: "center",
-              justifyContent: "center",
-              borderBottomLeftRadius: 0,
-            }}
-          >
-            <Typography
-              fontSize={12}
-              justifyContent={"center"}
-              alignItems={"center"}
-              display={"flex"}
-              color={"secondary.contrastText"}
-              paddingTop={0.3}
+        {Number(avgRating) > 0 && (
+          <Stack flexDirection={"row"}>
+            <Box
+              sx={{
+                width: 28,
+                height: 28,
+                backgroundColor: "primary.main",
+                border: "1px solid #eee",
+                borderRadius: "6px",
+                mr: 1,
+                mt: 0.3,
+                textAlign: "center",
+                justifyContent: "center",
+                borderBottomLeftRadius: 0,
+              }}
             >
-              8.0
+              <Typography
+                fontSize={12}
+                justifyContent={"center"}
+                alignItems={"center"}
+                display={"flex"}
+                color={"secondary.contrastText"}
+                paddingTop={0.3}
+              >
+                {avgRating}
+              </Typography>
+            </Box>
+            <Typography fontSize={13}>
+              {ratingLabel} <br />
+              {totalReviews} {totalReviews === 1 ? "review" : "reviews"}
             </Typography>
-          </Box>
-          <Typography fontSize={13}>
-            Good <br />
-            371 reviews
-          </Typography>
-        </Stack>
+          </Stack>
+        )}
       </Stack>
     </Stack>
   );
