@@ -3,7 +3,7 @@ import "../scss/pc/main.scss";
 import "leaflet/dist/leaflet.css";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import type { AppProps } from "next/app";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { dark, light } from "../scss/MaterialTheme";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -14,6 +14,18 @@ import { store } from "@/store";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [mode, setMode] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("themeMode") as "light" | "dark" | null;
+    if (saved) setMode(saved);
+  }, []);
+
+  const toggleMode = () => {
+    const next = mode === "light" ? "dark" : "light";
+    setMode(next);
+    localStorage.setItem("themeMode", next);
+  };
+
   const theme = useMemo(
     () => createTheme(mode === "light" ? light : dark),
     [mode]
@@ -36,7 +48,7 @@ export default function App({ Component, pageProps }: AppProps) {
               cursor: "pointer",
               border: "none",
             }}
-            onClick={() => setMode(mode === "light" ? "dark" : "light")}
+            onClick={toggleMode}
           >
             {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
           </button>

@@ -60,6 +60,8 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import RefundIcon from "@mui/icons-material/CurrencyExchange";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import PartnerAIChatWidget from "@/src/libs/components/chat/PartnerAIChatWidget";
 
 const Dashboard = () => {
   const partner = useReactiveVar(partnerVar);
@@ -376,6 +378,7 @@ const Dashboard = () => {
           {isAttractionOwner && <Tab label="Attractions" />}
           {isAttractionOwner && <Tab label="Reservations" />}
           <Tab icon={<ChatIcon />} iconPosition="start" label="Messages" />
+          <Tab icon={<AutoAwesomeIcon />} iconPosition="start" label="AI Assistant" />
         </Tabs>
 
         {/* Overview Tab */}
@@ -915,6 +918,11 @@ const Dashboard = () => {
         {/* Messages Tab */}
         {((isHotelOwner && tab === 3) || (isAttractionOwner && tab === 3)) && (
           <OwnerMessagesPanel />
+        )}
+
+        {/* AI Assistant Tab */}
+        {((isHotelOwner && tab === 4) || (isAttractionOwner && tab === 4)) && (
+          <PartnerAIChatWidget />
         )}
 
         {/* Room Edit Dialog */}
