@@ -1,60 +1,63 @@
-import { Pagination, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import { CircularProgress, Stack, Typography } from "@mui/material";
+import React from "react";
 import ExploreCard from "./ExploreCard";
+import { useQuery } from "@apollo/client";
+import { GET_EXPLORE_REGIONS } from "@/apollo/user/query";
 
 const ExploreList = () => {
-  const data = Array.from({ length: 24 }, (_, i) => i + 1);
+  const { data, loading } = useQuery(GET_EXPLORE_REGIONS);
+  const regions = data?.getExploreRegions ?? [];
 
-  // Pagination states
-  const [page, setPage] = useState(1);
-  const itemsPerPage = 7;
+  // Group by country
+  const countriesMap = new Map<string, any[]>();
+  for (const r of regions) {
+    const list = countriesMap.get(r.country) ?? [];
+    list.push(r);
+    countriesMap.set(r.country, list);
+  }
 
-  // Calculate which items to show for current page
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = data.slice(startIndex, endIndex);
-
-  // Total pages
-  const pageCount = Math.ceil(data.length / itemsPerPage);
-
-  const handleChange = (event: any, value: any) => {
-    setPage(value);
-    console.log("value", value);
-  };
   return (
     <Stack
       className="container"
       sx={{ mt: "50px !important", mb: "50px !important" }}
+      gap={4}
     >
-      <Stack>
-        <Typography sx={{ fontSize: 24, fontWeight: 700 }}>
-          Explore South Korea
-        </Typography>
-        <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-          These popular destinations have a lot to offer
-        </Typography>
-      </Stack>
-      <Stack
-        sx={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          gap: 2,
-          mt: 2,
-          justifyContent: "start",
-        }}
-      >
-        {currentItems.map((item, index) => (
-          <ExploreCard key={index} />
-        ))}
-      </Stack>
-      <Stack spacing={2} mt={2} alignItems="center">
-        <Pagination
-          count={pageCount}
-          page={page}
-          onChange={handleChange}
-          color="primary"
-        />
-      </Stack>
+      {loading ? (
+        <Stack alignItems="center" py={4}>
+          <CircularProgress size={30} />
+        </Stack>
+      ) : regions.length === 0 ? (
+        <Stack alignItems="center" py={4}>
+          <Typography color="text.secondary">
+            No destinations available yet
+          </Typography>
+        </Stack>
+      ) : (
+        Array.from(countriesMap.entries()).map(([country, regionList]) => (
+          <Stack key={country} gap={2}>
+            <Stack>
+              <Typography sx={{ fontSize: 24, fontWeight: 700 }}>
+                Explore {country}
+              </Typography>
+              <Typography fontSize={14} color="text.secondary">
+                These popular destinations have a lot to offer
+              </Typography>
+            </Stack>
+            <Stack
+              sx={{
+                flexDirection: "row",
+                flexWrap: "wrap",
+                gap: 2,
+                justifyContent: "start",
+              }}
+            >
+              {regionList.map((region: any) => (
+                <ExploreCard key={region.region} region={region} />
+              ))}
+            </Stack>
+          </Stack>
+        ))
+      )}
     </Stack>
   );
 };

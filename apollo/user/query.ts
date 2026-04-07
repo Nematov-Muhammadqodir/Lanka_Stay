@@ -490,6 +490,29 @@ export const GET_ATTRACTION_RESERVATIONS = gql`
   }
 `;
 
+export const GET_PROPERTY_TYPE_STATS = gql`
+  query GetPropertyTypeStats {
+    getPropertyTypeStats {
+      propertyType
+      count
+      image
+    }
+  }
+`;
+
+export const GET_EXPLORE_REGIONS = gql`
+  query GetExploreRegions {
+    getExploreRegions {
+      region
+      country
+      image
+      propertyCount
+      attractionCount
+      totalListings
+    }
+  }
+`;
+
 export const GET_MOST_PICKED = gql`
   query GetMostPicked {
     getMostPicked {

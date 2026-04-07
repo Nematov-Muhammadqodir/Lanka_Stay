@@ -1,23 +1,13 @@
-import { Pagination, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import { CircularProgress, Stack, Typography } from "@mui/material";
+import React from "react";
 import BrowseByPropertyTypeCard from "./BrowseByPropertyTypeCard";
+import { useQuery } from "@apollo/client";
+import { GET_PROPERTY_TYPE_STATS } from "@/apollo/user/query";
 
 const BrowseByPropertyType = () => {
-  const data = Array.from({ length: 7 }, (_, i) => i + 1);
+  const { data, loading } = useQuery(GET_PROPERTY_TYPE_STATS);
+  const types = data?.getPropertyTypeStats ?? [];
 
-  const [page, setPage] = useState(1);
-  const itemsPerPage = 5;
-
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = data.slice(startIndex, endIndex);
-
-  const pageCount = Math.ceil(data.length / itemsPerPage);
-
-  const handleChange = (event: any, value: any) => {
-    setPage(value);
-    console.log("value", value);
-  };
   return (
     <Stack
       className="container"
@@ -25,32 +15,39 @@ const BrowseByPropertyType = () => {
     >
       <Stack>
         <Typography sx={{ fontSize: 24, fontWeight: 700 }}>
-          Browse By Property Type
+          Browse by property type
         </Typography>
-        <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-          These popular destinations have a lot to offer
+        <Typography fontSize={14} color="text.secondary" mt={0.5}>
+          Find the perfect stay for your next trip
         </Typography>
       </Stack>
-      <Stack
-        sx={{
-          flexDirection: "row",
-          gap: 1,
-          mt: 2,
-          justifyContent: "start",
-        }}
-      >
-        {currentItems.map((item, index) => (
-          <BrowseByPropertyTypeCard key={index} />
-        ))}
-      </Stack>
-      <Stack spacing={2} mt={2} alignItems="center">
-        <Pagination
-          count={pageCount}
-          page={page}
-          onChange={handleChange}
-          color="primary"
-        />
-      </Stack>
+
+      {loading ? (
+        <Stack alignItems="center" py={4}>
+          <CircularProgress size={30} />
+        </Stack>
+      ) : types.length === 0 ? (
+        <Stack alignItems="center" py={4}>
+          <Typography color="text.secondary">
+            No property types available yet
+          </Typography>
+        </Stack>
+      ) : (
+        <Stack
+          sx={{
+            flexDirection: "row",
+            gap: 2,
+            mt: 2,
+            justifyContent: "start",
+            overflowX: "auto",
+            pb: 1,
+          }}
+        >
+          {types.map((type: any) => (
+            <BrowseByPropertyTypeCard key={type.propertyType} type={type} />
+          ))}
+        </Stack>
+      )}
     </Stack>
   );
 };
