@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { getJwtToken, updateUserInfo } from "../../auth";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
+import AIChatWidget from "../chat/AIChatWidget";
 
 const withLayoutMain = (Component: ComponentType) => {
   return (props: object) => {
@@ -57,6 +58,7 @@ const withLayoutMain = (Component: ComponentType) => {
           <Stack>
             <Footer />
           </Stack>
+          <AIChatWidget />
         </Stack>
       </>
     );

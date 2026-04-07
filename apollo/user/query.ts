@@ -1,6 +1,16 @@
 import { gql } from "@apollo/client";
 
 /**************************
+ *        AI AGENT        *
+ *************************/
+
+export const ASK_AI_AGENT = gql`
+  query AskAiAgent($question: String!) {
+    askAiAgent(question: $question)
+  }
+`;
+
+/**************************
  *         MEMBER         *
  *************************/
 

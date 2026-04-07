@@ -10,6 +10,7 @@ import { userVar } from "@/apollo/store";
 import { UserRole } from "../../enums/user.enum";
 import { useRouter } from "next/router";
 import { getJwtToken, updateUserInfo } from "../../auth";
+import AIChatWidget from "../chat/AIChatWidget";
 
 const withLayoutSecondary = (Component: any) => {
   return (props: any) => {
@@ -52,6 +53,7 @@ const withLayoutSecondary = (Component: any) => {
           <Stack>
             <Footer />
           </Stack>
+          <AIChatWidget />
         </Stack>
       </>
     );
