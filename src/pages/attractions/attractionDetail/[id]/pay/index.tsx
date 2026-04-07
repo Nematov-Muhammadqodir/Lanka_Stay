@@ -24,6 +24,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -352,4 +353,9 @@ const TicketPay = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default withLayoutAttractionsReserve(TicketPay);

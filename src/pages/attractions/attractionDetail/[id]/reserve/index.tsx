@@ -18,6 +18,7 @@ import { GET_ATTRACTION } from "@/apollo/user/query";
 import { userVar } from "@/apollo/store";
 import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
 import { sweetErrorAlert } from "@/src/libs/sweetAlert";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const TicketReserve = () => {
   const router = useRouter();
@@ -263,4 +264,9 @@ const TicketReserve = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default withLayoutAttractionsReserve(TicketReserve);

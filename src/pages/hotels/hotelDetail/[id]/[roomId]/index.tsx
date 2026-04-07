@@ -17,6 +17,7 @@ import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
 import { userVar } from "@/apollo/store";
 
 import { sweetErrorAlert } from "@/src/libs/sweetAlert";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export interface InitialValueInput {
   guestId: string;
@@ -419,4 +420,9 @@ const RoomReservation = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default withLayoutAttractionsReserve(RoomReservation);

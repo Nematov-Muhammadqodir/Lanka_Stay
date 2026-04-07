@@ -12,6 +12,7 @@ import UserRatings from "@/src/libs/components/attractions/AttractionDetail/User
 import AttractionsReviewsList from "@/src/libs/components/attractions/AttractionDetail/AttractionsReviewsList";
 import AttractionsFAQ from "@/src/libs/components/attractions/AttractionDetail/FAQ/AttractionsFAQ";
 import ChatWidget from "@/src/libs/components/chat/ChatWidget";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const AttractionDetail = () => {
   const router = useRouter();
@@ -54,4 +55,9 @@ const AttractionDetail = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default withLayoutAttractions(AttractionDetail);

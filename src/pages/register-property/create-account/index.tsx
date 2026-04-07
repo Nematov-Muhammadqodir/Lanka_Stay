@@ -34,6 +34,7 @@ import {
 import { useReactiveVar } from "@apollo/client";
 import { partnerVar } from "@/apollo/store";
 import LayoutCreateAccountMain from "@/src/libs/components/layout/registerProperty/create-account/CreateAccountMainLayout";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 type Inputs = {
   email: string;
@@ -637,4 +638,9 @@ const CreateAccount = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default CreateAccount;

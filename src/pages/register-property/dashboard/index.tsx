@@ -62,6 +62,7 @@ import RefundIcon from "@mui/icons-material/CurrencyExchange";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import PartnerAIChatWidget from "@/src/libs/components/chat/PartnerAIChatWidget";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const Dashboard = () => {
   const partner = useReactiveVar(partnerVar);
@@ -1037,4 +1038,9 @@ const Dashboard = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default Dashboard;

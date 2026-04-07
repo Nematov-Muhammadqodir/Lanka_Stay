@@ -19,6 +19,7 @@ import countries from "world-countries";
 import { useRouter } from "next/router";
 import { signUp } from "@/src/libs/auth";
 import { sweetMixinErrorAlert } from "@/src/libs/sweetAlert";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const Register = () => {
   // REGISTER PROCESS
@@ -398,4 +399,9 @@ const Register = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default Register;

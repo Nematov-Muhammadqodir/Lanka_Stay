@@ -20,6 +20,7 @@ import { Stack } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export interface HotelReviewsProps {
   staffRating: number;
@@ -120,4 +121,9 @@ const HotelDetail = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "ko", ["common"])),
+  },
+});
 export default withLayoutSecondary(HotelDetail);
