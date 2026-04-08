@@ -41,7 +41,7 @@ const withLayoutSecondary = (Component: any) => {
             <Stack>
               <DetailLayoutBanner />
             </Stack>
-            <Stack mt={-5}>
+            <Stack sx={{ mt: { xs: 4, md: -5 } }}>
               <Filtering />
             </Stack>
           </Stack>

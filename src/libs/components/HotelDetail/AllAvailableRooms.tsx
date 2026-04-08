@@ -51,6 +51,7 @@ const AllAvailableRooms = ({
           padding={1}
           bgcolor={"primary.main"}
           color={"secondary.contrastText"}
+          sx={{ display: { xs: "none", md: "flex" } }}
         >
           <Stack width={220} alignItems={"center"}>
             <Typography className="available-rooms-header-text">

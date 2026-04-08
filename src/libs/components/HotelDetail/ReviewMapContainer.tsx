@@ -42,13 +42,16 @@ const ReviewMapContainer = (props: ReviewMapContainerProps) => {
   return (
     <Stack
       className="right-review-map-container"
-      width={390}
-      height={510}
+      sx={{
+        width: { xs: "100%", md: 390 },
+        height: { xs: "auto", md: 510 },
+        gap: { xs: 2, md: 0 },
+      }}
       justifyContent={"space-between"}
     >
       <Stack
         className="review-container"
-        height={300}
+        sx={{ height: { xs: "auto", md: 300 } }}
         border={"1px solid"}
         borderColor={"divider"}
         borderRadius={1}
@@ -150,7 +153,7 @@ const ReviewMapContainer = (props: ReviewMapContainerProps) => {
         </Stack>
       </Stack>
 
-      <Box height={200} width={390}>
+      <Box sx={{ height: 200, width: { xs: "100%", md: 390 } }}>
         <CustomMap
           country={partnerProperty?.propertyCountry}
           city={partnerProperty?.propertyCity}

@@ -132,8 +132,8 @@ const ChatWidget = ({
           onClick={handleOpen}
           sx={{
             position: "fixed",
-            bottom: 24,
-            right: 24,
+            bottom: { xs: 84, md: 24 },
+            right: { xs: 16, md: 24 },
             zIndex: 1300,
             width: 56,
             height: 56,
@@ -148,12 +148,14 @@ const ChatWidget = ({
         <Stack
           sx={{
             position: "fixed",
-            bottom: 24,
-            right: 24,
-            width: 370,
-            height: 480,
+            bottom: { xs: 0, md: 24 },
+            right: { xs: 0, md: 24 },
+            left: { xs: 0, md: "auto" },
+            top: { xs: 0, md: "auto" },
+            width: { xs: "100%", md: 370 },
+            height: { xs: "100%", md: 480 },
             zIndex: 1300,
-            borderRadius: 3,
+            borderRadius: { xs: 0, md: 3 },
             overflow: "hidden",
             boxShadow: "0 12px 40px rgba(0,0,0,0.2)",
             backgroundColor: "background.paper",

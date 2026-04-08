@@ -30,16 +30,19 @@ const AllAvailableRoomsBody = ({
   return (
     <Stack
       className="available-rooms-body"
-      flexDirection={"row"}
-      justifyContent={"space-between"}
-      height={"auto"}
-      paddingX={1}
-      mt={2}
-      borderBottom={"3px solid"}
-      borderColor={"primary.main"}
-      pb={2}
+      sx={{
+        flexDirection: { xs: "column", md: "row" },
+        justifyContent: "space-between",
+        height: "auto",
+        paddingX: 1,
+        mt: 2,
+        borderBottom: "3px solid",
+        borderColor: "primary.main",
+        pb: 2,
+        gap: { xs: 2, md: 0 },
+      }}
     >
-      <Stack width={220}>
+      <Stack sx={{ width: { xs: "100%", md: 220 } }}>
         <Typography
           className="available-rooms-header-text"
           color={"primary.main"}
@@ -67,9 +70,10 @@ const AllAvailableRoomsBody = ({
         sx={{
           width: "2px",
           bgcolor: "primary.main",
+          display: { xs: "none", md: "block" },
         }}
       ></Box>
-      <Stack width={140} flexDirection={"row"} gap={0.5} flexWrap={"wrap"}>
+      <Stack sx={{ width: { xs: "100%", md: 140 } }} flexDirection={"row"} gap={0.5} flexWrap={"wrap"}>
         {Array.from({ length: guestCount }).map((_, idx) => (
           <PersonIcon key={idx} />
         ))}
@@ -78,9 +82,10 @@ const AllAvailableRoomsBody = ({
         sx={{
           width: "2px",
           bgcolor: "primary.main",
+          display: { xs: "none", md: "block" },
         }}
       ></Box>
-      <Stack width={175}>
+      <Stack sx={{ width: { xs: "100%", md: 175 } }}>
         <Stack flexDirection={"row"} gap={0.5}>
           <Typography className="available-rooms-header-text">
             {formatKoreanWon(
@@ -97,9 +102,10 @@ const AllAvailableRoomsBody = ({
         sx={{
           width: "2px",
           bgcolor: "primary.main",
+          display: { xs: "none", md: "block" },
         }}
       ></Box>
-      <Stack width={260} flexDirection={"row"} gap={1}>
+      <Stack sx={{ width: { xs: "100%", md: 260 } }} flexDirection={"row"} gap={1}>
         <Stack flexDirection={"row"} gap={0.5}>
           <EmojiFoodBeverageIcon />
           {partnerProperty?.breakfastIncluded ? (
@@ -125,6 +131,7 @@ const AllAvailableRoomsBody = ({
         sx={{
           width: "2px",
           bgcolor: "primary.main",
+          display: { xs: "none", md: "block" },
         }}
       ></Box>
       <SelectRoomMenu />
@@ -132,12 +139,13 @@ const AllAvailableRoomsBody = ({
         sx={{
           width: "2px",
           bgcolor: "primary.main",
+          display: { xs: "none", md: "block" },
         }}
       ></Box>
-      <Stack width={255}>
+      <Stack sx={{ width: { xs: "100%", md: 255 } }}>
         <Button
           variant="contained"
-          sx={{ width: "200px", color: "secondary.contrastText" }}
+          sx={{ width: { xs: "100%", md: "200px" }, color: "secondary.contrastText" }}
           onClick={() => router.push(`roomId/${propertyRoom?.roomId}`)}
         >
           I'll reserve

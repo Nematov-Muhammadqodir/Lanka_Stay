@@ -133,24 +133,29 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
   return (
     <Stack
       className="container"
-      flexDirection={"row"}
-      justifyContent={"space-between"}
-      marginTop={"40px !important"}
+      sx={{
+        flexDirection: { xs: "column", md: "row" },
+        justifyContent: "space-between",
+        marginTop: "40px !important",
+        gap: { xs: 2, md: 0 },
+      }}
     >
       <Stack>
         <Stack flexDirection={"row"}>
           <BeachAccessIcon />
           {isBeachFront ? <Typography>{t("filter.beachFront")}</Typography> : ""}
         </Stack>
-        <Typography fontSize={30} fontWeight={700}>
+        <Typography sx={{ fontSize: { xs: 22, md: 30 }, fontWeight: 700 }}>
           {partnerProperty.propertyName}
         </Typography>
-        <Stack flexDirection={"row"} alignItems={"center"}>
-          <FmdGoodIcon color="primary" />
-          <Typography>
-            {partnerProperty.propertyCity}, {partnerProperty.propertyRegion},{" "}
-            {partnerProperty.propertyCountry}
-          </Typography>
+        <Stack sx={{ flexDirection: { xs: "column", sm: "row" }, alignItems: { xs: "flex-start", sm: "center" } }}>
+          <Stack flexDirection="row" alignItems="center">
+            <FmdGoodIcon color="primary" />
+            <Typography fontSize={{ xs: 13, md: 16 }}>
+              {partnerProperty.propertyCity}, {partnerProperty.propertyRegion},{" "}
+              {partnerProperty.propertyCountry}
+            </Typography>
+          </Stack>
           <Button onClick={() => setMapOpen(true)}>
             <Typography
               color="primary"
@@ -291,8 +296,9 @@ const PropertyOverview = (props: PropertyOverviewProps) => {
         maxWidth={false}
         PaperProps={{
           sx: {
-            width: 750,
-            height: 550,
+            width: { xs: "95%", md: 750 },
+            height: { xs: "70vh", md: 550 },
+            maxWidth: "95vw",
             borderRadius: 3,
             overflow: "hidden",
             p: 0,

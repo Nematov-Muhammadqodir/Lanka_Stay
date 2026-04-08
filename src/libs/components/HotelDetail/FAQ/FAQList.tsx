@@ -70,8 +70,8 @@ export default function FAQList({ partnerProperty }: FAQListProps) {
   const rightFaqs = faqs.slice(half);
 
   return (
-    <Stack width="100%" flexDirection="row" justifyContent="space-between">
-      <Stack width="49%">
+    <Stack sx={{ width: "100%", flexDirection: { xs: "column", md: "row" }, justifyContent: "space-between", gap: { xs: 0, md: 0 } }}>
+      <Stack sx={{ width: { xs: "100%", md: "49%" } }}>
         {leftFaqs.map((faq, i) => (
           <Accordion
             key={`left-${i}`}
@@ -89,7 +89,7 @@ export default function FAQList({ partnerProperty }: FAQListProps) {
           </Accordion>
         ))}
       </Stack>
-      <Stack width="49%">
+      <Stack sx={{ width: { xs: "100%", md: "49%" } }}>
         {rightFaqs.map((faq, i) => (
           <Accordion
             key={`right-${i}`}

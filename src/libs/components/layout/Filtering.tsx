@@ -182,14 +182,15 @@ export default function Filtering() {
       }}
     >
       {/* Date Picker */}
-      <Stack>
+      <Stack sx={{ width: { xs: "100%", sm: "48%", md: "auto" } }}>
         <Tooltip title="Check Available Days">
           <Button
             variant="contained"
             sx={{
               borderRadius: "12px",
               height: "60px",
-              width: { xs: "100%", sm: "48%", md: "211px" },
+              width: "100%",
+              minWidth: { md: "211px" },
               backgroundColor: "white",
               boxShadow: "0px 4px 10px rgba(0,0,0,0.15)",
               "&:hover": {
@@ -289,14 +290,15 @@ export default function Filtering() {
       </Stack>
 
       {/* People Selector */}
-      <Stack>
+      <Stack sx={{ width: { xs: "100%", sm: "48%", md: "auto" } }}>
         <Tooltip title="Select Amount of People">
           <Button
             variant="contained"
             sx={{
               borderRadius: "12px",
               height: "60px",
-              width: { xs: "100%", sm: "48%", md: "211px" },
+              width: "100%",
+              minWidth: { md: "211px" },
               backgroundColor: "white",
               boxShadow: "0px 4px 10px rgba(0,0,0,0.15)",
               "&:hover": {
@@ -370,14 +372,15 @@ export default function Filtering() {
       </Stack>
 
       {/* Location */}
-      <Stack>
+      <Stack sx={{ width: { xs: "100%", sm: "48%", md: "auto" } }}>
         <Tooltip title="Select Location">
           <Button
             variant="contained"
             sx={{
               borderRadius: "12px",
               height: "60px",
-              width: { xs: "100%", sm: "48%", md: "211px" },
+              width: "100%",
+              minWidth: { md: "211px" },
               backgroundColor: "white",
               boxShadow: "0px 4px 10px rgba(0,0,0,0.15)",
               "&:hover": {
@@ -462,15 +465,16 @@ export default function Filtering() {
       </Stack>
 
       {/* Search */}
-      <Stack>
+      <Stack sx={{ width: { xs: "100%", sm: "48%", md: "auto" } }}>
         <Button
           variant="contained"
           sx={{
-            width: { xs: "100%", sm: "48%", md: "132px" },
-            height: "54px",
+            width: "100%",
+            minWidth: { md: "132px" },
+            height: "60px",
             color: "primary",
             gap: 1,
-            pl: "25px",
+            pl: { xs: 0, md: "25px" },
             borderRadius: "12px",
             backgroundColor: "secondary.main",
             boxShadow: "0px 8px 20px rgba(0,0,0,0.25)",

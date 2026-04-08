@@ -48,13 +48,25 @@ const ExploreList = () => {
             <Stack
               sx={{
                 flexDirection: "row",
-                flexWrap: "wrap",
+                flexWrap: { xs: "nowrap", md: "wrap" },
                 gap: 2,
                 justifyContent: "start",
+                overflowX: { xs: "auto", md: "visible" },
+                scrollSnapType: { xs: "x mandatory", md: "none" },
+                pb: { xs: 1, md: 0 },
+                "&::-webkit-scrollbar": { display: { xs: "none", md: "auto" } },
               }}
             >
               {regionList.map((region: any) => (
-                <ExploreCard key={region.region} region={region} />
+                <Stack
+                  key={region.region}
+                  sx={{
+                    flexShrink: 0,
+                    scrollSnapAlign: { xs: "start", md: "none" },
+                  }}
+                >
+                  <ExploreCard region={region} />
+                </Stack>
               ))}
             </Stack>
           </Stack>

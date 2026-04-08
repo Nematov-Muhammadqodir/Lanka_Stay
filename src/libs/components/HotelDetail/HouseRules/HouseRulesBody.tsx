@@ -25,30 +25,36 @@ const HouseRulesBody = ({
     >
       <Stack>
         <Stack
-          flexDirection={"row"}
-          width={"100%"}
-          justifyContent={"space-between"}
-          p={2}
-          borderBottom={"1px solid"}
-          borderColor={"secondary.main"}
+          sx={{
+            flexDirection: { xs: "column", md: "row" },
+            width: "100%",
+            justifyContent: "space-between",
+            p: 2,
+            borderBottom: "1px solid",
+            borderColor: "secondary.main",
+            gap: { xs: 1, md: 0 },
+          }}
         >
-          <Stack flexDirection={"row"} width={"25%"} gap={1}>
+          <Stack flexDirection={"row"} sx={{ width: { xs: "100%", md: "25%" } }} gap={1}>
             <LoginIcon />
             <Typography className="bold-text-medium" width={"100%"}>
               Check-in
             </Typography>
           </Stack>
-          <Typography width={"75%"}>
+          <Typography sx={{ width: { xs: "100%", md: "75%" } }}>
             From {partnerProperty?.checkInTimeFrom}
           </Typography>
         </Stack>
         <Stack
-          flexDirection={"row"}
-          width={"100%"}
-          justifyContent={"space-between"}
-          p={2}
-          borderBottom={"1px solid"}
-          borderColor={"secondary.main"}
+          sx={{
+            flexDirection: { xs: "column", md: "row" },
+            width: "100%",
+            justifyContent: "space-between",
+            p: 2,
+            borderBottom: "1px solid",
+            borderColor: "secondary.main",
+            gap: { xs: 1, md: 0 },
+          }}
         >
           <Stack
             flexDirection={"row"}
@@ -61,17 +67,20 @@ const HouseRulesBody = ({
               Check-out
             </Typography>
           </Stack>
-          <Typography width={"75%"}>
+          <Typography sx={{ width: { xs: "100%", md: "75%" } }}>
             From {partnerProperty?.checkOutTimeFrom}
           </Typography>
         </Stack>
         <Stack
-          flexDirection={"row"}
-          width={"100%"}
-          justifyContent={"space-between"}
-          p={2}
-          borderBottom={"1px solid"}
-          borderColor={"secondary.main"}
+          sx={{
+            flexDirection: { xs: "column", md: "row" },
+            width: "100%",
+            justifyContent: "space-between",
+            p: 2,
+            borderBottom: "1px solid",
+            borderColor: "secondary.main",
+            gap: { xs: 1, md: 0 },
+          }}
         >
           <Stack flexDirection={"row"} width={"25%"} alignItems={"start"}>
             <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
@@ -85,19 +94,22 @@ const HouseRulesBody = ({
               </Typography>
             </Stack>
           </Stack>
-          <Typography width={"75%"}>
+          <Typography sx={{ width: { xs: "100%", md: "75%" } }}>
             Cancellation and prepayment policies vary according to accommodation
             type. Please check what conditions may apply to each option when
             making your selection.
           </Typography>
         </Stack>
         <Stack
-          flexDirection={"row"}
-          width={"100%"}
-          justifyContent={"space-between"}
-          p={2}
-          borderBottom={"1px solid"}
-          borderColor={"secondary.main"}
+          sx={{
+            flexDirection: { xs: "column", md: "row" },
+            width: "100%",
+            justifyContent: "space-between",
+            p: 2,
+            borderBottom: "1px solid",
+            borderColor: "secondary.main",
+            gap: { xs: 1, md: 0 },
+          }}
         >
           <Stack
             flexDirection={"row"}
@@ -111,7 +123,7 @@ const HouseRulesBody = ({
             </Typography>
           </Stack>
 
-          <Stack width={"75%"} gap={3}>
+          <Stack sx={{ width: { xs: "100%", md: "75%" } }} gap={3}>
             <Stack gap={1}>
               <Typography width={"100%"} className="small-bold-text">
                 Child policies
@@ -133,12 +145,15 @@ const HouseRulesBody = ({
           </Stack>
         </Stack>
         <Stack
-          flexDirection={"row"}
-          width={"100%"}
-          justifyContent={"space-between"}
-          p={2}
-          borderBottom={"1px solid"}
-          borderColor={"secondary.main"}
+          sx={{
+            flexDirection: { xs: "column", md: "row" },
+            width: "100%",
+            justifyContent: "space-between",
+            p: 2,
+            borderBottom: "1px solid",
+            borderColor: "secondary.main",
+            gap: { xs: 1, md: 0 },
+          }}
         >
           <Stack width={"25%"}>
             <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
@@ -148,17 +163,20 @@ const HouseRulesBody = ({
               </Typography>
             </Stack>
           </Stack>
-          <Typography width={"75%"}>
+          <Typography sx={{ width: { xs: "100%", md: "75%" } }}>
             The minimum age for check-in is 18
           </Typography>
         </Stack>
         <Stack
-          flexDirection={"row"}
-          width={"100%"}
-          justifyContent={"space-between"}
-          p={2}
-          borderBottom={"1px solid"}
-          borderColor={"secondary.main"}
+          sx={{
+            flexDirection: { xs: "column", md: "row" },
+            width: "100%",
+            justifyContent: "space-between",
+            p: 2,
+            borderBottom: "1px solid",
+            borderColor: "secondary.main",
+            gap: { xs: 1, md: 0 },
+          }}
         >
           <Stack width={"25%"}>
             <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
@@ -168,17 +186,20 @@ const HouseRulesBody = ({
               </Typography>
             </Stack>
           </Stack>
-          <Typography width={"75%"}>
+          <Typography sx={{ width: { xs: "100%", md: "75%" } }}>
             {partnerProperty?.allowPets ? "Pets are allowed." : "Pets are not allowed."}
           </Typography>
         </Stack>
         <Stack
-          flexDirection={"row"}
-          width={"100%"}
-          justifyContent={"space-between"}
-          p={2}
-          borderBottom={"1px solid"}
-          borderColor={"secondary.main"}
+          sx={{
+            flexDirection: { xs: "column", md: "row" },
+            width: "100%",
+            justifyContent: "space-between",
+            p: 2,
+            borderBottom: "1px solid",
+            borderColor: "secondary.main",
+            gap: { xs: 1, md: 0 },
+          }}
         >
           <Stack width={"25%"}>
             <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
@@ -189,7 +210,7 @@ const HouseRulesBody = ({
             </Stack>
           </Stack>
           <Stack
-            width={"75%"}
+            sx={{ width: { xs: "100%", md: "75%" }, flexWrap: "wrap" }}
             flexDirection={"row"}
             gap={2}
             alignItems={"center"}

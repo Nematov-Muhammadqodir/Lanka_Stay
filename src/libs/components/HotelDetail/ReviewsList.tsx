@@ -96,9 +96,10 @@ const ReviewsList = ({
           onClose={handleClose}
           PaperProps={{
             sx: {
-              width: 900,
-              borderTopLeftRadius: 20,
-              borderBottomLeftRadius: 20,
+              width: { xs: "100%", md: 900 },
+              maxWidth: "100%",
+              borderTopLeftRadius: { xs: 0, md: 20 },
+              borderBottomLeftRadius: { xs: 0, md: 20 },
               overflow: "hidden",
             },
           }}

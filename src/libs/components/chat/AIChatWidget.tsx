@@ -101,8 +101,8 @@ const AIChatWidget = () => {
           onClick={() => setOpen(true)}
           sx={{
             position: "fixed",
-            bottom: 24,
-            right: 90,
+            bottom: { xs: 16, md: 24 },
+            right: { xs: 16, md: 90 },
             zIndex: 1300,
             width: 56,
             height: 56,
@@ -121,12 +121,14 @@ const AIChatWidget = () => {
         <Stack
           sx={{
             position: "fixed",
-            bottom: 24,
-            right: 90,
-            width: 400,
-            height: 550,
+            bottom: { xs: 0, md: 24 },
+            right: { xs: 0, md: 90 },
+            left: { xs: 0, md: "auto" },
+            top: { xs: 0, md: "auto" },
+            width: { xs: "100%", md: 400 },
+            height: { xs: "100%", md: 550 },
             zIndex: 1300,
-            borderRadius: 3,
+            borderRadius: { xs: 0, md: 3 },
             overflow: "hidden",
             boxShadow: "0 16px 48px rgba(0,0,0,0.2)",
             backgroundColor: "background.paper",

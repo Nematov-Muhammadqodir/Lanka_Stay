@@ -80,22 +80,34 @@ const StillInterestedList = () => {
       <Stack
         sx={{
           flexDirection: "row",
-          flexWrap: "wrap",
+          flexWrap: { xs: "nowrap", md: "wrap" },
           gap: 2,
           mt: 2,
           justifyContent: "start",
+          overflowX: { xs: "auto", md: "visible" },
+          scrollSnapType: { xs: "x mandatory", md: "none" },
+          pb: { xs: 1, md: 0 },
+          "&::-webkit-scrollbar": { display: { xs: "none", md: "auto" } },
         }}
       >
         {currentItems.map((item: any, index: any) => (
-          <StillInterestedCard
+          <Stack
             key={index}
-            property={item}
-            likePropertyHandler={likePropertyHandler}
-          />
+            sx={{
+              flexShrink: 0,
+              scrollSnapAlign: { xs: "start", md: "none" },
+              width: { xs: 220, md: "auto" },
+            }}
+          >
+            <StillInterestedCard
+              property={item}
+              likePropertyHandler={likePropertyHandler}
+            />
+          </Stack>
         ))}
       </Stack>
       {pageCount > 1 && (
-        <Stack spacing={2} mt={2} alignItems="center">
+        <Stack spacing={2} mt={2} alignItems="center" sx={{ display: { xs: "none", md: "flex" } }}>
           <Pagination
             count={pageCount}
             page={page}

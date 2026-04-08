@@ -201,8 +201,10 @@ export default function TopMain(user: any) {
   return (
     <Stack
       className="container"
-      sx={{ paddingY: 2 }}
-      height={100}
+      sx={{
+        paddingY: { xs: 1, md: 2 },
+        height: { xs: 70, md: 100 },
+      }}
       justifyContent={"center"}
     >
       <Stack
@@ -210,7 +212,7 @@ export default function TopMain(user: any) {
         direction={"row"}
         justifyContent={"space-between"}
         alignItems="center"
-        sx={{ widows: "100%" }}
+        sx={{ width: "100%", gap: { xs: 0.5, md: 0 } }}
       >
         {/* Mobile hamburger */}
         <IconButton
@@ -267,7 +269,7 @@ export default function TopMain(user: any) {
           </Stack>
         </SwipeableDrawer>
 
-        <Stack className="logo-container" flexDirection={"row"} sx={{ gap: 2 }}>
+        <Stack className="logo-container" flexDirection={"row"} alignItems="center" sx={{ gap: { xs: 1.5, md: 2 } }}>
           <Button
             id="demo-customized-button"
             aria-controls={openLang ? "demo-customized-menu" : undefined}
@@ -277,7 +279,12 @@ export default function TopMain(user: any) {
             disableElevation
             onClick={handleLanguageClick}
             endIcon={<KeyboardArrowDownIcon />}
-            sx={{ backgroundColor: "transparent", boxShadow: "none" }}
+            sx={{
+              backgroundColor: "transparent",
+              boxShadow: "none",
+              minWidth: { xs: 36, md: "auto" },
+              px: { xs: 0.3, md: 2 },
+            }}
           >
             {lang === "GB" ? (
               <Flag code="GB" />
@@ -287,7 +294,7 @@ export default function TopMain(user: any) {
               <Flag code="UZB" />
             )}
           </Button>
-          <Image src="/file.svg" alt="Logo" width={150} height={30} />
+          <Image src="/file.svg" alt="Logo" width={150} height={30} style={{ width: "auto", height: "auto", maxWidth: 150 }} />
 
           <StyledMenu
             id="demo-customized-menu"
@@ -370,14 +377,16 @@ export default function TopMain(user: any) {
             >
               <HelpIcon />
             </Link>
-            {isLoggedIn && (
-              <IconButton onClick={handleNotifClick} sx={{ ml: 0.5 }}>
-                <Badge badgeContent={unreadCount} color="error" max={99}>
-                  <NotificationsIcon sx={{ color: "text.primary" }} />
-                </Badge>
-              </IconButton>
-            )}
           </Stack>
+
+          {/* Notification bell - visible on both mobile and desktop */}
+          {isLoggedIn && (
+            <IconButton onClick={handleNotifClick} sx={{ ml: { xs: 0, md: 0.5 } }}>
+              <Badge badgeContent={unreadCount} color="error" max={99}>
+                <NotificationsIcon sx={{ color: "text.primary", fontSize: { xs: 22, md: 24 } }} />
+              </Badge>
+            </IconButton>
+          )}
           {user.user._id === "" ? (
             <Stack
               justifyContent={"space-between"}
@@ -419,7 +428,7 @@ export default function TopMain(user: any) {
                     alt="user-image"
                     width={50}
                     height={50}
-                    style={{ borderRadius: "50%" }}
+                    style={{ borderRadius: "50%", width: 38, height: 38, objectFit: "cover" }}
                   />
                 </IconButton>
               </Tooltip>

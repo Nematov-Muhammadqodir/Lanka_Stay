@@ -38,14 +38,27 @@ export default function MostPickedList() {
         <Stack
           sx={{
             flexDirection: "row",
-            flexWrap: "wrap",
+            flexWrap: { xs: "nowrap", md: "wrap" },
             gap: 2,
             mt: 2,
             justifyContent: "start",
+            overflowX: { xs: "auto", md: "visible" },
+            scrollSnapType: { xs: "x mandatory", md: "none" },
+            pb: { xs: 1, md: 0 },
+            "&::-webkit-scrollbar": { display: { xs: "none", md: "auto" } },
           }}
         >
           {items.map((item: any) => (
-            <MostPickedCard key={item._id} item={item} />
+            <Stack
+              key={item._id}
+              sx={{
+                flexShrink: 0,
+                scrollSnapAlign: { xs: "start", md: "none" },
+                width: { xs: 280, md: "auto" },
+              }}
+            >
+              <MostPickedCard item={item} />
+            </Stack>
           ))}
         </Stack>
       )}
