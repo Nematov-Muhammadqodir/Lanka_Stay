@@ -53,17 +53,18 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
 
   return (
     <Stack
-      pt={3}
-      px={2.5}
-      height={250}
-      width={"100%"}
-      border={"1px solid"}
-      borderColor={"text.disabled"}
-      borderRadius={3}
-      justifyContent={"flex-start"}
       onClick={handleClick}
       position="relative"
       sx={{
+        pt: { xs: 2, md: 3 },
+        px: { xs: 1.5, md: 2.5 },
+        pb: { xs: 2, md: 0 },
+        height: { xs: "auto", md: 250 },
+        width: "100%",
+        border: "1px solid",
+        borderColor: "text.disabled",
+        borderRadius: 3,
+        justifyContent: "flex-start",
         transition: "all 0.3s ease",
         cursor: "pointer",
         "&:hover": {
@@ -94,18 +95,34 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
         )}
       </IconButton>
 
-      <Stack flexDirection={"row"} gap={2}>
-        <Image
-          src={imageUrl}
-          alt={attraction.attractionName || "Attraction"}
-          width={175}
-          height={175}
-          style={{ objectFit: "cover", borderRadius: 5 }}
-        />
+      <Stack
+        sx={{
+          flexDirection: { xs: "column", md: "row" },
+          gap: 2,
+        }}
+      >
         <Stack
-          flexDirection={"row"}
-          justifyContent={"space-between"}
-          width={"100%"}
+          sx={{
+            width: { xs: "100%", md: 175 },
+            height: { xs: 200, md: 175 },
+            position: "relative",
+            flexShrink: 0,
+          }}
+        >
+          <Image
+            src={imageUrl}
+            alt={attraction.attractionName || "Attraction"}
+            fill
+            style={{ objectFit: "cover", borderRadius: 5 }}
+          />
+        </Stack>
+        <Stack
+          sx={{
+            flexDirection: { xs: "column", md: "row" },
+            justifyContent: "space-between",
+            width: "100%",
+            gap: { xs: 1.5, md: 0 },
+          }}
         >
           <Stack className="middle" gap={0.5} flex={1}>
             <Stack flexDirection={"row"} gap={1}>
@@ -127,7 +144,13 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
                   : t("attraction.noDescriptionAvailable")}
               </Typography>
             </Stack>
-            <Stack flexDirection={"row"} justifyContent={"space-between"}>
+            <Stack
+              sx={{
+                flexDirection: { xs: "column", md: "row" },
+                justifyContent: "space-between",
+                gap: { xs: 1.5, md: 0 },
+              }}
+            >
               <Stack>
                 {attraction.attractionDuration && (
                   <Stack flexDirection={"row"} gap={1}>
@@ -159,7 +182,14 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
                 )}
               </Stack>
 
-              <Stack className="right" textAlign={"right"}>
+              <Stack
+                className="right"
+                sx={{
+                  textAlign: { xs: "left", md: "right" },
+                  alignItems: { xs: "flex-start", md: "flex-end" },
+                  width: { xs: "100%", md: "auto" },
+                }}
+              >
                 <Stack justifyContent={"space-between"} height={"100%"}>
                   <Stack>
                     <Typography className="bold-text">

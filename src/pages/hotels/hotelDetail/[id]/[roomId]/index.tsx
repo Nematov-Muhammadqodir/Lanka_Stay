@@ -156,8 +156,16 @@ const RoomReservation = () => {
   if (!isMounted) return null;
   return (
     <Stack className="container" mt={"20px !important"}>
-      <Box sx={{ width: "100%" }}>
-        <Stepper activeStep={activeStep} alternativeLabel>
+      <Box sx={{ width: "100%", overflowX: "auto" }}>
+        <Stepper
+          activeStep={activeStep}
+          alternativeLabel
+          sx={{
+            "& .MuiStepLabel-label": {
+              fontSize: { xs: "12px", md: "0.875rem" },
+            },
+          }}
+        >
           {steps.map((label) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
@@ -166,11 +174,18 @@ const RoomReservation = () => {
         </Stepper>
       </Box>
 
-      <Stack flexDirection={"row"} justifyContent={"space-between"} mt={2}>
-        <Stack width={"30%"} gap={2}>
+      <Stack
+        sx={{
+          flexDirection: { xs: "column", md: "row" },
+          justifyContent: "space-between",
+          mt: 2,
+          gap: { xs: 2, md: 0 },
+        }}
+      >
+        <Stack sx={{ width: { xs: "100%", md: "30%" }, gap: 2 }}>
           <Stack
             width={"100%"}
-            height={"340px"}
+            sx={{ height: { xs: "auto", md: "340px" } }}
             border={"1px solid"}
             borderRadius={3}
             borderColor={"text.disabled"}
@@ -405,7 +420,7 @@ const RoomReservation = () => {
             totalPrice={totalPrice}
           />
         ) : (
-          <Stack width={"67%"}>
+          <Stack sx={{ width: { xs: "100%", md: "67%" } }}>
             <RoomReservationRight
               handlePaymentPage={handlePaymentPage}
               formatted={formatted}

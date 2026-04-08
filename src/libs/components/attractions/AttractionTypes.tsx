@@ -23,20 +23,42 @@ const AttractionTypes = ({ selectedType, onSelectType }: AttractionTypesProps) =
   const { t } = useTranslation("common");
   return (
     <Stack className="container" gap={1}>
-      <Stack mt={5}>
-        <Typography className="xxlText">{t("attraction.exploreAttractions")}</Typography>
+      <Stack sx={{ mt: { xs: 3, md: 5 } }}>
+        <Typography
+          className="xxlText"
+          sx={{ fontSize: { xs: 22, md: 30 } }}
+        >
+          {t("attraction.exploreAttractions")}
+        </Typography>
       </Stack>
-      <Stack flexDirection={"row"} gap={2} flexWrap="wrap">
+      <Stack
+        sx={{
+          flexDirection: "row",
+          gap: { xs: 1.5, md: 2 },
+          flexWrap: { xs: "nowrap", md: "wrap" },
+          overflowX: { xs: "auto", md: "visible" },
+          pb: { xs: 1, md: 0 },
+          scrollSnapType: { xs: "x mandatory", md: "none" },
+          "&::-webkit-scrollbar": { display: { xs: "none", md: "auto" } },
+        }}
+      >
         {ATTRACTION_TYPE_OPTIONS.map((item) => (
-          <AttractionTypesCard
+          <Stack
             key={item.value}
-            icon={item.icon}
-            attractionType={item.label}
-            isSelected={selectedType === item.value}
-            onClick={() =>
-              onSelectType(selectedType === item.value ? null : item.value)
-            }
-          />
+            sx={{
+              flexShrink: 0,
+              scrollSnapAlign: { xs: "start", md: "none" },
+            }}
+          >
+            <AttractionTypesCard
+              icon={item.icon}
+              attractionType={item.label}
+              isSelected={selectedType === item.value}
+              onClick={() =>
+                onSelectType(selectedType === item.value ? null : item.value)
+              }
+            />
+          </Stack>
         ))}
       </Stack>
     </Stack>

@@ -3,6 +3,7 @@ import "../scss/pc/main.scss";
 import "leaflet/dist/leaflet.css";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import type { AppProps } from "next/app";
+import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
 import { dark, light } from "../scss/MaterialTheme";
 import LightModeIcon from "@mui/icons-material/LightMode";
@@ -36,6 +37,12 @@ function App({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
+          <Head>
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1, maximum-scale=5"
+            />
+          </Head>
           <CssBaseline />
           <button
             style={{

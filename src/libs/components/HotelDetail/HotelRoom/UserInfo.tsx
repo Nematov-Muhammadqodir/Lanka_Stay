@@ -74,7 +74,7 @@ const UserInfo = ({
   console.log("getPartnerPropertyDataaa", propertyData);
 
   return (
-    <Stack gap={2} mb={30}>
+    <Stack gap={2} sx={{ mb: { xs: 6, md: 30 } }}>
       <Stack
         flexDirection={"row"}
         alignItems={"center"}
@@ -141,25 +141,31 @@ const UserInfo = ({
           pb={2}
           borderColor={"text.disabled"}
         >
-          <Stack flexDirection={"row"} justifyContent={"space-between"}>
-            <Stack gap={0.5}>
+          <Stack
+            sx={{
+              flexDirection: { xs: "column", md: "row" },
+              justifyContent: "space-between",
+              gap: { xs: 2, md: 0 },
+            }}
+          >
+            <Stack gap={0.5} sx={{ width: { xs: "100%", md: "auto" } }}>
               <Typography className="small-bold-text">First name</Typography>
               <TextField
                 placeholder="First name"
-                sx={{ width: 350 }}
+                sx={{ width: { xs: "100%", md: 350 } }}
                 value={initalValue.guestName}
                 onChange={(e: any) => {
                   handleEditUserInfo("guestName", e.target.value);
                 }}
               />
             </Stack>
-            <Stack gap={0.5}>
+            <Stack gap={0.5} sx={{ width: { xs: "100%", md: "auto" } }}>
               <Typography className="small-bold-text">
                 Last name (optional)
               </Typography>
               <TextField
                 placeholder="Last name"
-                sx={{ width: 350 }}
+                sx={{ width: { xs: "100%", md: 350 } }}
                 value={initalValue.guestLastName}
                 onChange={(e: any) => {
                   handleEditUserInfo("guestLastName", e.target.value);
@@ -171,7 +177,7 @@ const UserInfo = ({
             <Typography className="small-bold-text">Email address</Typography>
             <TextField
               placeholder="example@gmail.com"
-              sx={{ width: 350 }}
+              sx={{ width: { xs: "100%", md: 350 } }}
               value={initalValue.guestEmail}
             />
             <Typography className="small-text" pl={1} color={"primary.main"}>
@@ -183,7 +189,7 @@ const UserInfo = ({
 
             <Box
               sx={{
-                width: 470,
+                width: { xs: "100%", md: 470 },
                 "--react-international-phone-border-radius": "3px",
                 "--react-international-phone-height": "52px",
                 "--react-international-phone-background-color": "white",
@@ -191,7 +197,7 @@ const UserInfo = ({
                 "--react-international-phone-font-size": "16px",
                 "--react-international-phone-text-color": "#000",
                 "& .react-international-phone-input": {
-                  width: "305px",
+                  width: { xs: "100%", md: "305px" },
                 },
                 "& .react-international-phone-country-selector-button": {
                   borderTopLeftRadius: "3px",
@@ -373,7 +379,10 @@ const UserInfo = ({
 
       <Button
         variant="contained"
-        sx={{ width: 300, alignSelf: "end" }}
+        sx={{
+          width: { xs: "100%", md: 300 },
+          alignSelf: { xs: "stretch", md: "end" },
+        }}
         onClick={() => {
           handlePaymentPage();
         }}

@@ -17,15 +17,18 @@ const AttractionsContainer = ({
 }: AttractionsContainerProps) => {
   return (
     <Stack
-      flexDirection={"row"}
-      sx={{ justifyContent: "space-between" }}
-      mt={2}
-      mb={10}
+      sx={{
+        flexDirection: { xs: "column", md: "row" },
+        justifyContent: "space-between",
+        gap: { xs: 2, md: 0 },
+        mt: 2,
+        mb: 10,
+      }}
     >
-      <Stack width={400} mt={2}>
+      <Stack sx={{ width: { xs: "100%", md: 400 }, mt: { xs: 0, md: 2 } }}>
         <AttractionsFilter filters={filters} updateFilter={updateFilter} />
       </Stack>
-      <Stack width={870} gap={2}>
+      <Stack sx={{ width: { xs: "100%", md: 870 }, gap: 2 }}>
         <AttractionSorting
           sort={filters.sort}
           onSortChange={(val) => updateFilter("sort", val)}

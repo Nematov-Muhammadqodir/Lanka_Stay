@@ -1,5 +1,5 @@
 "use client";
-import { Stack, Typography, Box } from "@mui/material";
+import { Stack, Typography, Box, useMediaQuery, useTheme } from "@mui/material";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
@@ -8,6 +8,10 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 const AttractionsLayoutBanner = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const bannerHeight = isMobile ? 220 : 380;
+
   const images = [
     "/img/attractions/charxfalak1.jpg",
     "/img/attractions/boutes.jpg",
@@ -27,9 +31,9 @@ const AttractionsLayoutBanner = () => {
           disableOnInteraction: false,
         }}
         pagination={{ clickable: true }}
-        navigation={true}
+        navigation={!isMobile}
         modules={[Autoplay, Pagination, Navigation]}
-        style={{ width: "100%", height: "380px" }}
+        style={{ width: "100%", height: `${bannerHeight}px` }}
       >
         {images.map((src, index) => (
           <SwiperSlide key={index} style={{ position: "relative" }}>
@@ -37,11 +41,11 @@ const AttractionsLayoutBanner = () => {
               src={src}
               alt={`banner-image-${index}`}
               width={1500}
-              height={380}
+              height={bannerHeight}
               style={{
                 objectFit: "cover",
                 width: "100%",
-                height: "380px",
+                height: `${bannerHeight}px`,
               }}
             />
 
@@ -52,20 +56,22 @@ const AttractionsLayoutBanner = () => {
                 left: 0,
                 width: "100%",
                 height: "100%",
-                background: "rgba(0, 0, 0, 0.45)", // adjust opacity (0.3–0.6)
+                background: "rgba(0, 0, 0, 0.45)",
                 zIndex: 1,
               }}
             />
 
             <Typography
               position={"absolute"}
-              top={"20%"}
-              left={"10%"}
               sx={{
-                fontSize: 50,
+                top: { xs: "30%", md: "20%" },
+                left: { xs: "6%", md: "10%" },
+                right: { xs: "6%", md: "auto" },
+                fontSize: { xs: 26, sm: 36, md: 50 },
                 color: "white",
                 fontWeight: 800,
                 zIndex: 2,
+                lineHeight: 1.2,
               }}
             >
               Up to 15% off services

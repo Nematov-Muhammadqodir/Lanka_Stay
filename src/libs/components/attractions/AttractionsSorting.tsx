@@ -40,7 +40,25 @@ export default function AttractionSorting({
         borderColor: "text.disabled",
       }}
     >
-      <Tabs value={value} onChange={handleChange} centered>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        variant="scrollable"
+        scrollButtons={false}
+        allowScrollButtonsMobile
+        sx={{
+          minHeight: { xs: 42, md: 48 },
+          "& .MuiTab-root": {
+            minHeight: { xs: 42, md: 48 },
+            fontSize: { xs: "12px", md: "0.875rem" },
+            minWidth: { xs: "auto", md: 90 },
+            px: { xs: 1.5, md: 2 },
+          },
+          "& .MuiTabs-flexContainer": {
+            justifyContent: { xs: "flex-start", md: "center" },
+          },
+        }}
+      >
         {SORT_OPTIONS.map((option) => (
           <Tab key={option.label} label={option.label} />
         ))}

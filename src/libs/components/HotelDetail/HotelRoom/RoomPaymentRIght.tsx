@@ -163,17 +163,19 @@ const CheckoutForm = ({
   };
 
   return (
-    <Stack width="67%" pb={10}>
+    <Stack sx={{ width: { xs: "100%", md: "67%" } }} pb={10}>
       <Stack mb={1}>
         <Typography className="bold-text">Check and pay</Typography>
       </Stack>
 
       <Stack
-        border="1px solid"
-        p={3}
-        borderRadius={3}
-        borderColor="text.disabled"
-        gap={3}
+        sx={{
+          border: "1px solid",
+          p: { xs: 2, md: 3 },
+          borderRadius: 3,
+          borderColor: "text.disabled",
+          gap: 3,
+        }}
       >
         <Typography className="bold-text-medium">Payment details</Typography>
         <Typography fontSize={14} color="text.secondary">
