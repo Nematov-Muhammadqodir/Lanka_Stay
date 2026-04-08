@@ -14,11 +14,11 @@ const TrendingDestinations = () => {
   const filters = useSelector((state: RootState) => state.filters);
   console.log("filters", filters);
   const destinations = [
-    { src: "/img/Busan.jpg", name: "Busan🇰🇷", width: 650 },
-    { src: "/img/Seoul.jpg", name: "Seoul🇰🇷", width: 650 },
+    { src: "/img/Busan.webp", name: "Busan🇰🇷", width: 650 },
+    { src: "/img/Seoul.webp", name: "Seoul🇰🇷", width: 650 },
     { src: "/img/Tokyo.jpg", name: "Tokyo🇯🇵", width: 421 },
-    { src: "/img/Gyeongju.jpg", name: "Gyeongju🇰🇷", width: 421 },
-    { src: "/img/Jeju.jpg", name: "Jeju🇰🇷", width: 421 },
+    { src: "/img/Gyeongju.webp", name: "Gyeongju🇰🇷", width: 421 },
+    { src: "/img/Jeju.webp", name: "Jeju🇰🇷", width: 421 },
   ];
 
   const ImageBox = ({ item }: any) => (
@@ -29,6 +29,8 @@ const TrendingDestinations = () => {
         overflow: "hidden",
         cursor: "pointer",
         transition: "transform 0.3s ease",
+        width: "100%",
+        height: { xs: 220, sm: 240, md: 272 },
         "&:hover": {
           transform: "scale(1.03)",
         },
@@ -38,9 +40,12 @@ const TrendingDestinations = () => {
       <Image
         src={item.src}
         alt={item.name}
-        width={item.width}
-        height={272}
-        style={{ objectFit: "cover", borderRadius: 15, width: "100%", height: "auto", maxHeight: 272 }}
+        fill
+        sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
+        style={{
+          objectFit: "cover",
+          borderRadius: 15,
+        }}
       />
 
       {/* ✨ Top-left gradient overlay */}
@@ -75,18 +80,41 @@ const TrendingDestinations = () => {
         <Typography fontSize={"30px"} fontWeight={800}>
           {t("home.trendingDestinations")}
         </Typography>
-        <Typography>
-          {t("home.trendingDesc")}
-        </Typography>
+        <Typography>{t("home.trendingDesc")}</Typography>
       </Stack>
-      <Stack sx={{ flexDirection: { xs: "column", md: "row" }, justifyContent: "center", gap: { xs: 2, md: 3 }, width: "100%" }}>
+      <Stack
+        sx={{
+          flexDirection: { xs: "column", md: "row" },
+          justifyContent: "space-between",
+          gap: { xs: 2, md: 0 },
+          width: "100%",
+        }}
+      >
         {destinations.slice(0, 2).map((item, i) => (
-          <ImageBox key={i} item={item} />
+          <Box
+            key={i}
+            sx={{ width: { xs: "100%", md: "49%" } }}
+          >
+            <ImageBox item={item} />
+          </Box>
         ))}
       </Stack>
-      <Stack sx={{ flexDirection: { xs: "column", sm: "row" }, justifyContent: "center", gap: { xs: 2, md: 4 }, width: "100%", flexWrap: "wrap" }}>
+      <Stack
+        sx={{
+          flexDirection: { xs: "column", sm: "row" },
+          justifyContent: "space-between",
+          gap: { xs: 2, sm: 0 },
+          width: "100%",
+          flexWrap: { xs: "nowrap", sm: "nowrap" },
+        }}
+      >
         {destinations.slice(2).map((item, i) => (
-          <ImageBox key={i} item={item} />
+          <Box
+            key={i}
+            sx={{ width: { xs: "100%", sm: "32.5%" } }}
+          >
+            <ImageBox item={item} />
+          </Box>
         ))}
       </Stack>
     </Stack>

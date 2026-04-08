@@ -14,11 +14,11 @@ const DetailLayoutBanner = () => {
     "/img/hotels.jpg",
     "/img/kim-sung-jin.jpg",
     "/img/village.jpg",
-    "/img/Busan.jpg",
-    "/img/Tokyo.jpg",
-    "/img/Seoul.jpg",
+    "/img/Busan.webp",
+    "/img/Gyeongju.webp",
+    "/img/Seoul.webp",
     "/img/Villa.jpg",
-    "/img/Jeju.jpg",
+    "/img/Jeju.webp",
   ];
 
   return (
