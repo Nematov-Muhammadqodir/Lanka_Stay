@@ -13,10 +13,11 @@ const WhyOurHotel = () => {
       <Typography alignSelf={"center"} mb={2} fontWeight={700} fontSize={23}>
         {t("why.title")}
       </Typography>
-      <Stack flexDirection={"row"} justifyContent={"center"} gap={2} mb={20}>
+      <Stack sx={{ flexDirection: { xs: "column", sm: "row" }, flexWrap: "wrap", justifyContent: "center", gap: 2, mb: { xs: 5, md: 20 }, px: { xs: 2, md: 0 }, alignItems: "center" }}>
         <Stack
-          width={290}
-          height={210}
+          width={{ xs: "100%", sm: "47%", md: 290 }}
+          height={{ xs: "auto", md: 210 }}
+          minHeight={180}
           border={"1px solid black"}
           p={2}
           justifyContent={"space-around"}
@@ -31,8 +32,9 @@ const WhyOurHotel = () => {
           <Typography>{t("why.bookNowDesc")}</Typography>
         </Stack>
         <Stack
-          width={290}
-          height={210}
+          width={{ xs: "100%", sm: "47%", md: 290 }}
+          height={{ xs: "auto", md: 210 }}
+          minHeight={180}
           border={"1px solid black"}
           p={2}
           justifyContent={"space-around"}
@@ -47,8 +49,9 @@ const WhyOurHotel = () => {
           <Typography>{t("why.reviewsDesc")}</Typography>
         </Stack>
         <Stack
-          width={290}
-          height={210}
+          width={{ xs: "100%", sm: "47%", md: 290 }}
+          height={{ xs: "auto", md: 210 }}
+          minHeight={180}
           border={"1px solid black"}
           p={2}
           justifyContent={"space-around"}
@@ -63,8 +66,9 @@ const WhyOurHotel = () => {
           <Typography>{t("why.propertiesDesc")}</Typography>
         </Stack>
         <Stack
-          width={290}
-          height={210}
+          width={{ xs: "100%", sm: "47%", md: 290 }}
+          height={{ xs: "auto", md: 210 }}
+          minHeight={180}
           border={"1px solid black"}
           p={2}
           justifyContent={"space-around"}

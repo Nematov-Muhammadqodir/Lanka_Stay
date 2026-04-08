@@ -48,9 +48,10 @@ export default function MostPickedCard({ item }: MostPickedCardProps) {
     <Stack
       onClick={handleClick}
       sx={{
-        width: 313,
-        height: 260,
+        width: { xs: "100%", sm: "48%", md: 313 },
+        height: { xs: 200, sm: 230, md: 260 },
         borderRadius: "15px",
+        flexShrink: 0,
         position: "relative",
         cursor: "pointer",
         overflow: "hidden",

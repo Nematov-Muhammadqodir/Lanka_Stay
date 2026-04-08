@@ -40,7 +40,7 @@ const TrendingDestinations = () => {
         alt={item.name}
         width={item.width}
         height={272}
-        style={{ objectFit: "cover", borderRadius: 15 }}
+        style={{ objectFit: "cover", borderRadius: 15, width: "100%", height: "auto", maxHeight: 272 }}
       />
 
       {/* ✨ Top-left gradient overlay */}
@@ -79,12 +79,12 @@ const TrendingDestinations = () => {
           {t("home.trendingDesc")}
         </Typography>
       </Stack>
-      <Stack flexDirection="row" justifyContent="center" gap={3}>
+      <Stack sx={{ flexDirection: { xs: "column", md: "row" }, justifyContent: "center", gap: { xs: 2, md: 3 }, width: "100%" }}>
         {destinations.slice(0, 2).map((item, i) => (
           <ImageBox key={i} item={item} />
         ))}
       </Stack>
-      <Stack flexDirection="row" justifyContent="center" gap={4}>
+      <Stack sx={{ flexDirection: { xs: "column", sm: "row" }, justifyContent: "center", gap: { xs: 2, md: 4 }, width: "100%", flexWrap: "wrap" }}>
         {destinations.slice(2).map((item, i) => (
           <ImageBox key={i} item={item} />
         ))}

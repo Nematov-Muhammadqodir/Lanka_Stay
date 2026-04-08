@@ -27,6 +27,8 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import InfoIcon from "@mui/icons-material/Info";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
+import MenuIcon from "@mui/icons-material/Menu";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { useRouter } from "next/router";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
@@ -126,6 +128,7 @@ export default function TopMain(user: any) {
 
   const partner = useReactiveVar(partnerVar);
   const isLoggedIn = user?.user?._id && user.user._id !== "";
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isPartner = partner?._id && partner._id !== "";
 
   const { data: notifData, refetch: refetchNotifs } = useQuery(
@@ -209,6 +212,61 @@ export default function TopMain(user: any) {
         alignItems="center"
         sx={{ widows: "100%" }}
       >
+        {/* Mobile hamburger */}
+        <IconButton
+          onClick={() => setMobileMenuOpen(true)}
+          sx={{ display: { xs: "flex", md: "none" }, color: "text.primary" }}
+        >
+          <MenuIcon />
+        </IconButton>
+        <SwipeableDrawer
+          anchor="left"
+          open={mobileMenuOpen}
+          onClose={() => setMobileMenuOpen(false)}
+          onOpen={() => setMobileMenuOpen(true)}
+          PaperProps={{ sx: { width: 280, pt: 3 } }}
+        >
+          <Stack gap={1} px={2}>
+            <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+              <Typography fontWeight={600} py={1.5} borderBottom="1px solid" borderColor="divider">
+                {t("nav.home")}
+              </Typography>
+            </Link>
+            <Link href="/hotels" onClick={() => setMobileMenuOpen(false)}>
+              <Typography fontWeight={600} py={1.5} borderBottom="1px solid" borderColor="divider">
+                {t("nav.hotels")}
+              </Typography>
+            </Link>
+            <Link href="/attractions" onClick={() => setMobileMenuOpen(false)}>
+              <Typography fontWeight={600} py={1.5} borderBottom="1px solid" borderColor="divider">
+                {t("nav.attractions")}
+              </Typography>
+            </Link>
+            <Link href={`/myPage/${user?.user?._id}/reservations`} onClick={() => setMobileMenuOpen(false)}>
+              <Typography fontWeight={600} py={1.5} borderBottom="1px solid" borderColor="divider">
+                {t("nav.myDashboard")}
+              </Typography>
+            </Link>
+            {isLoggedIn && (
+              <Link href="/register-property" onClick={() => setMobileMenuOpen(false)}>
+                <Typography fontWeight={600} py={1.5} borderBottom="1px solid" borderColor="divider">
+                  {t("nav.listProperty")}
+                </Typography>
+              </Link>
+            )}
+            {!isLoggedIn && (
+              <>
+                <Button variant="contained" sx={{ mt: 2, color: "white" }} onClick={() => { router.push("/join/register"); setMobileMenuOpen(false); }}>
+                  {t("nav.signUp")}
+                </Button>
+                <Button variant="outlined" sx={{ mt: 1 }} onClick={() => { router.push("/join/login"); setMobileMenuOpen(false); }}>
+                  {t("nav.login")}
+                </Button>
+              </>
+            )}
+          </Stack>
+        </SwipeableDrawer>
+
         <Stack className="logo-container" flexDirection={"row"} sx={{ gap: 2 }}>
           <Button
             id="demo-customized-button"
@@ -269,13 +327,14 @@ export default function TopMain(user: any) {
         <Stack
           direction="row"
           justifyContent={"space-around"}
-          sx={{ width: 800 }}
+          sx={{ width: { xs: "auto", md: 800 }, display: { xs: "none", md: "flex" } }}
         >
           <Stack
             className="menu-container"
-            sx={{ gap: 3 }}
+            sx={{ gap: { xs: 1, md: 3 } }}
             direction="row"
             alignItems={"center"}
+            flexWrap="wrap"
           >
             <Link href="/" className="links">
               {t("nav.home")}
@@ -323,7 +382,7 @@ export default function TopMain(user: any) {
             <Stack
               justifyContent={"space-between"}
               direction="row"
-              sx={{ gap: 2 }}
+              sx={{ gap: 2, display: { xs: "none", md: "flex" } }}
             >
               <Button
                 variant="contained"

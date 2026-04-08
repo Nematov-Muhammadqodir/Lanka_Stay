@@ -14,15 +14,17 @@ const TopHome = () => {
   return (
     <Stack
       className="container"
-      direction={"row"}
-      justifyContent="space-between"
       sx={{
         borderRadius: 3,
         marginTop: "50px !important",
+        flexDirection: { xs: "column", md: "row" },
+        justifyContent: "space-between",
+        alignItems: { xs: "center", md: "flex-start" },
+        gap: { xs: 4, md: 0 },
       }}
     >
-      <Stack className="left-side">
-        <Typography sx={{ fontSize: "42px", fontWeight: 700, lineHeight: 1.2 }} whiteSpace="pre-line">
+      <Stack className="left-side" sx={{ textAlign: { xs: "center", md: "left" }, alignItems: { xs: "center", md: "flex-start" } }}>
+        <Typography sx={{ fontSize: { xs: "28px", sm: "34px", md: "42px" }, fontWeight: 700, lineHeight: 1.2 }} whiteSpace="pre-line">
           {t("home.heroTitle")}
         </Typography>
         <Typography
@@ -100,9 +102,9 @@ const TopHome = () => {
       <Stack
         className="right-side"
         sx={{
-          width: "520px",
-          height: "410px",
-          borderRadius: "100px 15px 15px 15px",
+          width: { xs: "100%", sm: "80%", md: "520px" },
+          height: { xs: "250px", sm: "320px", md: "410px" },
+          borderRadius: { xs: "15px", md: "100px 15px 15px 15px" },
           overflow: "hidden",
           position: "relative",
         }}
@@ -112,7 +114,7 @@ const TopHome = () => {
           alt="user-image"
           width={520}
           height={510}
-          style={{ objectFit: "cover" }}
+          style={{ objectFit: "cover", width: "100%", height: "100%" }}
         />
       </Stack>
       <Box
@@ -126,6 +128,7 @@ const TopHome = () => {
           right: 140,
           zIndex: -1,
           borderRadius: "15px",
+          display: { xs: "none", md: "block" },
         }}
       ></Box>
       <Stack className="right-side"></Stack>

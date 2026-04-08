@@ -56,8 +56,8 @@ const StillInterestedCard = ({
   return (
     <Stack
       sx={{
-        width: "247px",
-        height: "338px",
+        width: { xs: "100%", sm: "47%", md: "247px" },
+        height: { xs: "auto", md: "338px" },
         border: "1px solid #eee",
         borderRadius: "8px",
         boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.25)",

@@ -1,0 +1,117 @@
+/* ============================================
+   RESPONSIVE STYLES - Mobile & Tablet
+   Desktop styles remain untouched in app.scss and pc/main.scss
+   ============================================ */
+
+/* ---- TABLET: 641px - 1024px ---- */
+@media (max-width: 1024px) {
+  #pc-wrap {
+    .container {
+      width: 95% !important;
+      max-width: 960px;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    .navigation-container {
+      .links {
+        font-size: 14px !important;
+      }
+    }
+
+    /* Footer */
+    .footer-main-container .container .footer {
+      height: auto !important;
+
+      .benefits-list-container {
+        flex-wrap: wrap;
+        height: auto !important;
+        gap: 15px;
+        padding: 15px 0;
+      }
+
+      .footer-content {
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-top: 40px !important;
+        padding: 0 15px !important;
+
+        .first-section,
+        .second-section,
+        .third-section,
+        .forth-section,
+        .fifth-section {
+          width: 45% !important;
+          text-align: start !important;
+        }
+      }
+    }
+  }
+}
+
+/* ---- MOBILE: 0px - 640px ---- */
+@media (max-width: 640px) {
+  #pc-wrap {
+    overflow-x: hidden;
+
+    .container {
+      width: 92% !important;
+      max-width: 100%;
+      padding-left: 8px;
+      padding-right: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Text sizes */
+    .bold-text {
+      font-size: 16px !important;
+    }
+    .bold-text-medium {
+      font-size: 14px !important;
+    }
+    .xxlText {
+      font-size: 22px !important;
+    }
+    .small-text {
+      font-size: 12px !important;
+    }
+    .small-bold-text {
+      font-size: 12px !important;
+    }
+
+    .navigation-container {
+      .links {
+        font-size: 12px !important;
+      }
+    }
+
+    /* Footer */
+    .footer-main-container .container .footer {
+      height: auto !important;
+
+      .benefits-list-container {
+        flex-direction: column;
+        height: auto !important;
+        gap: 12px;
+        padding: 15px 0;
+        align-items: flex-start !important;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        gap: 25px;
+        margin-top: 30px !important;
+        padding: 0 10px !important;
+
+        .first-section,
+        .second-section,
+        .third-section,
+        .forth-section,
+        .fifth-section {
+          width: 100% !important;
+          text-align: start !important;
+        }
+      }
+    }
+  }
+}

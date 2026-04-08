@@ -168,13 +168,16 @@ export default function Filtering() {
       width="100%"
       sx={{
         backgroundColor: "secondary.main",
-        marginTop: "100px !important",
-        height: "117px",
-        borderRadius: "42px",
-        flexDirection: "row",
+        marginTop: { xs: "30px !important", md: "100px !important" },
+        height: { xs: "auto", md: "117px" },
+        borderRadius: { xs: "20px", md: "42px" },
+        flexDirection: { xs: "column", sm: "row" },
+        flexWrap: { xs: "wrap", md: "nowrap" },
         justifyContent: "space-between",
         alignItems: "center",
-        paddingX: "40px",
+        paddingX: { xs: "15px", md: "40px" },
+        paddingY: { xs: "15px", md: 0 },
+        gap: { xs: 1.5, md: 0 },
         boxShadow: "0px 8px 20px rgba(0,0,0,0.25)",
       }}
     >
@@ -186,7 +189,7 @@ export default function Filtering() {
             sx={{
               borderRadius: "12px",
               height: "60px",
-              width: "211px",
+              width: { xs: "100%", sm: "48%", md: "211px" },
               backgroundColor: "white",
               boxShadow: "0px 4px 10px rgba(0,0,0,0.15)",
               "&:hover": {
@@ -293,7 +296,7 @@ export default function Filtering() {
             sx={{
               borderRadius: "12px",
               height: "60px",
-              width: "211px",
+              width: { xs: "100%", sm: "48%", md: "211px" },
               backgroundColor: "white",
               boxShadow: "0px 4px 10px rgba(0,0,0,0.15)",
               "&:hover": {
@@ -374,7 +377,7 @@ export default function Filtering() {
             sx={{
               borderRadius: "12px",
               height: "60px",
-              width: "211px",
+              width: { xs: "100%", sm: "48%", md: "211px" },
               backgroundColor: "white",
               boxShadow: "0px 4px 10px rgba(0,0,0,0.15)",
               "&:hover": {
@@ -463,7 +466,7 @@ export default function Filtering() {
         <Button
           variant="contained"
           sx={{
-            width: "132px",
+            width: { xs: "100%", sm: "48%", md: "132px" },
             height: "54px",
             color: "primary",
             gap: 1,
