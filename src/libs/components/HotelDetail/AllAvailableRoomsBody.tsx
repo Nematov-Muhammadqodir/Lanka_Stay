@@ -14,6 +14,9 @@ import {
   PropertyRoom,
 } from "../../types/partnerInput/partnerProperty";
 import { formatKoreanWon } from "../../handlers/priceHandler";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
+import { sweetMixinErrorAlert } from "../../sweetAlert";
 
 interface AllAvailableRoomsBodyProps {
   partnerProperty?: PartnerProperty;
@@ -27,6 +30,16 @@ const AllAvailableRoomsBody = ({
   console.log("partnerProperty AllAvailableRooms", partnerProperty);
   const guestCount = propertyRoom?.numberOfGuestsCanStay ?? 0;
   const router = useRouter();
+  const user = useReactiveVar(userVar);
+
+  const handleReserve = async () => {
+    if (!user?._id) {
+      await sweetMixinErrorAlert("Please log in to reserve this room");
+      router.push("/join/login");
+      return;
+    }
+    router.push(`roomId/${propertyRoom?.roomId}`);
+  };
   return (
     <Stack
       className="available-rooms-body"
@@ -146,7 +159,7 @@ const AllAvailableRoomsBody = ({
         <Button
           variant="contained"
           sx={{ width: { xs: "100%", md: "200px" }, color: "secondary.contrastText" }}
-          onClick={() => router.push(`roomId/${propertyRoom?.roomId}`)}
+          onClick={handleReserve}
         >
           I'll reserve
         </Button>

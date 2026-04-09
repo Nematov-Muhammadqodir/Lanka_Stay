@@ -5,8 +5,10 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useRouter } from "next/router";
 import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
-import { sweetErrorAlert } from "@/src/libs/sweetAlert";
+import { sweetErrorAlert, sweetMixinErrorAlert } from "@/src/libs/sweetAlert";
 import { useTranslation } from "next-i18next";
+import { useReactiveVar } from "@apollo/client";
+import { userVar } from "@/apollo/store";
 
 interface TicketPurchaseProps {
   attraction?: any;
@@ -25,10 +27,16 @@ const TicketPurchase = ({
 }: TicketPurchaseProps) => {
   const router = useRouter();
   const { t } = useTranslation("common");
+  const user = useReactiveVar(userVar);
   const adultPrice = attraction?.attractionAdultPrice ?? 0;
   const totalPrice = adultPrice * ticketCount;
 
   const handleNext = async () => {
+    if (!user?._id) {
+      await sweetMixinErrorAlert("Please log in to book this attraction");
+      router.push("/join/login");
+      return;
+    }
     if (!selectedDate) {
       await sweetErrorAlert("Please select a date");
       return;

@@ -23,15 +23,17 @@ const HotelInfoSection = ({
       sx={{
         flexDirection: { xs: "column", md: "row" },
         height: { xs: "auto", md: 520 },
-        justifyContent: "space-between",
-        gap: { xs: 2, md: 0 },
+        alignItems: "stretch",
+        gap: { xs: 2, md: 2 },
       }}
     >
       {/* Left images */}
       <Stack
         className="left-hotel-images-container"
         sx={{
-          width: { xs: "100%", md: 900 },
+          flex: { xs: "unset", md: 1 },
+          minWidth: 0,
+          width: { xs: "100%", md: "auto" },
           height: { xs: "auto", md: 520 },
           gap: "10px",
         }}
@@ -40,19 +42,27 @@ const HotelInfoSection = ({
         {/* Top container: 1 big image + 2 small images */}
         <Stack
           flexDirection={"row"}
-          justifyContent={"space-between"}
           gap={"10px"}
           className="top-big-images-container"
+          sx={{ width: "100%", minWidth: 0 }}
         >
           {/* Big image */}
           {topBigImage && (
-            <Stack className="left-big-image" sx={{ flex: { xs: 2, md: "0 0 auto" } }}>
+            <Stack
+              className="left-big-image"
+              sx={{
+                flex: { xs: 2, md: "1 1 0%" },
+                minWidth: 0,
+                position: "relative",
+                height: { xs: 240, md: 400 },
+              }}
+            >
               <Image
                 src={resolveImageUrl(topBigImage)}
                 alt="hotel-image"
-                width={600}
-                height={400}
-                style={{ objectFit: "cover", borderRadius: 5, width: "100%", height: "auto", maxHeight: 400 }}
+                fill
+                sizes="(max-width: 900px) 60vw, 600px"
+                style={{ objectFit: "cover", borderRadius: 5 }}
               />
             </Stack>
           )}
@@ -60,17 +70,31 @@ const HotelInfoSection = ({
           <Stack
             className="right-small-images"
             justifyContent={"space-between"}
-            sx={{ flex: { xs: 1, md: "0 0 auto" }, gap: "10px" }}
+            sx={{
+              flex: { xs: 1, md: "0 0 290px" },
+              minWidth: 0,
+              gap: "10px",
+              height: { xs: 240, md: 400 },
+            }}
           >
             {rightSmallImages.map((img, index) => (
-              <Image
+              <Stack
                 key={index}
-                src={resolveImageUrl(img)}
-                alt={`hotel-image-${index}`}
-                width={290}
-                height={195}
-                style={{ objectFit: "cover", borderRadius: 5, width: "100%", height: "auto", maxHeight: 195 }}
-              />
+                sx={{
+                  position: "relative",
+                  flex: 1,
+                  minHeight: 0,
+                  width: "100%",
+                }}
+              >
+                <Image
+                  src={resolveImageUrl(img)}
+                  alt={`hotel-image-${index}`}
+                  fill
+                  sizes="290px"
+                  style={{ objectFit: "cover", borderRadius: 5 }}
+                />
+              </Stack>
             ))}
           </Stack>
         </Stack>
@@ -82,7 +106,7 @@ const HotelInfoSection = ({
           gap={"10px"}
           overflow="auto"
           sx={{
-            maxWidth: { xs: "100%", md: 900 },
+            width: "100%",
             "&::-webkit-scrollbar": { height: "8px" },
             "&::-webkit-scrollbar-thumb": {
               background: "#ccc",
@@ -91,12 +115,20 @@ const HotelInfoSection = ({
           }}
         >
           {bottomSmallImages.map((img, index) => (
-            <Stack key={index} flex="0 0 auto">
+            <Stack
+              key={index}
+              sx={{
+                flex: "0 0 170px",
+                position: "relative",
+                width: 170,
+                height: 100,
+              }}
+            >
               <Image
                 src={resolveImageUrl(img)}
                 alt={`hotel-image-bottom-${index}`}
-                width={170}
-                height={100}
+                fill
+                sizes="170px"
                 style={{ objectFit: "cover", borderRadius: 5 }}
               />
             </Stack>
@@ -105,7 +137,12 @@ const HotelInfoSection = ({
       </Stack>
 
       {/* Right: Map / Reviews */}
-      <Stack sx={{ width: { xs: "100%", md: "auto" } }}>
+      <Stack
+        sx={{
+          flex: { xs: "unset", md: "0 0 390px" },
+          width: { xs: "100%", md: 390 },
+        }}
+      >
         <ReviewMapContainer partnerProperty={partnerProperty} />
       </Stack>
     </Stack>

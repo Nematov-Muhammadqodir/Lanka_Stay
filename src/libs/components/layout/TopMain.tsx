@@ -264,19 +264,21 @@ export default function TopMain(user: any) {
                 {t("nav.attractions")}
               </Typography>
             </Link>
-            <Link
-              href={`/myPage/${user?.user?._id}/reservations`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <Typography
-                fontWeight={600}
-                py={1.5}
-                borderBottom="1px solid"
-                borderColor="divider"
+            {isLoggedIn && (
+              <Link
+                href={`/myPage/${user?.user?._id}/reservations`}
+                onClick={() => setMobileMenuOpen(false)}
               >
-                {t("nav.myDashboard")}
-              </Typography>
-            </Link>
+                <Typography
+                  fontWeight={600}
+                  py={1.5}
+                  borderBottom="1px solid"
+                  borderColor="divider"
+                >
+                  {t("nav.myDashboard")}
+                </Typography>
+              </Link>
+            )}
             {isLoggedIn && (
               <Link
                 href="/register-property"
@@ -419,12 +421,14 @@ export default function TopMain(user: any) {
               {t("nav.attractions")}
             </Link>
 
-            <Link
-              href={`/myPage/${user?.user?._id}/reservations`}
-              className="links"
-            >
-              {t("nav.myDashboard")}
-            </Link>
+            {isLoggedIn && (
+              <Link
+                href={`/myPage/${user?.user?._id}/reservations`}
+                className="links"
+              >
+                {t("nav.myDashboard")}
+              </Link>
+            )}
             {user.user._id !== "" && (
               <Link href="/register-property" className="links">
                 <Typography sx={{ fontWeight: 700 }}>
