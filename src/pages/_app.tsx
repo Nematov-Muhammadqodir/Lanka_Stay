@@ -13,6 +13,7 @@ import { ApolloProvider } from "@apollo/client";
 import { Provider } from "react-redux";
 import { store } from "@/store";
 import { appWithTranslation } from "next-i18next";
+import nextI18NextConfig from "../../next-i18next.config";
 
 function App({ Component, pageProps }: AppProps) {
   const [mode, setMode] = useState<"light" | "dark">("light");
@@ -68,4 +69,4 @@ function App({ Component, pageProps }: AppProps) {
   );
 }
 
-export default appWithTranslation(App);
+export default appWithTranslation(App, nextI18NextConfig);
