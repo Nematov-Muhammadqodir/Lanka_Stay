@@ -25,6 +25,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -73,7 +74,7 @@ const CheckoutForm = () => {
   const totalPrice = Number(total) || 0;
   const imageUrl =
     attraction?.attractionImages?.[0]
-      ? `${process.env.NEXT_PUBLIC_API_URL}/${attraction.attractionImages[0]}`
+      ? resolveImageUrl(attraction.attractionImages[0])
       : "/img/hotel.jpg";
 
   const formattedDate = date

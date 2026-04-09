@@ -2,6 +2,7 @@ import { Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import { useRouter } from "next/router";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 interface BrowseByPropertyTypeCardProps {
   type: {
@@ -15,7 +16,7 @@ const BrowseByPropertyTypeCard = ({ type }: BrowseByPropertyTypeCardProps) => {
   const router = useRouter();
 
   const imageUrl = type.image
-    ? `${process.env.NEXT_PUBLIC_API_URL}/${type.image}`
+    ? resolveImageUrl(type.image)
     : "/img/hotel.jpg";
 
   const handleClick = () => {

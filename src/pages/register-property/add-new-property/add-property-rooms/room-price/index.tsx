@@ -103,9 +103,7 @@ const RoomPrice = () => {
           },
         },
       });
-      router.push(
-        "/register-property/add-new-property/property-details-complete"
-      );
+      router.push("/register-property/dashboard");
     }
   };
 

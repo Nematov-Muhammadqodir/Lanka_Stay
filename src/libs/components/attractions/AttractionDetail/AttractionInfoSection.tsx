@@ -2,14 +2,15 @@ import { Stack } from "@mui/material";
 import React from "react";
 import Image from "next/image";
 import { Attraction } from "../../../types/attraction/attraction";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 interface AttractionInfoSectionProps {
   attraction?: Attraction | null;
 }
 
 const AttractionInfoSection = ({ attraction }: AttractionInfoSectionProps) => {
-  const images = (attraction?.attractionImages ?? []).map(
-    (img) => `${process.env.NEXT_PUBLIC_API_URL}/${img}`
+  const images = (attraction?.attractionImages ?? []).map((img) =>
+    resolveImageUrl(img)
   );
 
   const fallback = "/img/hotel.jpg";

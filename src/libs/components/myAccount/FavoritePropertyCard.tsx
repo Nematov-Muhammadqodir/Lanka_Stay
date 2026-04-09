@@ -9,6 +9,7 @@ import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
 import { useMutation, useReactiveVar } from "@apollo/client";
 import { Messages } from "../../config";
 import { userVar } from "@/apollo/store";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 interface FavoritePropertyCardProps {
   property?: PartnerProperty;
@@ -47,7 +48,7 @@ const FavoritePropertyCard = ({ property }: FavoritePropertyCardProps) => {
         <Image
           src={
             property?.propertyImages?.[0]
-              ? `${process.env.NEXT_PUBLIC_API_URL}/${property.propertyImages[0]}`
+              ? resolveImageUrl(property.propertyImages[0])
               : "/img/hotel.jpg"
           }
           alt="property-image"

@@ -270,6 +270,7 @@ const CreateAttraction = () => {
 
             <TextField
               label="Description"
+              placeholder="Tell guests what makes this attraction special..."
               value={form.attractionDescription}
               onChange={(e) =>
                 handleChange("attractionDescription", e.target.value)
@@ -277,6 +278,14 @@ const CreateAttraction = () => {
               fullWidth
               multiline
               rows={4}
+              InputLabelProps={{ shrink: true }}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  height: "auto",
+                  alignItems: "flex-start",
+                  padding: "12px 14px",
+                },
+              }}
             />
 
             <Stack direction="row" gap={2}>

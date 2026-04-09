@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import ReviewMapContainer from "./ReviewMapContainer";
 import { PropertyOverviewProps } from "./PropertyOverview";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 const HotelInfoSection = ({
   partnerProperty,
@@ -15,8 +16,6 @@ const HotelInfoSection = ({
   const topBigImage = images[0];
   const rightSmallImages = images.slice(1, 3); // second and third images
   const bottomSmallImages = images.slice(3); // rest of the images
-
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   return (
     <Stack
@@ -49,7 +48,7 @@ const HotelInfoSection = ({
           {topBigImage && (
             <Stack className="left-big-image" sx={{ flex: { xs: 2, md: "0 0 auto" } }}>
               <Image
-                src={`${baseUrl}/${topBigImage}`}
+                src={resolveImageUrl(topBigImage)}
                 alt="hotel-image"
                 width={600}
                 height={400}
@@ -66,7 +65,7 @@ const HotelInfoSection = ({
             {rightSmallImages.map((img, index) => (
               <Image
                 key={index}
-                src={`${baseUrl}/${img}`}
+                src={resolveImageUrl(img)}
                 alt={`hotel-image-${index}`}
                 width={290}
                 height={195}
@@ -94,7 +93,7 @@ const HotelInfoSection = ({
           {bottomSmallImages.map((img, index) => (
             <Stack key={index} flex="0 0 auto">
               <Image
-                src={`${baseUrl}/${img}`}
+                src={resolveImageUrl(img)}
                 alt={`hotel-image-bottom-${index}`}
                 width={170}
                 height={100}

@@ -6,6 +6,7 @@ import AttractionsIcon from "@mui/icons-material/Attractions";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useRouter } from "next/router";
 import { formatKoreanWon } from "../../handlers/priceHandler";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 interface MostPickedCardProps {
   item: {
@@ -29,7 +30,7 @@ export default function MostPickedCard({ item }: MostPickedCardProps) {
   const isProperty = item.itemType === "PROPERTY";
 
   const imageUrl = item.image
-    ? `${process.env.NEXT_PUBLIC_API_URL}/${item.image}`
+    ? resolveImageUrl(item.image)
     : "/img/hotel.jpg";
 
   const handleClick = () => {

@@ -17,6 +17,7 @@ import { formatShortDate } from "../../utils";
 import { useMutation, useReactiveVar } from "@apollo/client";
 import { LIKE_COMMENT, DISLIKE_COMMENT } from "@/apollo/user/mutation";
 import { userVar } from "@/apollo/store";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 interface GuestReviewItemMenuProps {
   comment: Comment;
@@ -88,7 +89,7 @@ const GuestReviewItemMenu = (props: GuestReviewItemMenuProps) => {
 
   // Guest image
   const guestImage = comment?.memberData?.guestImage
-    ? `${process.env.NEXT_PUBLIC_API_URL}/${comment.memberData.guestImage}`
+    ? resolveImageUrl(comment.memberData.guestImage)
     : "/img/Villa.jpg";
 
   // Guest type

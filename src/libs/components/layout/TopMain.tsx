@@ -230,38 +230,83 @@ export default function TopMain(user: any) {
         >
           <Stack gap={1} px={2}>
             <Link href="/" onClick={() => setMobileMenuOpen(false)}>
-              <Typography fontWeight={600} py={1.5} borderBottom="1px solid" borderColor="divider">
+              <Typography
+                fontWeight={600}
+                py={1.5}
+                borderBottom="1px solid"
+                borderColor="divider"
+              >
                 {t("nav.home")}
               </Typography>
             </Link>
             <Link href="/hotels" onClick={() => setMobileMenuOpen(false)}>
-              <Typography fontWeight={600} py={1.5} borderBottom="1px solid" borderColor="divider">
+              <Typography
+                fontWeight={600}
+                py={1.5}
+                borderBottom="1px solid"
+                borderColor="divider"
+              >
                 {t("nav.hotels")}
               </Typography>
             </Link>
             <Link href="/attractions" onClick={() => setMobileMenuOpen(false)}>
-              <Typography fontWeight={600} py={1.5} borderBottom="1px solid" borderColor="divider">
+              <Typography
+                fontWeight={600}
+                py={1.5}
+                borderBottom="1px solid"
+                borderColor="divider"
+              >
                 {t("nav.attractions")}
               </Typography>
             </Link>
-            <Link href={`/myPage/${user?.user?._id}/reservations`} onClick={() => setMobileMenuOpen(false)}>
-              <Typography fontWeight={600} py={1.5} borderBottom="1px solid" borderColor="divider">
+            <Link
+              href={`/myPage/${user?.user?._id}/reservations`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Typography
+                fontWeight={600}
+                py={1.5}
+                borderBottom="1px solid"
+                borderColor="divider"
+              >
                 {t("nav.myDashboard")}
               </Typography>
             </Link>
             {isLoggedIn && (
-              <Link href="/register-property" onClick={() => setMobileMenuOpen(false)}>
-                <Typography fontWeight={600} py={1.5} borderBottom="1px solid" borderColor="divider">
+              <Link
+                href="/register-property"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Typography
+                  fontWeight={600}
+                  py={1.5}
+                  borderBottom="1px solid"
+                  borderColor="divider"
+                >
                   {t("nav.listProperty")}
                 </Typography>
               </Link>
             )}
             {!isLoggedIn && (
               <>
-                <Button variant="contained" sx={{ mt: 2, color: "white" }} onClick={() => { router.push("/join/register"); setMobileMenuOpen(false); }}>
+                <Button
+                  variant="contained"
+                  sx={{ mt: 2, color: "white" }}
+                  onClick={() => {
+                    router.push("/join/register");
+                    setMobileMenuOpen(false);
+                  }}
+                >
                   {t("nav.signUp")}
                 </Button>
-                <Button variant="outlined" sx={{ mt: 1 }} onClick={() => { router.push("/join/login"); setMobileMenuOpen(false); }}>
+                <Button
+                  variant="outlined"
+                  sx={{ mt: 1 }}
+                  onClick={() => {
+                    router.push("/join/login");
+                    setMobileMenuOpen(false);
+                  }}
+                >
                   {t("nav.login")}
                 </Button>
               </>
@@ -269,7 +314,12 @@ export default function TopMain(user: any) {
           </Stack>
         </SwipeableDrawer>
 
-        <Stack className="logo-container" flexDirection={"row"} alignItems="center" sx={{ gap: { xs: 1.5, md: 2 } }}>
+        <Stack
+          className="logo-container"
+          flexDirection={"row"}
+          alignItems="center"
+          sx={{ gap: { xs: 1.5, md: 2 } }}
+        >
           <Button
             id="demo-customized-button"
             aria-controls={openLang ? "demo-customized-menu" : undefined}
@@ -294,7 +344,15 @@ export default function TopMain(user: any) {
               <Flag code="UZB" />
             )}
           </Button>
-          <Image src="/file.svg" alt="Logo" width={150} height={30} style={{ width: "auto", height: "auto", maxWidth: 150 }} />
+          <Link href="/" className="links">
+            <Image
+              src="/file.svg"
+              alt="Logo"
+              width={150}
+              height={30}
+              style={{ width: "auto", height: "auto", maxWidth: 150 }}
+            />
+          </Link>
 
           <StyledMenu
             id="demo-customized-menu"
@@ -334,7 +392,10 @@ export default function TopMain(user: any) {
         <Stack
           direction="row"
           justifyContent={"space-around"}
-          sx={{ width: { xs: "auto", md: 800 }, display: { xs: "none", md: "flex" } }}
+          sx={{
+            width: { xs: "auto", md: 800 },
+            display: { xs: "none", md: "flex" },
+          }}
         >
           <Stack
             className="menu-container"
@@ -381,9 +442,14 @@ export default function TopMain(user: any) {
 
           {/* Notification bell - visible on both mobile and desktop */}
           {isLoggedIn && (
-            <IconButton onClick={handleNotifClick} sx={{ ml: { xs: 0, md: 0.5 } }}>
+            <IconButton
+              onClick={handleNotifClick}
+              sx={{ ml: { xs: 0, md: 0.5 } }}
+            >
               <Badge badgeContent={unreadCount} color="error" max={99}>
-                <NotificationsIcon sx={{ color: "text.primary", fontSize: { xs: 22, md: 24 } }} />
+                <NotificationsIcon
+                  sx={{ color: "text.primary", fontSize: { xs: 22, md: 24 } }}
+                />
               </Badge>
             </IconButton>
           )}
@@ -428,7 +494,12 @@ export default function TopMain(user: any) {
                     alt="user-image"
                     width={50}
                     height={50}
-                    style={{ borderRadius: "50%", width: 38, height: 38, objectFit: "cover" }}
+                    style={{
+                      borderRadius: "50%",
+                      width: 38,
+                      height: 38,
+                      objectFit: "cover",
+                    }}
                   />
                 </IconButton>
               </Tooltip>

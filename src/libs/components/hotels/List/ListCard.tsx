@@ -15,6 +15,7 @@ import { useMutation, useReactiveVar } from "@apollo/client";
 import { LIKE_TARGET_PROPERTY } from "@/apollo/user/mutation";
 import { userVar } from "@/apollo/store";
 import { sweetMixinErrorAlert } from "@/src/libs/sweetAlert";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 const ListCard = ({ item }: { item: any }) => {
   const filters = useSelector((state: RootState) => state.filters);
@@ -68,7 +69,7 @@ const ListCard = ({ item }: { item: any }) => {
         <Image
           src={
             item.propertyImages?.[0]
-              ? `${process.env.NEXT_PUBLIC_API_URL}/${item.propertyImages[0]}`
+              ? resolveImageUrl(item.propertyImages[0])
               : "/img/hotel.jpg"
           }
           alt="left-image"

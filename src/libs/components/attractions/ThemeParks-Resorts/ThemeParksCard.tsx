@@ -6,6 +6,7 @@ import HotelIcon from "@mui/icons-material/Hotel";
 import AttractionsIcon from "@mui/icons-material/Attractions";
 import { useRouter } from "next/router";
 import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 interface ThemeParksCardProps {
   item: {
@@ -28,7 +29,7 @@ const ThemeParksCard = ({ item }: ThemeParksCardProps) => {
   const isProperty = item.itemType === "PROPERTY";
 
   const imageUrl = item.image
-    ? `${process.env.NEXT_PUBLIC_API_URL}/${item.image}`
+    ? resolveImageUrl(item.image)
     : "/img/hotel.jpg";
 
   const handleClick = () => {

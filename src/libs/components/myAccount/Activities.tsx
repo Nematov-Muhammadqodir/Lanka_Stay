@@ -16,6 +16,7 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 const Activities = () => {
   const { t } = useTranslation("common");
@@ -100,7 +101,7 @@ const Activities = () => {
               : "#";
             const image =
               images?.length > 0
-                ? `${process.env.NEXT_PUBLIC_API_URL}/${images[0]}`
+                ? resolveImageUrl(images[0])
                 : "/img/hotel.jpg";
 
             return (

@@ -2,6 +2,7 @@ import React from "react";
 import { Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 interface AttractionsReviewCardProps {
   comment: any;
@@ -10,7 +11,7 @@ interface AttractionsReviewCardProps {
 const AttractionsReviewCard = ({ comment }: AttractionsReviewCardProps) => {
   const memberData = comment.memberData;
   const avatarUrl = memberData?.guestImage
-    ? `${process.env.NEXT_PUBLIC_API_URL}/${memberData.guestImage}`
+    ? resolveImageUrl(memberData.guestImage)
     : "/img/logo/uniface.jpg";
 
   const createdAt = comment.createdAt

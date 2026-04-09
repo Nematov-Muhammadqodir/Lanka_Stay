@@ -18,6 +18,7 @@ import {
 import { SEND_MESSAGE } from "@/apollo/user/mutation";
 import { partnerVar } from "@/apollo/store";
 import { useTranslation } from "next-i18next";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 const OwnerMessagesPanel = () => {
   const { t } = useTranslation("common");
@@ -167,7 +168,7 @@ const OwnerMessagesPanel = () => {
                 <Image
                   src={
                     conv.otherParticipantImage
-                      ? `${process.env.NEXT_PUBLIC_API_URL}/${conv.otherParticipantImage}`
+                      ? resolveImageUrl(conv.otherParticipantImage)
                       : "/img/logo/uniface.jpg"
                   }
                   alt="avatar"
@@ -243,7 +244,7 @@ const OwnerMessagesPanel = () => {
             <Image
               src={
                 selectedConv.otherParticipantImage
-                  ? `${process.env.NEXT_PUBLIC_API_URL}/${selectedConv.otherParticipantImage}`
+                  ? resolveImageUrl(selectedConv.otherParticipantImage)
                   : "/img/logo/uniface.jpg"
               }
               alt="avatar"

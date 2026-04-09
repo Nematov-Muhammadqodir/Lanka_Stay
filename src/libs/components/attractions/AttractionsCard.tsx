@@ -14,6 +14,7 @@ import { LIKE_TARGET_ATTRACTION } from "@/apollo/user/mutation";
 import { userVar } from "@/apollo/store";
 import { sweetMixinErrorAlert } from "@/src/libs/sweetAlert";
 import { useTranslation } from "next-i18next";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 interface AttractionsListCardProps {
   attraction: any;
@@ -30,7 +31,7 @@ const AttractionsListCard = ({ attraction }: AttractionsListCardProps) => {
 
   const imageUrl =
     attraction.attractionImages && attraction.attractionImages.length > 0
-      ? `${process.env.NEXT_PUBLIC_API_URL}/${attraction.attractionImages[0]}`
+      ? resolveImageUrl(attraction.attractionImages[0])
       : "/img/hotel.jpg";
 
   const handleClick = () => {

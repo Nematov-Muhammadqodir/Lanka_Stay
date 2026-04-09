@@ -4,6 +4,7 @@ import StarIcon from "@mui/icons-material/Star";
 import EventRepeatIcon from "@mui/icons-material/EventRepeat";
 import { useRouter } from "next/router";
 import { formatKoreanWon } from "../../handlers/priceHandler";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 interface PopularAttractionCardProps {
   attraction: {
@@ -25,7 +26,7 @@ const PopularAttractionCard = ({ attraction }: PopularAttractionCardProps) => {
 
   const imageUrl =
     attraction.attractionImages && attraction.attractionImages.length > 0
-      ? `${process.env.NEXT_PUBLIC_API_URL}/${attraction.attractionImages[0]}`
+      ? resolveImageUrl(attraction.attractionImages[0])
       : "/img/hotel.jpg";
 
   const handleClick = () => {

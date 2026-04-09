@@ -18,6 +18,7 @@ import { userVar } from "@/apollo/store";
 
 import { sweetErrorAlert } from "@/src/libs/sweetAlert";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 export interface InitialValueInput {
   guestId: string;
@@ -193,7 +194,7 @@ const RoomReservation = () => {
             <Image
               src={
                 partnerProperty?.propertyImages?.length
-                  ? `${process.env.NEXT_PUBLIC_API_URL}/${partnerProperty?.propertyImages[0]}`
+                  ? resolveImageUrl(partnerProperty?.propertyImages[0])
                   : "/img/hotel.jpg"
               }
               alt="left-image"

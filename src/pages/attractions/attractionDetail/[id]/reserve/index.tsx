@@ -19,6 +19,7 @@ import { userVar } from "@/apollo/store";
 import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
 import { sweetErrorAlert } from "@/src/libs/sweetAlert";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 const TicketReserve = () => {
   const router = useRouter();
@@ -41,7 +42,7 @@ const TicketReserve = () => {
   const totalPrice = Number(total) || 0;
   const imageUrl =
     attraction?.attractionImages?.[0]
-      ? `${process.env.NEXT_PUBLIC_API_URL}/${attraction.attractionImages[0]}`
+      ? resolveImageUrl(attraction.attractionImages[0])
       : "/img/hotel.jpg";
 
   const formattedDate = date

@@ -3,6 +3,7 @@ import Image from "next/image";
 import HotelIcon from "@mui/icons-material/Hotel";
 import AttractionsIcon from "@mui/icons-material/Attractions";
 import { useRouter } from "next/router";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 interface ExploreCardProps {
   region: {
@@ -19,7 +20,7 @@ const ExploreCard = ({ region }: ExploreCardProps) => {
   const router = useRouter();
 
   const imageUrl = region.image
-    ? `${process.env.NEXT_PUBLIC_API_URL}/${region.image}`
+    ? resolveImageUrl(region.image)
     : "/img/hotel.jpg";
 
   const handleClick = () => {

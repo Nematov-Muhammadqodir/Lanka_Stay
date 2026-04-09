@@ -5,6 +5,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { formatKoreanWon } from "@/src/libs/handlers/priceHandler";
 import { formatShortDate } from "@/src/libs/utils";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 interface RecentlyViewedCardProps {
   item: any;
@@ -49,7 +50,7 @@ const RecentlyViewedCard = ({ item }: RecentlyViewedCardProps) => {
       <Image
         src={
           item?.propertyImages[0]
-            ? `${process.env.NEXT_PUBLIC_API_URL}/${item.propertyImages[0]}`
+            ? resolveImageUrl(item.propertyImages[0])
             : "/img/hotel.jpg"
         }
         alt="left-image"

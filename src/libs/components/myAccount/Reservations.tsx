@@ -38,6 +38,7 @@ import {
 import { useQuery } from "@apollo/client";
 import { formatShortDate } from "../../utils";
 import { formatKoreanWon } from "../../handlers/priceHandler";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 interface HotelData {
   id: number;
@@ -354,7 +355,7 @@ const Reservations = () => {
                 }}
               >
                 <img
-                  src={`${process.env.NEXT_PUBLIC_API_URL}/${selectedReservation.propertyImages[0]}`}
+                  src={resolveImageUrl(selectedReservation.propertyImages[0])}
                   alt={selectedReservation.propertyName}
                   style={{
                     width: "100%",
@@ -600,9 +601,7 @@ const Reservations = () => {
                         <Box
                           key={i}
                           onClick={() =>
-                            setZoomImage(
-                              `${process.env.NEXT_PUBLIC_API_URL}/${img}`
-                            )
+                            setZoomImage(resolveImageUrl(img))
                           }
                           sx={{
                             width: 110,
@@ -617,7 +616,7 @@ const Reservations = () => {
                           }}
                         >
                           <img
-                            src={`${process.env.NEXT_PUBLIC_API_URL}/${img}`}
+                            src={resolveImageUrl(img)}
                             alt={`photo-${i}`}
                             style={{
                               width: "100%",
@@ -663,7 +662,9 @@ const Reservations = () => {
                 }}
               >
                 <img
-                  src={`${process.env.NEXT_PUBLIC_API_URL}/${selectedAttraction.attractionData.attractionImages[0]}`}
+                  src={resolveImageUrl(
+                    selectedAttraction.attractionData.attractionImages[0]
+                  )}
                   alt={
                     selectedAttraction.attractionData?.attractionName ??
                     "Attraction"
@@ -976,9 +977,7 @@ const Reservations = () => {
                         <Box
                           key={i}
                           onClick={() =>
-                            setZoomImage(
-                              `${process.env.NEXT_PUBLIC_API_URL}/${img}`
-                            )
+                            setZoomImage(resolveImageUrl(img))
                           }
                           sx={{
                             width: 110,
@@ -993,7 +992,7 @@ const Reservations = () => {
                           }}
                         >
                           <img
-                            src={`${process.env.NEXT_PUBLIC_API_URL}/${img}`}
+                            src={resolveImageUrl(img)}
                             alt={`photo-${i}`}
                             style={{
                               width: "100%",

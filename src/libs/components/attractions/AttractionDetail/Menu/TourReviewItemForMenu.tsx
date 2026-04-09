@@ -11,6 +11,7 @@ import { LIKE_COMMENT, DISLIKE_COMMENT } from "@/apollo/user/mutation";
 import { userVar } from "@/apollo/store";
 import { sweetMixinErrorAlert } from "../../../../sweetAlert";
 import { useTranslation } from "next-i18next";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 interface TourReviewItemForMenuProps {
   comment: any;
@@ -38,7 +39,7 @@ const TourReviewItemForMenu = ({
 
   const memberData = comment.memberData;
   const avatarUrl = memberData?.guestImage
-    ? `${process.env.NEXT_PUBLIC_API_URL}/${memberData.guestImage}`
+    ? resolveImageUrl(memberData.guestImage)
     : "/img/logo/uniface.jpg";
 
   const createdAt = comment.createdAt

@@ -6,6 +6,7 @@ import { PartnerProperty } from "../../types/partnerInput/partnerProperty";
 import CustomMap from "./CustomMap";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 export interface ReviewMapContainerProps {
   partnerProperty?: PartnerProperty;
@@ -110,7 +111,7 @@ const ReviewMapContainer = (props: ReviewMapContainerProps) => {
                 <Image
                   src={
                     latestComment.memberData?.guestImage
-                      ? `${process.env.NEXT_PUBLIC_API_URL}/${latestComment.memberData.guestImage}`
+                      ? resolveImageUrl(latestComment.memberData.guestImage)
                       : "/img/Villa.jpg"
                   }
                   alt="user-image"

@@ -1,5 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
 import Image from "next/image";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 interface ReviewCardProps {
   name: string;
@@ -23,7 +24,7 @@ const ReviewCard = ({ name, src, review, id, country }: ReviewCardProps) => {
       <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
         <Image
           src={
-            src ? `${process.env.NEXT_PUBLIC_API_URL}/${src}` : "/img/hotel.jpg"
+            src ? resolveImageUrl(src) : "/img/hotel.jpg"
           }
           alt="user-image"
           width={40}

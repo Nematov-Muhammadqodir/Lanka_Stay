@@ -32,6 +32,7 @@ import {
 } from "@/apollo/user/query";
 import CloseIcon from "@mui/icons-material/Close";
 import SmokingRoomsIcon from "@mui/icons-material/SmokingRooms";
+import { resolveImageUrl } from "@/src/libs/handlers/imageHandler";
 
 const UserInfo = ({
   handlePaymentPage,
@@ -87,7 +88,7 @@ const UserInfo = ({
         <Image
           src={
             user.guestImage !== ""
-              ? `${process.env.NEXT_PUBLIC_API_URL}/${user.guestImage}`
+              ? resolveImageUrl(user.guestImage)
               : "/img/logo/uniface.jpg"
           }
           alt="left-image"
