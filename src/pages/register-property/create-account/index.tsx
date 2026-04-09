@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import withLayoutCreateAccountMain from "@/src/libs/components/layout/registerProperty/create-account/CreateAccountMainLayout";
 import {
   Box,
@@ -54,10 +54,12 @@ const CreateAccount = () => {
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [partnerType, setPartnerTypeLocal] = useState("HOTEL_OWNER");
   const partner = useReactiveVar(partnerVar);
+  const justSignedUpRef = useRef(false);
   console.log("loggedin partner", partner);
 
   useEffect(() => {
-    if (partner._id !== "") {
+    // Skip auto-redirect if the user just signed up — handleSignup handles its own redirect
+    if (partner._id !== "" && !justSignedUpRef.current) {
       router.push("/register-property/dashboard");
     }
   }, [partner]);
@@ -71,6 +73,7 @@ const CreateAccount = () => {
       await sweetErrorAlert(Messages.error6);
     } else {
       const role = partnerType === "ATTRACTION_OWNER" ? "ATTRACTION_OWNER" : "HOTEL_OWNER";
+      justSignedUpRef.current = true;
       await signUpPartner(
         partnerInput.partnerEmail,
         partnerInput.partnerFirstName,
@@ -80,7 +83,13 @@ const CreateAccount = () => {
         role,
         partnerType
       );
-      router.push("/register-property/dashboard");
+      // Send new partners straight to the property/attraction creation flow,
+      // not the dashboard (which has no "create" button)
+      if (role === "ATTRACTION_OWNER") {
+        router.push("/register-property/attractions/create");
+      } else {
+        router.push("/register-property/add-new-property");
+      }
     }
   };
 
