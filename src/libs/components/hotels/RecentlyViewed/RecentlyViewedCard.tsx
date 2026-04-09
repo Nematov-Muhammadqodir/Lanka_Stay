@@ -17,7 +17,7 @@ const RecentlyViewedCard = ({ item }: RecentlyViewedCardProps) => {
     ? Number(firstRoom.roomPricePerNight)
     : 0;
 
-  const ratings = [
+  const ratings: number[] = [
     item?.staffRating,
     item?.facilitiesRating,
     item?.cleanlessRating,
@@ -25,7 +25,7 @@ const RecentlyViewedCard = ({ item }: RecentlyViewedCardProps) => {
     item?.valueOfMoneyRating,
     item?.locationRating,
     item?.freeWiFiRating,
-  ].filter((r) => r != null && r > 0);
+  ].filter((r): r is number => r != null && r > 0);
 
   const avgRating =
     ratings.length > 0

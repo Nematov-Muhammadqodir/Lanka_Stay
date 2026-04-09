@@ -94,7 +94,7 @@ const AllAvailableRooms = ({
             availableRooms.map((room) => (
               <AllAvailableRoomsBody
                 key={room.roomId}
-                partnerProperty={partnerProperty}
+                partnerProperty={partnerProperty ?? undefined}
                 propertyRoom={room}
               />
             ))

@@ -245,7 +245,7 @@ const RoomReservation = () => {
                 >
                   <Typography className="small-bold-text">
                     {(() => {
-                      const ratings = [
+                      const ratings: number[] = [
                         partnerProperty?.staffRating,
                         partnerProperty?.facilitiesRating,
                         partnerProperty?.cleanlessRating,
@@ -253,7 +253,7 @@ const RoomReservation = () => {
                         partnerProperty?.valueOfMoneyRating,
                         partnerProperty?.locationRating,
                         partnerProperty?.freeWiFiRating,
-                      ].filter((r) => r != null);
+                      ].filter((r): r is number => r != null);
                       if (ratings.length === 0) return "0";
                       return (
                         ratings.reduce((sum, val) => sum + val, 0) /

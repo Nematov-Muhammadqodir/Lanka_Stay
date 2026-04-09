@@ -24,7 +24,7 @@ const StillInterestedCard = ({
   const user = useReactiveVar(userVar);
   const router = useRouter();
 
-  const ratings = [
+  const ratings: number[] = [
     property?.staffRating,
     property?.facilitiesRating,
     property?.cleanlessRating,
@@ -32,11 +32,11 @@ const StillInterestedCard = ({
     property?.valueOfMoneyRating,
     property?.locationRating,
     property?.freeWiFiRating,
-  ].filter((r) => r != null && r > 0);
+  ].filter((r): r is number => r != null && r > 0);
 
   const avgRating =
     ratings.length > 0
-      ? (ratings.reduce((sum, val) => sum + val!, 0) / ratings.length).toFixed(1)
+      ? (ratings.reduce((sum, val) => sum + val, 0) / ratings.length).toFixed(1)
       : "0";
 
   const totalReviews = property?.totalReviews ?? 0;

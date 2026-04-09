@@ -13,8 +13,8 @@ import { useRouter } from "next/router";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import LayoutCreateAccountMain from "@/src/libs/components/layout/registerProperty/create-account/CreateAccountMainLayout";
 import { useDispatch, useSelector } from "react-redux";
-import {
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import {
   partnerPropertyInputValue,
   setBreakfastIncluded,
   setParkingIncluded,

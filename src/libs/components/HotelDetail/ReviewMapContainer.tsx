@@ -22,7 +22,7 @@ const ReviewMapContainer = (props: ReviewMapContainerProps) => {
 
   const latestComment = comments?.[0];
 
-  const ratings = [
+  const ratings: number[] = [
     partnerProperty?.staffRating,
     partnerProperty?.facilitiesRating,
     partnerProperty?.cleanlessRating,
@@ -30,7 +30,7 @@ const ReviewMapContainer = (props: ReviewMapContainerProps) => {
     partnerProperty?.valueOfMoneyRating,
     partnerProperty?.locationRating,
     partnerProperty?.freeWiFiRating,
-  ].filter((r) => r != null);
+  ].filter((r): r is number => r != null);
 
   const avgScore =
     ratings.length > 0

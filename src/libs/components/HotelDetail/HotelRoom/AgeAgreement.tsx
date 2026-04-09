@@ -7,12 +7,17 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { RoomPaymentRIghtProps } from "./RoomPaymentRIght";
+import { InitialValueInput } from "@/src/pages/hotels/hotelDetail/[id]/[roomId]";
+
+interface AgeAgreementProps {
+  initalValue: InitialValueInput;
+  handleEditUserInfo: (key: string, value: any) => void;
+}
 
 const AgeAgreement = ({
   initalValue,
   handleEditUserInfo,
-}: RoomPaymentRIghtProps) => {
+}: AgeAgreementProps) => {
   return (
     <Stack
       border={"1px solid"}
