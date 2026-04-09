@@ -195,7 +195,12 @@ export default function TopMain(user: any) {
     // Map flag code to i18n locale
     const localeMap: Record<string, string> = { KR: "ko", GB: "en", UZB: "uz" };
     const newLocale = localeMap[langCode] || "ko";
-    router.push(router.pathname, router.asPath, { locale: newLocale });
+    // Use UrlObject so dynamic route params (e.g. [id]) get substituted properly
+    router.push(
+      { pathname: router.pathname, query: router.query },
+      router.asPath,
+      { locale: newLocale }
+    );
   };
   const router = useRouter();
   return (
