@@ -176,60 +176,65 @@ export const GET_PARTNER_PROPERTY_BY_HOTEL_OWNER = gql`
 export const GET_ALL_AVAILABLE_PROPERTIES = gql`
   query GetAllAvailableProperties($input: AvailablePropertiesSearchInput!) {
     getAllAvailableProperties(input: $input) {
-      _id
-      partnerId
-      propertyType
-      propertyCountry
-      propertyRegion
-      propertyCity
-      propertyPostCode
-      propertyName
-      propertyStars
-      propertyViews
-      propertyComments
-      propertyFacilities
-      breakfastIncluded
-      parkingIncluded
-      hotelStaffLanguages
-      checkInTimeFrom
-      propertyStatus
-      checkInTimeUntill
-      propertyImages
-      checkOutTimeFrom
-      checkOutTimeUntill
-      allowChildren
-      allowPets
-      totalReviews
-      staffRating
-      propertyLikes
-      createdAt
-      updatedAt
-      meLiked {
-        memberId
-        likeRefId
-        myFavorite
+      list {
+        _id
+        partnerId
+        propertyType
+        propertyCountry
+        propertyRegion
+        propertyCity
+        propertyPostCode
+        propertyName
+        propertyStars
+        propertyViews
+        propertyComments
+        propertyFacilities
+        breakfastIncluded
+        parkingIncluded
+        hotelStaffLanguages
+        checkInTimeFrom
+        propertyStatus
+        checkInTimeUntill
+        propertyImages
+        checkOutTimeFrom
+        checkOutTimeUntill
+        allowChildren
+        allowPets
+        totalReviews
+        staffRating
+        propertyLikes
+        createdAt
+        updatedAt
+        meLiked {
+          memberId
+          likeRefId
+          myFavorite
+        }
+        propertyRooms {
+          roomId
+          roomType
+          roomPricePerNight
+          numberOfGuestsCanStay
+          roomFacilities
+          availableBathroomFacilities
+          isBathroomPrivate
+          isSmokingAllowed
+          roomName
+          availableBeds {
+            single
+            double
+            king
+            superKing
+          }
+          reservedDates {
+            userId
+            from
+            until
+          }
+        }
       }
-      propertyRooms {
-        roomId
-        roomType
-        roomPricePerNight
-        numberOfGuestsCanStay
-        roomFacilities
-        availableBathroomFacilities
-        isBathroomPrivate
-        isSmokingAllowed
-        roomName
-        availableBeds {
-          single
-          double
-          king
-          superKing
-        }
-        reservedDates {
-          userId
-          from
-          until
-        }
+      metaCounter {
+        total
       }
     }
   }
