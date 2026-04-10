@@ -39,7 +39,7 @@ const initialState: FilterState = storedFilters
       adults: 1,
       children: 0,
       page: 1,
-      limit: 6,
+      limit: 100,
     };
 
 const filterSlice = createSlice({
