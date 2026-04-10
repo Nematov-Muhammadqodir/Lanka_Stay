@@ -24,7 +24,7 @@ const Hotels = () => {
     page: filters.page,
     limit: filters.limit,
   };
-  if (filters.propertyRegion) queryInput.propertyRegion = filters.propertyRegion;
+  queryInput.propertyRegion = filters.propertyRegion || "ALL";
   if (filters.propertyCity) queryInput.propertyCity = filters.propertyCity;
   if (filters.propertyType && filters.propertyType.length > 0)
     queryInput.propertyType = filters.propertyType;

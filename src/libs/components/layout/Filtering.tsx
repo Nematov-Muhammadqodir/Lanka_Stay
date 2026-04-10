@@ -128,10 +128,9 @@ export default function Filtering() {
     : availableCities;
 
   const { data, loading, refetch } = useQuery(GET_ALL_AVAILABLE_PROPERTIES, {
-    skip: !filters.propertyRegion, // skip if no region
     variables: {
       input: {
-        propertyRegion: filters.propertyRegion,
+        propertyRegion: filters.propertyRegion || "ALL",
         from: filters.startDate,
         until: filters.endDate,
         adults: filters.adults,
@@ -394,7 +393,11 @@ export default function Filtering() {
           >
             <PinDropIcon />
             <Typography fontSize="12px" textTransform="capitalize">
-              {!mounted ? t("filter.location") : filters.propertyRegion || t("filter.location")}
+              {!mounted
+                ? t("filter.location")
+                : !filters.propertyRegion || filters.propertyRegion === "ALL"
+                  ? t("filter.allCities")
+                  : filters.propertyRegion}
             </Typography>
           </Button>
         </Tooltip>
@@ -427,6 +430,37 @@ export default function Filtering() {
               {citySearch ? t("filter.searchResults") : t("filter.availableDestinations")}
             </Typography>
             <Stack sx={{ maxHeight: 260, overflowY: "auto" }} gap={0.5}>
+              {/* All cities button */}
+              {!citySearch && (
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    dispatch(setLocation("ALL"));
+                    setCitySearch("");
+                    handleLocationClose();
+                  }}
+                  sx={{
+                    gap: 1,
+                    textTransform: "none",
+                    width: "100%",
+                    justifyContent: "flex-start",
+                    borderRadius: 1.5,
+                    py: 1,
+                    color: filters.propertyRegion === "ALL" || !filters.propertyRegion
+                      ? "primary.main"
+                      : "text.primary",
+                    fontWeight: filters.propertyRegion === "ALL" || !filters.propertyRegion
+                      ? 700
+                      : 400,
+                    "&:hover": { backgroundColor: "action.hover" },
+                  }}
+                >
+                  <WhereToVoteIcon sx={{ fontSize: 18, color: "primary.main" }} />
+                  <Typography fontSize={14} fontWeight={600}>
+                    {t("filter.allCities")}
+                  </Typography>
+                </Button>
+              )}
               {filteredCities.length === 0 ? (
                 <Typography fontSize={13} color="text.disabled" py={2} textAlign="center">
                   {t("filter.noCities")}
