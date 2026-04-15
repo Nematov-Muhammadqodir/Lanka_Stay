@@ -39,7 +39,6 @@ export interface PropertyOverviewProps {
 const PropertyOverview = (props: PropertyOverviewProps) => {
   const { partnerProperty, loading } = props;
   const { t } = useTranslation("common");
-  if (!partnerProperty) return null;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
